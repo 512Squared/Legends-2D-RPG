@@ -1,73 +1,49 @@
 fileFormatVersion: 2
-guid: d71a50a2569f445e8abc587e19c80e6a
+guid: b0c2a8331fd5dc647a4b1ebb1bcd25dc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4323829753409748129
-    second: bomb_explosion_0
+      213: -3636955310213212201
+    second: character_walk_right_0
   - first:
-      213: 4436693064181886209
-    second: bomb_explosion_1
+      213: 4666025160969939681
+    second: character_walk_right_1
   - first:
-      213: -7460063741521379795
-    second: bomb_explosion_2
+      213: 2064722265608712835
+    second: character_walk_right_2
   - first:
-      213: 706566833043775456
-    second: bomb_explosion_3
+      213: 690222390003159612
+    second: character_walk_right_3
   - first:
-      213: -7013739732545936135
-    second: bomb_explosion_4
+      213: -8011725578814442167
+    second: character_walk_right_4
   - first:
-      213: 3633805952752192785
-    second: bomb_explosion_5
+      213: -1351322063004182589
+    second: character_walk_right_5
   - first:
-      213: 1416249457202674490
-    second: bomb_explosion_6
+      213: 5548578034519913881
+    second: character_walk_right_6
   - first:
-      213: -995268162943254078
-    second: bomb_explosion_7
+      213: 6981398283318738672
+    second: character_walk_right_7
   - first:
-      213: 3539421804171373943
-    second: bomb_explosion_8
+      213: 4062691724212283999
+    second: character_walk_right_8
   - first:
-      213: 3331188134440443881
-    second: bomb_explosion_9
+      213: 610634316425152131
+    second: character_walk_right_9
   - first:
-      213: -1977716356774278175
-    second: bomb_explosion_10
+      213: 99473090746842501
+    second: character_walk_right_10
   - first:
-      213: -4213325290398786309
-    second: bomb_explosion_0
+      213: 6831633598019140691
+    second: character_walk_right_11
   - first:
-      213: 5767877369791987958
-    second: bomb_explosion_1
+      213: -4613372141191705113
+    second: character_walk_right_12
   - first:
-      213: -3412389697539376023
-    second: bomb_explosion_2
-  - first:
-      213: -4040305563405845409
-    second: bomb_explosion_3
-  - first:
-      213: -6446640062765486465
-    second: bomb_explosion_4
-  - first:
-      213: -5488396706458998231
-    second: bomb_explosion_5
-  - first:
-      213: 4373674658375381996
-    second: bomb_explosion_6
-  - first:
-      213: -7061000443724213302
-    second: bomb_explosion_7
-  - first:
-      213: 2230985687751679131
-    second: bomb_explosion_8
-  - first:
-      213: -3734791899598365927
-    second: bomb_explosion_9
-  - first:
-      213: -8389519034535764415
-    second: bomb_explosion_10
+      213: -2899411679545322132
+    second: character_walk_right_13
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -135,7 +111,7 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
-    compressionQuality: 80
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
@@ -147,32 +123,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
-    compressionQuality: 80
+    compressionQuality: 50
     crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 4096
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 80
-    crunchedCompression: 1
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 4096
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 80
-    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
@@ -183,7 +135,7 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
-    compressionQuality: 80
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
@@ -193,232 +145,295 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bomb_explosion_0
+      name: character_walk_right_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 316
-        width: 317
-        height: 316
+        y: 300
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bfc5c96b8f24785c0800000000000000
-      internalID: -4213325290398786309
+      spriteID: 7d755ce2a60f68dc0800000000000000
+      internalID: -3636955310213212201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_1
+      name: character_walk_right_1
       rect:
         serializedVersion: 2
-        x: 317
-        y: 316
-        width: 317
-        height: 316
+        x: 360
+        y: 300
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f0477688ed9b0050800000000000000
-      internalID: 5767877369791987958
+      spriteID: 1eae5a8892d01c040800000000000000
+      internalID: 4666025160969939681
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_2
+      name: character_walk_right_2
       rect:
         serializedVersion: 2
-        x: 634
-        y: 316
-        width: 317
-        height: 316
+        x: 720
+        y: 300
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96c76f256a1c4a0d0800000000000000
-      internalID: -3412389697539376023
+      spriteID: 382727116fd57ac10800000000000000
+      internalID: 2064722265608712835
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_3
+      name: character_walk_right_3
       rect:
         serializedVersion: 2
-        x: 951
-        y: 316
-        width: 317
-        height: 316
+        x: 1080
+        y: 300
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f5cf82d1f73fde7c0800000000000000
-      internalID: -4040305563405845409
+      spriteID: c32d8245b99249900800000000000000
+      internalID: 690222390003159612
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_4
+      name: character_walk_right_4
       rect:
         serializedVersion: 2
-        x: 1268
-        y: 316
-        width: 317
-        height: 316
+        x: 1440
+        y: 300
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f7eaf08c40fe886a0800000000000000
-      internalID: -6446640062765486465
+      spriteID: 945bad4b802a0d090800000000000000
+      internalID: -8011725578814442167
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_5
+      name: character_walk_right_5
       rect:
         serializedVersion: 2
-        x: 1585
-        y: 316
-        width: 317
-        height: 316
+        x: 1800
+        y: 300
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92a6615364c45d3b0800000000000000
-      internalID: -5488396706458998231
+      spriteID: 3c7dc794eb32f3de0800000000000000
+      internalID: -1351322063004182589
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_6
+      name: character_walk_right_6
+      rect:
+        serializedVersion: 2
+        x: 2160
+        y: 300
+        width: 360
+        height: 300
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99538142352800d40800000000000000
+      internalID: 5548578034519913881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character_walk_right_7
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 317
-        height: 316
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce3b797dde962bc30800000000000000
-      internalID: 4373674658375381996
+      spriteID: 0fe3cb8efb8e2e060800000000000000
+      internalID: 6981398283318738672
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_7
+      name: character_walk_right_8
       rect:
         serializedVersion: 2
-        x: 317
+        x: 360
         y: 0
-        width: 317
-        height: 316
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ac351f8d189420e90800000000000000
-      internalID: -7061000443724213302
+      spriteID: f5aa79d1994916830800000000000000
+      internalID: 4062691724212283999
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_8
+      name: character_walk_right_9
       rect:
         serializedVersion: 2
-        x: 634
+        x: 720
         y: 0
-        width: 317
-        height: 316
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b9c5b69a9ad06fe10800000000000000
-      internalID: 2230985687751679131
+      spriteID: 3864f2eeca8697800800000000000000
+      internalID: 610634316425152131
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_9
+      name: character_walk_right_10
       rect:
         serializedVersion: 2
-        x: 951
+        x: 1080
         y: 0
-        width: 317
-        height: 316
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 91bde6a1e8a5b2cc0800000000000000
-      internalID: -3734791899598365927
+      spriteID: 58dfcaebf36616100800000000000000
+      internalID: 99473090746842501
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_explosion_10
+      name: character_walk_right_11
       rect:
         serializedVersion: 2
-        x: 1268
+        x: 1440
         y: 0
-        width: 317
-        height: 316
+        width: 360
+        height: 300
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14e1e1e33e0729b80800000000000000
-      internalID: -8389519034535764415
+      spriteID: 35cfd85df86dece50800000000000000
+      internalID: 6831633598019140691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character_walk_right_12
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 0
+        width: 360
+        height: 300
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7edc593fa720affb0800000000000000
+      internalID: -4613372141191705113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character_walk_right_13
+      rect:
+        serializedVersion: 2
+        x: 2160
+        y: 0
+        width: 360
+        height: 300
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c65151f607833c7d0800000000000000
+      internalID: -2899411679545322132
       vertices: []
       indices: 
       edges: []
