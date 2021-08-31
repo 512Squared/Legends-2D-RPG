@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - homesteadExitLeft
+  - collision
   layers:
   - Default
   - TransparentFX
@@ -44,9 +46,9 @@ TagManager:
   - name: Ground
     uniqueID: 1578903945
     locked: 0
-  - name: Objects
-    uniqueID: 3295464449
-    locked: 0
   - name: Player
     uniqueID: 538720991
+    locked: 0
+  - name: Objects
+    uniqueID: 3295464449
     locked: 0
