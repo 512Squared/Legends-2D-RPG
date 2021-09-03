@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class Exits : MonoBehaviour
+public class Exit : MonoBehaviour
 {
 
     [SerializeField] string sceneToLoad;
+    [SerializeField] string goingTo;
     
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,7 @@ public class Exits : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            PlayerGlobalData.instance.arrivedAt = goingTo;
             SceneManager.LoadScene(sceneToLoad);
         }
     }

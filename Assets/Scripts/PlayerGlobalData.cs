@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerGlobalData : MonoBehaviour
 {
-    public static Player instance;
+    public static PlayerGlobalData instance;
 
     [SerializeField] Rigidbody2D playerRigidBody;
     [SerializeField] int moveSpeed = 1;
     [SerializeField] Animator playerAnimator;
-    
+
+    public string arrivedAt;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,3 +50,5 @@ public class Player : MonoBehaviour
 
 
 }
+
+
