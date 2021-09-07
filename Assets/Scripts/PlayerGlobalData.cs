@@ -12,6 +12,9 @@ public class PlayerGlobalData : MonoBehaviour
 
     public string arrivedAt;
 
+    private Vector3 bottomLeftEdge;
+    private Vector3 toprightEdge;
+
     // Start is called before the first frame update
     void Start()
     {

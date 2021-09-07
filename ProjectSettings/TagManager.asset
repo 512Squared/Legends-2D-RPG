@@ -14,9 +14,9 @@ TagManager:
   - Water
   - UI
   - 
-  - Background
   - 
-  - Player
+  - 
+  - 
   - 
   - 
   - 
@@ -40,15 +40,30 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Ground
+    uniqueID: 1578903945
+    locked: 0
+  - name: Ground obstacles
+    uniqueID: 187007191
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Ground
-    uniqueID: 1578903945
+  - name: Objects
+    uniqueID: 3295464449
     locked: 0
   - name: Player
     uniqueID: 538720991
     locked: 0
-  - name: Objects
-    uniqueID: 3295464449
+  - name: Tall objects
+    uniqueID: 2634523167
+    locked: 0
+  - name: Dungeon_tower
+    uniqueID: 2163428581
+    locked: 0
+  - name: Glow
+    uniqueID: 818771099
+    locked: 0
+  - name: Keys & Entrances
+    uniqueID: 2738334161
     locked: 0
