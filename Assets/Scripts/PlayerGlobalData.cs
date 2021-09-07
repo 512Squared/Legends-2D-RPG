@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerGlobalData : MonoBehaviour
 {
@@ -13,7 +14,11 @@ public class PlayerGlobalData : MonoBehaviour
     public string arrivedAt;
 
     private Vector3 bottomLeftEdge;
-    private Vector3 toprightEdge;
+    private Vector3 topRightEdge;
+
+    [SerializeField] Tilemap tilemap;
+
+
 
     // Start is called before the first frame update
     void Start()
