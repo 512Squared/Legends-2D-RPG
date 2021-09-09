@@ -34,6 +34,9 @@ public class PlayerGlobalData : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+
+        //topRightEdge = tilemap.localBounds.max + new Vector3(-0.7f,-2f,0f); 
+        //bottomLeftEdge = tilemap.localBounds.min + new Vector3(1f,0.1f,0f);
     }
 
     // Update is called once per frame
@@ -52,6 +55,12 @@ public class PlayerGlobalData : MonoBehaviour
             playerAnimator.SetFloat("lastX", horizontalMovement);
             playerAnimator.SetFloat("lastY", verticalMovement);
         }
+
+        //transform.position = new Vector3(
+        //    Mathf.Clamp(transform.position.x, bottomLeftEdge.x, topRightEdge.x),
+        //    Mathf.Clamp(transform.position.y, bottomLeftEdge.y, topRightEdge.y),            
+        //    Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)         
+        //);
 
     }
 
