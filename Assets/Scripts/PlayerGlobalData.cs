@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+
 
 public class PlayerGlobalData : MonoBehaviour
 {
@@ -15,10 +15,6 @@ public class PlayerGlobalData : MonoBehaviour
 
     private Vector3 bottomLeftEdge;
     private Vector3 topRightEdge;
-
-    [SerializeField] Tilemap tilemap;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +31,7 @@ public class PlayerGlobalData : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        //topRightEdge = tilemap.localBounds.max + new Vector3(-0.7f,-2f,0f); 
-        //bottomLeftEdge = tilemap.localBounds.min + new Vector3(1f,0.1f,0f);
+
     }
 
     // Update is called once per frame
@@ -56,15 +51,19 @@ public class PlayerGlobalData : MonoBehaviour
             playerAnimator.SetFloat("lastY", verticalMovement);
         }
 
-        //transform.position = new Vector3(
-        //    Mathf.Clamp(transform.position.x, bottomLeftEdge.x, topRightEdge.x),
-        //    Mathf.Clamp(transform.position.y, bottomLeftEdge.y, topRightEdge.y),            
-        //    Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)         
-        //);
-
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x, bottomLeftEdge.x, topRightEdge.x),
+            Mathf.Clamp(transform.position.y, bottomLeftEdge.y, topRightEdge.y),            
+            Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)         
+        );
+                       
     }
 
-
+    public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
+    {
+        bottomLeftEdge = bottomEdgeToSet;
+        topRightEdge = topEdgeToSet;
+    }
 
 }
 
