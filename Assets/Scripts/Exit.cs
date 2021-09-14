@@ -27,7 +27,18 @@ public class Exit : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             PlayerGlobalData.instance.arrivedAt = goingTo;
-            SceneManager.LoadScene(sceneToLoad);
+            
+            MenuManager.instance.FadeImage();
+
+            StartCoroutine(LoadSceneCoroutine());
         }
+    }
+
+    IEnumerator LoadSceneCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        SceneManager.LoadScene(sceneToLoad);
+
     }
 }
