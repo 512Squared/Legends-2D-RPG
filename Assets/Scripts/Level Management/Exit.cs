@@ -36,7 +36,7 @@ public class Exit : MonoBehaviour
 
     IEnumerator LoadSceneCoroutine()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         SceneManager.LoadScene(sceneToLoad);
 

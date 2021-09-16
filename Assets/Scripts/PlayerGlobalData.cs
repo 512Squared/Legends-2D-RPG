@@ -13,6 +13,8 @@ public class PlayerGlobalData : MonoBehaviour
 
     public string arrivedAt;
 
+    public bool deactivedMovement = false;
+
     private Vector3 bottomLeftEdge;
     private Vector3 topRightEdge;
 
@@ -39,16 +41,28 @@ public class PlayerGlobalData : MonoBehaviour
     {
         float horizontalMovement = Input.GetAxisRaw("Horizontal");
         float verticalMovement = Input.GetAxisRaw("Vertical");
-                
-        playerRigidBody.velocity = new Vector2(horizontalMovement, verticalMovement) * moveSpeed;
+
+        if (deactivedMovement == true)
+        {
+            playerRigidBody.velocity = Vector2.zero;
+        }
+        else
+        {
+            playerRigidBody.velocity = new Vector2(horizontalMovement, verticalMovement) * moveSpeed;
+        }
 
         playerAnimator.SetFloat("movementX", playerRigidBody.velocity.x);
         playerAnimator.SetFloat("movementY", playerRigidBody.velocity.y);
 
         if(horizontalMovement == 1 || horizontalMovement == -1 || verticalMovement == 1 || verticalMovement == -1)
         {
-            playerAnimator.SetFloat("lastX", horizontalMovement);
-            playerAnimator.SetFloat("lastY", verticalMovement);
+            
+            if(!deactivedMovement)
+            {
+                playerAnimator.SetFloat("lastX", horizontalMovement);
+                playerAnimator.SetFloat("lastY", verticalMovement);
+            }
+
         }
 
         transform.position = new Vector3(
@@ -56,6 +70,8 @@ public class PlayerGlobalData : MonoBehaviour
             Mathf.Clamp(transform.position.y, bottomLeftEdge.y, topRightEdge.y),            
             Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)         
         );
+
+
                        
     }
 

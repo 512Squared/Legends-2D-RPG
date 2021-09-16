@@ -39,10 +39,13 @@ public class DialogueController : MonoBehaviour
                     if (currentSentence >= dialogueSentences.Length)
                     {
                         dialogueBox.SetActive(false);
+                        PlayerGlobalData.instance.deactivedMovement = false;
                     }
                     else
                     {
+                        CheckForName();
                         dialogueText.text = dialogueSentences[currentSentence];
+
                     }
                 }
                 else
@@ -60,11 +63,23 @@ public class DialogueController : MonoBehaviour
         dialogueSentences = newSentencesToUse;
         currentSentence = 0;
 
+        CheckForName();
         dialogueText.text = dialogueSentences[currentSentence];
         dialogueBox.SetActive(true);
 
         dialogueJustStarted = true;
+        PlayerGlobalData.instance.deactivedMovement = true;
 
+    }
+
+
+    void CheckForName()
+    {
+        if(dialogueSentences[currentSentence].StartsWith("#"))
+        {
+            nameText.text = dialogueSentences[currentSentence].Replace("#", "");
+            currentSentence++;
+        }
     }
 
     public bool isDialogueBoxActive()
