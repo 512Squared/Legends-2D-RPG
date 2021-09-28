@@ -35,6 +35,9 @@ public class PlayerStats : MonoBehaviour
 // Start is called before the first frame update
     void Start()
     {
+        
+        // assigning XP and leveling up from XP
+        
         xpLevelUp = new int[maxLevel];
         xpLevelUp[1] = baseLevelXP;
 
@@ -49,6 +52,9 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        // assign XP is currently assigned to a key L
+        
         if(Input.GetKeyDown(KeyCode.L))
         {
             AddXP(100);

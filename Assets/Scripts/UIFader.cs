@@ -6,7 +6,13 @@ public class UIFader : MonoBehaviour
 {
 
     public CanvasGroup uiElement;
-    
+
+
+    private IEnumerator Wait(float aWaitTime)
+    {
+        yield return new WaitForSeconds(aWaitTime);
+    }
+
     public void FadeIn()
     {
         StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 1));
@@ -18,7 +24,7 @@ public class UIFader : MonoBehaviour
     }
 
 
-    public IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float lerpTime = 0.5f)
+    public IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float lerpTime = 0.3f)
     {
 
         float _timeStartedLerping = Time.time;
@@ -39,6 +45,8 @@ public class UIFader : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        Debug.Log("Fade done!");
     }
+
 }
+
+

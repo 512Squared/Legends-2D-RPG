@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueHandler : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class DialogueHandler : MonoBehaviour
         if (canActivateBox && Input.GetButtonDown("Fire1") && !DialogueController.instance.isDialogueBoxActive())
         {
             DialogueController.instance.ActivateDialogue(sentences);
-        }
+        } 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
