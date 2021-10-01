@@ -76,10 +76,10 @@ namespace FM {
             if (isSnapping) {
                 return;
             }
-            if (Input.GetAxis("Horizontal") > 0) {
+            if (UltimateJoystick.GetHorizontalAxis("Joy") > 0) {
                 Next();
             }
-            if (Input.GetAxis("Horizontal") < 0) {
+            if (UltimateJoystick.GetVerticalAxis("Joy") < 0) {
                 Previous();
             }
         }

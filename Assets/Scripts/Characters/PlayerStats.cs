@@ -52,10 +52,10 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         // assign XP is currently assigned to a key L
-        
-        if(Input.GetKeyDown(KeyCode.L))
+
+        if (Input.GetKeyDown(KeyCode.L))
         {
             AddXP(100);
             Debug.Log("XP was added");

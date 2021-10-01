@@ -14,9 +14,8 @@ public class GameManager : MonoBehaviour
     // this is probably going to get called later. It's an array to hold the player stats
     
     [SerializeField] PlayerStats[] playerStats;
-
-
-
+    
+    public bool mKeyPressed, dialogueBoxOpened;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +38,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(mKeyPressed || dialogueBoxOpened)
+        {
+            PlayerGlobalData.instance.deactivedMovement = true;
+        }
+        else
+        {
+            PlayerGlobalData.instance.deactivedMovement = false;
+        }
     }
+
+
 }
