@@ -39,8 +39,10 @@ public class PlayerGlobalData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
-        float verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
+        //float horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
+        //float verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");        
+        float horizontalMovement = Input.GetAxisRaw("Horizontal");
+        float verticalMovement = Input.GetAxisRaw("Vertical");
 
         if (deactivedMovement == true)
         {
