@@ -47,11 +47,10 @@ public class MenuManager : MonoBehaviour
                 menu.GetComponent<CanvasGroup>().interactable = false;
                 menu.GetComponent<CanvasGroup>().blocksRaycasts = false;
                 GameManager.instance.mKeyPressed = false;
-
+                
             }
             else
             {
-                //menu.SetActive(true);
                 menu.GetComponent<UIFader>().FadeIn(); // this is calling the fade in
                 menu.GetComponent<CanvasGroup>().interactable = true;
                 menu.GetComponent<CanvasGroup>().blocksRaycasts = true;
