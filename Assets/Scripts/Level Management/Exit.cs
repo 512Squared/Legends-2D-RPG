@@ -32,6 +32,21 @@ public class Exit : MonoBehaviour
 
             StartCoroutine(LoadSceneCoroutine());
         }
+
+       
+
+    }
+
+    public void teleport()
+    {
+        if (gameObject.CompareTag("teleport"))
+        {
+            PlayerGlobalData.instance.arrivedAt = goingTo;
+
+            MenuManager.instance.FadeImage();
+
+            StartCoroutine(LoadSceneCoroutine());
+        }
     }
 
     IEnumerator LoadSceneCoroutine()
