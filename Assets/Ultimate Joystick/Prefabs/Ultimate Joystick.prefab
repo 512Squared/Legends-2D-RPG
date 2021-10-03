@@ -60,8 +60,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.52156866, g: 0.52156866, b: 0.52156866, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -115,8 +113,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.734375, y: 1.734436}
-  m_SizeDelta: {x: 346.88, y: 346.88}
+  m_AnchoredPosition: {x: 1.1362305, y: 1.136261}
+  m_SizeDelta: {x: 227.25, y: 227.25}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &127172
 GameObject:
@@ -178,8 +176,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.118, g: 0.992, b: 0, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -257,8 +253,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -296,23 +290,23 @@ MonoBehaviour:
   scalingAxis: 1
   anchor: 0
   joystickTouchSize: 0
-  joystickSize: 2.168
-  radiusModifier: 4.54
+  joystickSize: 2.5
+  radiusModifier: 4.5
   dynamicPositioning: 0
   customTouchSize_X: 50
   customTouchSize_Y: 75
   customTouchSizePos_X: 0
   customTouchSizePos_Y: 0
-  customSpacing_X: 4.1
-  customSpacing_Y: 8.1
+  customSpacing_X: 5
+  customSpacing_Y: 20
   gravity: 60
   extendRadius: 0
   axis: 0
-  boundary: 1
-  tapCountOption: 2
+  boundary: 0
+  tapCountOption: 0
   tapCountDuration: 0.5
   targetTapCount: 2
-  deadZone: 0.075
+  deadZone: 0
   disableVisuals: 0
   useFade: 0
   fadeUntouched: 1
@@ -326,7 +320,7 @@ MonoBehaviour:
   showTension: 1
   tensionColorNone: {r: 0.118, g: 0.992, b: 0, a: 0}
   tensionColorFull: {r: 0.118, g: 0.992, b: 0, a: 1}
-  joystickName: Joy
+  joystickName: 
 --- !u!95 &9555834
 Animator:
   serializedVersion: 3
@@ -418,8 +412,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.118, g: 0.992, b: 0, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -493,8 +485,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.52156866, g: 0.52156866, b: 0.52156866, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -568,8 +558,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.118, g: 0.992, b: 0, a: 0}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -643,8 +631,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.118, g: 0.992, b: 0, a: 0}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -718,8 +704,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.118, g: 0.992, b: 0, a: 0}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -793,8 +777,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.118, g: 0.992, b: 0, a: 0}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
