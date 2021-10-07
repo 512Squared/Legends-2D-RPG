@@ -8,32 +8,29 @@ public class PlayerStats : MonoBehaviour
 
     public static PlayerStats instance;
 
-    [SerializeField] Sprite characterImage;
+    public Sprite characterImage;
 
     [SerializeField] int thulGold;
     [SerializeField] int thulSpells;
     [SerializeField] int thulPotions;
-    [SerializeField] int[] xpLevelUp;
-    [SerializeField] int maxLevel = 5;
-    [SerializeField] int baseLevelXP;
-    [SerializeField] int maxMana;
-    [SerializeField] int maxHP;
+    public int[] xpLevelUp;
+    [SerializeField] int maxLevel;
+    public int baseLevelXP;
+    public int maxMana;
+    public int maxHP;
 
     public bool isTeamMember;
-    public string characterName;
-    public string characterDesc;
-    public int characterNo;
-
-
+    public string playerName;
+    public string playerDesc;
     
-    [SerializeField] int playerLevel = 1;
-    [SerializeField] int currentXP = 0;
-    [SerializeField] int currentMana;
-    [SerializeField] int currentHP;
-    [SerializeField] int dexterity;
-    [SerializeField] int defence;
-    [SerializeField] int intelligence;
-    [SerializeField] int perception;
+    public int npcLevel;
+    public int npcXP;
+    public int npcMana;
+    public int npcHP;
+    public int npcDexterity;
+    public int npcDefence;
+    public int npcIntelligence;
+    public int npcPerception;
 
 
 // Start is called before the first frame update
@@ -48,7 +45,7 @@ public class PlayerStats : MonoBehaviour
 
         for (int i = 1; i < xpLevelUp.Length; i++)
         {
-            Debug.Log("The current level is: " + i);
+            Debug.Log("PlayerStats: The current level is: " + i);
             xpLevelUp[i] = (int)(0.02f * Math.Pow(i, 3) + 3.06f * Math.Pow(i, 2) + 105.6f * i);
         }
 
@@ -69,34 +66,34 @@ public class PlayerStats : MonoBehaviour
 
     public void AddXP(int amountOfXp)
     {
-        currentXP += amountOfXp;
-        if(currentXP > xpLevelUp[playerLevel])
+        npcXP += amountOfXp;
+        if(npcXP > xpLevelUp[npcLevel])
         {
-            currentXP -= xpLevelUp[playerLevel];
-            playerLevel++;
+            npcXP -= xpLevelUp[npcLevel];
+            npcLevel++;
 
             maxHP = (int)(maxHP * 1.06f);
             maxMana = (int)(maxMana * 1.06f);
-            currentHP = maxHP;
-            currentMana = maxMana;
+            npcHP = maxHP;
+            npcMana = maxMana;
 
-            if(playerLevel % 2 == 0)
+            if(npcLevel % 2 == 0)
             {
-               dexterity++;
+               npcDexterity++;
             }
             else
             {
-               defence++;
+               npcDefence++;
             }
 
-            if(playerLevel % 3 == 0)
+            if(npcLevel % 3 == 0)
             {
-                intelligence++;
+                npcIntelligence++;
             }
 
-            if (playerLevel % 5 == 0)
+            if (npcLevel % 5 == 0)
             {
-                perception++;
+                npcPerception++;
             }
 
 

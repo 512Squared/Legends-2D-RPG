@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Linq;
 
 
 public class MenuManager : MonoBehaviour
@@ -15,7 +14,7 @@ public class MenuManager : MonoBehaviour
     public static MenuManager instance;
 
     private PlayerStats[] playerStats;
-    [SerializeField] TextMeshProUGUI[] thulgranGold, ThulgranSpells, thulgranPotions, characterName, characterNumber, description, level, xp, mana, health, dexterity, defence, intelligence, perception,levelP;
+    [SerializeField] TextMeshProUGUI[] thulgranGold, ThulgranSpells, thulgranPotions, characterName, description, level, xp, mana, health, dexterity, defence, intelligence, perception,levelP;
     [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
     [SerializeField] Image[] characterImage,characterImageP;
     [SerializeField] GameObject[] characterCards;
@@ -43,8 +42,6 @@ public class MenuManager : MonoBehaviour
 
             if (mainMenu.GetComponent<CanvasGroup>().alpha == 1)
             {
-                UpdateStats();
-
                 mainMenu.GetComponent<UIFader>().FadeOut(); // call a function from another script
                 mainMenu.GetComponent<CanvasGroup>().interactable = false;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -53,6 +50,7 @@ public class MenuManager : MonoBehaviour
             }
             else
             {
+                UpdateStats();
                 mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade in
                 mainMenu.GetComponent<CanvasGroup>().interactable = true;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -71,11 +69,29 @@ public class MenuManager : MonoBehaviour
             isTeamMember[i] = playerStats[i].isTeamMember;
             if (isTeamMember[i] == true)
             {
-                Debug.Log(playerStats[i].characterName + " is active");
+                Debug.Log(playerStats[i].playerName + " is active");
                 characterCards[i].SetActive(true);
                 characterParty[i].SetActive(true);
-                characterName[i].text = playerStats[i].characterName;
-                description[i].text = playerStats[i].characterDesc;
+                characterName[i].text = playerStats[i].playerName;
+                description[i].text = playerStats[i].playerDesc;
+                health[i].text = playerStats[i].npcHP.ToString();
+                characterImage[i].sprite = playerStats[i].characterImage;
+                level[i].text = playerStats[i].npcLevel.ToString();
+                Debug.Log(playerStats[i].playerName + " is level: " + playerStats[i].npcLevel);
+                xp[i].text = playerStats[i].npcXP.ToString();
+                mana[i].text = playerStats[i].npcMana.ToString();
+                dexterity[i].text = playerStats[i].npcDexterity.ToString();
+                defence[i].text = playerStats[i].npcDefence.ToString();
+                intelligence[i].text = playerStats[i].npcIntelligence.ToString();
+                perception[i].text = playerStats[i].npcPerception.ToString();
+                intelligenceS[i].value = playerStats[i].npcIntelligence;
+                xpS[i].value = playerStats[i].npcXP;
+                manaS[i].value = playerStats[i].npcMana;
+                healthS[i].value = playerStats[i].npcHP;
+                dexterityS[i].value = playerStats[i].npcDexterity;
+                defenceS[i].value = playerStats[i].npcDefence;
+                intelligenceS[i].value = playerStats[i].npcIntelligence;
+                perceptionS[i].value = playerStats[i].npcPerception;
             }
         }
 
@@ -89,3 +105,16 @@ public class MenuManager : MonoBehaviour
 
 
 }
+
+/*[SerializeField] TextMeshProUGUI[] thulgranGold, ThulgranSpells, thulgranPotions, characterName, description, level, xp, mana, health, dexterity, defence, intelligence, perception, levelP;
+[SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
+
+
+public int playerLevel = 1;
+public int currentXP = 0;
+public int currentMana;
+public int currentHP;
+public int dexterity;
+public int defence;
+public int intelligence;
+public int perception;*/
