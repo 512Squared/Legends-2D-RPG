@@ -1,5 +1,66 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1183999675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1183999676}
+  - component: {fileID: 1183999677}
+  m_Layer: 7
+  m_Name: Stat_empty
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1183999676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183999675}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3597359543989711471}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1183999677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183999675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterImage: {fileID: 0}
+  thulGold: 0
+  thulSpells: 0
+  thulPotions: 0
+  xpLevelUp: 
+  maxLevel: 5
+  baseLevelXP: 0
+  maxMana: 0
+  maxHP: 0
+  playerName: 
+  playerLevel: 1
+  currentXP: 0
+  currentMana: 0
+  currentHP: 0
+  dexterity: 0
+  defence: 0
+  intelligence: 0
+  perception: 0
 --- !u!1 &3600662733938695157
 GameObject:
   m_ObjectHideFlags: 0
@@ -3103,6 +3164,9 @@ GameObject:
   - component: {fileID: 3597359543989711471}
   - component: {fileID: 3601806099259417546}
   - component: {fileID: 3601806099259417547}
+  - component: {fileID: 1862552438148949}
+  - component: {fileID: 1862552438148950}
+  - component: {fileID: 1862552438148951}
   m_Layer: 7
   m_Name: Grumpy Greta_Right
   m_TagString: Untagged
@@ -3122,6 +3186,7 @@ Transform:
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children:
   - {fileID: 3599422996110175267}
+  - {fileID: 1183999676}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3156,12 +3221,123 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.11999999, y: -0.07499993}
+  m_Size: {x: 1.79, y: 1.79}
+  m_Direction: 0
+--- !u!61 &1862552438148949
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3601387026125629935}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.12, y: 0.91}
-  m_Size: {x: 1.79, y: 3.76}
-  m_Direction: 0
+  m_Offset: {x: 2.8142765, y: 0.7624843}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.3482432, y: 3.8881412}
+  m_EdgeRadius: 0
+--- !u!114 &1862552438148950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3601387026125629935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 225792fcf83c1de45af1fc10ceacd37e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sentences:
+  - '#Thulgran'
+  - Grunt!
+  - '#Shopkeeper'
+  - Hey shrimp, what do you want?
+  - '#Thulgran'
+  - Not your fat arse, if that's what you're thinking.
+  - '#Shopkeeper'
+  - You think you're funny don't yer. I've had funnier boils on the end of my tit!
+  - '#Thulgran'
+  - That's the only thing you've ever had on your tit.
+  - '#Shopkeeper'
+  - Hi Thulgran, how are you?
+  - '#Thulgran'
+  - I'm great Greta, how are you?
+  - '#Shopkeeper'
+  - Oh you know, waiting for my life to magically get better in this miserable dump.
+    What are you looking for?
+  - '#Thulgran'
+  - 'A weapon. Nothing shabby. '
+  - '#Shopkeeper'
+  - 'I have just the thing. A Rungen-Dwarf Magnesium Hammer. Hardened with zinc,
+    alluminium, manganese and an ugly dwarf''s spit.. '
+  - '#Thulgran'
+  - 'Wow - that''s something special! '
+  - '#Shopkeeper'
+  - You bet. Harder than a dwarf's cock on milking day!
+  - '#Thulgran'
+  - Those were the days. How many livers is that gonna cost me?
+  - '#Shopkeeper'
+  - 'You''re whisky sodden liver isn''t worth shit, so that''ll be a 1000 gold coins
+    to you. '
+  - '#Thulgran'
+  - Yikes, you planning on retiring after this Greta?
+  - '#Shopkeeper'
+  - 'I wish. But being the stingy bastard yer are, I''m sure you''ve got that buried
+    around here somewhere. '
+  - '#Thulgran'
+  - 'Here you go, you miserable cunt '
+  - '#Shopkeeper'
+  - 'Thanks, yer bastard son of a hairy cannonball '
+  - '#Thulgran'
+  - 'Steady on girl! '
+--- !u!114 &1862552438148951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3601387026125629935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterImage: {fileID: 21300000, guid: bd4e1af4b99f51f4a99f8d5d1fa61426, type: 3}
+  thulGold: 0
+  thulSpells: 0
+  thulPotions: 0
+  xpLevelUp: 
+  maxLevel: 50
+  baseLevelXP: 100
+  maxMana: 100
+  maxHP: 100
+  playerName: Grumpy Greta
+  playerLevel: 5
+  currentXP: 2000
+  currentMana: 200
+  currentHP: 33
+  dexterity: 33
+  defence: 33
+  intelligence: 33
+  perception: 33
 --- !u!1 &3601391462583901759
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,36 +6,41 @@ using System;
 public class PlayerStats : MonoBehaviour
 {
 
-    [SerializeField] string playerName;
+    public static PlayerStats instance;
 
-    [SerializeField] int maxLevel = 50;
-    [SerializeField] int playerLevel = 1;
-    [SerializeField] int currentXP;
+    [SerializeField] Sprite characterImage;
+
+    [SerializeField] int thulGold;
+    [SerializeField] int thulSpells;
+    [SerializeField] int thulPotions;
     [SerializeField] int[] xpLevelUp;
-    [SerializeField] int baseLevelXP = 100;
+    [SerializeField] int maxLevel = 5;
+    [SerializeField] int baseLevelXP;
+    [SerializeField] int maxMana;
+    [SerializeField] int maxHP;
 
-    [SerializeField] int maxHP = 100;
-    [SerializeField] int currentHP;
+    public bool isTeamMember;
+    public string characterName;
+    public string characterDesc;
+    public int characterNo;
 
-    [SerializeField] int maxMana = 30;
+
+    
+    [SerializeField] int playerLevel = 1;
+    [SerializeField] int currentXP = 0;
     [SerializeField] int currentMana;
-
-    [SerializeField] int dexterity = 30;
+    [SerializeField] int currentHP;
+    [SerializeField] int dexterity;
     [SerializeField] int defence;
-
-    [SerializeField] int agility;
+    [SerializeField] int intelligence;
     [SerializeField] int perception;
 
-    [SerializeField] int health;
-    [SerializeField] int luck;
-
-    [SerializeField] int alertness;
-    [SerializeField] int intelligence;
 
 // Start is called before the first frame update
     void Start()
     {
-        
+        instance = this;
+
         // assigning XP and leveling up from XP
         
         xpLevelUp = new int[maxLevel];
@@ -78,7 +83,6 @@ public class PlayerStats : MonoBehaviour
             if(playerLevel % 2 == 0)
             {
                dexterity++;
-               
             }
             else
             {
@@ -88,13 +92,10 @@ public class PlayerStats : MonoBehaviour
             if(playerLevel % 3 == 0)
             {
                 intelligence++;
-                agility++;
             }
 
             if (playerLevel % 5 == 0)
             {
-                luck++;
-                alertness++;
                 perception++;
             }
 

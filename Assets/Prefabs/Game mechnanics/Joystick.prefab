@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3095662387908385633}
   - component: {fileID: 3095662387908385634}
   - component: {fileID: 3095662387908385635}
+  - component: {fileID: 5122107080138137670}
   m_Layer: 5
   m_Name: Joystick
   m_TagString: Untagged
@@ -76,6 +77,29 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5122107080138137670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3095662387908385644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!1001 &3095662388489739313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,6 +116,14 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 11471028, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
+      propertyPath: joystick
+      value: 
+      objectReference: {fileID: 3095662388500839773}
+    - target: {fileID: 11471028, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
+      propertyPath: joystickBase
+      value: 
+      objectReference: {fileID: 3095662388500839771}
+    - target: {fileID: 11471028, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: joystickName
       value: Joy
       objectReference: {fileID: 0}
@@ -101,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11471028, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: customSpacing_X
-      value: 1.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11471028, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: customSpacing_Y
@@ -120,8 +152,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11471028, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
+      propertyPath: joystickSizeFolder
+      value: 
+      objectReference: {fileID: 3095662388500839769}
+    - target: {fileID: 11471028, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: customTouchSizePos_X
-      value: 4.8
+      value: 3.55
       objectReference: {fileID: 0}
     - target: {fileID: 11471028, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: customTouchSizePos_Y
@@ -137,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22471016, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -65.448
+      value: -63.047974
       objectReference: {fileID: 0}
     - target: {fileID: 22471016, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -209,7 +245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22471032, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 85.247986
+      value: 63.047974
       objectReference: {fileID: 0}
     - target: {fileID: 22471032, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -232,5 +268,20 @@ PrefabInstance:
 --- !u!224 &3095662388500839753 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 22471032, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
+  m_PrefabInstance: {fileID: 3095662388489739313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &3095662388500839769 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 22471016, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
+  m_PrefabInstance: {fileID: 3095662388489739313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &3095662388500839771 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 22471018, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
+  m_PrefabInstance: {fileID: 3095662388489739313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &3095662388500839773 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 22471020, guid: 74fc5435be064f84fa1a7b2a4b7af417, type: 3}
   m_PrefabInstance: {fileID: 3095662388489739313}
   m_PrefabAsset: {fileID: 0}

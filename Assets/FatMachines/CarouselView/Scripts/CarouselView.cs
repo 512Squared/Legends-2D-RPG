@@ -76,10 +76,10 @@ namespace FM {
             if (isSnapping) {
                 return;
             }
-            if (UltimateJoystick.GetHorizontalAxis("Joy") > 0) {
+            if (UltimateJoystick.GetHorizontalAxis("Joy") > 0 && GameManager.instance.settingsOpen == true) {
                 Next();
             }
-            if (UltimateJoystick.GetVerticalAxis("Joy") < 0) {
+            if (UltimateJoystick.GetVerticalAxis("Joy") < 0 && GameManager.instance.settingsOpen == true) {
                 Previous();
             }
         }
