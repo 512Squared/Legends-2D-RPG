@@ -40,6 +40,10 @@ public class DialogueController : MonoBehaviour
                     {
                         dialogueBox.SetActive(false);
                         GameManager.instance.dialogueBoxOpened = false;
+
+                        // disable trigger after dialogue
+                        
+
                     }
                     else
                     {

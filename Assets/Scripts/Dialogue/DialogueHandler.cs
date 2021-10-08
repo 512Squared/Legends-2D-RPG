@@ -9,6 +9,7 @@ public class DialogueHandler : MonoBehaviour
     public string[] sentences;
     private bool canActivateBox;
     
+    
 
     // Start is called before the first frame update
     void Start()
@@ -22,15 +23,33 @@ public class DialogueHandler : MonoBehaviour
         if (canActivateBox && Input.GetButtonDown("Fire1") && !DialogueController.instance.isDialogueBoxActive())
         {
             DialogueController.instance.ActivateDialogue(sentences);
+            runCount++;
         } 
     }
 
+    public int runCount = 0;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        
+        if (runCount < 1)
         {
-            canActivateBox = true;
+            if (collision.CompareTag("Player"))
+            {
+                canActivateBox = true;
+                Debug.Log("Dialogue activated.");
+
+            }
         }
+
+        else if (runCount >= 1 && CompareTag("Player"))
+
+        {
+            Debug.Log("Dialogue already previously activated.");
+            canActivateBox = false;
+
+        }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)

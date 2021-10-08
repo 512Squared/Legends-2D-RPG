@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using xyz;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,9 +11,10 @@ public class GameManager : MonoBehaviour
     
     public static GameManager instance;
 
-    
+
+
     // this is probably going to get called later. It's an array to hold the player stats
-    
+
     [SerializeField] PlayerStats[] playerStats;
 
     
@@ -35,7 +37,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        
+
         playerStats = Object.FindObjectsOfType<PlayerStats>();
 
     }
