@@ -18702,7 +18702,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -977.09644, y: -124.90991}
+  m_AnchoredPosition: {x: -1279.9886, y: -124.90991}
   m_SizeDelta: {x: 4730, y: -124.91}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &245539696644862386
@@ -18715,7 +18715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1202000728390790089}
   m_Layer: 5
-  m_Name: Special abilities 3
+  m_Name: 5_Special abilities 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19168,7 +19168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8772984804618438668}
   m_Layer: 5
-  m_Name: Special abilities 5
+  m_Name: 4_Special abilities 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19194,6 +19194,82 @@ RectTransform:
   m_AnchoredPosition: {x: -360, y: 0}
   m_SizeDelta: {x: 100, y: 126}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &848971521419146634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3962468209119607478}
+  - component: {fileID: 6656381321431296424}
+  - component: {fileID: 2579716419474489135}
+  m_Layer: 5
+  m_Name: Level_Badge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3962468209119607478
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848971521419146634}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0.7023599}
+  m_Children:
+  - {fileID: 3248953866471404889}
+  m_Father: {fileID: 5369285292729331016}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1, y: -5}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6656381321431296424
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848971521419146634}
+  m_CullTransparentMesh: 1
+--- !u!114 &2579716419474489135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848971521419146634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6666667}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: baa107d6a05494741bf14d59428c8ae5, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &925482877602869440
 GameObject:
   m_ObjectHideFlags: 0
@@ -19204,7 +19280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3906986502453345919}
   m_Layer: 5
-  m_Name: Special abilities
+  m_Name: 2_Special abilities 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59553,6 +59629,140 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!1 &4144789726847375034
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3248953866471404889}
+  - component: {fileID: 9024219555092067844}
+  - component: {fileID: 7329819335698123786}
+  m_Layer: 5
+  m_Name: 1_level_p
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3248953866471404889
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144789726847375034}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.4237713, y: 1.4237713, z: 1.4237713}
+  m_Children: []
+  m_Father: {fileID: 3962468209119607478}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1.4527054, y: 5}
+  m_SizeDelta: {x: 100, y: 40.8}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &9024219555092067844
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144789726847375034}
+  m_CullTransparentMesh: 0
+--- !u!114 &7329819335698123786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144789726847375034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 2d
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
+  m_sharedMaterial: {fileID: 5416806443266638455, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 1694498815
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 26
+  m_fontSizeBase: 26
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 0
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 1
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &4227101012269250486
 GameObject:
   m_ObjectHideFlags: 0
@@ -60926,7 +61136,7 @@ GameObject:
   - component: {fileID: 5369285292019275916}
   - component: {fileID: 5369285292019275917}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Inventory Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61127,7 +61337,7 @@ GameObject:
   - component: {fileID: 5369285292139868233}
   - component: {fileID: 5369285292139868230}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 2_name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61594,7 +61804,7 @@ GameObject:
   - component: {fileID: 5369285292378025637}
   - component: {fileID: 5369285292378025634}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 3_name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61940,7 +62150,7 @@ GameObject:
   - component: {fileID: 5369285292561409350}
   - component: {fileID: 5369285292561409351}
   m_Layer: 5
-  m_Name: 1_image_p
+  m_Name: Image_frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62339,6 +62549,7 @@ RectTransform:
   - {fileID: 5369285293931248065}
   - {fileID: 5369285292370544997}
   - {fileID: 5369285292019275914}
+  - {fileID: 3962468209119607478}
   m_Father: {fileID: 5369285293008211856}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62488,7 +62699,7 @@ GameObject:
   - component: {fileID: 5369285292951420315}
   - component: {fileID: 5369285292951420312}
   m_Layer: 5
-  m_Name: Description (TMP)
+  m_Name: 4_name_add
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62993,12 +63204,12 @@ GameObject:
   - component: {fileID: 5369285293066115749}
   - component: {fileID: 5369285293066115751}
   m_Layer: 5
-  m_Name: characte_3
+  m_Name: character_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5369285293066115746
 RectTransform:
   m_ObjectHideFlags: 0
@@ -63020,7 +63231,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -95.5}
   m_SizeDelta: {x: 0, y: 131}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5369285293066115748
@@ -63824,7 +64035,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5369285293445782539}
   m_Layer: 5
-  m_Name: Special abilities
+  m_Name: 4_Special abilities 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64624,7 +64835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5369285293833627589
 RectTransform:
   m_ObjectHideFlags: 0
@@ -64646,7 +64857,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -95.5}
   m_SizeDelta: {x: 0, y: 131}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5369285293833627591
@@ -64743,7 +64954,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5369285293898163822}
+      - m_Target: {fileID: 5369285293833627588}
         m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
         m_MethodName: set_sprite
         m_Mode: 2
@@ -64755,7 +64966,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5369285293898163809}
+      - m_Target: {fileID: 5369285293833627590}
         m_TargetAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
         m_MethodName: set_alpha
         m_Mode: 4
@@ -64767,7 +64978,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5369285293833627588}
+      - m_Target: {fileID: 5369285294117226603}
         m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
         m_MethodName: set_sprite
         m_Mode: 2
@@ -64779,7 +64990,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5369285293833627590}
+      - m_Target: {fileID: 5369285294117226605}
         m_TargetAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
         m_MethodName: set_alpha
         m_Mode: 4
@@ -64987,7 +65198,7 @@ GameObject:
   - component: {fileID: 5369285293883226039}
   - component: {fileID: 5369285293883226036}
   m_Layer: 5
-  m_Name: Icon_Scroll
+  m_Name: 1_image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65146,7 +65357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5369285293898163823
 RectTransform:
   m_ObjectHideFlags: 0
@@ -65507,7 +65718,7 @@ GameObject:
   - component: {fileID: 5369285293931248067}
   - component: {fileID: 5369285293931248064}
   m_Layer: 5
-  m_Name: character_1
+  m_Name: 1_name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65529,8 +65740,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -231.90039, y: 46.686}
-  m_SizeDelta: {x: -913.4217, y: 88.41818}
+  m_AnchoredPosition: {x: -292, y: 46.686}
+  m_SizeDelta: {x: -966.3277, y: 88.4182}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5369285293931248067
 CanvasRenderer:
@@ -65562,8 +65773,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'PARTY LEADER
 
-    <size=32><color=#BEB5B6>Thulgran of Eldor - Dwarf Lord
-    </color></size>'
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
   m_sharedMaterial: {fileID: 5416806443266638455, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
@@ -65826,7 +66036,7 @@ GameObject:
   - component: {fileID: 5369285293945288745}
   - component: {fileID: 5369285293945288742}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 5_name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66339,7 +66549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5369285294117226600
 RectTransform:
   m_ObjectHideFlags: 0
@@ -67234,7 +67444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 584391649794167608}
   m_Layer: 5
-  m_Name: Special abilities 4
+  m_Name: 4_Special abilities 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72067,7 +72277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7759267680964729765}
   m_Layer: 5
-  m_Name: Special abilities 3
+  m_Name: 4_Special abilities 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74240,7 +74450,7 @@ GameObject:
   - component: {fileID: 8085395476820043740}
   - component: {fileID: 8085395476820043741}
   m_Layer: 5
-  m_Name: 1_level_p
+  m_Name: 5_level_p
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74432,7 +74642,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 5778ce61d59f047a8a10508bdd29daa4, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -76274,6 +76484,12 @@ MonoBehaviour:
   - {fileID: 3953968835385361808}
   - {fileID: 4415220674735719335}
   - {fileID: 2340988862523237917}
+  characterNameP:
+  - {fileID: 5369285293931248064}
+  - {fileID: 5369285292139868230}
+  - {fileID: 5369285292378025634}
+  - {fileID: 5369285292951420312}
+  - {fileID: 5369285293945288742}
   description:
   - {fileID: 63218829856659101}
   - {fileID: 7693807869402640489}
@@ -76286,6 +76502,12 @@ MonoBehaviour:
   - {fileID: 3953968834786614314}
   - {fileID: 8085395477985571064}
   - {fileID: 3879075526302729766}
+  levelP:
+  - {fileID: 7329819335698123786}
+  - {fileID: 8085395477677315155}
+  - {fileID: 8085395477537984824}
+  - {fileID: 8085395477805344904}
+  - {fileID: 8085395476820043741}
   xp:
   - {fileID: 3879075527860767325}
   - {fileID: 3879075527794580662}
@@ -76328,12 +76550,6 @@ MonoBehaviour:
   - {fileID: 3953968835574224126}
   - {fileID: 8085395477789097304}
   - {fileID: 3879075526379095862}
-  levelP:
-  - {fileID: 8085395476820043741}
-  - {fileID: 8085395477677315155}
-  - {fileID: 0}
-  - {fileID: 8085395477805344904}
-  - {fileID: 8085395477537984824}
   xpS:
   - {fileID: 3879075526847870965}
   - {fileID: 3879075526851766977}
@@ -76395,6 +76611,7 @@ MonoBehaviour:
   - {fileID: 8085395477199345076}
   - {fileID: 3879075527411376390}
   characterParty:
+  - {fileID: 5369285292729331017}
   - {fileID: 5369285294117226601}
   - {fileID: 5369285293066115747}
   - {fileID: 5369285293833627586}
@@ -82984,7 +83201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8085395477300065526}
   m_Layer: 5
-  m_Name: Special abilities 2
+  m_Name: 5_Special abilities 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84304,7 +84521,7 @@ GameObject:
   - component: {fileID: 8085395477537984827}
   - component: {fileID: 8085395477537984824}
   m_Layer: 5
-  m_Name: 5_level_p
+  m_Name: 3_level_p
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85531,9 +85748,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '2
-
-'
+  m_text: 2d
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
   m_sharedMaterial: {fileID: 5416806443266638455, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
@@ -86937,7 +87152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8085395477814225981}
   m_Layer: 5
-  m_Name: Special abilities (4)
+  m_Name: 3_Special abilities 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87200,7 +87415,7 @@ GameObject:
   - component: {fileID: 8085395477878106603}
   - component: {fileID: 8085395477878106600}
   m_Layer: 5
-  m_Name: Level_Badge (3)
+  m_Name: Level_Badge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93658,7 +93873,7 @@ GameObject:
   - component: {fileID: 8085395478000008141}
   - component: {fileID: 8085395478000008138}
   m_Layer: 5
-  m_Name: Level_Badge (2)
+  m_Name: Level_Badge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94433,7 +94648,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8085395478135470506}
   m_Layer: 5
-  m_Name: Special abilities 4
+  m_Name: 5_Special abilities 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101884,7 +102099,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8085395478433082367}
   m_Layer: 5
-  m_Name: Special abilities (1)
+  m_Name: 3_Special abilities 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102780,7 +102995,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8085395478620493355}
   m_Layer: 5
-  m_Name: Special abilities
+  m_Name: 3_Special abilities 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103058,7 +103273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8085395478681114616}
   m_Layer: 5
-  m_Name: Special abilities 2
+  m_Name: 4_Special abilities 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103248,7 +103463,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4771796917296829997}
   m_Layer: 5
-  m_Name: Special abilities
+  m_Name: 2_Special abilities 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105952,7 +106167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7416482345891930843}
   m_Layer: 5
-  m_Name: Special abilities
+  m_Name: 5_Special abilities 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

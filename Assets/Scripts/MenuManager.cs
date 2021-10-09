@@ -14,11 +14,13 @@ public class MenuManager : MonoBehaviour
     public static MenuManager instance;
 
     private PlayerStats[] playerStats;
-    [SerializeField] TextMeshProUGUI[] thulgranGold, ThulgranSpells, thulgranPotions, characterName, description, level, xp, mana, health, dexterity, defence, intelligence, perception,levelP;
+
+    [SerializeField] TextMeshProUGUI[] thulgranGold, ThulgranSpells, thulgranPotions, characterName, characterNameP, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
     [SerializeField] Image[] characterImage,characterImageP;
-    [SerializeField] GameObject[] characterCards;
-    [SerializeField] GameObject[] characterParty;
+    [SerializeField] GameObject[] characterCards, characterParty;
+  
+
 
 
     [SerializeField] bool[] isTeamMember;
@@ -71,7 +73,7 @@ public class MenuManager : MonoBehaviour
             {
                 Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
                 characterCards[i].SetActive(true);
-                //characterParty[i].SetActive(true); // switched off until slots are ready
+                characterParty[i].SetActive(true); // switched off until slots are ready
                 characterName[i].text = playerStats[i].playerName;
                 description[i].text = playerStats[i].playerDesc;
                 health[i].text = playerStats[i].npcHP.ToString();
@@ -91,6 +93,9 @@ public class MenuManager : MonoBehaviour
                 defenceS[i].value = playerStats[i].npcDefence;
                 intelligenceS[i].value = playerStats[i].npcIntelligence;
                 perceptionS[i].value = playerStats[i].npcPerception;
+                characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
+                levelP[i].text = playerStats[i].npcLevel.ToString();
+                characterImageP[i].sprite = playerStats[i].characterMug;
             }
         }
 

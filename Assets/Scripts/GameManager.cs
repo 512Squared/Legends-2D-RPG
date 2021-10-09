@@ -20,8 +20,6 @@ public class GameManager : MonoBehaviour
     
     public bool mKeyPressed, dialogueBoxOpened, settingsOpen;
 
-    [SerializeField] bool[] isTeamMember;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +36,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
 
-        playerStats = Object.FindObjectsOfType<PlayerStats>();
+        playerStats = FindObjectsOfType<PlayerStats>();
+
 
     }
 

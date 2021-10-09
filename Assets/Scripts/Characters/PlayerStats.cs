@@ -9,6 +9,7 @@ public class PlayerStats : MonoBehaviour
     public static PlayerStats instance;
 
     public Sprite characterImage;
+    public Sprite characterMug;
 
     [SerializeField] int thulGold;
     [SerializeField] int thulSpells;
@@ -22,7 +23,8 @@ public class PlayerStats : MonoBehaviour
     public bool isTeamMember;
     public string playerName;
     public string playerDesc;
-    
+    public string playerMoniker;
+
     public int npcLevel;
     public int npcXP;
     public int npcMana;
