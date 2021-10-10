@@ -11,11 +11,11 @@ public class PlayerStats : MonoBehaviour
     public Sprite characterImage;
     public Sprite characterMug;
 
-    [SerializeField] int thulGold;
-    [SerializeField] int thulSpells;
-    [SerializeField] int thulPotions;
+    public int thulGold;
+    public int thulSpells;
+    public int thulPotions;
     public int[] xpLevelUp;
-    [SerializeField] int maxLevel;
+    public int maxLevel;
     public int baseLevelXP;
     public int maxMana;
     public int maxHP;

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using xyz;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     // this is probably going to get called later. It's an array to hold the player stats
 
-    [SerializeField] PlayerStats[] playerStats;
+    private PlayerStats[] playerStats;
 
     
     public bool mKeyPressed, dialogueBoxOpened, settingsOpen;
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerStats[] GetPlayerStats()
     {
-        return playerStats;
+        return playerStats; 
     }
 
 
