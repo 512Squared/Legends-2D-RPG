@@ -64,7 +64,7 @@ public class MenuManager : MonoBehaviour
             }
         }
 
-
+        
 
     }
 
@@ -105,8 +105,9 @@ public class MenuManager : MonoBehaviour
                 levelP[i].text = playerStats[i].npcLevel.ToString();
                 characterImageP[i].sprite = playerStats[i].characterMug;
                 levelMain.text = playerStats[0].npcLevel.ToString();
-                xpMain.text = playerStats[0].npcXP.ToString() + "/" + playerStats[0].baseLevelXP;
+                xpMain.text = playerStats[0].npcXP.ToString() + "/" + playerStats[0].xpLevelUp[playerStats[0].npcLevel];
                 xpMainS.value = playerStats[0].npcXP;
+                xpMainS.maxValue = playerStats[0].xpLevelUp[playerStats[0].npcLevel];
                 manaMain.text = playerStats[0].npcMana.ToString() + "/" + playerStats[0].maxMana;
                 hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
                 goldMain.text = playerStats[0].thulGold.ToString();
