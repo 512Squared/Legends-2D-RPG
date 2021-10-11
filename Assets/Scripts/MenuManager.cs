@@ -18,7 +18,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
-    [SerializeField] Image[] characterImage,characterImageP;
+    [SerializeField] Image[] characterImage, characterImageP;
     [SerializeField] GameObject[] characterCards, characterParty;
     [SerializeField] TextMeshProUGUI thulGold, ThulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
     [SerializeField] Slider xpMainS;
@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
@@ -52,7 +52,7 @@ public class MenuManager : MonoBehaviour
                 mainMenu.GetComponent<CanvasGroup>().interactable = false;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
                 GameManager.instance.mKeyPressed = false;
-                
+
             }
             else
             {
@@ -64,7 +64,7 @@ public class MenuManager : MonoBehaviour
             }
         }
 
-        
+
 
     }
 
@@ -81,7 +81,7 @@ public class MenuManager : MonoBehaviour
             {
                 Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
                 characterCards[i].SetActive(true);
-                characterParty[i].SetActive(true); 
+                characterParty[i].SetActive(true);
                 characterName[i].text = playerStats[i].playerName;
                 description[i].text = playerStats[i].playerDesc;
                 health[i].text = playerStats[i].npcHP.ToString();
@@ -129,5 +129,3 @@ public class MenuManager : MonoBehaviour
 
 
 }
-
- 

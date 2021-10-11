@@ -6,9 +6,9 @@ using System.Linq;
 public class GameManager : MonoBehaviour
 {
 
-    
+
     // game manager is holding the player stats and preserving them. It's public, which allows it to be called. 
-    
+
     public static GameManager instance;
 
 
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     private PlayerStats[] playerStats;
 
-    
+
     public bool mKeyPressed, dialogueBoxOpened, settingsOpen;
 
     // Start is called before the first frame update
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(mKeyPressed || dialogueBoxOpened || settingsOpen)
+        if (mKeyPressed || dialogueBoxOpened || settingsOpen)
         {
             PlayerGlobalData.instance.deactivedMovement = true;
         }
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerStats[] GetPlayerStats()
     {
-        return playerStats; 
+        return playerStats;
     }
 
 

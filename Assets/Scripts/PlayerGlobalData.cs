@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 
 public class PlayerGlobalData : MonoBehaviour
@@ -19,6 +20,8 @@ public class PlayerGlobalData : MonoBehaviour
     private Vector3 topRightEdge;
 
     // Start is called before the first frame update
+
+
     void Start()
     {
         if (instance != null && instance != this)
