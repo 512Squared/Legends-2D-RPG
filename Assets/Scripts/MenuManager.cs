@@ -20,7 +20,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
     [SerializeField] Image[] characterImage, characterImageP;
     [SerializeField] GameObject[] characterCards, characterParty;
-    [SerializeField] TextMeshProUGUI thulGold, ThulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
+    [SerializeField] TextMeshProUGUI thulGold, thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
     [SerializeField] Slider xpMainS;
 
 
@@ -33,9 +33,7 @@ public class MenuManager : MonoBehaviour
     {
 
         instance = this;
-        playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
-        UpdateStats();
-
+        
     }
 
 
@@ -56,14 +54,12 @@ public class MenuManager : MonoBehaviour
             }
             else
             {
-                UpdateStats();
                 mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade in
                 mainMenu.GetComponent<CanvasGroup>().interactable = true;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
                 GameManager.instance.mKeyPressed = true;
             }
         }
-
 
 
     }
@@ -104,21 +100,26 @@ public class MenuManager : MonoBehaviour
                 characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
                 levelP[i].text = playerStats[i].npcLevel.ToString();
                 characterImageP[i].sprite = playerStats[i].characterMug;
-                levelMain.text = playerStats[0].npcLevel.ToString();
-                xpMain.text = playerStats[0].npcXP.ToString() + "/" + playerStats[0].xpLevelUp[playerStats[0].npcLevel];
-                xpMainS.value = playerStats[0].npcXP;
-                xpMainS.maxValue = playerStats[0].xpLevelUp[playerStats[0].npcLevel];
-                manaMain.text = playerStats[0].npcMana.ToString() + "/" + playerStats[0].maxMana;
-                hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
-                goldMain.text = playerStats[0].thulGold.ToString();
-                thulGold.text = playerStats[0].thulGold.ToString();
-                thulPotions.text = playerStats[0].thulPotions.ToString();
-                ThulSpells.text = playerStats[0].thulSpells.ToString();
-
+                        thulGold.text = playerStats[0].thulGold.ToString();
+        thulPotions.text = playerStats[0].thulPotions.ToString();
+        thulSpells.text = playerStats[0].thulSpells.ToString();
 
             }
         }
 
+    }
+
+    public void HomeScreenStats()
+    {
+        playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
+
+        levelMain.text = playerStats[0].npcLevel.ToString();
+        xpMain.text = playerStats[0].npcXP.ToString() + "/" + playerStats[0].xpLevelUp[playerStats[0].npcLevel];
+        xpMainS.value = playerStats[0].npcXP;
+        xpMainS.maxValue = playerStats[0].xpLevelUp[playerStats[0].npcLevel];
+        manaMain.text = playerStats[0].npcMana.ToString() + "/" + playerStats[0].maxMana;
+        hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
+        goldMain.text = playerStats[0].thulGold.ToString();
     }
 
 

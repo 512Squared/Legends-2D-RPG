@@ -47,7 +47,6 @@ public class PlayerStats : MonoBehaviour
 
         for (int i = 1; i < xpLevelUp.Length; i++)
         {
-            Debug.Log("PlayerStats: The current level is: " + i);
             xpLevelUp[i] = (int)(0.02f * Math.Pow(i, 3) + 3.06f * Math.Pow(i, 2) + 105.6f * i);
         }
 

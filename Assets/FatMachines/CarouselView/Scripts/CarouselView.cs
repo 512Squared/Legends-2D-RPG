@@ -19,16 +19,14 @@ namespace FM {
         bool isSnapping;
         Coroutine snapper;
 
-
         private float viewWidth;
-        [SerializeField] public int selectedIndex = -1;
+        [HideInInspector] public int selectedIndex = -1;
+        [HideInInspector] public Transform selectedItem;
 
-        [SerializeField] public Transform selectedItem;
-
-        [SerializeField] public System.Action<int> OnItemClick;
+        [HideInInspector] public System.Action<int> OnItemClick;
 
         bool scrolling;
-        
+
         public void OnBeginDrag(PointerEventData eventData) {
             isPressed = true;
             if (snapper != null) {
@@ -42,14 +40,13 @@ namespace FM {
         }
 
         void Start() {
-            // selectedIndex = 1;
             scrolling = false;
             contentT = transform.Find("Viewport").Find("Content").GetComponent<RectTransform>();
             rectT = GetComponent<RectTransform>();
             scrollT = GetComponent<ScrollRect>();
 
             System.Action Init = () => {
-                viewWidth = ((rectT.rect.width) / 2f) + 2;
+                viewWidth = (rectT.rect.width) / 2f;
             };
 
             Init();
@@ -63,7 +60,7 @@ namespace FM {
                     if (Mathf.Abs(scrollT.velocity.x) < 500f) {
                         if (!isSnapping) {
                             scrollT.StopMovement();
-                            snapper = StartCoroutine(Tween(contentT, new Vector2(-(selectedItem.localPosition.x - (viewWidth)), contentT.localPosition.y), 0.5f));
+                            snapper = StartCoroutine(Tween(contentT, new Vector2(-(selectedItem.localPosition.x - (viewWidth)), contentT.localPosition.y), 0.1f));
                         }
                     } else {
                         scrolling = true;
@@ -76,10 +73,10 @@ namespace FM {
             if (isSnapping) {
                 return;
             }
-            if (UltimateJoystick.GetHorizontalAxis("Joy") > 0 && GameManager.instance.settingsOpen == true) {
+            if (Input.GetAxis("Horizontal") > 0) {
                 Next();
             }
-            if (UltimateJoystick.GetVerticalAxis("Joy") < 0 && GameManager.instance.settingsOpen == true) {
+            if (Input.GetAxis("Horizontal") < 0) {
                 Previous();
             }
         }
@@ -89,9 +86,6 @@ namespace FM {
                 return;
             }
             if (selectedIndex >= contentT.childCount - 1) {
-                Debug.Log("No more cards to the right!");
-                snapper = StartCoroutine(Tween(contentT, new Vector2(-(selectedItem.localPosition.x - 200 - (viewWidth)), contentT.localPosition.y), 0.01f));
-                snapper = StartCoroutine(Tween(contentT, new Vector2(-(selectedItem.localPosition.x + 200 - (viewWidth)), contentT.localPosition.y), 0.03f));
                 return;
             }
             selectedIndex++;
@@ -103,9 +97,6 @@ namespace FM {
                 return;
             }
             if (selectedIndex <= 0) {
-                Debug.Log("No more cards to the left!");
-                snapper = StartCoroutine(Tween(contentT, new Vector2(-(selectedItem.localPosition.x + 200 - (viewWidth)), contentT.localPosition.y), 0.01f));
-                snapper = StartCoroutine(Tween(contentT, new Vector2(-(selectedItem.localPosition.x - 200 - (viewWidth)), contentT.localPosition.y), 0.03f));
                 return;
             }
             selectedIndex--;
@@ -138,7 +129,7 @@ namespace FM {
         void SetPosition() {
             selectedItem = contentT.GetChild(selectedIndex);
             scrollT.StopMovement();
-            snapper = StartCoroutine(Tween(contentT, new Vector2(-(selectedItem.localPosition.x - (viewWidth)), contentT.localPosition.y), 0.5f));
+            snapper = StartCoroutine(Tween(contentT, new Vector2(-(selectedItem.localPosition.x - (viewWidth)), contentT.localPosition.y), 0.1f));
         }
 
         IEnumerator Tween(RectTransform item, Vector2 destination, float duration) {

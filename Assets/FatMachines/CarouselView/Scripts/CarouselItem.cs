@@ -30,7 +30,6 @@ namespace FM{
             carouselView = carouselViewT.GetComponent<CarouselView>();
             rectT = GetComponent<RectTransform>();
 
-
             System.Action InitValues = () => {
                 selectionMargin = (rectT.sizeDelta.x / 2f) * canvas.GetComponent<RectTransform>().localScale.x; ;
 

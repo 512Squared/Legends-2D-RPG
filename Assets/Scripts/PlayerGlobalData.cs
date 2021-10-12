@@ -76,9 +76,11 @@ public class PlayerGlobalData : MonoBehaviour
             Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)         
         );
 
+        MenuManager.instance.HomeScreenStats();
 
-                       
     }
+
+
 
     public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
     {
