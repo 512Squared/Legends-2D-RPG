@@ -39371,7 +39371,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 157, y: -484}
-  m_SizeDelta: {x: 894.9122, y: 52.1136}
+  m_SizeDelta: {x: 500, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7489294115392775579
 CanvasRenderer:
@@ -39394,14 +39394,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.2938768, g: 0.371458, b: 0.49056602, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3f37a929d30164a0b95d09e9315e7c5f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -39455,7 +39455,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2525067021509577556}
   m_Direction: 0
   m_Value: 0.5
-  m_Size: 0.2416079
+  m_Size: 0.20960791
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -56024,7 +56024,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.6, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -56090,7 +56090,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3273734372925871823}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.001178, y: -1.2955594, z: 0}
+  m_LocalPosition: {x: -7.0011783, y: -1.2966142, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3273734373438909060}
@@ -68260,8 +68260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2.0179443, y: 0.741}
-  m_SizeDelta: {x: -7.9013, y: 31.6372}
+  m_AnchoredPosition: {x: -2.0179443, y: 0}
+  m_SizeDelta: {x: -7.9013, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2580676951277647682
 CanvasRenderer:
@@ -68284,15 +68284,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.31814432, g: 0.16500534, b: 0.33962262, a: 0.6392157}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1f498009ed063914287a12e5123806b9, type: 3}
+  m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -77422,7 +77422,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -20, y: -20}
+  m_SizeDelta: {x: -20, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5592041587847923891
 GameObject:
@@ -97881,7 +97881,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8085395476764804148}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 1
