@@ -12,6 +12,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Image imageToFade;
     [SerializeField] GameObject mainMenu;
 
+    [SerializeField] GameObject[] statsButtons;
+
     public static MenuManager instance;
 
     [SerializeField] PlayerStats[] playerStats;
@@ -108,6 +110,15 @@ public class MenuManager : MonoBehaviour
         }
 
     }
+
+    public void StatsMenu()
+    {
+        for (int i = 0; i < playerStats.Length; i++)
+        {
+            statsButtons[i].SetActive(true); 
+        }
+    }
+
 
     public void HomeScreenStats()
     {

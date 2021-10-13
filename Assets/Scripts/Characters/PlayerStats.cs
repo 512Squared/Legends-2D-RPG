@@ -7,7 +7,6 @@ public class PlayerStats : MonoBehaviour
 {
 
     public static PlayerStats instance;
-
     public Sprite characterImage;
     public Sprite characterMug;
 
@@ -49,8 +48,8 @@ public class PlayerStats : MonoBehaviour
         {
             xpLevelUp[i] = (int)(0.02f * Math.Pow(i, 3) + 3.06f * Math.Pow(i, 2) + 105.6f * i);
         }
-
     }
+    
 
     // Update is called once per frame
     void Update()
@@ -62,6 +61,8 @@ public class PlayerStats : MonoBehaviour
         {
             AddXP(100);
             Debug.Log("XP was added");
+
+
         }
     }
 
