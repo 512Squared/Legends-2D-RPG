@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 {
 
 
+    //myObject.GetComponent<MyScript>().MyFunction();
+
+
     // game manager is holding the player stats and preserving them. It's public, which allows it to be called. 
 
     public static GameManager instance;

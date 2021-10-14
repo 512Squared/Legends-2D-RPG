@@ -14,20 +14,30 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] GameObject[] statsButtons;
 
+    [SerializeField] TMP_Dropdown droppy; // added this game object field to link with dropdown object and so call index
+
+
     public static MenuManager instance;
+
+    public static int select;
+ 
 
     [SerializeField] PlayerStats[] playerStats;
 
     [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
     [SerializeField] Image[] characterImage, characterImageP;
-    [SerializeField] GameObject[] characterCards, characterParty;
+    [SerializeField] GameObject[] characterCards, characterParty, characterInventry;
     [SerializeField] TextMeshProUGUI thulGold, thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
     [SerializeField] Slider xpMainS;
 
-
-
     [SerializeField] bool[] isTeamMember;
+
+    [SerializeField] Image characterImageV;
+
+    [SerializeField] Slider xpVS, manaVS, healthVS, dexterityVS, defenceVS, intelligenceVS, perceptionVS;
+
+    [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
 
 
 
@@ -35,7 +45,7 @@ public class MenuManager : MonoBehaviour
     {
 
         instance = this;
-        
+
     }
 
 
@@ -102,9 +112,10 @@ public class MenuManager : MonoBehaviour
                 characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
                 levelP[i].text = playerStats[i].npcLevel.ToString();
                 characterImageP[i].sprite = playerStats[i].characterMug;
-                        thulGold.text = playerStats[0].thulGold.ToString();
-        thulPotions.text = playerStats[0].thulPotions.ToString();
-        thulSpells.text = playerStats[0].thulSpells.ToString();
+                thulGold.text = playerStats[0].thulGold.ToString();
+                thulPotions.text = playerStats[0].thulPotions.ToString();
+                thulSpells.text = playerStats[0].thulSpells.ToString();
+
 
             }
         }
@@ -115,7 +126,7 @@ public class MenuManager : MonoBehaviour
     {
         for (int i = 0; i < playerStats.Length; i++)
         {
-            statsButtons[i].SetActive(true); 
+            statsButtons[i].SetActive(true);
         }
     }
 
@@ -132,6 +143,41 @@ public class MenuManager : MonoBehaviour
         hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
         goldMain.text = playerStats[0].thulGold.ToString();
     }
+
+
+    public void InventoryStats()
+    {
+
+        select = droppy.GetComponent<TMP_Dropdown>().value;
+        Debug.Log(playerStats[select].playerName + " is now active");
+        Debug.Log("SELECT NO: " + select);
+        characterNameV.text = playerStats[select].playerName;
+        descriptionV.text = playerStats[select].playerDesc;
+        healthV.text = playerStats[select].npcHP.ToString();
+        characterImageV.sprite = playerStats[select].characterImage;
+        levelV.text = playerStats[select].npcLevel.ToString();
+        xpV.text = playerStats[select].npcXP.ToString();
+        manaV.text = playerStats[select].npcMana.ToString();
+        dexterityV.text = playerStats[select].npcDexterity.ToString();
+        defenceV.text = playerStats[select].npcDefence.ToString();
+        intelligenceV.text = playerStats[select].npcIntelligence.ToString();
+        perceptionV.text = playerStats[select].npcPerception.ToString();
+        intelligenceVS.value = playerStats[select].npcIntelligence;
+        xpVS.value = playerStats[select].npcXP;
+        manaVS.value = playerStats[select].npcMana;
+        healthVS.value = playerStats[select].npcHP;
+        dexterityVS.value = playerStats[select].npcDexterity;
+        defenceVS.value = playerStats[select].npcDefence;
+        intelligenceVS.value = playerStats[select].npcIntelligence;
+        perceptionVS.value = playerStats[select].npcPerception;
+        characterImageV.sprite = playerStats[select].characterImage;
+
+
+    }
+
+
+
+
 
 
     public void FadeImage()
