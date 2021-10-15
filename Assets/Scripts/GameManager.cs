@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     private PlayerStats[] playerStats;
 
 
-    public bool mKeyPressed, dialogueBoxOpened, settingsOpen;
+    public bool mKeyPressed, dialogueBoxOpened;
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mKeyPressed || dialogueBoxOpened || settingsOpen)
+        if (mKeyPressed || dialogueBoxOpened)
         {
             PlayerGlobalData.instance.deactivedMovement = true;
         }

@@ -5,36 +5,31 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-
     public static ButtonHandler instance;
-    public bool settingsOpen;
-    public Button settingsButton;
 
-
-    private void Start()
+  
+        public void Start()
     {
-        settingsButton.onClick.AddListener(buttonBool);
         instance = this;
-    
-
-
     }
 
     public void buttonBool()
     {
-        if (settingsOpen == true)
+
+        if (GameManager.instance.mKeyPressed == false)
         {
-            settingsOpen = false;
-            GameManager.instance.settingsOpen = false;
+            GameManager.instance.mKeyPressed = true;
+
+        }
+
+        else if (GameManager.instance.mKeyPressed == true)
+        {
             
-        }
-        else if (settingsOpen == false)
-        {
-            settingsOpen = true;
-            GameManager.instance.settingsOpen = true;
+            GameManager.instance.mKeyPressed = false;
 
         }
 
+/*
         if (GameManager.instance.mKeyPressed == true)
         {
             GameManager.instance.mKeyPressed = false;
@@ -43,7 +38,7 @@ public class ButtonHandler : MonoBehaviour
         else if (GameManager.instance.mKeyPressed == false)
         {
             GameManager.instance.mKeyPressed = true;
-        }
+        }*/
 
     }
 

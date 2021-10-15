@@ -94,6 +94,165 @@
          <String>Current-scene tilemap data is passed to the Player Global via the LevelManager</String>
          <ConnectedNoteIDs>9</ConnectedNoteIDs>
       </Note>
+      <Note Width="116.028" FontSize="35.2" ID="11" Position="697.2,880.0">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.819608 0.035294 0.054902</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>SKILLS</String>
+      </Note>
+      <Note Width="72.8149" FontSize="22" ID="13" Position="869.8,1282.8">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.811765 0.227451 0.074510</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Fireball</String>
+         <ConnectedNoteIDs>15</ConnectedNoteIDs>
+      </Note>
+      <Note Width="44.3481" FontSize="22" ID="14" Position="860.3,1408.8">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.811765 0.227451 0.074510</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Fire</String>
+         <ConnectedNoteIDs>15</ConnectedNoteIDs>
+      </Note>
+      <Note Width="93.2861" FontSize="22" ID="15" Position="693.3,1326.4">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.811765 0.227451 0.074510</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Fire rain</String>
+         <ConnectedNoteIDs>13-14</ConnectedNoteIDs>
+      </Note>
+      <Note Width="91.3208" FontSize="22" ID="16" Position="336.1,1017.0">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.035294 0.325490 0.913725</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Ice Nova</String>
+         <ConnectedNoteIDs>17</ConnectedNoteIDs>
+      </Note>
+      <Note Width="106.177" FontSize="22" ID="17" Position="173.4,1105.2">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.035294 0.325490 0.913725</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Ice shards</String>
+         <ConnectedNoteIDs>16</ConnectedNoteIDs>
+      </Note>
+      <Note Width="139.673" FontSize="22" ID="18" Position="743.1,976.5">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.709804 0.666667 0.109804</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Lightning bolt</String>
+         <ConnectedNoteIDs>19</ConnectedNoteIDs>
+      </Note>
+      <Note Width="163.293" FontSize="22" ID="19" Position="549.4,1054.6">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.709804 0.666667 0.109804</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Lightning strike</String>
+         <ConnectedNoteIDs>18, 20</ConnectedNoteIDs>
+      </Note>
+      <Note Width="52.8198" FontSize="22" ID="20" Position="738.2,1124.7">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.709804 0.666667 0.109804</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Blink</String>
+         <ConnectedNoteIDs>19</ConnectedNoteIDs>
+      </Note>
+      <Note Width="117.7" FontSize="22" ID="21" Position="914.8,1041.6">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.282353 0.129412 0.858824</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Melee slash</String>
+         <ConnectedNoteIDs>22</ConnectedNoteIDs>
+      </Note>
+      <Note Width="111.633" FontSize="22" ID="22" Position="1066.5,1115.3">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.282353 0.129412 0.858824</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Melee AOE</String>
+         <ConnectedNoteIDs>21, 23</ConnectedNoteIDs>
+      </Note>
+      <Note Width="116.65" FontSize="22" ID="23" Position="897.1,1185.5">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.282353 0.129412 0.858824</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Melee cone</String>
+         <ConnectedNoteIDs>22</ConnectedNoteIDs>
+      </Note>
+      <Note Width="121.851" FontSize="22" ID="24" Position="445.7,1162.3">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.400000 0.686275 0.215686</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Healing spell</String>
+         <ConnectedNoteIDs>25</ConnectedNoteIDs>
+      </Note>
+      <Note Width="133.118" FontSize="22" ID="25" Position="235.1,1214.4">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.400000 0.686275 0.215686</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Resurrection</String>
+         <ConnectedNoteIDs>24, 26</ConnectedNoteIDs>
+      </Note>
+      <Note Width="94.8486" FontSize="22" ID="26" Position="426.7,1294.6">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.400000 0.686275 0.215686</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Summon</String>
+         <ConnectedNoteIDs>25, 27</ConnectedNoteIDs>
+      </Note>
+      <Note Width="63.9893" FontSize="22" ID="27" Position="244.2,1330.8">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.400000 0.686275 0.215686</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Curse</String>
+         <ConnectedNoteIDs>26, 28</ConnectedNoteIDs>
+      </Note>
+      <Note Width="102.6" FontSize="22" ID="28" Position="359.7,1391.5">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <TextColor>0.400000 0.686275 0.215686</TextColor>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>Life drain</String>
+         <ConnectedNoteIDs>27</ConnectedNoteIDs>
+      </Note>
+      <Note Width="156.25" FontSize="15" ID="12" Position="268.6,2688.0">
+         <Appearance>
+            <Alignment>Center</Alignment>
+            <Border Weight="0" Style="Rounded">0.901961 0.901961 0.901961</Border>
+         </Appearance>
+         <String>What's up fuck face?</String>
+      </Note>
    </Notes>
    <BackgroundShapes/>
    <NoteStyles>
@@ -101,7 +260,7 @@
          <BorderStyle>Rounded</BorderStyle>
          <FillColor>0.231373 0.231373 0.231373</FillColor>
          <TextColor>0.678431 0.678431 0.678431</TextColor>
-         <Size>419.5,-2.2</Size>
+         <Size>537.0,-2.8</Size>
          <Sticky>Yes</Sticky>
          <Shadow>Yes</Shadow>
          <FontSize>12.0</FontSize>

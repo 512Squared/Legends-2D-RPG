@@ -28,7 +28,7 @@ public class Exit : MonoBehaviour
         {
             PlayerGlobalData.instance.arrivedAt = goingTo;
             
-            MenuManager.instance.FadeImage();
+            UIManager.instance.FadeImage();
 
             StartCoroutine(LoadSceneCoroutine());
         }
@@ -43,7 +43,7 @@ public class Exit : MonoBehaviour
         {
             PlayerGlobalData.instance.arrivedAt = goingTo;
 
-            MenuManager.instance.FadeImage();
+            UIManager.instance.FadeImage();
 
             StartCoroutine(LoadSceneCoroutine());
         }

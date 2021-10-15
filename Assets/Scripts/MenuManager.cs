@@ -11,16 +11,16 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] Image imageToFade;
     [SerializeField] GameObject mainMenu;
-
     [SerializeField] GameObject[] statsButtons;
+ 
 
-    [SerializeField] TMP_Dropdown droppy; // added this game object field to link with dropdown object and so call index
+    [SerializeField] TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
 
 
     public static MenuManager instance;
 
     public static int select;
- 
+
 
     [SerializeField] PlayerStats[] playerStats;
 
@@ -54,22 +54,22 @@ public class MenuManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
 
-            ButtonHandler.instance.buttonBool();
 
-            if (mainMenu.GetComponent<CanvasGroup>().alpha == 1)
+
+            if (mainMenu.GetComponent<CanvasGroup>().alpha == 0)
+            {
+                mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
+                mainMenu.GetComponent<CanvasGroup>().interactable = true;
+                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                ButtonHandler.instance.buttonBool();
+            }
+            else
             {
                 mainMenu.GetComponent<UIFader>().FadeOut(); // call a function from another script
                 mainMenu.GetComponent<CanvasGroup>().interactable = false;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
-                GameManager.instance.mKeyPressed = false;
+                ButtonHandler.instance.buttonBool();
 
-            }
-            else
-            {
-                mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade in
-                mainMenu.GetComponent<CanvasGroup>().interactable = true;
-                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-                GameManager.instance.mKeyPressed = true;
             }
         }
 
@@ -148,7 +148,7 @@ public class MenuManager : MonoBehaviour
     public void InventoryStats()
     {
 
-        select = droppy.GetComponent<TMP_Dropdown>().value;
+        select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
         Debug.Log(playerStats[select].playerName + " is now active");
         Debug.Log("SELECT NO: " + select);
         characterNameV.text = playerStats[select].playerName;
@@ -173,16 +173,6 @@ public class MenuManager : MonoBehaviour
         characterImageV.sprite = playerStats[select].characterImage;
 
 
-    }
-
-
-
-
-
-
-    public void FadeImage()
-    {
-        imageToFade.GetComponent<Animator>().SetTrigger("Start Fade");
     }
 
 
