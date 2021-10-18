@@ -9,7 +9,7 @@ using System.Linq;
 public class MenuManager : MonoBehaviour
 {
 
-    [SerializeField] Image imageToFade;
+
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject[] statsButtons;
  
@@ -45,6 +45,7 @@ public class MenuManager : MonoBehaviour
     {
 
         instance = this;
+        //HomeScreenStats();
 
     }
 

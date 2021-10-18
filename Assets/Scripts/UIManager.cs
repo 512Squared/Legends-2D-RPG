@@ -12,11 +12,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject joystick;
     [SerializeField] GameObject[] UIWindows;
 
-
     public static UIManager instance;
 
 
-    private void Start()
+    void Start()
     {
             instance = this;
     }

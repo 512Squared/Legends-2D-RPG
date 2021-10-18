@@ -7,6 +7,11 @@ public class UIFader : MonoBehaviour
 
     public CanvasGroup uiElement;
 
+    void Start()
+    {
+        
+    }
+
 
     private IEnumerator Wait(float aWaitTime)
     {
