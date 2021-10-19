@@ -12,7 +12,8 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject[] statsButtons;
- 
+    [SerializeField] Image imageToFade;
+
 
     [SerializeField] TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
 
@@ -24,11 +25,11 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] PlayerStats[] playerStats;
 
-    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
+    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, thulGold, dexterity, defence, intelligence, perception;
     [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
-    [SerializeField] Image[] characterImage, characterImageP;
+    [SerializeField] Image[] characterImage, characterMug;
     [SerializeField] GameObject[] characterCards, characterParty, characterInventry;
-    [SerializeField] TextMeshProUGUI thulGold, thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
+    [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
     [SerializeField] Slider xpMainS;
 
     [SerializeField] bool[] isTeamMember;
@@ -62,14 +63,15 @@ public class MenuManager : MonoBehaviour
                 mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
                 mainMenu.GetComponent<CanvasGroup>().interactable = true;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-                ButtonHandler.instance.buttonBool();
+                ButtonHandler.instance.IsinterfaceOn();
             }
             else
             {
                 mainMenu.GetComponent<UIFader>().FadeOut(); // call a function from another script
                 mainMenu.GetComponent<CanvasGroup>().interactable = false;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
-                ButtonHandler.instance.buttonBool();
+                ButtonHandler.instance.IsinterfaceOn();
+                UpdateStats();
 
             }
         }
@@ -112,8 +114,8 @@ public class MenuManager : MonoBehaviour
                 perceptionS[i].value = playerStats[i].npcPerception;
                 characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
                 levelP[i].text = playerStats[i].npcLevel.ToString();
-                characterImageP[i].sprite = playerStats[i].characterMug;
-                thulGold.text = playerStats[0].thulGold.ToString();
+                characterMug[i].sprite = playerStats[i].characterMug;
+                thulGold[i].text = playerStats[0].thulGold.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
 
@@ -176,5 +178,15 @@ public class MenuManager : MonoBehaviour
 
     }
 
+    public void FadeImage()
+    {
+        imageToFade.GetComponent<Animator>().SetTrigger("Start Fade");
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Game was quit!");
+        Application.Quit();
+    }
 
 }

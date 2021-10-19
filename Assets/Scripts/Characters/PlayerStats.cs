@@ -9,6 +9,9 @@ public class PlayerStats : MonoBehaviour
     public static PlayerStats instance;
     public Sprite characterImage;
     public Sprite characterMug;
+    public Sprite[] skills;
+
+    public int[] skillBonus;
 
     public int thulGold;
     public int thulSpells;
@@ -23,6 +26,7 @@ public class PlayerStats : MonoBehaviour
     public string playerName;
     public string playerDesc;
     public string playerMoniker;
+    
 
     public int npcLevel;
     public int npcXP;

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
 
 
-    //myObject.GetComponent<MyScript>().MyFunction();
+    //myObject.GetComponent<MyScript>().MyFunction();rob
 
 
     // game manager is holding the player stats and preserving them. It's public, which allows it to be called. 
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     private PlayerStats[] playerStats;
 
 
-    public bool mKeyPressed, dialogueBoxOpened;
+    public bool isInterfaceOpen, dialogueBoxOpened;
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mKeyPressed || dialogueBoxOpened)
+        if (isInterfaceOpen || dialogueBoxOpened)
         {
             PlayerGlobalData.instance.deactivedMovement = true;
         }

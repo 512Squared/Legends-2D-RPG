@@ -13,32 +13,21 @@ public class ButtonHandler : MonoBehaviour
         instance = this;
     }
 
-    public void buttonBool()
+    public void IsinterfaceOn()
     {
 
-        if (GameManager.instance.mKeyPressed == false)
+        if (GameManager.instance.isInterfaceOpen == false)
         {
-            GameManager.instance.mKeyPressed = true;
+            GameManager.instance.isInterfaceOpen = true;
 
         }
 
-        else if (GameManager.instance.mKeyPressed == true)
+        else if (GameManager.instance.isInterfaceOpen == true)
         {
             
-            GameManager.instance.mKeyPressed = false;
+            GameManager.instance.isInterfaceOpen = false;
 
         }
-
-/*
-        if (GameManager.instance.mKeyPressed == true)
-        {
-            GameManager.instance.mKeyPressed = false;
-        }
-
-        else if (GameManager.instance.mKeyPressed == false)
-        {
-            GameManager.instance.mKeyPressed = true;
-        }*/
 
     }
 
