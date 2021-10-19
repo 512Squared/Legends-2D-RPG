@@ -1,5 +1,5 @@
-﻿/* Written by Kaz Crowe */
-/* AsteroidController.cs */
+﻿/* AsteroidController.cs */
+/* Written by Kaz Crowe */
 using UnityEngine;
 using System.Collections;
 

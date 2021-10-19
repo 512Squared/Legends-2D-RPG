@@ -1,5 +1,5 @@
-﻿/* Written by Kaz Crowe */
-/* GameManager.cs */
+﻿/* GameManager.cs */
+/* Written by Kaz Crowe */
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;

@@ -1,5 +1,5 @@
-﻿/* Written by Kaz Crowe */
-/* PlayerController.cs */
+﻿/* PlayerController.cs */
+/* Written by Kaz Crowe */
 using UnityEngine;
 
 namespace UltimateJoystickExample.Spaceship

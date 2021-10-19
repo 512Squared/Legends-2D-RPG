@@ -1,183 +1,332 @@
-﻿/* Written by Kaz Crowe */
-/* UltimateJoystick.cs */
+﻿/* UltimateJoystick.cs */
+/* Written by Kaz Crowe */
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-// First off, the script is using [ExecuteInEditMode] to be able to show changes in real time. This will not affect anything within a build or play mode. This simply makes the script able to be run while in the Editor in Edit Mode.
 [ExecuteInEditMode]
 public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-	/* ----- > ASSIGNED VARIABLES < ----- */
-	public RectTransform joystick, joystickSizeFolder, joystickBase;
+	// INTERNAL CALCULATIONS //
 	RectTransform baseTrans;
-	Vector2 textureCenter = Vector2.zero, defaultPos = Vector2.zero;
-	Vector3 joystickCenter = Vector3.zero;
-	public Image highlightBase, highlightJoystick;
-	public Image tensionAccentUp, tensionAccentDown;
-	public Image tensionAccentLeft, tensionAccentRight;
-
-	/* ----- > SIZE AND PLACEMENT < ----- */
-	public enum ScalingAxis{ Width, Height }
-	public ScalingAxis scalingAxis = ScalingAxis.Height;
-	public enum Anchor{ Left, Right }
-	public Anchor anchor = Anchor.Left;
-	public enum JoystickTouchSize{ Default, Medium, Large, Custom }
-	public JoystickTouchSize joystickTouchSize = JoystickTouchSize.Default;
-	public float joystickSize = 1.75f, radiusModifier = 4.5f;
+	Vector2 defaultPos = Vector2.zero;
+	Vector2 joystickCenter = Vector2.zero;
+	int _inputId = -10;
+	Rect joystickRect;
+	CanvasGroup joystickGroup;
 	float radius = 1.0f;
-	public bool dynamicPositioning = false;
-	public float customTouchSize_X = 50.0f, customTouchSize_Y = 75.0f;
-	public float customTouchSizePos_X = 0.0f, customTouchSizePos_Y = 0.0f;
-	public float customSpacing_X = 5.0f, customSpacing_Y = 20.0f;
+	public Canvas ParentCanvas
+	{
+		get;
+		private set;
+	}
+	RectTransform canvasRectTrans;
 
-	/* ----- > JOYSTICK FUNCTIONALITY < ----- */
+	// JOYSTICK POSITIONING //
+	public RectTransform joystickBase, joystick;
+	public enum ScalingAxis
+	{
+		Width,
+		Height
+	}
+	public ScalingAxis scalingAxis = ScalingAxis.Height;
+	public enum Anchor
+	{
+		Left,
+		Right
+	}
+	public Anchor anchor = Anchor.Left;
+	public float activationRange = 1.0f;
+	public bool customActivationRange = false;
+	public float activationWidth = 50.0f, activationHeight = 75.0f;
+	public float activationPositionHorizontal = 0.0f, activationPositionVertical = 0.0f;
+	public float joystickSize = 2.5f, radiusModifier = 4.5f;
+	public float positionHorizontal = 5.0f, positionVertical = 20.0f;
+
+	// JOYSTICK SETTINGS //
+	public bool dynamicPositioning = false;
 	public float gravity = 60.0f;
 	bool gravityActive = false;
 	public bool extendRadius = false;
 	public enum Axis
 	{
-		Both, X, Y
+		Both,
+		X,
+		Y
 	}
 	public Axis axis = Axis.Both;
 	public enum Boundary
 	{
-		Circular, Square
+		Circular,
+		Square
 	}
 	public Boundary boundary = Boundary.Circular;
+	public float deadZone = 0.0f;
 	public enum TapCountOption
 	{
-		NoCount, Accumulate, TouchRelease
+		NoCount,
+		Accumulate,
+		TouchRelease
 	}
 	public TapCountOption tapCountOption = TapCountOption.NoCount;
 	public float tapCountDuration = 0.5f;
 	public int targetTapCount = 2;
 	float currentTapTime = 0.0f;
 	int tapCount = 0;
-	public float deadZone = 0.0f;
+	public bool useTouchInput = false;
 
-	/* ----- > VISUAL OPTIONS < ----- */
+	// VISUAL OPTIONS //
 	public bool disableVisuals = false;
+	public bool inputTransition = false;
+	public float transitionUntouchedDuration = 0.1f, transitionTouchedDuration = 0.1f;
+	float transitionUntouchedSpeed, transitionTouchedSpeed;
 	public bool useFade = false;
-	CanvasGroup joystickGroup;
 	public float fadeUntouched = 1.0f, fadeTouched = 0.5f;
-	public float fadeInDuration = 1.0f, fadeOutDuration = 1.0f;
-	float fadeInSpeed = 1.0f, fadeOutSpeed = 1.0f;
-	public bool useAnimation = false;
-	public Animator joystickAnimator;
-	int animationID = 0;
+	public bool useScale = false;
+	public float scaleTouched = 0.9f;
 	public bool showHighlight = false;
 	public Color highlightColor = new Color( 1, 1, 1, 1 );
+	public Image highlightBase, highlightJoystick;
 	public bool showTension = false;
 	public Color tensionColorNone = new Color( 1, 1, 1, 1 ), tensionColorFull = new Color( 1, 1, 1, 1 );
-
-	/* ----- > SCRIPT REFERENCE < ----- */
+	public enum TensionType
+	{
+		Directional,
+		Free
+	}
+	public TensionType tensionType = TensionType.Directional;
+	public float rotationOffset = 0.0f;
+	public float tensionDeadZone = 0.0f;
+	public List<Image> TensionAccents = new List<Image>();
+	
+	// SCRIPT REFERENCE //
 	static Dictionary<string,UltimateJoystick> UltimateJoysticks = new Dictionary<string, UltimateJoystick>();
 	public string joystickName;
 	bool joystickState = false;
 	bool tapCountAchieved = false;
 
-	bool updateHighlightPosition = false;
-	int _pointerId = -10;// Default value of -10
-
+	// PUBLIC CALLBACKS //
+	public event Action OnPointerDownCallback, OnPointerUpCallback, OnDragCallback;
+	public event Action OnUpdatePositioning;
 	
+	// OBSOLETE // NOTE: We are keeping these variables in the script and public so that the values can be copied to the new variables for a smooth transition to the new version.
+	public enum JoystickTouchSize
+	{
+		Default,
+		Medium,
+		Large,
+		Custom
+	}
+	[Header( "Depreciated Variables" )]
+	public JoystickTouchSize joystickTouchSize = JoystickTouchSize.Default;
+	public float customSpacing_X = -10, customSpacing_Y = -10;
+	public float customTouchSize_X = -10, customTouchSize_Y = -10;
+	public float customTouchSizePos_X = -10, customTouchSizePos_Y = -10;
+	public RectTransform joystickSizeFolder;
+	public Image tensionAccentUp, tensionAccentDown;
+	public Image tensionAccentLeft, tensionAccentRight;
+	
+
+	void OnEnable ()
+	{
+		// If the user wants to calculate using touch input, then start the coroutine to catch the input.
+		if( Application.isPlaying && useTouchInput )
+			StartCoroutine( ProcessTouchInput() );
+	}
+
+	void OnDisable ()
+	{
+		// If the users was wanting to use touch input, then stop the coroutine.
+		if( Application.isPlaying && useTouchInput )
+			StopCoroutine( ProcessTouchInput() );
+	}
+
 	void Awake ()
 	{
-		// If the game is not being run and the joystick name has been assigned, then register the joystick.
-		if( Application.isPlaying == true && joystickName != string.Empty )
+		// If the game is not being run and the joystick name has been assigned...
+		if( Application.isPlaying && joystickName != string.Empty )
 		{
+			// If the static dictionary has this joystick registered, then remove it from the list.
 			if( UltimateJoysticks.ContainsKey( joystickName ) )
 				UltimateJoysticks.Remove( joystickName );
-		
-			UltimateJoysticks.Add( joystickName, GetComponent<UltimateJoystick>() );
+
+			// Then register the joystick.
+			UltimateJoysticks.Add( joystickName, this );
 		}
 	}
 
 	void Start ()
 	{
 		// If the game is not running then return.
-		if( Application.isPlaying == false )
-			return;
-
-		// Update the size and placement of the joystick.
-		UpdateSizeAndPlacement();
-
-		// Check all options to see if the joystick highlight image should be moved with use input.
-		CheckJoystickHighlightForUse();
-
-		// Set the highlight is the user is wanting to show highlight.
-		if( showHighlight == true )
-			UpdateHighlightColor( highlightColor );
-
-		// Reset the tension accents if the user is wanting to show tension.
-		if( showTension == true )
-			TensionAccentReset();
-
-		// If the user is wanting to use fade...
-		if( useFade == true )
-		{
-			// Configure the fade speeds.
-			fadeInSpeed = 1.0f / fadeInDuration;
-			fadeOutSpeed = 1.0f / fadeOutDuration;
-		}
-
-		// Get the hash ID of the targeted animation if the user is wanting to show animation.
-		if( useAnimation == true )
-		{
-			// If the animator is null, then try to assign it.
-			if( joystickAnimator == null )
-				joystickAnimator = GetComponent<Animator>();
-
-			// If it is still null, then set useAnimation to false to avoid errors.
-			if( joystickAnimator == null )
-			{
-				Debug.LogError( "Ultimate Joystick - This object does not have an Animator component attached to it. Please make sure to attach an Animator to this object before using the Use Animation option.\n\nObject Name: " + gameObject.name + "\n" );
-				useAnimation = false;
-			}
-			else
-				animationID = Animator.StringToHash( "Touch" );
-		}
-
-		// If there is no Updater script attached, then attach an Updater script.
-		if( !GetParentCanvas().GetComponent<UltimateJoystickScreenSizeUpdater>() )
-			GetParentCanvas().gameObject.AddComponent( typeof( UltimateJoystickScreenSizeUpdater ) );
-	}
-	
-	public void OnPointerDown ( PointerEventData touchInfo )
-	{
-		// If the joystick is already in use, then return.
-		if( joystickState == true )
+		if( !Application.isPlaying )
 			return;
 		
-		// Set the joystick state since the joystick is being interacted with.
+		// If the user wants to transition on different input...
+		if( inputTransition )
+		{
+			// Try to store the canvas group.
+			joystickGroup = GetComponent<CanvasGroup>();
+
+			// If the canvas group is still null, then add a canvas group component.
+			if( joystickGroup == null )
+				joystickGroup = baseTrans.gameObject.AddComponent<CanvasGroup>();
+
+			// Configure the transition speeds.
+			transitionUntouchedSpeed = 1.0f / transitionUntouchedDuration;
+			transitionTouchedSpeed = 1.0f / transitionTouchedDuration;
+		}
+
+		// If the parent canvas is null...
+		if( ParentCanvas == null )
+		{
+			// Then try to get the parent canvas component.
+			UpdateParentCanvas();
+
+			// If it is still null, then log a error and return.
+			if( ParentCanvas == null )
+			{
+				Debug.LogError( "Ultimate Joystick\nThis component is not with a Canvas object. Disabling this component to avoid any errors." );
+				enabled = false;
+				return;
+			}
+		}
+
+		// If the parent canvas does not have a screen size updater, then add it.
+		if( !ParentCanvas.GetComponent<UltimateJoystickScreenSizeUpdater>() )
+			ParentCanvas.gameObject.AddComponent<UltimateJoystickScreenSizeUpdater>();
+
+		// Update the size and placement of the joystick.
+		UpdateJoystickPositioning();
+	}
+
+	// THIS IS FOR THE UNITY EVENT SYSTEM IF THE USER WANTS THAT //
+	public void OnPointerDown ( PointerEventData touchInfo )
+	{
+		if( useTouchInput )
+			return;
+
+		ProcessOnInputDown( touchInfo.position, touchInfo.pointerId );
+	}
+
+	public void OnDrag ( PointerEventData touchInfo )
+	{
+		if( useTouchInput )
+			return;
+
+		ProcessOnInputMoved( touchInfo.position, touchInfo.pointerId );
+	}
+
+	public void OnPointerUp ( PointerEventData touchInfo )
+	{
+		if( useTouchInput )
+			return;
+
+		ProcessOnInputUp( touchInfo.position, touchInfo.pointerId );
+	}
+	// END FOR UNITY EVENT SYSTEM //
+
+	/// <summary>
+	/// The coroutine will process the touch input if the user has the useTouchInput boolean enabled.
+	/// </summary>
+	IEnumerator ProcessTouchInput ()
+	{
+		// Loop for as long as useTouchInput is true.
+		while( useTouchInput )
+		{
+			// If there are touches on the screen...
+			if( Input.touchCount > 0 )
+			{
+				// Loop through each finger on the screen...
+				for( int fingerId = 0; fingerId < Input.touchCount; fingerId++ )
+				{
+					// If the input phase has begun...
+					if( Input.GetTouch( fingerId ).phase == TouchPhase.Began )
+					{
+						// If the touch input position is within the bounds of the joystick rect, then process the down input on the joystick.
+						if( joystickRect.Contains( Input.GetTouch( fingerId ).position ) )
+							ProcessOnInputDown( Input.GetTouch( fingerId ).position, fingerId );
+					}
+					// Else if the input has moved, then process the moved input.
+					else if( Input.GetTouch( fingerId ).phase == TouchPhase.Moved )
+						ProcessOnInputMoved( Input.GetTouch( fingerId ).position, fingerId );
+					// Else if the input has ended or if it was canceled, then process the input being released.
+					else if( Input.GetTouch( fingerId ).phase == TouchPhase.Ended || Input.GetTouch( fingerId ).phase == TouchPhase.Canceled )
+						ProcessOnInputUp( Input.GetTouch( fingerId ).position, fingerId );
+				}
+			}
+			// Else there are no touches on the screen.
+			else
+			{
+				// If the inputId is not reset then reset the joystick since there are no touches.
+				if( _inputId > -10 )
+					ResetJoystick();
+			}
+			
+			yield return null;
+		}
+	}
+	
+	/// <summary>
+	/// Processes the input when it has been initiated on the joystick.
+	/// </summary>
+	/// <param name="inputPosition">The position of the input on the screen.</param>
+	/// <param name="inputId">The unique id of the input that has been initiated on the joystick.</param>
+	void ProcessOnInputDown ( Vector2 inputPosition, int inputId )
+	{
+		// If the joystick is already in use, then return.
+		if( joystickState )
+			return;
+		
+		// If the user wants a circular boundary but does not want a custom activation range...
+		if( boundary == Boundary.Circular && !customActivationRange )
+		{
+			// distance = distance between the world position of the joystickBase cast to a local position of the ParentCanvas (* by scale factor) - half of the actual canvas size, and the input position.
+			float distance = Vector2.Distance( ( Vector2 )( ParentCanvas.transform.InverseTransformPoint( joystickBase.position ) * ParentCanvas.scaleFactor ) + ( ( canvasRectTrans.sizeDelta * ParentCanvas.scaleFactor ) / 2 ), inputPosition );
+
+			// If the distance is out of range, then just return.
+			if( distance / ( baseTrans.sizeDelta.x * ParentCanvas.scaleFactor ) > 0.5f )
+				return;
+		}
+		
+		// Set the joystick state since the joystick is being interacted with and assign the inputId so that the other functions can know if the pointer calling the function is the correct one.
 		joystickState = true;
-
-		// Assign the pointerId so that the other functions can know if the pointer calling the function is the correct one.
-		_pointerId = touchInfo.pointerId;
-
-		// If the throwable option is selected and isThrowing, then stop the current movement.
+		_inputId = inputId;
+		
+		// If the user has gravity set and it's active then stop the current movement.
 		if( gravity > 0 && gravityActive )
 			StopCoroutine( "GravityHandler" );
 
 		// If dynamicPositioning or disableVisuals are enabled...
-		if( dynamicPositioning == true || disableVisuals == true )
+		if( dynamicPositioning || disableVisuals )
 		{
-			// Then move the joystickSizeFolder to the position of the touch.
-			joystickSizeFolder.position = touchInfo.position - textureCenter;
+			// Then move the joystickBase to the position of the touch.
+			joystickBase.localPosition = ( Vector2 )baseTrans.InverseTransformPoint( ParentCanvas.transform.TransformPoint( inputPosition / ParentCanvas.scaleFactor ) ) - ( canvasRectTrans.sizeDelta / 2 );
 
-			// Set the joystickCenter so that the position can be calculated correctly.
-			joystickCenter = touchInfo.position;
+			// Set the joystick center so that the position can be calculated correctly.
+			UpdateJoystickCenter();
 		}
 
-		// If the user wants animation to be shown, do that here.
-		if( useAnimation == true )
-			joystickAnimator.SetBool( animationID, true );
+		// If the user wants to show the input transitions...
+		if( inputTransition )
+		{
+			// If either of the transition durations are set to something other than 0, then start the coroutine to transition over time.
+			if( transitionUntouchedDuration > 0 || transitionTouchedDuration > 0 )
+				StartCoroutine( "InputTransition" );
+			// Else the user does not want to transition over time.
+			else
+			{
+				// So just apply the touched alpha value.
+				if( useFade )
+					joystickGroup.alpha = fadeTouched;
 
-		// If the user wants the joystick to fade, do that here.
-		if( useFade == true && joystickGroup != null )
-			StartCoroutine( "FadeLogic" );
+				// And apply the touched scale.
+				if( useScale )
+					joystickBase.localScale = Vector3.one * scaleTouched;
+			}
+		}
 
 		// If the user is wanting to use any tap count...
 		if( tapCountOption != TapCountOption.NoCount )
@@ -210,61 +359,84 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 				StartCoroutine( "TapCountdown" );
 		}
 
-		// Call UpdateJoystick with the info from the current PointerEventData.
-		UpdateJoystick( touchInfo );
+		// Call ProcessInput with the current input information.
+		ProcessInput( inputPosition );
+
+		// Notify any subscribers that the OnPointerDown function has been called.
+		if( OnPointerDownCallback != null )
+			OnPointerDownCallback();
 	}
-	
-	public void OnDrag ( PointerEventData touchInfo )
+
+	/// <summary>
+	/// Processes the input when it has been moved on the screen.
+	/// </summary>
+	/// <param name="inputPosition">The position of the input on the screen.</param>
+	/// <param name="inputId">The unique id of the input being sent in to this function.</param>
+	void ProcessOnInputMoved ( Vector2 inputPosition, int inputId )
 	{
 		// If the pointer event that is calling this function is not the same as the one that initiated the joystick, then return.
-		if( touchInfo.pointerId != _pointerId )
+		if( inputId != _inputId )
 			return;
 
-		// Then call UpdateJoystick with the info from the current PointerEventData.
-		UpdateJoystick( touchInfo );
+		// Then call ProcessInput with the info with the current input information.
+		ProcessInput( inputPosition );
+
+		// Notify any subscribers that the OnDrag function has been called.
+		if( OnDragCallback != null )
+			OnDragCallback();
 	}
-	
-	public void OnPointerUp ( PointerEventData touchInfo )
+
+	/// <summary>
+	/// Processes the input when it has been released.
+	/// </summary>
+	/// <param name="inputPosition">The position of the input on the screen.</param>
+	/// <param name="inputId">The unique id of the input being sent into this function.</param>
+	void ProcessOnInputUp ( Vector2 inputPosition, int inputId )
 	{
 		// If the pointer event that is calling this function is not the same as the one that initiated the joystick, then return.
-		if( touchInfo.pointerId != _pointerId )
+		if( inputId != _inputId )
 			return;
-
+		
 		// Since the touch has lifted, set the state to false and reset the local pointerId.
 		joystickState = false;
-		_pointerId = -10;
-		
-		// If dynamicPositioning, disableVisuals, or draggable are enabled...
-		if( dynamicPositioning == true || disableVisuals == true || extendRadius == true )
-		{
-			// The joystickSizeFolder needs to be reset back to the default position.
-			joystickSizeFolder.position = defaultPos;
+		_inputId = -10;
 
-			// Reset the joystickCenter since the touch has been released.
-			joystickCenter = joystickBase.position;
+		// If dynamicPositioning, disableVisuals, or extendRadius are enabled...
+		if( dynamicPositioning || disableVisuals || extendRadius )
+		{
+			// The joystickBase needs to be reset back to the default position.
+			joystickBase.localPosition = defaultPos;
+
+			// Reset the joystick center since the touch has been released.
+			UpdateJoystickCenter();
 		}
 
 		// If the user has the gravity set to something more than 0 but less than 60, begin GravityHandler().
 		if( gravity > 0 && gravity < 60 )
 			StartCoroutine( "GravityHandler" );
+		// Else the user doesn't want to apply a gravity effect to the joystick...
 		else
 		{
 			// Reset the joystick's position back to center.
-			joystick.position = joystickCenter;
+			joystick.localPosition = Vector3.zero;
 
-			// If the user has showHighlight enabled, and the highlightJoystick variable is assigned, reset it too.
-			if( updateHighlightPosition == true )
-				highlightJoystick.transform.position = joystickCenter;
+			// If the user is wanting to show tension, then reset that here.
+			if( showTension )
+				TensionAccentReset();
+		}
+		
+		// If the user wants an input transition, but the durations of both touched and untouched states are zero...
+		if( inputTransition && ( transitionTouchedDuration <= 0 && transitionUntouchedDuration <= 0 ) )
+		{
+			// Then just apply the alpha.
+			if( useFade )
+				joystickGroup.alpha = fadeUntouched;
+
+			// And reset the scale back to one.
+			if( useScale )
+				joystickBase.localScale = Vector3.one;
 		}
 
-		// If the user has showTension enabled, then reset the tension if throwable is disabled.
-		if( showTension == true && ( gravity <= 0 || gravity >= 60 ) )
-			TensionAccentReset();
-
-		// If the user has useAnimation enabled, set that here.
-		if( useAnimation == true )
-			joystickAnimator.SetBool( animationID, false );
-		
 		// If the user is wanting to use the TouchAndRelease tap count...
 		if( tapCountOption == TapCountOption.TouchRelease )
 		{
@@ -276,14 +448,23 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 			currentTapTime = 0;
 		}
 
+		// Update the position values.
 		UpdatePositionValues();
+
+		// Notify any subscribers that the OnPointerUp function has been called.
+		if( OnPointerUpCallback != null )
+			OnPointerUpCallback();
 	}
-	
-	void UpdateJoystick ( PointerEventData touchInfo )
+
+	/// <summary>
+	/// Processes the input provided and moves the joystick accordingly.
+	/// </summary>
+	/// <param name="inputPosition">The current position of the input.</param>
+	void ProcessInput ( Vector2 inputPosition )
 	{
 		// Create a new Vector2 to equal the vector from the current touch to the center of joystick.
-		Vector2 tempVector = touchInfo.position - ( Vector2 )joystickCenter;
-
+		Vector2 tempVector = inputPosition - joystickCenter;
+		
 		// If the user wants only one axis, then zero out the opposite value.
 		if( axis == Axis.X )
 			tempVector.y = 0;
@@ -292,30 +473,22 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 
 		// If the user wants a circular boundary for the joystick, then clamp the magnitude by the radius.
 		if( boundary == Boundary.Circular )
-			tempVector = Vector2.ClampMagnitude( tempVector, radius );
+			tempVector = Vector2.ClampMagnitude( tempVector, radius * joystickBase.localScale.x );
 		// Else the user wants a square boundary, so clamp X and Y individually.
-		else if( boundary == Boundary.Square )
+		else
 		{
-			tempVector.x = Mathf.Clamp( tempVector.x, -radius, radius );
-			tempVector.y = Mathf.Clamp( tempVector.y, -radius, radius );
+			tempVector.x = Mathf.Clamp( tempVector.x, -radius * joystickBase.localScale.x, radius * joystickBase.localScale.x );
+			tempVector.y = Mathf.Clamp( tempVector.y, -radius * joystickBase.localScale.x, radius * joystickBase.localScale.x );
 		}
 
 		// Apply the tempVector to the joystick's position.
-		joystick.transform.position = ( Vector2 )joystickCenter + tempVector;
+		joystick.localPosition = ( tempVector / joystickBase.localScale.x ) / ParentCanvas.scaleFactor;
 		
-		// If the user is showing highlight and the highlightJoystick is assigned, then move the highlight to match the joystick's position.
-		if( updateHighlightPosition == true )
-			highlightJoystick.transform.position = joystick.transform.position;
-
-		// If the user has showTension enabled, then display the Tension.
-		if( showTension == true )
-			TensionAccentDisplay();
-
 		// If the user wants to drag the joystick along with the touch...
-		if( extendRadius == true )
+		if( extendRadius )
 		{
 			// Store the position of the current touch.
-			Vector3 currentTouchPosition = touchInfo.position;
+			Vector3 currentTouchPosition = inputPosition;
 
 			// If the user is using any axis option, then align the current touch position.
 			if( axis != Axis.Both )
@@ -332,215 +505,416 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 			if( touchDistance >= radius )
 			{
 				// Figure out the current position of the joystick.
-				Vector2 joystickPosition = ( joystick.position - joystickCenter ) / radius;
+				Vector2 joystickPosition = joystick.localPosition / radius;
+				
+				// Move the joystickBase in the direction that the joystick is, multiplied by the difference in distance of the max radius.
+				joystickBase.localPosition += new Vector3( joystickPosition.x, joystickPosition.y, 0 ) * ( touchDistance - radius );
 
-				// Move the joystickSizeFolder in the direction that the joystick is, multiplied by the difference in distance of the max radius.
-				joystickSizeFolder.position += new Vector3( joystickPosition.x, joystickPosition.y, 0 ) * ( touchDistance - radius );
-
-				// Reconfigure the joystickCenter since the joystick has now moved it position.
-				joystickCenter = joystickBase.position;
+				// Reconfigure the joystick center since the joystick has now moved it's position.
+				UpdateJoystickCenter();
 			}
 		}
 
+		// Update the position values since the joystick has been updated.
 		UpdatePositionValues();
+
+		// If the user has showTension enabled, then display the Tension.
+		if( showTension )
+			TensionAccentDisplay();
 	}
 
-	// This function will configure the position of an image based on the size and custom spacing selected.
-	Vector2 ConfigureImagePosition ( Vector2 textureSize, Vector2 customSpacing )
+	/// <summary>
+	/// This function is called by Unity when the parent of this transform changes.
+	/// </summary>
+	void OnTransformParentChanged ()
 	{
-		// First, fix the customSpacing to be a value between 0.0f and 1.0f.
-		Vector2 fixedCustomSpacing = customSpacing / 100;
-
-		// Then configure position spacers according to the screen's dimensions, the fixed spacing and texture size.
-		float positionSpacerX = Screen.width * fixedCustomSpacing.x - ( textureSize.x * fixedCustomSpacing.x );
-		float positionSpacerY = Screen.height * fixedCustomSpacing.y - ( textureSize.y * fixedCustomSpacing.y );
-
-		// Create a temporary Vector2 to modify and return.
-		Vector2 tempVector;
-
-		// If it's left, simply apply the positionxSpacerX, else calculate out from the right side and apply the positionSpaceX.
-		tempVector.x = anchor == Anchor.Left ? positionSpacerX : ( Screen.width - textureSize.x ) - positionSpacerX;
-
-		// Apply the positionSpacerY variable.
-		tempVector.y = positionSpacerY;
-
-		// Return the updated temporary Vector.
-		return tempVector;
+		UpdateParentCanvas();
 	}
 
-	// This function is called only when showTension is true, and only when the joystick is moving.
+	/// <summary>
+	/// Updates the parent canvas if it has changed.
+	/// </summary>
+	public void UpdateParentCanvas ()
+	{
+		// Store the parent of this object.
+		Transform parent = transform.parent;
+
+		// If the parent is null, then just return.
+		if( parent == null )
+			return;
+
+		// While the parent is assigned...
+		while( parent != null )
+		{
+			// If the parent object has a Canvas component, then assign the ParentCanvas and transform.
+			if( parent.transform.GetComponent<Canvas>() )
+			{
+				ParentCanvas = parent.transform.GetComponent<Canvas>();
+				canvasRectTrans = ParentCanvas.GetComponent<RectTransform>();
+				return;
+			}
+
+			// If the parent does not have a canvas, then store it's parent to loop again.
+			parent = parent.transform.parent;
+		}
+	}
+
+	/// <summary>
+	/// This function updates the joystick's position on the screen.
+	/// </summary>
+	void UpdateJoystickPositioning ()
+	{
+		// If the parent canvas is null, then try to get the parent canvas component.
+		if( ParentCanvas == null )
+			UpdateParentCanvas();
+
+		// If it is still null, then log a error and return.
+		if( ParentCanvas == null )
+		{
+			Debug.LogError( "Ultimate Joystick\nThere is no parent canvas object. Please make sure that the Ultimate Joystick is placed within a canvas." );
+			return;
+		}
+
+		// If any of the needed components are left unassigned, then inform the user and return.
+		if( joystickBase == null )
+		{
+			if( Application.isPlaying )
+				Debug.LogError( "Ultimate Joystick\nThere are some needed components that are not currently assigned. Please check the Assigned Variables section and be sure to assign all of the components." );
+
+			return;
+		}
+
+		// Set the current reference size for scaling.
+		float referenceSize = scalingAxis == ScalingAxis.Height ? canvasRectTrans.sizeDelta.y : canvasRectTrans.sizeDelta.x;
+		
+		// Configure the target size for the joystick graphic.
+		float textureSize = referenceSize * ( joystickSize / 10 );
+
+		// If baseTrans is null, store this object's RectTrans so that it can be positioned.
+		if( baseTrans == null )
+			baseTrans = GetComponent<RectTransform>();
+
+		// Force the anchors and pivot so the joystick will function correctly. This is also needed here for older versions of the Ultimate Joystick that didn't use these rect transform settings.
+		baseTrans.anchorMin = Vector2.zero;
+		baseTrans.anchorMax = Vector2.zero;
+		baseTrans.pivot = new Vector2( 0.5f, 0.5f );
+		baseTrans.localScale = Vector3.one;
+
+		// Set the anchors of the joystick base. It is important to have the anchors centered for calculations.
+		joystickBase.anchorMin = new Vector2( 0.5f, 0.5f );
+		joystickBase.anchorMax = new Vector2( 0.5f, 0.5f );
+		joystickBase.pivot = new Vector2( 0.5f, 0.5f );
+		
+		// Configure the position that the user wants the joystick to be located.
+		Vector2 joystickPosition = new Vector2( canvasRectTrans.sizeDelta.x * ( positionHorizontal / 100 ) - ( textureSize * ( positionHorizontal / 100 ) ) + ( textureSize / 2 ), canvasRectTrans.sizeDelta.y * ( positionVertical / 100 ) - ( textureSize * ( positionVertical / 100 ) ) + ( textureSize / 2 ) ) - ( canvasRectTrans.sizeDelta / 2 );
+
+		if( anchor == Anchor.Right )
+			joystickPosition.x = -joystickPosition.x;
+		
+		// If the user wants a custom touch size...
+		if( customActivationRange )
+		{
+			// Apply the size of the custom activation range.
+			baseTrans.sizeDelta = new Vector2( canvasRectTrans.sizeDelta.x * ( activationWidth / 100 ), canvasRectTrans.sizeDelta.y * ( activationHeight / 100 ) );
+			
+			// Apply the new position minus half the canvas position size.
+			baseTrans.localPosition = new Vector2( canvasRectTrans.sizeDelta.x * ( activationPositionHorizontal / 100 ) - ( baseTrans.sizeDelta.x * ( activationPositionHorizontal / 100 ) ) + ( baseTrans.sizeDelta.x / 2 ), canvasRectTrans.sizeDelta.y * ( activationPositionVertical / 100 ) - ( baseTrans.sizeDelta.y * ( activationPositionVertical / 100 ) ) + ( baseTrans.sizeDelta.y / 2 ) ) - ( canvasRectTrans.sizeDelta / 2 );
+			
+			// Apply the size and position to the joystickBase.
+			joystickBase.sizeDelta = new Vector2( textureSize, textureSize );
+			joystickBase.localPosition = baseTrans.transform.InverseTransformPoint( ParentCanvas.transform.TransformPoint( joystickPosition ) );
+		}
+		else
+		{
+			// Apply the joystick size multiplied by the activation range.
+			baseTrans.sizeDelta = new Vector2( textureSize, textureSize ) * activationRange;
+
+			// Apply the imagePosition.
+			baseTrans.localPosition = joystickPosition;
+
+			// Apply the size and position to the joystickBase.
+			joystickBase.sizeDelta = new Vector2( textureSize, textureSize );
+			joystickBase.localPosition = Vector3.zero;
+		}
+		
+		// If the options dictate that the default position needs to be stored, then store it here.
+		if( dynamicPositioning || disableVisuals || extendRadius )
+			defaultPos = joystickBase.localPosition;
+			
+		// Configure the size of the Ultimate Joystick's radius.
+		radius = ( joystickBase.sizeDelta.x * ParentCanvas.scaleFactor ) * ( radiusModifier / 10 );
+
+		// Update the joystick center so that reference positions can be configured correctly.
+		UpdateJoystickCenter();
+
+		// If the user wants to transition, and the joystickGroup is unassigned, find the CanvasGroup.
+		if( inputTransition && joystickGroup == null )
+		{
+			joystickGroup = GetComponent<CanvasGroup>();
+			if( joystickGroup == null )
+				joystickGroup = gameObject.AddComponent<CanvasGroup>();
+		}
+
+		// If the user wants to use touch input...
+		if( useTouchInput )
+		{
+			// Configure the actual size delta and position of the base trans regardless of the canvas scaler setting.
+			Vector2 baseSizeDelta = baseTrans.sizeDelta * ParentCanvas.scaleFactor;
+			Vector2 baseLocalPosition = baseTrans.localPosition * ParentCanvas.scaleFactor;
+
+			// Calculate the rect of the base trans.
+			joystickRect = new Rect( new Vector2( baseLocalPosition.x - ( baseSizeDelta.x / 2 ), baseLocalPosition.y - ( baseSizeDelta.y / 2 ) ) + ( ( canvasRectTrans.sizeDelta * ParentCanvas.scaleFactor ) / 2 ), baseSizeDelta );
+		}
+	}
+
+	/// <summary>
+	/// Updates the joystick center value.
+	/// </summary>
+	void UpdateJoystickCenter ()
+	{
+		joystickCenter = ( ( Vector2 )ParentCanvas.transform.InverseTransformPoint( joystickBase.position ) * ParentCanvas.scaleFactor ) + ( ( canvasRectTrans.sizeDelta * ParentCanvas.scaleFactor ) / 2 );
+	}
+
+	/// <summary>
+	/// This function is called only when showTension is true, and only when the joystick is moving.
+	/// </summary>
 	void TensionAccentDisplay ()
 	{
-		// Create a temporary Vector2 for the joystick current position.
-		Vector2 tension = ( joystick.position - joystickCenter ) / radius;
-
-		// If the joystick is to the right...
-		if( tension.x > 0 )
+		// If the tension accent images are null, then inform the user and return.
+		if( TensionAccents.Count == 0 )
 		{
-			// Then lerp the color according to tension's X position.
-			if( tensionAccentRight != null )
-				tensionAccentRight.color = Color.Lerp( tensionColorNone, tensionColorFull, tension.x );
+			Debug.LogError( "Ultimate Joystick\nThere are no tension accent images assigned. This could be happening for several reasons, but all of them should be fixable in the Ultimate Joystick inspector." );
+			return;
+		}
+
+		// If the user wants to display directional tension...
+		if( tensionType == TensionType.Directional )
+		{
+			// Calculate the joystick axis values.
+			Vector2 joystickAxis = ( joystick.localPosition * ParentCanvas.scaleFactor ) / radius;
+
+			// If the joystick is to the right...
+			if( joystickAxis.x > 0 )
+			{
+				// Then lerp the color according to tension's X position.
+				if( TensionAccents[ 3 ] != null )
+					TensionAccents[ 3 ].color = Color.Lerp( tensionColorNone, tensionColorFull, joystickAxis.x <= tensionDeadZone ? 0 : ( joystickAxis.x - tensionDeadZone ) / ( 1.0f - tensionDeadZone ) );
+				
+				// If the opposite tension is not tensionColorNone, the make it so.
+				if( TensionAccents[ 1 ] != null && TensionAccents[ 1 ].color != tensionColorNone )
+					TensionAccents[ 1 ].color = tensionColorNone;
+			}
+			// Else the joystick is to the left...
+			else
+			{
+				// Repeat above steps...
+				if( TensionAccents[ 1 ] != null )
+					TensionAccents[ 1 ].color = Color.Lerp( tensionColorNone, tensionColorFull, Mathf.Abs( joystickAxis.x ) <= tensionDeadZone ? 0 : ( Mathf.Abs( joystickAxis.x ) - tensionDeadZone ) / ( 1.0f - tensionDeadZone ) );
+				if( TensionAccents[ 3 ] != null && TensionAccents[ 3 ].color != tensionColorNone )
+					TensionAccents[ 3 ].color = tensionColorNone;
+			}
+
+			// If the joystick is up...
+			if( joystickAxis.y > 0 )
+			{
+				// Then lerp the color according to tension's Y position.
+				if( TensionAccents[ 0 ] != null )
+					TensionAccents[ 0 ].color = Color.Lerp( tensionColorNone, tensionColorFull, joystickAxis.y <= tensionDeadZone ? 0 : ( joystickAxis.y - tensionDeadZone ) / ( 1.0f - tensionDeadZone ) );
+
+				// If the opposite tension is not tensionColorNone, the make it so.
+				if( TensionAccents[ 2 ] != null && TensionAccents[ 2 ].color != tensionColorNone )
+					TensionAccents[ 2 ].color = tensionColorNone;
+			}
+			// Else the joystick is down...
+			else
+			{
+				// Repeat above steps...
+				if( TensionAccents[ 2 ] != null )
+					TensionAccents[ 2 ].color = Color.Lerp( tensionColorNone, tensionColorFull, Mathf.Abs( joystickAxis.y ) <= tensionDeadZone ? 0 : ( Mathf.Abs( joystickAxis.y ) - tensionDeadZone ) / ( 1.0f - tensionDeadZone ) );
+				if( TensionAccents[ 0 ] != null && TensionAccents[ 0 ].color != tensionColorNone )
+					TensionAccents[ 0 ].color = tensionColorNone;
+			}
+		}
+		// Else the user wants to display free tension...
+		else
+		{
+			// If the first index tension is null, then inform the user and return to avoid errors.
+			if( TensionAccents[ 0 ] == null )
+			{
+				Debug.LogError( "Ultimate Joystick\nThere are no tension accent images assigned. This could be happening for several reasons, but all of them should be fixable in the Ultimate Joystick inspector." );
+				return;
+			}
+
+			// Store the distance for calculations.
+			float distance = GetDistance();
+
+			// Lerp the color according to the distance of the joystick from center.
+			TensionAccents[ 0 ].color = Color.Lerp( tensionColorNone, tensionColorFull, distance <= tensionDeadZone ? 0 : ( distance - tensionDeadZone ) / ( 1.0f - tensionDeadZone ) );
 			
-			// If the opposite tension is not tensionColorNone, the make it so.
-			if( tensionAccentLeft != null && tensionAccentLeft.color != tensionColorNone )
-				tensionAccentLeft.color = tensionColorNone;
-		}
-		// Else the joystick is to the left...
-		else
-		{
-			// Mathf.Abs gives a positive number to lerp with.
-			tension.x = Mathf.Abs( tension.x );
-
-			// Repeat above steps...
-			if( tensionAccentLeft != null )
-				tensionAccentLeft.color = Color.Lerp( tensionColorNone, tensionColorFull, tension.x );
-			if( tensionAccentRight != null && tensionAccentRight.color != tensionColorNone )
-				tensionAccentRight.color = tensionColorNone;
-		}
-
-		// If the joystick is up...
-		if( tension.y > 0 )
-		{
-			// Then lerp the color according to tension's Y position.
-			if( tensionAccentUp != null )
-				tensionAccentUp.color = Color.Lerp( tensionColorNone, tensionColorFull, tension.y );
-
-			// If the opposite tension is not tensionColorNone, the make it so.
-			if( tensionAccentDown != null && tensionAccentDown.color != tensionColorNone )
-				tensionAccentDown.color = tensionColorNone;
-		}
-		// Else the joystick is down...
-		else
-		{
-			// Mathf.Abs gives a positive number to lerp with.
-			tension.y = Mathf.Abs( tension.y );
-
-			if( tensionAccentDown != null )
-				tensionAccentDown.color = Color.Lerp( tensionColorNone, tensionColorFull, tension.y );
-
-			// Repeat above steps...
-			if( tensionAccentUp != null && tensionAccentUp.color != tensionColorNone )
-				tensionAccentUp.color = tensionColorNone;
+			// Calculate the joystick axis values.
+			Vector2 joystickAxis = joystick.localPosition / radius;
+			
+			// Rotate the tension transform to aim at the direction that the joystick is pointing.
+			TensionAccents[ 0 ].transform.localRotation = Quaternion.Euler( 0, 0, ( Mathf.Atan2( joystickAxis.y, joystickAxis.x ) * Mathf.Rad2Deg ) + rotationOffset - 90 );
 		}
 	}
-
-	// This function resets the tension image's colors back to default.
+	
+	/// <summary>
+	/// This function resets the tension image's colors back to default.
+	/// </summary>
 	void TensionAccentReset ()
 	{
-		if( tensionAccentUp != null )
-			tensionAccentUp.color = tensionColorNone;
+		// Loop through each tension accent.
+		for( int i = 0; i < TensionAccents.Count; i++ )
+		{
+			// If the tension accent is unassigned, then skip this index.
+			if( TensionAccents[ i ] == null )
+				continue;
 
-		if( tensionAccentDown != null )
-			tensionAccentDown.color = tensionColorNone;
+			// Reset the color of this tension image back to no tension.
+			TensionAccents[ i ].color = tensionColorNone;
+		}
 
-		if( tensionAccentLeft != null )
-			tensionAccentLeft.color = tensionColorNone;
-
-		if( tensionAccentRight != null )
-			tensionAccentRight.color = tensionColorNone;
+		// If the joystick is using a free tension, then reset the tension rotation back to center.
+		if( tensionType == TensionType.Free && TensionAccents.Count > 0 && TensionAccents[ 0 ] != null )
+			TensionAccents[ 0 ].transform.localRotation = Quaternion.identity;
 	}
-
-	// This function is for returning the joystick back to center for a set amount of time.
+	
+	/// <summary>
+	/// This function is for returning the joystick back to center for a set amount of time.
+	/// </summary>
 	IEnumerator GravityHandler ()
 	{
+		// Set gravityActive to true so other functions know it is running.
 		gravityActive = true;
+
+		// Calculate the speed according to the distance left from center.
 		float speed = 1.0f / ( GetDistance() / gravity );
+
 		// Store the position of where the joystick is currently.
-		Vector3 startJoyPos = joystick.position;
+		Vector3 startJoyPos = joystick.localPosition;
+
+		// Loop for the time it will take for the joystick to return to center.
 		for( float t = 0.0f; t < 1.0f && gravityActive; t += Time.deltaTime * speed )
 		{
 			// Lerp the joystick's position from where this coroutine started to the center.
-			joystick.position = Vector3.Lerp( startJoyPos, joystickCenter, t );
+			joystick.localPosition = Vector3.Lerp( startJoyPos, Vector3.zero, t );
 
 			// If the user a direction display option enabled, then display the direction as the joystick moves.
 			if( showTension )
 				TensionAccentDisplay();
 
+			// Update the position values since the joystick has moved.
 			UpdatePositionValues();
 
 			yield return null;
 		}
 
-		// Finalize the joystick's position.
+		// If the gravityActive controller is still true, then the user has not interrupted the joystick returning to center.
 		if( gravityActive )
 		{
-			joystick.position = joystickCenter;
+			// Finalize the joystick's position.
+			joystick.localPosition = Vector3.zero;
 
 			// Here at the end, reset the direction display.
 			if( showTension )
 				TensionAccentReset();
-			
+
+			// And update the position values since the joystick has reached the center.
 			UpdatePositionValues();
 		}
 
+		// Set gravityActive to false so that other functions can know it is finished.
 		gravityActive = false;
 	}
 
-	// This function is used only to find the canvas parent if its not the root object.
-	Canvas GetParentCanvas ()
+	/// <summary>
+	/// This coroutine will handle the input transitions over time according to the users options.
+	/// </summary>
+	IEnumerator InputTransition ()
 	{
-		Transform parent = transform.parent;
-		while( parent != null )
-		{ 
-			if( parent.transform.GetComponent<Canvas>() )
-				return parent.transform.GetComponent<Canvas>();
+		// Store the current values for the alpha and scale of the joystick.
+		float currentAlpha = joystickGroup.alpha;
+		float currentScale = joystickBase.localScale.x;
 
-			parent = parent.transform.parent;
+		// If the scaleInSpeed is NaN....
+		if( float.IsInfinity( transitionTouchedSpeed ) )
+		{
+			// Set the alpha to the touched value.
+			if( useFade )
+				joystickGroup.alpha = fadeTouched;
+
+			// Set the scale to the touched value.
+			if( useScale )
+				joystickBase.localScale = Vector3.one * scaleTouched;
 		}
-		return null;
-	}
-
-	CanvasGroup GetCanvasGroup ()
-	{
-		if( GetComponent<CanvasGroup>() )
-			return GetComponent<CanvasGroup>();
+		// Else run the loop to transition to the desired values over time.
 		else
 		{
-			gameObject.AddComponent<CanvasGroup>();
-			return GetComponent<CanvasGroup>();
-		}
-	}
-
-	IEnumerator FadeLogic ()
-	{
-		// Store the current value for the alpha of the joystickGroup.
-		float currentFade = joystickGroup.alpha;
-
-		// If the fadeInSpeed is NaN, then just set the alpha to the desired fade.
-		if( float.IsInfinity( fadeInSpeed ) )
-			joystickGroup.alpha = fadeTouched;
-		// Else run the loop to fade to the desired alpha over time.
-		else
-		{
-			for( float fadeIn = 0.0f; fadeIn < 1.0f && joystickState == true; fadeIn += Time.deltaTime * fadeInSpeed )
+			// This for loop will continue for the transition duration.
+			for( float transition = 0.0f; transition < 1.0f && joystickState; transition += Time.deltaTime * transitionTouchedSpeed )
 			{
-				joystickGroup.alpha = Mathf.Lerp( currentFade, fadeTouched, fadeIn );
+				// Lerp the alpha of the canvas group.
+				if( useFade )
+					joystickGroup.alpha = Mathf.Lerp( currentAlpha, fadeTouched, transition );
+
+				// Lerp the scale of the joystick.
+				if( useScale )
+					joystickBase.localScale = Vector3.one * Mathf.Lerp( currentScale, scaleTouched, transition );
+
 				yield return null;
 			}
-			if( joystickState == true )
-				joystickGroup.alpha = fadeTouched;
+
+			// If the joystick is still being interacted with, then finalize the values since the loop above has ended.
+			if( joystickState )
+			{
+				if( useFade )
+					joystickGroup.alpha = fadeTouched;
+
+				if( useScale )
+					joystickBase.localScale = Vector3.one * scaleTouched;
+			}
 		}
 
-		// while loop for while joystickState is true
-		while( joystickState == true )
+		// While loop for while joystickState is true
+		while( joystickState )
 			yield return null;
 
-		// Set the current fade value.
-		currentFade = joystickGroup.alpha;
+		// Set the current values.
+		currentAlpha = joystickGroup.alpha;
+		currentScale = joystickBase.localScale.x;
 
-		// If the fadeOutSpeed value is NaN, then apply the desired alpha.
-		if( float.IsInfinity( fadeOutSpeed ) )
-			joystickGroup.alpha = fadeUntouched;
-		// Else run the loop for fading out.
+		// If the scaleOutSpeed value is NaN, then apply the desired alpha and scale.
+		if( float.IsInfinity( transitionUntouchedSpeed ) )
+		{
+			if( useFade )
+				joystickGroup.alpha = fadeUntouched;
+
+			if( useScale )
+				joystickBase.localScale = Vector3.one;
+		}
+		// Else run the loop to transition to the desired values over time.
 		else
 		{
-			for( float fadeOut = 0.0f; fadeOut < 1.0f && joystickState == false; fadeOut += Time.deltaTime * fadeOutSpeed )
+			for( float transition = 0.0f; transition < 1.0f && !joystickState; transition += Time.deltaTime * transitionUntouchedSpeed )
 			{
-				joystickGroup.alpha = Mathf.Lerp( currentFade, fadeUntouched, fadeOut );
+				if( useFade )
+					joystickGroup.alpha = Mathf.Lerp( currentAlpha, fadeUntouched, transition );
+
+				if( useScale )
+					joystickBase.localScale = Vector3.one * Mathf.Lerp( currentScale, 1.0f, transition );
 				yield return null;
 			}
-			if( joystickState == false )
-				joystickGroup.alpha = fadeUntouched;
+
+			// If the joystick is still not being interacted with, then finalize the alpha and scale since the loop above finished.
+			if( !joystickState )
+			{
+				if( useFade )
+					joystickGroup.alpha = fadeUntouched;
+
+				if( useScale )
+					joystickBase.localScale = Vector3.one;
+			}
 		}
 	}
 
@@ -568,34 +942,26 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		yield return new WaitForEndOfFrame();
 		tapCountAchieved = false;
 	}
-
+	
 	/// <summary>
-	/// This function check each option and component in relation to the joystick highlight. It updates the updateHighlightPosition bool according to set options.
+	/// This function updates the position values of the joystick so that they can be referenced.
 	/// </summary>
-	void CheckJoystickHighlightForUse ()
-	{
-		if( showHighlight == false )
-			updateHighlightPosition = false;
-		else if( highlightJoystick == null )
-			updateHighlightPosition = false;
-		else if( joystick.GetComponent<Image>() == highlightJoystick )
-			updateHighlightPosition = false;
-		else
-			updateHighlightPosition = true;
-	}
-
 	void UpdatePositionValues ()
 	{
-		Vector2 rawJoystickPosition = ( joystick.position - joystickCenter ) / radius;
+		// Store the relative position of the joystick and divide the Vector by the radius of the joystick. This will normalize the values.
+		Vector2 joystickPosition = ( joystick.localPosition * ParentCanvas.scaleFactor ) / radius;
 
+		// If the distance of the joystick from center is less that the dead zone set by the user...
 		if( GetDistance() <= deadZone )
 		{
-			rawJoystickPosition.x = 0.0f;
-			rawJoystickPosition.y = 0.0f;
+			// Then zero out the axis values.
+			joystickPosition.x = 0.0f;
+			joystickPosition.y = 0.0f;
 		}
 
-		HorizontalAxis = rawJoystickPosition.x;
-		VerticalAxis = rawJoystickPosition.y;
+		// Finally, set the horizontal and vertical axis values for reference.
+		HorizontalAxis = joystickPosition.x;
+		VerticalAxis = joystickPosition.y;
 	}
 
 	/// <summary>
@@ -603,149 +969,77 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	/// </summary>
 	static bool JoystickConfirmed ( string joystickName )
 	{
+		// If the dictionary list doesn't contain this joystick name...
 		if( !UltimateJoysticks.ContainsKey( joystickName ) )
 		{
-			Debug.LogWarning( "Ultimate Joystick - No Ultimate Joystick has been registered with the name: " + joystickName + "." );
+			// Log a warning to the user and return false.
+			Debug.LogWarning( "Ultimate Joystick\nNo Ultimate Joystick has been registered with the name: " + joystickName + "." );
 			return false;
 		}
+
+		// Return true because the dictionary does contain the joystick name.
 		return true;
 	}
 
+	/// <summary>
+	/// Resets the joystick position and input information and stops any coroutines that might have been running.
+	/// </summary>
 	void ResetJoystick ()
 	{
+		// Reset all of the controller variables.
 		gravityActive = false;
-		StopCoroutine( "GravityHandler" );
-
-		// Since the touch has lifted, set the state to false and reset the local pointerId.
 		joystickState = false;
-		_pointerId = -10;
+		_inputId = -10;
+
+		// Stop the gravity coroutine.
+		StopCoroutine( "GravityHandler" );
 		
 		// If dynamicPositioning, disableVisuals, or draggable are enabled...
-		if( dynamicPositioning == true || disableVisuals == true || extendRadius == true )
+		if( dynamicPositioning || disableVisuals || extendRadius )
 		{
-			// The joystickSizeFolder needs to be reset back to the default position.
-			joystickSizeFolder.position = defaultPos;
+			// The joystickBase needs to be reset back to the default position.
+			joystickBase.localPosition = defaultPos;
 
-			// Reset the joystickCenter since the touch has been released.
-			joystickCenter = joystickBase.position;
+			// Reset the joystick center since the touch has been released.
+			UpdateJoystickCenter();
 		}
+
 		// Reset the joystick's position back to center.
-		joystick.position = joystickCenter;
-		
-		// If the user has showHighlight enabled, and the highlightJoystick variable is assigned, reset it too.
-		if( updateHighlightPosition == true )
-			highlightJoystick.transform.position = joystickCenter;
+		joystick.localPosition = Vector3.zero;
 
-		// If the user has showTension enabled, then reset the tension if throwable is disabled.
-		if( showTension == true )
+		// Update the position values.
+		UpdatePositionValues();
+
+		// If the user has showTension enabled, then reset the tension.
+		if( showTension )
 			TensionAccentReset();
-
-		// If the user has useAnimation enabled, set that here.
-		if( useAnimation == true )
-			joystickAnimator.SetBool( animationID, false );
-	}
-
-	/// <summary>
-	/// Updates the Size and Placement of the Ultimate Joystick according to the user's options.
-	/// </summary>
-	void UpdateSizeAndPlacement ()
-	{
-		// If any of the needed components are left unassigned, then inform the user and return.
-		if( joystickSizeFolder == null || joystickBase == null || joystick == null )
-		{
-			if( Application.isPlaying )
-				Debug.LogError( "Ultimate Joystick - There are some needed components that are not currently assigned. Please check the Assigned Variables section and be sure to assign all of the components." );
-			return;
-		}
-
-		// Set the current reference size for scaling.
-		float referenceSize = scalingAxis == ScalingAxis.Height ? Screen.height : Screen.width;
-		
-		// Configure the target size for the joystick graphic.
-		float textureSize = referenceSize * ( joystickSize / 10 );
-		
-		// If baseTrans is null, store this object's RectTrans so that it can be positioned.
-		if( baseTrans == null )
-			baseTrans = GetComponent<RectTransform>();
-		
-		// Get a position for the joystick based on the position variables.
-		Vector2 imagePosition = ConfigureImagePosition( new Vector2( textureSize, textureSize ), new Vector2( customSpacing_X, customSpacing_Y ) );
-		
-		// If the user wants a custom touch size...
-		if( joystickTouchSize == JoystickTouchSize.Custom )
-		{
-			// Fix the custom size variables.
-			float fixedFBPX = customTouchSize_X / 100;
-			float fixedFBPY = customTouchSize_Y / 100;
-			
-			// Depending on the joystickTouchSize options, configure the size.
-			baseTrans.sizeDelta = new Vector2( Screen.width * fixedFBPX, Screen.height * fixedFBPY );
-			
-			// Send the size and custom positioning to the ConfigureImagePosition function to get the exact position.
-			Vector2 imagePos = ConfigureImagePosition( baseTrans.sizeDelta, new Vector2( customTouchSizePos_X, customTouchSizePos_Y ) );
-
-			// Apply the new position.
-			baseTrans.position = imagePos;
-		}
-		else
-		{
-			// Temporary float to store a modifier for the touch area size.
-			float fixedTouchSize = joystickTouchSize == JoystickTouchSize.Large ? 2.0f : joystickTouchSize == JoystickTouchSize.Medium ? 1.51f : 1.01f;
-			
-			// Temporary Vector2 to store the default size of the joystick.
-			Vector2 tempVector = new Vector2( textureSize, textureSize );
-			
-			// Apply the joystick size multiplied by the fixedTouchSize.
-			baseTrans.sizeDelta = tempVector * fixedTouchSize;
-			
-			// Apply the imagePosition modified with the difference of the sizeDelta divided by 2, multiplied by the scale of the parent canvas.
-			baseTrans.position = imagePosition - ( ( baseTrans.sizeDelta - tempVector ) / 2 );
-		}
-
-		// If the options dictate that the default position needs to be stored...
-		if( dynamicPositioning == true || disableVisuals == true || extendRadius == true )
-		{
-			// Set the texture center so that the joystick can move to the touch position correctly.
-			textureCenter = new Vector2( textureSize / 2, textureSize / 2 );
-			
-			// Also need to store the default position so that it can return after the touch has been lifted.
-			defaultPos = imagePosition;
-		}
-		
-		// Apply the size and position to the joystickSizeFolder.
-		joystickSizeFolder.sizeDelta = new Vector2( textureSize, textureSize );
-		joystickSizeFolder.position = imagePosition;
-		
-		// Configure the size of the Ultimate Joystick's radius.
-		radius = joystickSizeFolder.sizeDelta.x * ( radiusModifier / 10 );
-		
-		// Store the joystick's center so that JoystickPosition can be configured correctly.
-		joystickCenter = joystickSizeFolder.position + new Vector3( joystickSizeFolder.sizeDelta.x / 2, joystickSizeFolder.sizeDelta.y / 2 );
-
-		// If the user wants to fade, and the joystickGroup is unassigned, find the CanvasGroup.
-		if( useFade == true && joystickGroup == null )
-			joystickGroup = GetCanvasGroup();
 	}
 
 	#if UNITY_EDITOR
 	void Update ()
 	{
 		// Keep the joystick updated while the game is not being played.
-		if( Application.isPlaying == false )//&& UnityEditor.Selection.activeGameObject != gameObject )
-			UpdateSizeAndPlacement();
+		if( !Application.isPlaying )
+			UpdateJoystickPositioning();
 	}
 	#endif
-	
+
 	/* --------------------------------------------- *** PUBLIC FUNCTIONS FOR THE USER *** --------------------------------------------- */
 	/// <summary>
 	/// Resets the joystick and updates the size and placement of the Ultimate Joystick. Useful for screen rotations, changing of screen size, or changing of size and placement options.
 	/// </summary>
 	public void UpdatePositioning ()
 	{
+		// If the game is running, then reset the joystick.
 		if( Application.isPlaying )
 			ResetJoystick();
 
-		UpdateSizeAndPlacement();
+		// Update the positioning.
+		UpdateJoystickPositioning();
+
+		// Notify any subscribers that the UpdatePositioning function has been called.
+		if( OnUpdatePositioning != null )
+			OnUpdatePositioning();
 	}
 	
 	/// <summary>
@@ -816,7 +1110,7 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	/// </summary>
 	public float GetDistance ()
 	{
-		return Vector3.Distance( joystick.position, joystickCenter ) / radius;
+		return Vector3.Distance( joystick.localPosition * ParentCanvas.scaleFactor, Vector3.zero ) / radius;
 	}
 
 	/// <summary>
@@ -825,14 +1119,18 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	/// <param name="targetColor">New highlight color.</param>
 	public void UpdateHighlightColor ( Color targetColor )
 	{
-		if( showHighlight == false )
+		// If the user doesn't want to show highlight, then return.
+		if( !showHighlight )
 			return;
 
+		// Assigned the new color.
 		highlightColor = targetColor;
 		
-		// Check if each variable is assigned so there is not a null reference exception when applying color.
+		// if the base highlight is assigned then apply the color.
 		if( highlightBase != null )
 			highlightBase.color = highlightColor;
+
+		// If the joystick highlight image is assigned, apply the highlight color.
 		if( highlightJoystick != null )
 			highlightJoystick.color = highlightColor;
 	}
@@ -844,9 +1142,11 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	/// <param name="targetTensionFull">New full tension color.</param>
 	public void UpdateTensionColors ( Color targetTensionNone, Color targetTensionFull )
 	{
-		if( showTension == false )
+		// If the user doesn't want to show tension, then just return.
+		if( !showTension )
 			return;
 
+		// Assign the tension colors.
 		tensionColorNone = targetTensionNone;
 		tensionColorFull = targetTensionFull;
 	}
@@ -874,33 +1174,36 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	{
 		// Set the states to false.
 		joystickState = false;
-		_pointerId = -10;
+		_inputId = -10;
 		
 		// If the joystick center has been changed, then reset it.
-		if( dynamicPositioning == true || disableVisuals == true || extendRadius == true )
+		if( dynamicPositioning || disableVisuals || extendRadius )
 		{
-			joystickSizeFolder.position = defaultPos;
-			joystickCenter = joystickBase.position;
+			joystickBase.localPosition = defaultPos;
+			UpdateJoystickCenter();
 		}
 		
 		// Reset the position of the joystick.
-		joystick.position = joystickCenter;
-		
-		// If the highlight image needs to be moved, then reset it's position to center.
-		if( updateHighlightPosition == true )
-			highlightJoystick.transform.position = joystickCenter;
+		joystick.localPosition = Vector3.zero;
+
+		// Update the joystick position values since the joystick has been reset.
+		UpdatePositionValues();
 		
 		// If the user is displaying tension accents, then reset them here.
-		if( showTension == true )
+		if( showTension )
 			TensionAccentReset();
-		
-		// If the user is using animations, the reset the animator.
-		if( useAnimation == true )
-			joystickAnimator.SetBool( animationID, false );
 
-		// If the user is displaying a fade, then reset to the untouched state.
-		if( useFade )
-			joystickGroup.alpha = fadeUntouched;
+		// If the user wants to show a transition on the different input states...
+		if( inputTransition )
+		{
+			// If the user is displaying a fade, then reset to the untouched state.
+			if( useFade )
+				joystickGroup.alpha = fadeUntouched;
+
+			// If the user is scaling the joystick, then reset the scale.
+			if( useScale )
+				joystickBase.transform.localScale = Vector3.one;
+		}
 		
 		// Disable the gameObject.
 		gameObject.SetActive( false );
@@ -912,7 +1215,7 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	public void EnableJoystick ()
 	{
 		// Reset the joystick's position again.
-		joystick.position = joystickCenter;
+		joystick.localPosition = Vector3.zero;
 
 		// Enable the gameObject.
 		gameObject.SetActive( true );
