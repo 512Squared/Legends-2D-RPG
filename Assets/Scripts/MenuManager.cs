@@ -25,7 +25,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] PlayerStats[] playerStats;
 
-    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, thulGold, dexterity, defence, intelligence, perception;
+    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, thulGold, thulMana, dexterity, defence, intelligence, perception;
     [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
     [SerializeField] Image[] characterImage, characterMug;
     [SerializeField] GameObject[] characterCards, characterParty, characterInventry;
