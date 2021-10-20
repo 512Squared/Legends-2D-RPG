@@ -40,6 +40,13 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
 
+    [SerializeField] GameObject itemSlotContainer;
+    [SerializeField] GameObject newItem;
+    [SerializeField] Transform itemSlotParent;
+    [SerializeField] Image itemImage;
+    [SerializeField] Button itemButton;
+
+
 
 
     private void Start()
@@ -90,7 +97,7 @@ public class MenuManager : MonoBehaviour
             isTeamMember[i] = playerStats[i].isTeamMember;
             if (isTeamMember[i] == true)
             {
-                Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
+                //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
                 characterCards[i].SetActive(true);
                 characterParty[i].SetActive(true);
                 characterName[i].text = playerStats[i].playerName;
@@ -125,6 +132,30 @@ public class MenuManager : MonoBehaviour
 
     }
 
+    public void  UpdateItemsInventory()
+    {
+        foreach (Transform itemSlot in itemSlotParent)
+        {
+
+            if (instance != null && instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+
+        }
+
+        foreach (ItemsManager item in Inventory.instance.GetItemsList())
+        {
+            RectTransform itemSlot = Instantiate(itemSlotContainer, itemSlotParent).GetComponent<RectTransform>();
+            newItem.SetActive(true);
+            itemImage.sprite = item.itemImage;
+
+
+            
+        }
+    }
+
+
     public void StatsMenu()
     {
         for (int i = 0; i < playerStats.Length; i++)
@@ -152,8 +183,8 @@ public class MenuManager : MonoBehaviour
     {
 
         select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
-        Debug.Log(playerStats[select].playerName + " is now active");
-        Debug.Log("SELECT NO: " + select);
+        //Debug.Log(playerStats[select].playerName + " is now active");
+        //Debug.Log("SELECT NO: " + select);
         characterNameV.text = playerStats[select].playerName;
         descriptionV.text = playerStats[select].playerDesc;
         healthV.text = playerStats[select].npcHP.ToString();
