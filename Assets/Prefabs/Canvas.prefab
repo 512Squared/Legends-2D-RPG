@@ -21109,7 +21109,6 @@ MonoBehaviour:
   perceptionV: {fileID: 3820641161123492215}
   itemBox: {fileID: 6733940417252993636, guid: 587d7448224084146ae3ee5dad4be58f, type: 3}
   itemBoxParent: {fileID: 6326679106411328717}
-  itemImage: {fileID: 170636822776994387}
 --- !u!114 &1990820733714565511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86112,7 +86111,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6326679106323114957}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 1
@@ -130212,17 +130211,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 587d7448224084146ae3ee5dad4be58f, type: 3}
---- !u!114 &170636822776994387 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7118176003815692008, guid: 587d7448224084146ae3ee5dad4be58f, type: 3}
-  m_PrefabInstance: {fileID: 6960012051785551035}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &5833530591878559309 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3486405409904147190, guid: 587d7448224084146ae3ee5dad4be58f, type: 3}
