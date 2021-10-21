@@ -10,7 +10,7 @@ public class ItemsManager : MonoBehaviour
 
     public string itemName, itemDescription;
     public int valueInCoins;
-    public Sprite itemImage;
+    public Sprite itemsImage;
 
 
     public enum AffectType { HP, Mana, Defence, Dexterity, Perception}
@@ -19,8 +19,11 @@ public class ItemsManager : MonoBehaviour
 
     public int WeaponDexterity;
     public int armourDefence;
-
     public int speedIncrease;
+
+    public bool isStackable;
+
+    public int amount;
 
 
     // Start is called before the first frame update
@@ -39,7 +42,7 @@ public class ItemsManager : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
-            //print("This item is: " + itemName);
+            print("You picked up a " + itemName);
             SelfDestroy();
             Inventory.instance.AddItems(this);
            

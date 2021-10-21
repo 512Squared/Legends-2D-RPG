@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     // this is probably going to get called later. It's an array to hold the player stats
 
-    private PlayerStats[] playerStats;
+    public PlayerStats[] playerStats;
 
 
     public bool isInterfaceOpen, dialogueBoxOpened;

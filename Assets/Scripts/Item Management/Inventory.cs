@@ -6,26 +6,45 @@ public class Inventory : MonoBehaviour
 {
 
     public static Inventory instance;
-    
+
     private List<ItemsManager> itemsList;
 
     // Start is called before the first frame update
     void Start()
     {
-        instance = this; 
-        
+        instance = this;
         itemsList = new List<ItemsManager>();
-        //Debug.Log("New inventory has been created");
+
     }
 
 
 
     public void AddItems(ItemsManager item)
     {
-        //print(item.itemName + " has been added to the inventory");
-        itemsList.Add(item);
-        print("Items in the inventory: " + itemsList.Count);
-        
+        if (item.isStackable)
+        {
+            bool itemAleadyInInventory = false;
+
+            foreach (ItemsManager itemInInventory in itemsList)
+            {
+                if (itemInInventory.itemName == item.itemName)
+                {
+                    itemInInventory.amount += item.amount;
+                    itemAleadyInInventory = true;
+                }
+            }
+
+            if (!itemAleadyInInventory)
+            {
+                itemsList.Add(item);
+            }   
+        }
+        else
+        {
+            itemsList.Add(item);
+        }
+
+
     }
 
     public List<ItemsManager> GetItemsList()

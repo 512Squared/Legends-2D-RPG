@@ -20,6 +20,8 @@ public class MenuManager : MonoBehaviour
 
     public static MenuManager instance;
 
+    [SerializeField] GameObject panelTesting;
+
     public static int select;
 
 
@@ -31,20 +33,17 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject[] characterCards, characterParty, characterInventry;
     [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
     [SerializeField] Slider xpMainS;
-
     [SerializeField] bool[] isTeamMember;
-
     [SerializeField] Image characterImageV;
-
     [SerializeField] Slider xpVS, manaVS, healthVS, dexterityVS, defenceVS, intelligenceVS, perceptionVS;
-
     [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
 
-    [SerializeField] GameObject itemSlotContainer;
-    [SerializeField] GameObject newItem;
-    [SerializeField] Transform itemSlotParent;
-    [SerializeField] Image itemImage;
-    [SerializeField] Button itemButton;
+    [SerializeField] GameObject itemBox;
+    [SerializeField] Transform itemBoxParent;
+    //[SerializeField] GameObject newItem;
+    //[SerializeField] Image itemImage;
+
+    //[SerializeField] TextMeshProUGUI itemsAmountText;
 
 
 
@@ -53,7 +52,6 @@ public class MenuManager : MonoBehaviour
     {
 
         instance = this;
-        //HomeScreenStats();
 
     }
 
@@ -62,9 +60,6 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-
-
-
             if (mainMenu.GetComponent<CanvasGroup>().alpha == 0)
             {
                 mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
@@ -78,10 +73,30 @@ public class MenuManager : MonoBehaviour
                 mainMenu.GetComponent<CanvasGroup>().interactable = false;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
                 ButtonHandler.instance.IsinterfaceOn();
-                UpdateStats();
+            }
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (panelTesting.GetComponent<CanvasGroup>().alpha == 0)
+            {
+                panelTesting.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
+                panelTesting.GetComponent<CanvasGroup>().interactable = true;
+                panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = true;
+
+                UpdateItemsInventory();
+            }
+            else if (panelTesting.GetComponent<CanvasGroup>().alpha == 1)
+            {
+                panelTesting.GetComponent<UIFader>().FadeOut(); // call a function from another script
+                panelTesting.GetComponent<CanvasGroup>().interactable = false;
+                panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
             }
         }
+
+
 
 
     }
@@ -132,28 +147,33 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void  UpdateItemsInventory()
+
+    public void UpdateItemsInventory()
     {
-        foreach (Transform itemSlot in itemSlotParent)
+        foreach (Transform itemSlot in itemBoxParent)
         {
-
-            if (instance != null && instance != this)
-            {
-                Destroy(this.gameObject);
-            }
-
+            Destroy(itemSlot.gameObject);
         }
 
         foreach (ItemsManager item in Inventory.instance.GetItemsList())
         {
-            RectTransform itemSlot = Instantiate(itemSlotContainer, itemSlotParent).GetComponent<RectTransform>();
-            newItem.SetActive(true);
-            itemImage.sprite = item.itemImage;
-
-
-            
+            RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
+            Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
+            itemImage.sprite = item.itemsImage;
+            TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
+            if (item.amount > 1)
+                itemsAmountText.text = item.amount.ToString();
+            else
+                itemsAmountText.text = "";
+            //    itemSlot.GetComponent<ItemButton>().itemOnButton = item;
         }
+
+
     }
+
+
+
+
 
 
     public void StatsMenu()
@@ -221,3 +241,48 @@ public class MenuManager : MonoBehaviour
     }
 
 }
+
+
+//public void UpdateItemsInventory()
+//{
+//    foreach(Transform itemSlot in itemBoxParent)
+//    {
+//        Destroy(itemSlot.gameObject);
+//        Debug.Log("Inventory list destroyed");
+//    }
+
+//    foreach(ItemsManager item in Inventory.instance.GetItemsList())
+//    {
+//        Debug.Log("Item Instantiation begun");
+//        RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
+//        Debug.Log("Item Instantiation completed");
+//        itemImage.sprite = item.itemImage;
+//        //itemBox.SetActive(true);
+//        //newItem.SetActive(true);
+//for (int i = 0; i < itemBox.transform.childCount; i++)
+//{
+//    foreach (var x in itemBox.GetComponentsInChildren<Image>())
+//    {
+//        x.enabled = true;
+//    }
+//    foreach (var x in itemBox.GetComponentsInChildren<Button>())
+//    {
+//        x.enabled = true;
+//    }
+//    foreach (var x in itemBox.GetComponentsInChildren<TextMeshProUGUI>())
+//    {
+//        x.enabled = true;
+//    }
+//}
+//if (item.amount > 1)
+//{
+//    itemsAmountText.text = item.amount.ToString();
+//}
+//else
+//{
+//    itemsAmountText.text = "";
+//}
+
+////itemSlot.GetComponent<ItemButton>().itemOnButton = item;
+//}
+//    }
