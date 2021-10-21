@@ -168,13 +168,7 @@ public class MenuManager : MonoBehaviour
             //    itemSlot.GetComponent<ItemButton>().itemOnButton = item;
         }
 
-
     }
-
-
-
-
-
 
     public void StatsMenu()
     {
@@ -243,20 +237,7 @@ public class MenuManager : MonoBehaviour
 }
 
 
-//public void UpdateItemsInventory()
-//{
-//    foreach(Transform itemSlot in itemBoxParent)
-//    {
-//        Destroy(itemSlot.gameObject);
-//        Debug.Log("Inventory list destroyed");
-//    }
 
-//    foreach(ItemsManager item in Inventory.instance.GetItemsList())
-//    {
-//        Debug.Log("Item Instantiation begun");
-//        RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
-//        Debug.Log("Item Instantiation completed");
-//        itemImage.sprite = item.itemImage;
 //        //itemBox.SetActive(true);
 //        //newItem.SetActive(true);
 //for (int i = 0; i < itemBox.transform.childCount; i++)
@@ -273,16 +254,5 @@ public class MenuManager : MonoBehaviour
 //    {
 //        x.enabled = true;
 //    }
-//}
-//if (item.amount > 1)
-//{
-//    itemsAmountText.text = item.amount.ToString();
-//}
-//else
-//{
-//    itemsAmountText.text = "";
-//}
-
-////itemSlot.GetComponent<ItemButton>().itemOnButton = item;
 //}
 //    }
