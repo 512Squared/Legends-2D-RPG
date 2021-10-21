@@ -2327,7 +2327,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 374113452962915504}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -156.88893, y: -4.1481304, z: 0}
+  m_LocalPosition: {x: -156.89056, y: -1.9225624, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 374113454605785339}
@@ -20928,7 +20928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abeb1c027f2a3dc48a5b0321cb694a43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenu: {fileID: 1990820733907383746}
+  mainMenu: {fileID: 1990820734159008376}
   statsButtons: []
   imageToFade: {fileID: 1990820734159008380}
   droppy: {fileID: 7958831186620547546}
@@ -21109,6 +21109,11 @@ MonoBehaviour:
   perceptionV: {fileID: 3820641161123492215}
   itemBox: {fileID: 6733940417252993636, guid: 587d7448224084146ae3ee5dad4be58f, type: 3}
   itemBoxParent: {fileID: 6326679106411328717}
+  itemName: {fileID: 6326679106289151836}
+  itemDescription: {fileID: 7451240134246018135}
+  itemDamage: {fileID: 6326679107058194549}
+  itemArmour: {fileID: 6326679106993912310}
+  itemImage: {fileID: 6326679108278173513}
 --- !u!114 &1990820733714565511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86111,7 +86116,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6326679106323114957}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 1
@@ -87436,7 +87441,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Attack Damege\r"
+  m_text: Attack Damage
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
   m_sharedMaterial: {fileID: 5416806443266638455, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
@@ -87654,7 +87659,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Health
+  m_text: Defence bonus
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}
   m_sharedMaterial: {fileID: 5416806443266638455, guid: d70f485aa27dc43f79a8fd168f58435c, type: 2}

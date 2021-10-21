@@ -40,10 +40,9 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] GameObject itemBox;
     [SerializeField] Transform itemBoxParent;
-    //[SerializeField] GameObject newItem;
-    //[SerializeField] Image itemImage;
 
-    //[SerializeField] TextMeshProUGUI itemsAmountText;
+    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour;
+    public Image itemImage;
 
 
 
@@ -184,7 +183,7 @@ public class MenuManager : MonoBehaviour
                 itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
             }
 
-            //    itemSlot.GetComponent<ItemButton>().itemOnButton = item;
+            itemSlot.GetComponent<ItemButton>().itemOnButton = item;
 
 
 
