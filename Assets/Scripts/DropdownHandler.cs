@@ -9,13 +9,14 @@ public class DropdownHandler : MonoBehaviour
 {
 
 
+
     public TextMeshProUGUI TextBox;
     
     private int select;
 
     [SerializeField] PlayerStats[] characters;
- 
 
+    public static DropdownHandler instance;
 
      
 
@@ -25,6 +26,9 @@ public class DropdownHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        instance = this;
+
         var dropdown = transform.GetComponent<TMP_Dropdown>();
 
         dropdown.options.Clear();
@@ -59,7 +63,11 @@ public class DropdownHandler : MonoBehaviour
         
         );
 
+        DontDestroyOnLoad(gameObject);
+
     }
+
+  
 
 
 

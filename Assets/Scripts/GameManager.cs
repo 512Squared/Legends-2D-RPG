@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
 
         playerStats = FindObjectsOfType<PlayerStats>();
 
-
     }
 
     // Update is called once per frame

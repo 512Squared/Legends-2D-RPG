@@ -41,10 +41,14 @@ public class PlayerStats : MonoBehaviour
 // Start is called before the first frame update
     void Start()
     {
+
+
         instance = this;
+    
+        DontDestroyOnLoad(gameObject);
 
         // assigning XP and leveling up from XP
-        
+
         xpLevelUp = new int[maxLevel];
         xpLevelUp[1] = baseLevelXP;
 

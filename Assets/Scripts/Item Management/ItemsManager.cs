@@ -11,6 +11,7 @@ public class ItemsManager : MonoBehaviour
     public string itemName, itemDescription;
     public int valueInCoins;
     public Sprite itemsImage;
+    public bool isNewItem = true;
 
 
     public enum AffectType { HP, Mana, Defence, Dexterity, Perception}

@@ -158,16 +158,37 @@ public class MenuManager : MonoBehaviour
         foreach (ItemsManager item in Inventory.instance.GetItemsList())
         {
             RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
+
             Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
             itemImage.sprite = item.itemsImage;
+
             TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
             if (item.amount > 1)
+            {
                 itemsAmountText.text = item.amount.ToString();
+            }
             else
+            {
                 itemsAmountText.text = "";
-            //    itemSlot.GetComponent<ItemButton>().itemOnButton = item;
-        }
+            }
+            if (item.isNewItem == true)
+            {
+                Debug.Log(item.itemName + " bool status: " + item.isNewItem);
+                item.isNewItem = false;
+                itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
 
+                Debug.Log(item.itemName + " bool status changed to: " + item.isNewItem);
+            }
+            else if (item.isNewItem == false)
+            {
+                itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+            }
+
+            //    itemSlot.GetComponent<ItemButton>().itemOnButton = item;
+
+
+
+        }
     }
 
     public void StatsMenu()
@@ -233,6 +254,9 @@ public class MenuManager : MonoBehaviour
         Debug.Log("Game was quit!");
         Application.Quit();
     }
+
+
+
 
 }
 
