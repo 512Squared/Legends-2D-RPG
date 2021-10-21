@@ -15,6 +15,6 @@ public class ItemButton : MonoBehaviour
         MenuManager.instance.itemName.text = itemOnButton.itemName;
         MenuManager.instance.itemDescription.text = itemOnButton.itemDescription;
         MenuManager.instance.itemImage.sprite = itemOnButton.itemsImage;
-        var focus = GameObject.FindGameObjectWithTag("Focus").GetComponent<Image>().enabled = true;
+        GameObject.FindGameObjectWithTag("Focus").GetComponent<Image>().enabled = true;
     }
 }
