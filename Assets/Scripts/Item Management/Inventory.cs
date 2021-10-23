@@ -8,13 +8,13 @@ public class Inventory : MonoBehaviour
     public static Inventory instance;
 
     private List<ItemsManager> itemsList;
+    public PlayerStats player;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
         itemsList = new List<ItemsManager>();
-
     }
 
 
@@ -45,6 +45,42 @@ public class Inventory : MonoBehaviour
         }
 
 
+    }
+
+    public void RemoveItem(ItemsManager item)
+    {
+        if (item.isStackable)
+        {
+            ItemsManager inventoryItem = null;
+
+            foreach(ItemsManager itemInInventory in itemsList)
+
+            {
+                if (itemInInventory.itemName == item.itemName)
+                {
+                    itemInInventory.amount--;
+                    inventoryItem = itemInInventory;
+                    Debug.Log("Stackable discard"); 
+                    player.thulGold += item.valueInCoins;
+                    MenuManager.instance.UpdateStats();
+                }
+            }
+
+            if(inventoryItem != null && inventoryItem.amount <= 0)
+            {
+                Debug.Log("was last item");
+                itemsList.Remove(inventoryItem);
+                MenuManager.instance.UpdateStats();
+            }
+        }
+
+        else
+        {
+            Debug.Log("non-Stackable discard");
+            itemsList.Remove(item);
+            player.thulGold += item.valueInCoins;
+            MenuManager.instance.UpdateStats();
+        }
     }
 
     public List<ItemsManager> GetItemsList()

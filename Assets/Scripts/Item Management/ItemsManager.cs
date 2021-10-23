@@ -52,7 +52,7 @@ public class ItemsManager : MonoBehaviour
 
     public void SelfDestroy()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 

@@ -4,48 +4,101 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Sirenix.OdinInspector;
+
 
 
 public class MenuManager : MonoBehaviour
 {
 
-
-    [SerializeField] GameObject mainMenu;
+    [SerializeField] PlayerStats[] playerStats;
     [SerializeField] GameObject[] statsButtons;
+
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [SerializeField] GameObject mainMenu;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
     [SerializeField] Image imageToFade;
-
-
+    [FoldoutGroup("Miscellaneous", expanded: false)]
     [SerializeField] TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [SerializeField] private UltimateJoystick joystick;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [SerializeField] GameObject panelTesting;
+
+
 
 
     public static MenuManager instance;
 
-    [SerializeField] GameObject panelTesting;
+
+    //adding serializeField gives possibility to add Simple Joystick object in inspector and thereby share its functions. Not possible if in prefab unless both are in a prefab
+
+
 
     public static int select;
 
 
-    [SerializeField] PlayerStats[] playerStats;
+    
+    [TabGroup("Char Stats")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health,  dexterity, defence, intelligence, perception;
+    [TabGroup("Char Stats")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] GameObject[] characterCards, characterParty;
 
-    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, thulGold, thulMana, dexterity, defence, intelligence, perception;
-    [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
+    [TabGroup("Images")]
+    [GUIColor(0.670f, 1, 0.560f)]
+    [PreviewField, Required]
     [SerializeField] Image[] characterImage, characterMug;
-    [SerializeField] GameObject[] characterCards, characterParty, characterInventry;
-    [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
-    [SerializeField] Slider xpMainS;
-    [SerializeField] bool[] isTeamMember;
+    [TabGroup("Images")]
+    [GUIColor(0.670f, 1, 0.560f)]
     [SerializeField] Image characterImageV;
+    
+    [TabGroup("Sliders")]
+    [GUIColor(1f, 0.886f, 0.780f)]
+    [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
+    [TabGroup("Sliders")]
+    [GUIColor(1f, 0.886f, 0.780f)]
     [SerializeField] Slider xpVS, manaVS, healthVS, dexterityVS, defenceVS, intelligenceVS, perceptionVS;
+
+    [TabGroup("New Group", "Thulgren")]
+    [GUIColor(1f, 0.780f, 0.984f)]
+    [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
+    [TabGroup("New Group", "Thulgren")]
+    [GUIColor(1f, 0.780f, 0.984f)]
+    [SerializeField] Slider xpMainS;
+
+    [TabGroup("Skills")]
+    [GUIColor(1, 0.819f, 0.760f)]
     [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
 
-    [SerializeField] GameObject itemBox;
-    [SerializeField] Transform itemBoxParent;
-
-    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemValue;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
     public Image itemImage;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [SerializeField] Transform itemBoxParent;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [SerializeField] GameObject itemBox;
 
 
 
+    [ShowInInspector]
+
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    [Title("INVENTORY")]
+    public ItemsManager activeItem; //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
+
+        
+
+    [BoxGroup("UI Bools")]
+    [SerializeField] bool[] isTeamMember;
+
+    
 
     private void Start()
     {
@@ -76,29 +129,34 @@ public class MenuManager : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             if (panelTesting.GetComponent<CanvasGroup>().alpha == 0)
             {
+                UpdateItemsInventory();
+                UpdateStats();
+                joystick.DisableJoystick();
                 panelTesting.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
                 panelTesting.GetComponent<CanvasGroup>().interactable = true;
                 panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                GameManager.instance.dialogueBoxOpened = true;
 
-                UpdateItemsInventory();
+
+               
             }
             else if (panelTesting.GetComponent<CanvasGroup>().alpha == 1)
             {
                 panelTesting.GetComponent<UIFader>().FadeOut(); // call a function from another script
                 panelTesting.GetComponent<CanvasGroup>().interactable = false;
                 panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = false;
+                GameManager.instance.dialogueBoxOpened = false;
+                joystick.EnableJoystick();
+
 
             }
         }
-
-
-
-
     }
+
 
     public void UpdateStats()
     {
@@ -137,6 +195,7 @@ public class MenuManager : MonoBehaviour
                 levelP[i].text = playerStats[i].npcLevel.ToString();
                 characterMug[i].sprite = playerStats[i].characterMug;
                 thulGold[i].text = playerStats[0].thulGold.ToString();
+                thulMana[i].text = playerStats[0].npcMana.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
 
@@ -170,13 +229,11 @@ public class MenuManager : MonoBehaviour
             {
                 itemsAmountText.text = "";
             }
+            
             if (item.isNewItem == true)
             {
-                Debug.Log(item.itemName + " bool status: " + item.isNewItem);
                 item.isNewItem = false;
                 itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
-
-                Debug.Log(item.itemName + " bool status changed to: " + item.isNewItem);
             }
             else if (item.isNewItem == false)
             {
@@ -184,8 +241,7 @@ public class MenuManager : MonoBehaviour
             }
 
             itemSlot.GetComponent<ItemButton>().itemOnButton = item;
-
-
+            
 
         }
     }
@@ -254,7 +310,13 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void DiscardItem()
+    {
+        Debug.Log("DiscardItem initiated");
+        Inventory.instance.RemoveItem(activeItem);
+        UpdateItemsInventory();
 
+    }
 
 
 }

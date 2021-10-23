@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Sirenix.OdinInspector;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
     public PlayerStats[] playerStats;
 
 
+    [BoxGroup("UI Bools")]
+    [GUIColor(1f, 1f, 0.215f)]
     public bool isInterfaceOpen, dialogueBoxOpened;
 
     // Start is called before the first frame update
@@ -40,6 +43,8 @@ public class GameManager : MonoBehaviour
 
 
         playerStats = FindObjectsOfType<PlayerStats>();
+
+
 
     }
 
