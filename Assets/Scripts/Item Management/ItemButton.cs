@@ -10,9 +10,7 @@ public class ItemButton : MonoBehaviour
     public ItemsManager itemOnButton;
 
 
-
-
-    [TabGroup("Select Item"), Button]
+    [TabGroup("Buttons"), Button]
     public void Press()
     {
         MenuManager.instance.itemName.text = itemOnButton.itemName;
@@ -20,11 +18,8 @@ public class ItemButton : MonoBehaviour
         MenuManager.instance.itemImage.sprite = itemOnButton.itemsImage;
         MenuManager.instance.itemValue.text = itemOnButton.valueInCoins.ToString();
         MenuManager.instance.activeItem = itemOnButton;
-
-
-
-        //GameObject.FindGameObjectWithTag("Focus").GetComponent<Image>().enabled = true;
+        itemOnButton.itemSelected = MenuManager.instance.activeItem;
+        MenuManager.instance.UpdateItemsInventory();
     }
-
 
 }

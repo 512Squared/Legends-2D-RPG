@@ -83,6 +83,8 @@ public class Inventory : MonoBehaviour
         }
     }
 
+
+
     public List<ItemsManager> GetItemsList()
     {
         return itemsList;

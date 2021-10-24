@@ -11,6 +11,7 @@ public class ItemsManager : MonoBehaviour
     public string itemName, itemDescription;
     public int valueInCoins;
     public Sprite itemsImage;
+    public bool itemSelected = false;
     public bool isNewItem = true;
 
 

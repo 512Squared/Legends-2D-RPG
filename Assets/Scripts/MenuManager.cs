@@ -85,7 +85,8 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] GameObject itemBox;
 
-
+    private int countEn = 0;
+    private int countDis = 0;
 
     [ShowInInspector]
 
@@ -129,7 +130,7 @@ public class MenuManager : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             if (panelTesting.GetComponent<CanvasGroup>().alpha == 0)
             {
@@ -241,7 +242,25 @@ public class MenuManager : MonoBehaviour
             }
 
             itemSlot.GetComponent<ItemButton>().itemOnButton = item;
-            
+
+           if (item.itemSelected == false)
+            {
+                itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
+                countEn++;
+                Debug.Log(item.itemName + " deselected: " + countEn);
+            }
+
+            if (item.itemSelected == true)
+            {
+                item.itemSelected = false;
+                itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
+                countDis++;
+                Debug.Log(item.itemName + " selected: " + countDis);
+            }
+
+
+
+
 
         }
     }
@@ -327,9 +346,7 @@ public class MenuManager : MonoBehaviour
 //        //newItem.SetActive(true);
 //for (int i = 0; i < itemBox.transform.childCount; i++)
 //{
-//    foreach (var x in itemBox.GetComponentsInChildren<Image>())
-//    {
-//        x.enabled = true;
+
 //    }
 //    foreach (var x in itemBox.GetComponentsInChildren<Button>())
 //    {
