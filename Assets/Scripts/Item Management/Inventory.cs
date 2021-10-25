@@ -69,6 +69,7 @@ public class Inventory : MonoBehaviour
             if(inventoryItem != null && inventoryItem.amount <= 0)
             {
                 Debug.Log("was last item");
+                //item.GetComponent<Animator>().SetTrigger("sell");
                 itemsList.Remove(inventoryItem);
                 MenuManager.instance.UpdateStats();
             }
@@ -77,6 +78,7 @@ public class Inventory : MonoBehaviour
         else
         {
             Debug.Log("non-Stackable discard");
+
             itemsList.Remove(item);
             player.thulGold += item.valueInCoins;
             MenuManager.instance.UpdateStats();

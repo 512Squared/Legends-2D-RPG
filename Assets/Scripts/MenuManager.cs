@@ -243,19 +243,26 @@ public class MenuManager : MonoBehaviour
 
             itemSlot.GetComponent<ItemButton>().itemOnButton = item;
 
-           if (item.itemSelected == false)
+           
+            // create 'selected' focus + animation
+            if (item.itemSelected == false)
             {
                 itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
-                countEn++;
-                Debug.Log(item.itemName + " deselected: " + countEn);
             }
 
             if (item.itemSelected == true)
             {
                 item.itemSelected = false;
                 itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
-                countDis++;
-                Debug.Log(item.itemName + " selected: " + countDis);
+                itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
+            }
+           
+            // animation for sold item
+
+            if (item.itemSold == true)
+            {
+                item.itemSold = false;
+                itemSlot.GetComponent<Animator>().SetTrigger("itemSold");
             }
 
 

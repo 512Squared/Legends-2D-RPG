@@ -13,6 +13,7 @@ public class ItemsManager : MonoBehaviour
     public Sprite itemsImage;
     public bool itemSelected = false;
     public bool isNewItem = true;
+    public bool itemSold = false;
 
 
     public enum AffectType { HP, Mana, Defence, Dexterity, Perception}

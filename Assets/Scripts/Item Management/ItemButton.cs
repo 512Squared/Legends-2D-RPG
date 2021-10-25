@@ -8,6 +8,7 @@ public class ItemButton : MonoBehaviour
 {
 
     public ItemsManager itemOnButton;
+    
 
 
     [TabGroup("Buttons"), Button]
@@ -20,6 +21,11 @@ public class ItemButton : MonoBehaviour
         MenuManager.instance.activeItem = itemOnButton;
         itemOnButton.itemSelected = MenuManager.instance.activeItem;
         MenuManager.instance.UpdateItemsInventory();
+       
     }
+
+
+
+
 
 }
