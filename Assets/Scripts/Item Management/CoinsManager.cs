@@ -89,7 +89,7 @@ public class CoinsManager : MonoBehaviour
                 coin.SetActive(true);
 
                 // move coin to the collected coin position
-                coin.transform.position = sourceTransform.localPosition;
+                coin.transform.position = sourceTransform.position;
 
 
                 // animate coin to target position
@@ -119,11 +119,16 @@ public class CoinsManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        
+
     }
 
     // Update is called once per frame
     void Update() {
+
+    }
+
+    public void updateCoins() 
+        {
         targetPosition = target.position;
         source = sourceTransform.position;
     }

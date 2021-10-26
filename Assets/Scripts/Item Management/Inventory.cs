@@ -71,7 +71,7 @@ public class Inventory : MonoBehaviour
                     MenuManager.instance.UpdateStats();
 
                     // implementing the coinAnimation
-
+                    coinsManager.updateCoins();
                     coinsManager.AddCoins(12);
                     Debug.Log("AddCoins in inventory called");
                 }
@@ -98,7 +98,7 @@ public class Inventory : MonoBehaviour
             MenuManager.instance.UpdateStats();
 
             // implementing the coinAnimation
-
+            coinsManager.updateCoins();
             coinsManager.AddCoins(12);
             Debug.Log("AddCoins called from inventory");
         }
