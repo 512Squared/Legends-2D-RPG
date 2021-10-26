@@ -5,16 +5,21 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
 
+    // inventory sits on the GameManager
+    
+    
     public static Inventory instance;
 
     private List<ItemsManager> itemsList;
     public PlayerStats player;
+    [SerializeField] CoinsManager coinsManager;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
         itemsList = new List<ItemsManager>();
+        coinsManager = FindObjectOfType<CoinsManager>();
     }
 
 
@@ -62,7 +67,13 @@ public class Inventory : MonoBehaviour
                     inventoryItem = itemInInventory;
                     Debug.Log("Stackable discard"); 
                     player.thulGold += item.valueInCoins;
+                    item.itemSold = true;
                     MenuManager.instance.UpdateStats();
+
+                    // implementing the coinAnimation
+
+                    coinsManager.AddCoins(12);
+                    Debug.Log("AddCoins in inventory called");
                 }
             }
 
@@ -72,6 +83,8 @@ public class Inventory : MonoBehaviour
                 //item.GetComponent<Animator>().SetTrigger("sell");
                 itemsList.Remove(inventoryItem);
                 MenuManager.instance.UpdateStats();
+
+
             }
         }
 
@@ -81,7 +94,13 @@ public class Inventory : MonoBehaviour
 
             itemsList.Remove(item);
             player.thulGold += item.valueInCoins;
+            item.itemSold = true;
             MenuManager.instance.UpdateStats();
+
+            // implementing the coinAnimation
+
+            coinsManager.AddCoins(12);
+            Debug.Log("AddCoins called from inventory");
         }
     }
 
@@ -91,4 +110,5 @@ public class Inventory : MonoBehaviour
     {
         return itemsList;
     }
+
 }

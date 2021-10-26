@@ -85,8 +85,6 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] GameObject itemBox;
 
-    private int countEn = 0;
-    private int countDis = 0;
 
     [ShowInInspector]
 
@@ -259,11 +257,11 @@ public class MenuManager : MonoBehaviour
            
             // animation for sold item
 
-            if (item.itemSold == true)
-            {
-                item.itemSold = false;
-                itemSlot.GetComponent<Animator>().SetTrigger("itemSold");
-            }
+            //if (item.itemSold == true)
+            //{
+            //    item.itemSold = false;
+            //    itemSlot.GetComponent<Animator>().SetTrigger("itemSold");
+            //}
 
 
 
