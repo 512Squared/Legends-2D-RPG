@@ -19,6 +19,13 @@ public class CoinsManager : MonoBehaviour
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] private Transform sourceTransform;
+    [TabGroup("UI references")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TMP_Text coinUIText;
+
+
+
+
     private Vector2 source;
 
 
@@ -31,7 +38,10 @@ public class CoinsManager : MonoBehaviour
     [TabGroup("Miscellaneous")]
     [GUIColor(0.670f, 1, 0.560f)]
     [SerializeField] PlayerStats player;
-    
+    [TabGroup("Miscellaneous")]
+    [GUIColor(0.670f, 1, 0.560f)]
+    private ItemsManager item;
+
     Queue<GameObject> coinsQueue = new Queue<GameObject>();
 
     [Header("Animation settings")]
@@ -44,7 +54,9 @@ public class CoinsManager : MonoBehaviour
     [TabGroup("New Group", "Animation settings")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] Ease easeType;
-
+    [TabGroup("New Group", "Animation settings")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [SerializeField] float spread;
 
 
 
@@ -60,10 +72,35 @@ public class CoinsManager : MonoBehaviour
     // As ever, the choice is between where to put the script and where to call the data that is thereby missing to make the script work
 
 
+    private int _c = 0;
+
+    public int Coins
+    {
+        get { return _c; }
+        set
+        {
+            _c = value;
+            
+            //update UI Text whenever "Coins variable is changed
+            coinUIText.text = Coins.ToString();
+            
+        }
+    }
+
+
+
     void Awake() {
        
         // prepare coins
         PrepareCoins();
+        coinUIText.text = Coins.ToString();
+
+    }
+
+
+    private void Start()
+    {
+        
     }
 
     void PrepareCoins() {
@@ -74,13 +111,14 @@ public class CoinsManager : MonoBehaviour
             coin.transform.SetParent(sourceTransform, false);
             coin.SetActive(false);
             coinsQueue.Enqueue(coin);
+
         }
     }
 
-    public void Animate(Vector2 source, int amount) //previously 'collectedCoinPosition'
+    public void Animate(Vector2 source, int valueInCoins) //previously 'collectedCoinPosition'
     {
         
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < valueInCoins; i++)
         {
             // check if there's coins in the pool
             if (coinsQueue.Count > 0)
@@ -89,7 +127,7 @@ public class CoinsManager : MonoBehaviour
                 coin.SetActive(true);
 
                 // move coin to the collected coin position
-                coin.transform.position = sourceTransform.position;
+                coin.transform.position = source + new Vector2(Random.Range(-spread, spread), 0f);
 
 
                 // animate coin to target position
@@ -101,34 +139,24 @@ public class CoinsManager : MonoBehaviour
                         // executes whenever coin reach target position;
                         coin.SetActive(false);
                         coinsQueue.Enqueue(coin);
-
-
-                    });
-
+                        Coins++;
+                    }); 
+            
             }
         }
 
+
     }
 
-    public void AddCoins(int amount) //previously 'collectedCoinPosition'
+    public void AddCoins(int valueInCoins) //previously 'collectedCoinPosition'
     {
-        //amount = 7;
-        Animate(source, amount);
+        Animate(source, valueInCoins);
+        
     }
 
-
-    // Start is called before the first frame update
-    void Start() {
-
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
 
     public void updateCoins() 
-        {
+    {
         targetPosition = target.position;
         source = sourceTransform.position;
     }

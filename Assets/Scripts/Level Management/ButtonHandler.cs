@@ -16,18 +16,8 @@ public class ButtonHandler : MonoBehaviour
     public void IsinterfaceOn()
     {
 
-        if (GameManager.instance.isInterfaceOpen == false)
-        {
-            GameManager.instance.isInterfaceOpen = true;
+        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
 
-        }
-
-        else if (GameManager.instance.isInterfaceOpen == true)
-        {
-            
-            GameManager.instance.isInterfaceOpen = false;
-
-        }
 
     }
 

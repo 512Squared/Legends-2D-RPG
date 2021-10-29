@@ -17,6 +17,8 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [SerializeField] GameObject mainMenu;
     [FoldoutGroup("Miscellaneous", expanded: false)]
+    [SerializeField] GameObject equipment;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
     [SerializeField] Image imageToFade;
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [SerializeField] TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
@@ -25,23 +27,15 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [SerializeField] GameObject panelTesting;
 
-
-
-
     public static MenuManager instance;
-
 
     //adding serializeField gives possibility to add Simple Joystick object in inspector and thereby share its functions. Not possible if in prefab unless both are in a prefab
 
-
-
     public static int select;
 
-
-    
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health,  dexterity, defence, intelligence, perception;
+    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] GameObject[] characterCards, characterParty;
@@ -53,7 +47,7 @@ public class MenuManager : MonoBehaviour
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
     [SerializeField] Image characterImageV;
-    
+
     [TabGroup("Sliders")]
     [GUIColor(1f, 0.886f, 0.780f)]
     [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
@@ -61,6 +55,7 @@ public class MenuManager : MonoBehaviour
     [GUIColor(1f, 0.886f, 0.780f)]
     [SerializeField] Slider xpVS, manaVS, healthVS, dexterityVS, defenceVS, intelligenceVS, perceptionVS;
 
+    [Space]
     [TabGroup("New Group", "Thulgren")]
     [GUIColor(1f, 0.780f, 0.984f)]
     [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
@@ -87,17 +82,20 @@ public class MenuManager : MonoBehaviour
 
 
     [ShowInInspector]
-
-    [GUIColor(0.878f, 0.219f, 0.219f)]
     [Title("INVENTORY")]
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    public int currentNewItems;
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    [SerializeField] TextMeshProUGUI newItemsText;
+    [GUIColor(0.878f, 0.219f, 0.219f)]
     public ItemsManager activeItem; //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
 
-        
 
     [BoxGroup("UI Bools")]
     [SerializeField] bool[] isTeamMember;
-
-    
+    [BoxGroup("UI Bools")]
+    public bool isEquipOn = false;
+    public bool keyboardKeyI = false;
 
     private void Start()
     {
@@ -111,48 +109,29 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
+
+            GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
+
             if (mainMenu.GetComponent<CanvasGroup>().alpha == 0)
             {
                 mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
                 mainMenu.GetComponent<CanvasGroup>().interactable = true;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-                ButtonHandler.instance.IsinterfaceOn();
+                joystick.DisableJoystick();
             }
             else
             {
                 mainMenu.GetComponent<UIFader>().FadeOut(); // call a function from another script
                 mainMenu.GetComponent<CanvasGroup>().interactable = false;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
-                ButtonHandler.instance.IsinterfaceOn();
+                joystick.EnableJoystick();
             }
         }
 
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            if (panelTesting.GetComponent<CanvasGroup>().alpha == 0)
-            {
-                UpdateItemsInventory();
-                UpdateStats();
-                joystick.DisableJoystick();
-                panelTesting.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
-                panelTesting.GetComponent<CanvasGroup>().interactable = true;
-                panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = true;
-                GameManager.instance.dialogueBoxOpened = true;
-
-
-               
-            }
-            else if (panelTesting.GetComponent<CanvasGroup>().alpha == 1)
-            {
-                panelTesting.GetComponent<UIFader>().FadeOut(); // call a function from another script
-                panelTesting.GetComponent<CanvasGroup>().interactable = false;
-                panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = false;
-                GameManager.instance.dialogueBoxOpened = false;
-                joystick.EnableJoystick();
-
-
-            }
+            PanelTestingKeyboardControl();
         }
     }
 
@@ -207,6 +186,9 @@ public class MenuManager : MonoBehaviour
 
     public void UpdateItemsInventory()
     {
+
+        currentNewItems = 0;
+
         foreach (Transform itemSlot in itemBoxParent)
         {
             Destroy(itemSlot.gameObject);
@@ -228,46 +210,74 @@ public class MenuManager : MonoBehaviour
             {
                 itemsAmountText.text = "";
             }
-            
-            if (item.isNewItem == true)
-            {
-                item.isNewItem = false;
-                itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
-            }
-            else if (item.isNewItem == false)
-            {
-                itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
-            }
 
             itemSlot.GetComponent<ItemButton>().itemOnButton = item;
 
-           
-            // create 'selected' focus + animation
-            if (item.itemSelected == false)
+
+            // new items - needs to run here to count how many new items
+
+            if (item.isNewItem == true)
             {
-                itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
+                GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                Debug.Log("New Items Log: " + item.itemName);
+                currentNewItems++;
             }
 
-            if (item.itemSelected == true)
+
+            // Stuff to active ONLY when inside inventory
+
+            if (isEquipOn == true)
             {
-                item.itemSelected = false;
-                itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
-                itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
+
+                // selected items - focus on selected item (2nd), switch off the rest (1st. 
+
+                if (item.itemSelected == false)
+                {
+                    itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
+                    GameManager.instance.isItemSelected = false;
+
+                    if (item.isNewItem == true)
+                    {
+                        itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
+                    }
+                    // new items - set red marker; count item
+
+                    if (item.isNewItem == false)
+                    {
+                        itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+                    }
+                }
+                else if (item.itemSelected == true)
+                {
+                    item.itemSelected = false;
+                    itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
+                    itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
+                    Debug.Log(item.itemName + " has been selected");
+
+                    // if this happens here, new items lose their tag only after being inspected
+
+                    item.isNewItem = false; // this is so new items only show once
+                    itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+                }
             }
-           
-            // animation for sold item
-
-            //if (item.itemSold == true)
-            //{
-            //    item.itemSold = false;
-            //    itemSlot.GetComponent<Animator>().SetTrigger("itemSold");
-            //}
-
-
-
-
-
         }
+
+        // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't need have to run until inventory has been built (above)
+
+        if (currentNewItems == 0)
+        {
+            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+        }
+
+        else if (currentNewItems > 0)
+        {
+            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+            newItemsText.text = currentNewItems.ToString();
+        }
+
+        GameManager.instance.currentNewItems = currentNewItems;
+        Debug.Log("No. of new Items: " + currentNewItems);
+
     }
 
     public void StatsMenu()
@@ -297,8 +307,6 @@ public class MenuManager : MonoBehaviour
     {
 
         select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
-        //Debug.Log(playerStats[select].playerName + " is now active");
-        //Debug.Log("SELECT NO: " + select);
         characterNameV.text = playerStats[select].playerName;
         descriptionV.text = playerStats[select].playerDesc;
         healthV.text = playerStats[select].npcHP.ToString();
@@ -339,27 +347,70 @@ public class MenuManager : MonoBehaviour
         Debug.Log("DiscardItem initiated");
         Inventory.instance.RemoveItem(activeItem);
         UpdateItemsInventory();
-
     }
 
+
+
+    public void turnEquipOn()
+    {
+        isEquipOn = !isEquipOn;
+        GameManager.instance.isEquipOn = !GameManager.instance.isEquipOn;
+        Debug.Log("IsEquip status: " + isEquipOn);
+    }
+
+    public void equipBackAndHome() //just some tidying when using back and home
+    {
+        turnEquipOn();
+        currentNewItems = 0;
+        if (keyboardKeyI == true)
+        {
+            PanelTestingKeyboardControl();
+            mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        }
+        GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+        GameManager.instance.isItemSelected = false;
+        UpdateItemsInventory();
+        
+    }
+
+    public void PanelTestingKeyboardControl()
+    {
+        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
+
+        if (panelTesting.GetComponent<CanvasGroup>().alpha == 0)
+        {
+            isEquipOn = true;
+            GameManager.instance.isEquipOn = true;
+            keyboardKeyI = true;
+            GameManager.instance.keyboardKeyI = true;
+            UpdateItemsInventory();
+            UpdateStats();
+            joystick.DisableJoystick();
+            panelTesting.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
+            panelTesting.GetComponent<CanvasGroup>().interactable = true;
+            panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            Debug.Log("E Key on");
+
+        }
+        else if (panelTesting.GetComponent<CanvasGroup>().alpha == 1)
+        {
+            isEquipOn = false;
+            GameManager.instance.isEquipOn = false;
+            UpdateItemsInventory();
+            keyboardKeyI = false;
+            GameManager.instance.keyboardKeyI = false;
+            Debug.Log("E Key off");
+            panelTesting.GetComponent<UIFader>().FadeOut(); // call a function from another script
+            panelTesting.GetComponent<CanvasGroup>().interactable = false;
+            panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            joystick.EnableJoystick();
+
+        }
+    }
 
 }
 
 
 
-//        //itemBox.SetActive(true);
-//        //newItem.SetActive(true);
-//for (int i = 0; i < itemBox.transform.childCount; i++)
-//{
-
-//    }
-//    foreach (var x in itemBox.GetComponentsInChildren<Button>())
-//    {
-//        x.enabled = true;
-//    }
-//    foreach (var x in itemBox.GetComponentsInChildren<TextMeshProUGUI>())
-//    {
-//        x.enabled = true;
-//    }
-//}
-//    }

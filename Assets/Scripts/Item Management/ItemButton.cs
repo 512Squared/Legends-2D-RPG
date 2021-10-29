@@ -18,8 +18,13 @@ public class ItemButton : MonoBehaviour
         MenuManager.instance.itemDescription.text = itemOnButton.itemDescription;
         MenuManager.instance.itemImage.sprite = itemOnButton.itemsImage;
         MenuManager.instance.itemValue.text = itemOnButton.valueInCoins.ToString();
+        
         MenuManager.instance.activeItem = itemOnButton;
+        GameManager.instance.activeItem = itemOnButton;
+        
         itemOnButton.itemSelected = MenuManager.instance.activeItem;
+        itemOnButton.itemSelected = GameManager.instance.activeItem;
+
         MenuManager.instance.UpdateItemsInventory();
        
     }
