@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Sirenix.OdinInspector;
+using DG.Tweening;
 
 
 
@@ -15,16 +16,22 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject[] statsButtons;
 
     [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject mainMenu;
     [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject equipment;
     [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] Image imageToFade;
     [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
     [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] private UltimateJoystick joystick;
     [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject panelTesting;
 
     public static MenuManager instance;
@@ -92,15 +99,34 @@ public class MenuManager : MonoBehaviour
 
 
     [BoxGroup("UI Bools")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
     [SerializeField] bool[] isTeamMember;
     [BoxGroup("UI Bools")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isEquipOn = false;
+    [BoxGroup("UI Bools")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool keyboardKeyI = false;
+
+
+    [Header ("UI Tweening")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] private CanvasGroup chooseText;
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TextMeshProUGUI textUseEquipTake;
+    [GUIColor(1f, 1f, 0.215f)]
+    public RectTransform mainEquipInfoPanel, characterChoicePanel;
+    
+
+
+    private Tween fadeText;
+
 
     private void Start()
     {
 
         instance = this;
+        mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
 
     }
 
@@ -340,15 +366,12 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void DiscardItem()
+    public void CallToSellItem()
     {
         Debug.Log("DiscardItem initiated");
         Inventory.instance.SellItem(activeItem);
         UpdateItemsInventory();
     }
-
-
-
 
     public void CallToUseItem()
     {
@@ -417,7 +440,63 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+
+
+    // UI Tweeing on Equipment panel
+
+    public void OnUseButton()
+    {
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(-750, 0), 1f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 0), 1f);
+    }
+
+    public void OnPlayerButton()
+    {
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 900), 1f);
+        UpdateStats();
+    }
+
+    public void FadeOutText(float duration)
+    {
+        Fade(0f, duration, () =>
+        {
+            chooseText.interactable = false;
+            chooseText.blocksRaycasts = false;
+        });
+    }
+
+    public void FadeInText(float duration)
+    {
+        Fade(1f, duration, () =>
+        {
+            chooseText.interactable = true;
+            chooseText.blocksRaycasts = true;
+        });
+    }
+
+    private void Fade(float endValue, float duration, TweenCallback onEnd)
+    {
+        if (fadeText != null)
+        {
+            fadeText.Kill(false);
+        }
+
+        fadeText = chooseText.DOFade(endValue, duration);
+    }
+
+
 }
 
 
+//public IEnumerator FadeInCall()
+//{
+//    yield return new WaitForSeconds(1f);
+//    FadeIn(1f);
+//}
 
+//public IEnumerator FadeOutCall()
+//{
+//    yield return new WaitForSeconds(1f);
+//    FadeOut(1f);
+//}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemsManager : MonoBehaviour
 {
     
-    public enum ItemType { Item, Potion, Weapon, Armor, Skill}
+    public enum ItemType { Item, Potion, Weapon, Armour, Skill}
     public ItemType itemType;
 
     public string itemName, itemDescription;
@@ -13,7 +13,6 @@ public class ItemsManager : MonoBehaviour
     public Sprite itemsImage;
     public bool itemSelected = false;
     public bool isNewItem = true;
-    public bool itemSold = false;
 
 
     public enum AffectType { HP, Mana, Defence, Dexterity, Perception}
@@ -46,6 +45,12 @@ public class ItemsManager : MonoBehaviour
                 PlayerStats.instance.AddMana(amountOfEffect);
                 Debug.Log("HP Added");
             }
+        }
+
+        if (itemType == ItemType.Armour)
+        {
+            PlayerStats.instance.AddDefence(amountOfEffect);             
+            
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

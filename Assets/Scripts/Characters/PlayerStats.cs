@@ -133,6 +133,11 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    public void AddDefence(int amountofDefenceToAdd)
+    {
+
+    }
+
 
 }
 

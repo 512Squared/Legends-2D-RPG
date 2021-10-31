@@ -67,7 +67,6 @@ public class Inventory : MonoBehaviour
                     itemInInventory.amount--;
                     inventoryItem = itemInInventory;
                     player.thulGold += item.valueInCoins;
-                    item.itemSold = true;
                     MenuManager.instance.UpdateStats();
 
                     // implementing the coinAnimation
@@ -89,7 +88,6 @@ public class Inventory : MonoBehaviour
         else
         {
             itemsList.Remove(item);
-            item.itemSold = true;
             MenuManager.instance.UpdateStats();
 
             // implementing the coinAnimation
@@ -117,6 +115,8 @@ public class Inventory : MonoBehaviour
                     inventoryItem = itemInInventory;
                     MenuManager.instance.UpdateStats();
                     Debug.Log("Item removed");
+                    coinsManager.updateHP();
+                    coinsManager.UIAddHp(item.amountOfEffect);
                 }
             }
 
@@ -131,6 +131,8 @@ public class Inventory : MonoBehaviour
             itemsList.Remove(item);
             Debug.Log("Item removed");
             MenuManager.instance.UpdateStats();
+            coinsManager.updateHP();
+            coinsManager.UIAddHp(item.amountOfEffect);
         }
     }
 
@@ -139,4 +141,7 @@ public class Inventory : MonoBehaviour
         return itemsList;
     }
 
+
 }
+
+
