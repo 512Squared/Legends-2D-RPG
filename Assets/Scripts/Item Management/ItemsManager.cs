@@ -29,18 +29,25 @@ public class ItemsManager : MonoBehaviour
     public int amount;
 
 
-    // Start is called before the first frame update
-    void Start()
+    public void UseItem()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        Debug.Log("UseItem called from ItemsManager");
+        if (itemType == ItemType.Potion)
+        {
+            if (affectType == AffectType.HP)
+            {
+                PlayerStats.instance.AddHP(amountOfEffect);
+                Debug.Log("HP Added");
+            }
 
+            else if (affectType == AffectType.Mana)
+            {
+                PlayerStats.instance.AddMana(amountOfEffect);
+                Debug.Log("HP Added");
+            }
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))

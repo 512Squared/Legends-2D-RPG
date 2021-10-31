@@ -288,7 +288,6 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-
     public void HomeScreenStats()
     {
         playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
@@ -301,7 +300,6 @@ public class MenuManager : MonoBehaviour
         hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
         goldMain.text = playerStats[0].thulGold.ToString();
     }
-
 
     public void InventoryStats()
     {
@@ -345,11 +343,20 @@ public class MenuManager : MonoBehaviour
     public void DiscardItem()
     {
         Debug.Log("DiscardItem initiated");
-        Inventory.instance.RemoveItem(activeItem);
+        Inventory.instance.SellItem(activeItem);
         UpdateItemsInventory();
     }
 
 
+
+
+    public void CallToUseItem()
+    {
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem();
+        Inventory.instance.UseAndRemoveItem(activeItem);
+        UpdateItemsInventory();
+    }
 
     public void turnEquipOn()
     {

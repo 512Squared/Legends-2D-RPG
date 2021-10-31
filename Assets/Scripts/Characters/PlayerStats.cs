@@ -7,9 +7,12 @@ public class PlayerStats : MonoBehaviour
 {
 
     public static PlayerStats instance;
+    public PlayerStats thulgran;
+
     public Sprite characterImage;
     public Sprite characterMug;
     public Sprite[] skills;
+
 
     public int[] skillBonus;
 
@@ -110,6 +113,26 @@ public class PlayerStats : MonoBehaviour
 
         }
     }
+
+    public void AddHP(int amountOfHPToAdd)
+    {
+        npcHP += amountOfHPToAdd;
+        if (npcHP > maxHP)
+        {
+            npcHP = maxHP;
+        }
+
+    }
+
+    public void AddMana(int amountOfManaToAdd)
+    {
+        npcMana += amountOfManaToAdd;
+        if (npcMana > maxMana)
+        {
+            npcMana = maxMana;
+        }
+    }
+
 
 }
 

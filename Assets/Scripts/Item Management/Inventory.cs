@@ -53,7 +53,7 @@ public class Inventory : MonoBehaviour
 
     }
 
-    public void RemoveItem(ItemsManager item)
+    public void SellItem(ItemsManager item)
     {
         if (item.isStackable)
         {
@@ -99,7 +99,40 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public void UseAndRemoveItem(ItemsManager item)
+    {
 
+        Debug.Log("UseItem being discarded");
+        if (item.isStackable)
+        {
+            ItemsManager inventoryItem = null;
+
+            foreach (ItemsManager itemInInventory in itemsList)
+
+            {
+                if (itemInInventory.itemName == item.itemName)
+                {
+                    itemInInventory.amount--;
+                    Debug.Log("Inventory amount updated");
+                    inventoryItem = itemInInventory;
+                    MenuManager.instance.UpdateStats();
+                    Debug.Log("Item removed");
+                }
+            }
+
+            if (inventoryItem != null && inventoryItem.amount <= 0)
+            {
+                itemsList.Remove(inventoryItem);
+                MenuManager.instance.UpdateStats();            }
+        }
+
+        else
+        {
+            itemsList.Remove(item);
+            Debug.Log("Item removed");
+            MenuManager.instance.UpdateStats();
+        }
+    }
 
     public List<ItemsManager> GetItemsList()
     {
