@@ -45,7 +45,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] GameObject[] characterCards, characterParty;
+    [SerializeField] GameObject[] characterCards, characterParty, characterEquip;
 
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
@@ -86,6 +86,21 @@ public class MenuManager : MonoBehaviour
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] GameObject itemBox;
+
+
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI[] manaEquipToString, xpEquipToString, hpEquipToString, defenceEquipToString;
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Slider[] manaEquipSlider, xpEquipSlider, hpEquipSlider, defenceEquipSlider;
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Image[] characterMugEquip;
+
+
+
+
 
 
     [ShowInInspector]
@@ -330,6 +345,8 @@ public class MenuManager : MonoBehaviour
     public void InventoryStats()
     {
 
+        // select is the choice of character in the dropdown menu, i.e. the character array slot. 
+        
         select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
         characterNameV.text = playerStats[select].playerName;
         descriptionV.text = playerStats[select].playerDesc;
@@ -353,6 +370,31 @@ public class MenuManager : MonoBehaviour
         characterImageV.sprite = playerStats[select].characterImage;
 
 
+    }
+
+    public void equipCharStats()
+    {
+        playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
+
+        for (int i = 0; i < playerStats.Length; i++)
+        {
+
+            isTeamMember[i] = playerStats[i].isTeamMember;
+            if (isTeamMember[i] == true)
+            {
+                characterEquip[i].SetActive(true);
+                hpEquipToString[i].text = playerStats[i].npcHP.ToString();
+                manaEquipToString[i].text = playerStats[i].npcMana.ToString();
+                defenceEquipToString[i].text = playerStats[i].npcDefence.ToString();
+                xpEquipToString[i].text = playerStats[i].npcXP.ToString();
+                xpEquipSlider[i].value = playerStats[i].npcXP;
+                manaEquipSlider[i].value = playerStats[i].npcMana;
+                hpEquipSlider[i].value = playerStats[i].npcHP;
+                defenceEquipSlider[i].value = playerStats[i].npcDefence;
+                characterMugEquip[i].sprite = playerStats[i].characterMug;
+
+            }
+        }
     }
 
     public void FadeImage()
@@ -453,7 +495,7 @@ public class MenuManager : MonoBehaviour
     public void OnPlayerButton()
     {
         mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 900), 1f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
         UpdateStats();
     }
 
