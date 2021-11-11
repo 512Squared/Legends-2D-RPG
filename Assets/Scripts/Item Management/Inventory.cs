@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using UnityEngine.UI;
+using TMPro;
 
 public class Inventory : MonoBehaviour
 {
@@ -11,9 +14,11 @@ public class Inventory : MonoBehaviour
     public static Inventory instance;
 
     private List<ItemsManager> itemsList;
-    public PlayerStats player;
+    public PlayerStats mainCharacter;
+
     [SerializeField] CoinsManager coinsManager;
 
+    private bool isTeamMember;
 
     // Start is called before the first frame update
     void Start()
@@ -64,20 +69,31 @@ public class Inventory : MonoBehaviour
             {
                 if (itemInInventory.itemName == item.itemName)
                 {
+                    // run the update on the main stats
+
+
                     itemInInventory.amount--;
                     inventoryItem = itemInInventory;
-                    player.thulGold += item.valueInCoins;
+
+                    // implementing the sell
+                   
+                    mainCharacter.thulGold += item.valueInCoins;
+                    item.itemSold = true;
+                    coinsManager.updateCoins();
+                    coinsManager.UIAddCoins(item.valueInCoins);
                     MenuManager.instance.UpdateStats();
 
-                    // implementing the coinAnimation
-                    coinsManager.updateCoins();
-                    coinsManager.AddCoins(item.valueInCoins);
+
+
+                    Debug.Log(item.itemName + " removed from stack and sold");
 
                 }
             }
 
             if (inventoryItem != null && inventoryItem.amount <= 0)
             {
+
+                Debug.Log(item.itemName + " removed from Inventory UI");
                 itemsList.Remove(inventoryItem);
                 MenuManager.instance.UpdateStats();
 
@@ -87,18 +103,23 @@ public class Inventory : MonoBehaviour
 
         else
         {
-            itemsList.Remove(item);
-            MenuManager.instance.UpdateStats();
+ 
+
 
             // implementing the coinAnimation
+            Debug.Log(item.itemName + " sold");
             coinsManager.updateCoins();
-            coinsManager.AddCoins(item.valueInCoins);
-            player.thulGold += item.valueInCoins;
+            coinsManager.UIAddCoins(item.valueInCoins);
+            mainCharacter.thulGold += item.valueInCoins;
+            itemsList.Remove(item);
+            MenuManager.instance.UpdateStats();
+            
         }
     }
 
     public void UseAndRemoveItem(ItemsManager item)
     {
+
 
         Debug.Log("UseItem being discarded");
         if (item.isStackable)
@@ -111,30 +132,79 @@ public class Inventory : MonoBehaviour
                 if (itemInInventory.itemName == item.itemName)
                 {
                     itemInInventory.amount--;
-                    Debug.Log("Inventory amount updated");
+                    Debug.Log("Inventory stack subtraction");
                     inventoryItem = itemInInventory;
-                    MenuManager.instance.UpdateStats();
-                    Debug.Log("Item removed");
-                    coinsManager.updateHP();
-                    coinsManager.UIAddHp(item.amountOfEffect);
+                    
+                    
+
+                    // implementing EQUIP, GIVE or USE ANIMATIONS
+
+
+                    if (item.itemType == ItemsManager.ItemType.Potion)
+                    {
+                        if (item.itemName == "Mana Potion")
+                        {
+                            // animations
+                            coinsManager.updateMana();
+                            coinsManager.UIAddMana(item.amountOfEffect);
+                            MenuManager.instance.UpdateStats();
+
+                        }
+
+                        else if (item.itemName == "Healing Potion")
+                        {
+                            // animations
+                            coinsManager.updateHP();
+                            coinsManager.UIAddHp(item.amountOfEffect);
+                            MenuManager.instance.UpdateStats();
+
+                        }
+                    }
+
+                    // Add code HERE for weapons, items and armour OR UseItem in ItemsManager???
                 }
             }
 
             if (inventoryItem != null && inventoryItem.amount <= 0)
             {
                 itemsList.Remove(inventoryItem);
-                MenuManager.instance.UpdateStats();            }
+                Debug.Log("Item stack empty - item removed");
+                MenuManager.instance.UpdateStats();
+            }
         }
 
         else
         {
             itemsList.Remove(item);
             Debug.Log("Item removed");
-            MenuManager.instance.UpdateStats();
-            coinsManager.updateHP();
-            coinsManager.UIAddHp(item.amountOfEffect);
+            
+
+            if (item.itemType == ItemsManager.ItemType.Potion)
+            {
+
+                if (item.itemName == "Mana Potion")
+                {
+                    // animations ONLY
+                    coinsManager.updateMana();
+                    coinsManager.UIAddMana(item.amountOfEffect);
+                    MenuManager.instance.UpdateStats();
+
+                }
+
+                else if (item.itemName == "Healing Potion")
+                {
+                    // animations ONLY
+                    coinsManager.updateHP();
+                    coinsManager.UIAddHp(item.amountOfEffect);
+                    MenuManager.instance.UpdateStats();
+
+                }
+            }
+
+            // Add code HERE for weapons, items and armour
         }
     }
+
 
     public List<ItemsManager> GetItemsList()
     {

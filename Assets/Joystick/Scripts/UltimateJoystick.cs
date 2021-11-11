@@ -6,15 +6,22 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.OnScreen;
+#endif
 
 [ExecuteInEditMode]
+#if ENABLE_INPUT_SYSTEM
+public class UltimateJoystick : OnScreenControl, IPointerDownHandler, IDragHandler, IPointerUpHandler
+#else
 public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+#endif
 {
 	// INTERNAL CALCULATIONS //
 	RectTransform baseTrans;
 	Vector2 defaultPos = Vector2.zero;
 	Vector2 joystickCenter = Vector2.zero;
-	int _inputId = -10;
 	Rect joystickRect;
 	CanvasGroup joystickGroup;
 	float radius = 1.0f;
@@ -24,6 +31,16 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		private set;
 	}
 	RectTransform canvasRectTrans;
+	#if ENABLE_INPUT_SYSTEM
+	[InputControl( layout = "Vector2" )]
+	[SerializeField]
+	private string _controlPath;
+	protected override string controlPathInternal
+	{
+		get => _controlPath;
+		set => _controlPath = value;
+	}
+	#endif
 
 	// JOYSTICK POSITIONING //
 	public RectTransform joystickBase, joystick;
@@ -76,7 +93,6 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	public int targetTapCount = 2;
 	float currentTapTime = 0.0f;
 	int tapCount = 0;
-	public bool useTouchInput = false;
 
 	// VISUAL OPTIONS //
 	public bool disableVisuals = false;
@@ -112,37 +128,6 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	public event Action OnPointerDownCallback, OnPointerUpCallback, OnDragCallback;
 	public event Action OnUpdatePositioning;
 	
-	// OBSOLETE // NOTE: We are keeping these variables in the script and public so that the values can be copied to the new variables for a smooth transition to the new version.
-	public enum JoystickTouchSize
-	{
-		Default,
-		Medium,
-		Large,
-		Custom
-	}
-	[Header( "Depreciated Variables" )]
-	public JoystickTouchSize joystickTouchSize = JoystickTouchSize.Default;
-	public float customSpacing_X = -10, customSpacing_Y = -10;
-	public float customTouchSize_X = -10, customTouchSize_Y = -10;
-	public float customTouchSizePos_X = -10, customTouchSizePos_Y = -10;
-	public RectTransform joystickSizeFolder;
-	public Image tensionAccentUp, tensionAccentDown;
-	public Image tensionAccentLeft, tensionAccentRight;
-	
-
-	void OnEnable ()
-	{
-		// If the user wants to calculate using touch input, then start the coroutine to catch the input.
-		if( Application.isPlaying && useTouchInput )
-			StartCoroutine( ProcessTouchInput() );
-	}
-
-	void OnDisable ()
-	{
-		// If the users was wanting to use touch input, then stop the coroutine.
-		if( Application.isPlaying && useTouchInput )
-			StopCoroutine( ProcessTouchInput() );
-	}
 
 	void Awake ()
 	{
@@ -201,100 +186,27 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		// Update the size and placement of the joystick.
 		UpdateJoystickPositioning();
 	}
-
-	// THIS IS FOR THE UNITY EVENT SYSTEM IF THE USER WANTS THAT //
-	public void OnPointerDown ( PointerEventData touchInfo )
-	{
-		if( useTouchInput )
-			return;
-
-		ProcessOnInputDown( touchInfo.position, touchInfo.pointerId );
-	}
-
-	public void OnDrag ( PointerEventData touchInfo )
-	{
-		if( useTouchInput )
-			return;
-
-		ProcessOnInputMoved( touchInfo.position, touchInfo.pointerId );
-	}
-
-	public void OnPointerUp ( PointerEventData touchInfo )
-	{
-		if( useTouchInput )
-			return;
-
-		ProcessOnInputUp( touchInfo.position, touchInfo.pointerId );
-	}
-	// END FOR UNITY EVENT SYSTEM //
-
-	/// <summary>
-	/// The coroutine will process the touch input if the user has the useTouchInput boolean enabled.
-	/// </summary>
-	IEnumerator ProcessTouchInput ()
-	{
-		// Loop for as long as useTouchInput is true.
-		while( useTouchInput )
-		{
-			// If there are touches on the screen...
-			if( Input.touchCount > 0 )
-			{
-				// Loop through each finger on the screen...
-				for( int fingerId = 0; fingerId < Input.touchCount; fingerId++ )
-				{
-					// If the input phase has begun...
-					if( Input.GetTouch( fingerId ).phase == TouchPhase.Began )
-					{
-						// If the touch input position is within the bounds of the joystick rect, then process the down input on the joystick.
-						if( joystickRect.Contains( Input.GetTouch( fingerId ).position ) )
-							ProcessOnInputDown( Input.GetTouch( fingerId ).position, fingerId );
-					}
-					// Else if the input has moved, then process the moved input.
-					else if( Input.GetTouch( fingerId ).phase == TouchPhase.Moved )
-						ProcessOnInputMoved( Input.GetTouch( fingerId ).position, fingerId );
-					// Else if the input has ended or if it was canceled, then process the input being released.
-					else if( Input.GetTouch( fingerId ).phase == TouchPhase.Ended || Input.GetTouch( fingerId ).phase == TouchPhase.Canceled )
-						ProcessOnInputUp( Input.GetTouch( fingerId ).position, fingerId );
-				}
-			}
-			// Else there are no touches on the screen.
-			else
-			{
-				// If the inputId is not reset then reset the joystick since there are no touches.
-				if( _inputId > -10 )
-					ResetJoystick();
-			}
-			
-			yield return null;
-		}
-	}
 	
-	/// <summary>
-	/// Processes the input when it has been initiated on the joystick.
-	/// </summary>
-	/// <param name="inputPosition">The position of the input on the screen.</param>
-	/// <param name="inputId">The unique id of the input that has been initiated on the joystick.</param>
-	void ProcessOnInputDown ( Vector2 inputPosition, int inputId )
+	public void OnPointerDown ( PointerEventData touchInfo )
 	{
 		// If the joystick is already in use, then return.
 		if( joystickState )
 			return;
-		
+
 		// If the user wants a circular boundary but does not want a custom activation range...
 		if( boundary == Boundary.Circular && !customActivationRange )
 		{
 			// distance = distance between the world position of the joystickBase cast to a local position of the ParentCanvas (* by scale factor) - half of the actual canvas size, and the input position.
-			float distance = Vector2.Distance( ( Vector2 )( ParentCanvas.transform.InverseTransformPoint( joystickBase.position ) * ParentCanvas.scaleFactor ) + ( ( canvasRectTrans.sizeDelta * ParentCanvas.scaleFactor ) / 2 ), inputPosition );
+			float distance = Vector2.Distance( ( Vector2 )( ParentCanvas.transform.InverseTransformPoint( joystickBase.position ) * ParentCanvas.scaleFactor ) + ( ( canvasRectTrans.sizeDelta * ParentCanvas.scaleFactor ) / 2 ), touchInfo.position );
 
 			// If the distance is out of range, then just return.
 			if( distance / ( baseTrans.sizeDelta.x * ParentCanvas.scaleFactor ) > 0.5f )
 				return;
 		}
-		
-		// Set the joystick state since the joystick is being interacted with and assign the inputId so that the other functions can know if the pointer calling the function is the correct one.
+
+		// Set the joystick state since the joystick is being interacted with.
 		joystickState = true;
-		_inputId = inputId;
-		
+
 		// If the user has gravity set and it's active then stop the current movement.
 		if( gravity > 0 && gravityActive )
 			StopCoroutine( "GravityHandler" );
@@ -303,7 +215,7 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		if( dynamicPositioning || disableVisuals )
 		{
 			// Then move the joystickBase to the position of the touch.
-			joystickBase.localPosition = ( Vector2 )baseTrans.InverseTransformPoint( ParentCanvas.transform.TransformPoint( inputPosition / ParentCanvas.scaleFactor ) ) - ( canvasRectTrans.sizeDelta / 2 );
+			joystickBase.localPosition = ( Vector2 )baseTrans.InverseTransformPoint( ParentCanvas.transform.TransformPoint( touchInfo.position / ParentCanvas.scaleFactor ) ) - ( canvasRectTrans.sizeDelta / 2 );
 
 			// Set the joystick center so that the position can be calculated correctly.
 			UpdateJoystickCenter();
@@ -360,46 +272,35 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		}
 
 		// Call ProcessInput with the current input information.
-		ProcessInput( inputPosition );
+		ProcessInput( touchInfo.position );
 
 		// Notify any subscribers that the OnPointerDown function has been called.
 		if( OnPointerDownCallback != null )
 			OnPointerDownCallback();
 	}
 
-	/// <summary>
-	/// Processes the input when it has been moved on the screen.
-	/// </summary>
-	/// <param name="inputPosition">The position of the input on the screen.</param>
-	/// <param name="inputId">The unique id of the input being sent in to this function.</param>
-	void ProcessOnInputMoved ( Vector2 inputPosition, int inputId )
+	public void OnDrag ( PointerEventData touchInfo )
 	{
-		// If the pointer event that is calling this function is not the same as the one that initiated the joystick, then return.
-		if( inputId != _inputId )
+		// If the joystick has not been initialized properly, then return.
+		if( !joystickState )
 			return;
 
 		// Then call ProcessInput with the info with the current input information.
-		ProcessInput( inputPosition );
+		ProcessInput( touchInfo.position );
 
 		// Notify any subscribers that the OnDrag function has been called.
 		if( OnDragCallback != null )
 			OnDragCallback();
 	}
 
-	/// <summary>
-	/// Processes the input when it has been released.
-	/// </summary>
-	/// <param name="inputPosition">The position of the input on the screen.</param>
-	/// <param name="inputId">The unique id of the input being sent into this function.</param>
-	void ProcessOnInputUp ( Vector2 inputPosition, int inputId )
+	public void OnPointerUp ( PointerEventData touchInfo )
 	{
-		// If the pointer event that is calling this function is not the same as the one that initiated the joystick, then return.
-		if( inputId != _inputId )
+		// If the joystick has not been initialized properly, then return.
+		if( !joystickState )
 			return;
-		
+
 		// Since the touch has lifted, set the state to false and reset the local pointerId.
 		joystickState = false;
-		_inputId = -10;
 
 		// If dynamicPositioning, disableVisuals, or extendRadius are enabled...
 		if( dynamicPositioning || disableVisuals || extendRadius )
@@ -424,7 +325,7 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 			if( showTension )
 				TensionAccentReset();
 		}
-		
+
 		// If the user wants an input transition, but the durations of both touched and untouched states are zero...
 		if( inputTransition && ( transitionTouchedDuration <= 0 && transitionUntouchedDuration <= 0 ) )
 		{
@@ -531,6 +432,14 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		UpdateParentCanvas();
 	}
 
+	void OnApplicationFocus ( bool focus )
+	{
+		if( !Application.isPlaying || !joystickState || !focus )
+			return;
+		
+		ResetJoystick();
+	}
+
 	/// <summary>
 	/// Updates the parent canvas if it has changed.
 	/// </summary>
@@ -579,7 +488,7 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		if( joystickBase == null )
 		{
 			if( Application.isPlaying )
-				Debug.LogError( "Ultimate Joystick\nThere are some needed components that are not currently assigned. Please check the Assigned Variables section and be sure to assign all of the components." );
+				Debug.LogError( "Ultimate Joystick\nThere are some needed components that are not currently assigned. Please check to make sure that all of the needed components are assigned." );
 
 			return;
 		}
@@ -654,17 +563,13 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 			if( joystickGroup == null )
 				joystickGroup = gameObject.AddComponent<CanvasGroup>();
 		}
+		
+		// Configure the actual size delta and position of the base trans regardless of the canvas scaler setting.
+		Vector2 baseSizeDelta = baseTrans.sizeDelta * ParentCanvas.scaleFactor;
+		Vector2 baseLocalPosition = baseTrans.localPosition * ParentCanvas.scaleFactor;
 
-		// If the user wants to use touch input...
-		if( useTouchInput )
-		{
-			// Configure the actual size delta and position of the base trans regardless of the canvas scaler setting.
-			Vector2 baseSizeDelta = baseTrans.sizeDelta * ParentCanvas.scaleFactor;
-			Vector2 baseLocalPosition = baseTrans.localPosition * ParentCanvas.scaleFactor;
-
-			// Calculate the rect of the base trans.
-			joystickRect = new Rect( new Vector2( baseLocalPosition.x - ( baseSizeDelta.x / 2 ), baseLocalPosition.y - ( baseSizeDelta.y / 2 ) ) + ( ( canvasRectTrans.sizeDelta * ParentCanvas.scaleFactor ) / 2 ), baseSizeDelta );
-		}
+		// Calculate the rect of the base trans.
+		joystickRect = new Rect( new Vector2( baseLocalPosition.x - ( baseSizeDelta.x / 2 ), baseLocalPosition.y - ( baseSizeDelta.y / 2 ) ) + ( ( canvasRectTrans.sizeDelta * ParentCanvas.scaleFactor ) / 2 ), baseSizeDelta );
 	}
 
 	/// <summary>
@@ -962,6 +867,10 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		// Finally, set the horizontal and vertical axis values for reference.
 		HorizontalAxis = joystickPosition.x;
 		VerticalAxis = joystickPosition.y;
+
+		#if ENABLE_INPUT_SYSTEM
+		SendValueToControl( new Vector2( HorizontalAxis, VerticalAxis ) );
+		#endif
 	}
 
 	/// <summary>
@@ -989,12 +898,11 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		// Reset all of the controller variables.
 		gravityActive = false;
 		joystickState = false;
-		_inputId = -10;
 
 		// Stop the gravity coroutine.
 		StopCoroutine( "GravityHandler" );
 		
-		// If dynamicPositioning, disableVisuals, or draggable are enabled...
+		// If dynamicPositioning, disableVisuals, or extendRadius are enabled...
 		if( dynamicPositioning || disableVisuals || extendRadius )
 		{
 			// The joystickBase needs to be reset back to the default position.
@@ -1015,14 +923,14 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 			TensionAccentReset();
 	}
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 	void Update ()
 	{
 		// Keep the joystick updated while the game is not being played.
 		if( !Application.isPlaying )
 			UpdateJoystickPositioning();
 	}
-	#endif
+#endif
 
 	/* --------------------------------------------- *** PUBLIC FUNCTIONS FOR THE USER *** --------------------------------------------- */
 	/// <summary>
@@ -1174,7 +1082,6 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 	{
 		// Set the states to false.
 		joystickState = false;
-		_inputId = -10;
 		
 		// If the joystick center has been changed, then reset it.
 		if( dynamicPositioning || disableVisuals || extendRadius )
@@ -1220,8 +1127,35 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 		// Enable the gameObject.
 		gameObject.SetActive( true );
 	}
+
+	/// <summary>
+	/// Checks to see if the provided input is within range of the Ultimate Joystick.
+	/// </summary>
+	/// <param name="inputPosition">The input value to check.</param>
+	public bool InputInRange ( Vector2 inputPosition )
+	{
+		// If the user wants a circular boundary but does not want a custom activation range...
+		if( boundary == Boundary.Circular && !customActivationRange )
+		{
+			// distance = distance between the world position of the joystickBase cast to a local position of the ParentCanvas (* by scale factor) - half of the actual canvas size, and the input position.
+			float distance = Vector2.Distance( ( Vector2 )( ParentCanvas.transform.InverseTransformPoint( joystickBase.position ) * ParentCanvas.scaleFactor ) + ( ( canvasRectTrans.sizeDelta * ParentCanvas.scaleFactor ) / 2 ), inputPosition );
+
+			// If the distance is out of range, then return false.
+			if( distance / ( baseTrans.sizeDelta.x * ParentCanvas.scaleFactor ) <= 0.5f )
+				return true;
+		}
+		else
+		{
+			// If the joystickRect contains the input position, then return true.
+			if( joystickRect.Contains( inputPosition ) )
+				return true;
+		}
+
+		// Else none of the above is true, so return false.
+		return false;
+	}
 	/* ------------------------------------------- *** END PUBLIC FUNCTIONS FOR THE USER *** ------------------------------------------- */
-	
+
 	/* --------------------------------------------- *** STATIC FUNCTIONS FOR THE USER *** --------------------------------------------- */
 	/// <summary>
 	/// Returns the Ultimate Joystick of the targeted name if it exists within the scene.
@@ -1341,6 +1275,19 @@ public class UltimateJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler
 			return;
 
 		UltimateJoysticks[ joystickName ].EnableJoystick();
+	}
+
+	/// <summary>
+	/// Checks to see if the provided input is within range of the targeted Ultimate Joystick.
+	/// </summary>
+	/// <param name="joystickName">The name of the desired Ultimate Joystick.</param>
+	/// <param name="inputPosition">The input value to check.</param>
+	public static bool InputInRange ( string joystickName, Vector2 inputPosition )
+	{
+		if( !JoystickConfirmed( joystickName ) )
+			return false;
+
+		return UltimateJoysticks[ joystickName ].InputInRange( inputPosition );
 	}
 	/* ------------------------------------------- *** END STATIC FUNCTIONS FOR THE USER *** ------------------------------------------- */
 }

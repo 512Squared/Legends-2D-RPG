@@ -19,7 +19,7 @@ public class PlayerStats : MonoBehaviour
     public int thulGold;
     public int thulSpells;
     public int thulPotions;
-    public int thulMana;
+    //public int thulMana;
     public int[] xpLevelUp;
     public int maxLevel;
     public int baseLevelXP;
@@ -117,6 +117,7 @@ public class PlayerStats : MonoBehaviour
     public void AddHP(int amountOfHPToAdd)
     {
         npcHP += amountOfHPToAdd;
+        
         if (npcHP > maxHP)
         {
             npcHP = maxHP;

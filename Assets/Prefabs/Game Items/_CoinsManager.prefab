@@ -49,15 +49,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animatedCoinPrefab: {fileID: 903761102365627971, guid: d2eecefc7c707f9468fb4620d31e797e, type: 3}
-  animatedHPPrefab: {fileID: 2622710008390409699, guid: 5fa7fc4aefa72934c9919ac51ed41374, type: 3}
+  animatedHPPrefab: {fileID: 8087277286701333362, guid: 5fa7fc4aefa72934c9919ac51ed41374, type: 3}
+  animatedManaPrefab: {fileID: 5245996393258216602, guid: c553d982fcb07c246a82a5cbff41eba7, type: 3}
   target: {fileID: 0}
   targetHP: {fileID: 0}
+  targetMana: {fileID: 0}
   sourceTransform: {fileID: 0}
   sourceTransformHP: {fileID: 0}
+  sourceTransformMana: {fileID: 0}
   coinUIText: {fileID: 0}
   hpUIText: {fileID: 0}
+  manaUIText: {fileID: 0}
   maxCoins: 200
   maxHP: 500
+  maxMana: 0
   player: {fileID: 0}
   minAnimDuration: 0.7
   maxAnimDuration: 1.8

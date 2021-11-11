@@ -206,6 +206,18 @@ public class UltimateJoystickReadmeEditor : Editor
 			description = "This function will ensure that the Ultimate Joystick is completely reset before enabling itself to be used again.",
 			codeExample = "joystick.EnableJoystick();"
 		},
+		new DocumentationInfo()
+		{
+			functionName = "InputInRange()",
+			showMore = new AnimBool( false ),
+			description = "Checks to see if the provided input is within range of the Ultimate Joystick.",
+			codeExample = "if( joystick.InputInRange( inputPosition ) )",
+			parameter = new string[ 1 ]
+			{
+				"Vector2 inputPosition - The input position to be checked."
+			},
+			returnType = "bool"
+		},
 	};
 	DocumentationInfo[] StaticFunctions = new DocumentationInfo[]
 	{
@@ -326,6 +338,19 @@ public class UltimateJoystickReadmeEditor : Editor
 			},
 			description = "This function will ensure that the Ultimate Joystick is completely reset before enabling itself to be used again.",
 			codeExample = "UltimateJoystick.EnableJoystick( \"Movement\" );"
+		},
+		new DocumentationInfo()
+		{
+			functionName = "InputInRange()",
+			showMore = new AnimBool( false ),
+			parameter = new string[ 2 ]
+			{
+				"string joystickName - The name that the targeted Ultimate Joystick has been registered with.",
+				"Vector2 inputPosition - The input position to be checked."
+			},
+			description = "Checks to see if the provided input is within range of the Ultimate Joystick.",
+			codeExample = "if( UltimateJoystick.InputInRange( \"Movement\", inputPosition ) )",
+			returnType = "bool"
 		},
 	};
 	DocumentationInfo[] PublicEvents = new DocumentationInfo[]
@@ -692,6 +717,11 @@ public class UltimateJoystickReadmeEditor : Editor
 		GUILayout.Space( paragraphSpace );
 
 		EditorGUILayout.LabelField( "After the joystick has been given a name in the Script Reference section, we can get that joystick's position by catching the Horizontal and Vertical values at run time and storing the results from the static functions: <i>GetHorizontalAxis</i> and <i>GetVerticalAxis</i>. These functions will return the joystick's position, and will be float values between -1, and 1, with 0 being at the center. For more information about these functions, and others that are available to the Ultimate Joystick class, please see the Documentation section of this window.", paragraphStyle );
+
+		#if ENABLE_INPUT_SYSTEM
+		GUILayout.Space( paragraphSpace );
+		EditorGUILayout.LabelField( "<b>New Input System:</b> In order to reference the Ultimate Joystick with the new Input System from Unity, simply go to the Script Reference section of the Ultimate Joystick in your scene and set the Control Path variable to the desired path.", paragraphStyle );
+		#endif
 
 		GUILayout.Space( sectionSpace );
 

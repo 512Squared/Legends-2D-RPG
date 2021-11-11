@@ -31,7 +31,7 @@ public class UltimateJoystickEditor : Editor
 	SerializedProperty gravity, extendRadius;
 	SerializedProperty axis, boundary, deadZone;
 	SerializedProperty tapCountOption, tapCountDuration;
-	SerializedProperty targetTapCount, useTouchInput;
+	SerializedProperty targetTapCount;
 
 	// -----< VISUAL OPTIONS >----- //
 	Color baseColor;
@@ -300,131 +300,6 @@ public class UltimateJoystickEditor : Editor
 		positionHorizontal = serializedObject.FindProperty( "positionHorizontal" );
 		positionVertical = serializedObject.FindProperty( "positionVertical" );
 
-		// COPY DEPRECIATED VALUES //
-		if( !isPrefabInProjectWindow )
-		{
-			if( targ.customSpacing_X != -10 || targ.customSpacing_Y != -10 )
-			{
-				positionHorizontal.floatValue = targ.customSpacing_X;
-				positionVertical.floatValue = targ.customSpacing_Y;
-
-				serializedObject.FindProperty( "customSpacing_X" ).floatValue = -10;
-				serializedObject.FindProperty( "customSpacing_Y" ).floatValue = -10;
-
-				serializedObject.ApplyModifiedProperties();
-			}
-
-			if( ( int )targ.joystickTouchSize >= 0 )
-			{
-				if( ( int )targ.joystickTouchSize == 0 )
-					activationRange.floatValue = 1.0f;
-				else if( ( int )targ.joystickTouchSize == 1 )
-					activationRange.floatValue = 1.5f;
-				else if( ( int )targ.joystickTouchSize == 2 )
-					activationRange.floatValue = 2.0f;
-				else if( ( int )targ.joystickTouchSize == 3 )
-					customActivationRange.boolValue = true;
-
-				serializedObject.FindProperty( "joystickTouchSize" ).intValue = -1;
-				serializedObject.ApplyModifiedProperties();
-			}
-
-			if( targ.customTouchSize_X != -10 || targ.customTouchSize_Y != -10 )
-			{
-				activationWidth.floatValue = targ.customTouchSize_X;
-				activationHeight.floatValue = targ.customTouchSize_Y;
-
-				serializedObject.FindProperty( "customTouchSize_X" ).floatValue = -10;
-				serializedObject.FindProperty( "customTouchSize_Y" ).floatValue = -10;
-
-				serializedObject.ApplyModifiedProperties();
-			}
-
-			if( targ.customTouchSizePos_X != -10 || targ.customTouchSizePos_Y != -10 )
-			{
-				activationPositionHorizontal.floatValue = targ.customTouchSizePos_X;
-				activationPositionVertical.floatValue = targ.customTouchSizePos_Y;
-
-				serializedObject.FindProperty( "customTouchSizePos_X" ).floatValue = -10;
-				serializedObject.FindProperty( "customTouchSizePos_Y" ).floatValue = -10;
-
-				serializedObject.ApplyModifiedProperties();
-			}
-
-			if( targ.joystickSizeFolder != null && targ.joystickBase != null )
-			{
-				Undo.SetTransformParent( targ.joystickBase.transform, targ.transform, "Fix Older Joysticks" );
-
-				if( targ.showHighlight && targ.highlightBase != null )
-					Undo.SetTransformParent( targ.highlightBase.transform, targ.joystickBase.transform, "Fix Older Joysticks" );
-
-				if( targ.showTension )
-				{
-					if( targ.tensionAccentUp != null )
-						Undo.SetTransformParent( targ.tensionAccentUp.transform, targ.joystickBase.transform, "Fix Older Joysticks" );
-					if( targ.tensionAccentDown != null )
-						Undo.SetTransformParent( targ.tensionAccentDown.transform, targ.joystickBase.transform, "Fix Older Joysticks" );
-					if( targ.tensionAccentLeft != null )
-						Undo.SetTransformParent( targ.tensionAccentLeft.transform, targ.joystickBase.transform, "Fix Older Joysticks" );
-					if( targ.tensionAccentRight != null )
-						Undo.SetTransformParent( targ.tensionAccentRight.transform, targ.joystickBase.transform, "Fix Older Joysticks" );
-				}
-
-				Undo.SetTransformParent( targ.joystick.transform, targ.joystickBase.transform, "Fix Older Joysticks" );
-
-				if( targ.showHighlight && targ.highlightJoystick != null && targ.highlightJoystick.gameObject != targ.joystick.gameObject )
-					Undo.SetTransformParent( targ.highlightJoystick.transform, targ.joystick.transform, "Fix Older Joysticks" );
-
-				Undo.DestroyObjectImmediate( targ.joystickSizeFolder.gameObject );
-
-				serializedObject.FindProperty( "joystickSizeFolder" ).objectReferenceValue = null;
-				serializedObject.ApplyModifiedProperties();
-			}
-
-			if( targ.tensionAccentUp != null || targ.tensionAccentLeft != null || targ.tensionAccentDown != null || targ.tensionAccentRight != null )
-			{
-				if( targ.TensionAccents.Count > 0 )
-				{
-					List<GameObject> gameObjectsToDestroy = new List<GameObject>();
-					for( int i = 0; i < targ.TensionAccents.Count; i++ )
-					{
-						if( targ.TensionAccents[ i ] == null )
-							continue;
-
-						gameObjectsToDestroy.Add( targ.TensionAccents[ i ].gameObject );
-					}
-
-					serializedObject.FindProperty( "TensionAccents" ).ClearArray();
-					serializedObject.ApplyModifiedProperties();
-
-					for( int i = 0; i < gameObjectsToDestroy.Count; i++ )
-						Undo.DestroyObjectImmediate( gameObjectsToDestroy[ i ] );
-				}
-
-				for( int i = 0; i < 4; i++ )
-				{
-					serializedObject.FindProperty( "TensionAccents" ).InsertArrayElementAtIndex( i );
-					serializedObject.ApplyModifiedProperties();
-				}
-
-				if( targ.tensionAccentUp != null )
-					serializedObject.FindProperty( string.Format( "TensionAccents.Array.data[{0}]", 0 ) ).objectReferenceValue = targ.tensionAccentUp.GetComponent<Image>();
-				if( targ.tensionAccentLeft != null )
-					serializedObject.FindProperty( string.Format( "TensionAccents.Array.data[{0}]", 1 ) ).objectReferenceValue = targ.tensionAccentLeft.GetComponent<Image>();
-				if( targ.tensionAccentDown != null )
-					serializedObject.FindProperty( string.Format( "TensionAccents.Array.data[{0}]", 2 ) ).objectReferenceValue = targ.tensionAccentDown.GetComponent<Image>();
-				if( targ.tensionAccentRight != null )
-					serializedObject.FindProperty( string.Format( "TensionAccents.Array.data[{0}]", 3 ) ).objectReferenceValue = targ.tensionAccentRight.GetComponent<Image>();
-
-				serializedObject.FindProperty( "tensionAccentUp" ).objectReferenceValue = null;
-				serializedObject.FindProperty( "tensionAccentLeft" ).objectReferenceValue = null;
-				serializedObject.FindProperty( "tensionAccentDown" ).objectReferenceValue = null;
-				serializedObject.FindProperty( "tensionAccentRight" ).objectReferenceValue = null;
-				serializedObject.ApplyModifiedProperties();
-			}
-		}
-		// END COPY DEPRECIATED VALUES //
-
 		// -----< JOYSTICK SETTINGS >----- //
 		gravity = serializedObject.FindProperty( "gravity" );
 		extendRadius = serializedObject.FindProperty( "extendRadius" );
@@ -434,7 +309,6 @@ public class UltimateJoystickEditor : Editor
 		tapCountOption = serializedObject.FindProperty( "tapCountOption" );
 		tapCountDuration = serializedObject.FindProperty( "tapCountDuration" );
 		targetTapCount = serializedObject.FindProperty( "targetTapCount" );
-		useTouchInput = serializedObject.FindProperty( "useTouchInput" );
 
 		// -----< VISUAL OPTIONS >----- //
 		disableVisuals = serializedObject.FindProperty( "disableVisuals" );
@@ -502,26 +376,6 @@ public class UltimateJoystickEditor : Editor
 		// PREFAB WARNINGS //
 		if( isPrefabInProjectWindow )
 		{
-			bool stopEditorDisplay = targ.joystickSizeFolder != null && targ.joystickBase != null;
-			
-			if( targ.tensionAccentUp != null || targ.tensionAccentLeft != null || targ.tensionAccentDown != null || targ.tensionAccentRight != null )
-				stopEditorDisplay = true;
-
-			if( stopEditorDisplay )
-			{
-				GUIStyle wordWrappedParagraph = new GUIStyle( EditorStyles.label ) { wordWrap = true };
-
-				collapsableSectionStyle.fontStyle = FontStyle.Bold;
-
-				EditorGUILayout.BeginVertical( "Box" );
-
-				EditorGUILayout.LabelField( "OUTDATED PREFAB", collapsableSectionStyle );
-
-				EditorGUILayout.LabelField( "This is an outdated prefab. In order to fix this prefab, please drag it into your scene and then click the apply button at the top of the Inspector window.", wordWrappedParagraph );
-				EditorGUILayout.EndVertical();
-				return;
-			}
-
 			bool showGenerateWarning = false;
 
 			if( targ.joystickBase == null || targ.joystick == null )
@@ -883,13 +737,11 @@ public class UltimateJoystickEditor : Editor
 				GUILayout.Space( afterIndentSpace );
 			}
 
-			EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField( useTouchInput, new GUIContent( "Use Touch Input", "Determines if the joystick should use input from the EventSystem or directly calculate from the touch input on the screen." ) );
-            if( EditorGUI.EndChangeCheck() )
-                serializedObject.ApplyModifiedProperties();
-
-			if( targ.useTouchInput )
-				EditorGUILayout.HelpBox( "The Ultimate Joystick will exclusively use touch input received on the screen for calculations.", MessageType.Warning );
+			// EDIT: 
+			//EditorGUI.BeginChangeCheck();
+   //         EditorGUILayout.PropertyField( useTouchInput, new GUIContent( "Use Touch Input", "Determines if the joystick should use input from the EventSystem or directly calculate from the touch input on the screen." ) );
+   //         if( EditorGUI.EndChangeCheck() )
+   //             serializedObject.ApplyModifiedProperties();
         }
 
 		// VISUAL OPTIONS //
@@ -1442,6 +1294,13 @@ public class UltimateJoystickEditor : Editor
 		DisplayHeaderDropdown( "Script Reference", "UUI_ScriptReference" );
 		if( EditorPrefs.GetBool( "UUI_ScriptReference" ) )
 		{
+			#if ENABLE_INPUT_SYSTEM
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField( serializedObject.FindProperty( "_controlPath" ) );
+			if( EditorGUI.EndChangeCheck() )
+				serializedObject.ApplyModifiedProperties();
+			#endif
+
 			EditorGUI.BeginChangeCheck();
 			EditorGUILayout.PropertyField( joystickName, new GUIContent( "Joystick Name", "The name of the targeted joystick used for static referencing." ) );
 			if( EditorGUI.EndChangeCheck() )

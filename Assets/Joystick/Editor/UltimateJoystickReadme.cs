@@ -24,6 +24,20 @@ public class UltimateJoystickReadme : ScriptableObject
 	}
 	public VersionHistory[] versionHistory = new VersionHistory[]
 	{
+		// VERSION 3.2.0 //
+		new VersionHistory ()
+		{
+			versionNumber = "3.2.0",
+			changes = new string[]
+			{
+				// GENERAL CHANGES //
+				"Changed the folder structure to be inside of one root folder: Tank & Healer Studio",
+				"Removed the option for exclusively using Unity's touch input instead of the EventSystem. The option was not working consistently across all versions of Unity",
+				"Improved calculations for making the Ultimate Joystick completely compatible with the new Unity Input System",
+				"Added new function: InputInRange. This function is designed to allow users to check to see if any input is within the activation range of the Ultimate Joystick before executing some of their custom code",
+				"Removed all of the old depreciated code that was left in on version 3.0.0",
+			},
+		},
 		// VERSION 3.1.2 //
 		new VersionHistory ()
 		{

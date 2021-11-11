@@ -86,14 +86,17 @@ public class MenuManager : MonoBehaviour
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] GameObject itemBox;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI effectText;
 
 
     [TabGroup("New Group", "Equip")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI[] manaEquipToString, xpEquipToString, hpEquipToString, defenceEquipToString;
+    public TextMeshProUGUI[] manaEquipToString, hpEquipToString, defenceEquipToString;
     [TabGroup("New Group", "Equip")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Slider[] manaEquipSlider, xpEquipSlider, hpEquipSlider, defenceEquipSlider;
+    public Slider[] manaEquipSlider, hpEquipSlider, defenceEquipSlider;
     [TabGroup("New Group", "Equip")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public Image[] characterMugEquip;
@@ -124,14 +127,23 @@ public class MenuManager : MonoBehaviour
     public bool keyboardKeyI = false;
 
 
-    [Header ("UI Tweening")]
+
+
+    [Header("UI Tweening")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] private CanvasGroup chooseText;
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] TextMeshProUGUI textUseEquipTake;
     [GUIColor(1f, 1f, 0.215f)]
     public RectTransform mainEquipInfoPanel, characterChoicePanel;
-    
+
+
+
+    [Header("Player Choice")]
+    [GUIColor(1f, 0.2f, 0.515f)]
+    [SerializeField] TextMeshProUGUI[] playerChoice;
+    [GUIColor(1f, 0.2f, 0.515f)]
+    [SerializeField] Sprite buttonGrey;
 
 
     private Tween fadeText;
@@ -214,7 +226,7 @@ public class MenuManager : MonoBehaviour
                 levelP[i].text = playerStats[i].npcLevel.ToString();
                 characterMug[i].sprite = playerStats[i].characterMug;
                 thulGold[i].text = playerStats[0].thulGold.ToString();
-                thulMana[i].text = playerStats[0].npcMana.ToString();
+                //thulMana[i].text = playerStats[0].npcMana.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
 
@@ -225,7 +237,9 @@ public class MenuManager : MonoBehaviour
     }
 
 
-    public void UpdateItemsInventory()
+
+
+    public void UpdateItemsInventory()     // create  UI Equip table and side panel. Item sorting at the bottom
     {
 
         currentNewItems = 0;
@@ -238,6 +252,9 @@ public class MenuManager : MonoBehaviour
         foreach (ItemsManager item in Inventory.instance.GetItemsList())
         {
             RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
+
+
+            // show item image
 
             Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
             itemImage.sprite = item.itemsImage;
@@ -260,17 +277,16 @@ public class MenuManager : MonoBehaviour
             if (item.isNewItem == true)
             {
                 GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                Debug.Log("New Items Log: " + item.itemName);
                 currentNewItems++;
             }
 
 
-            // Stuff to active ONLY when inside inventory
+            // Stuff to activate ONLY when inside inventory
 
             if (isEquipOn == true)
             {
 
-                // selected items - focus on selected item (2nd), switch off the rest (1st. 
+                // Removing focus from previously selected items 
 
                 if (item.itemSelected == false)
                 {
@@ -288,22 +304,96 @@ public class MenuManager : MonoBehaviour
                         itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
                     }
                 }
-                else if (item.itemSelected == true)
+                
+                // ITEM SORTING
+
+                else if (item.itemSelected == true) // if item has been selected
                 {
                     item.itemSelected = false;
                     itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
+
+                    // ITEM SELECTED animation
+
                     itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-                    Debug.Log(item.itemName + " has been selected");
+                    
+                    // NEW ITEM tagging
 
-                    // if this happens here, new items lose their tag only after being inspected
-
-                    item.isNewItem = false; // this is so new items only show once
+                    item.isNewItem = false; // switch off new item tag after selection
                     itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+
+                    // SORTING BY ITEM TYPE
+
+                    GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 0; // necessary reset
+
+
+                    //  SORT BY POTIONS
+                    
+                    if (item.itemType == ItemsManager.ItemType.Potion)
+                    {
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+
+                        textUseEquipTake.text = "Give";
+
+                        // EFFECT MODIFIER (on item info)
+                        
+                        if (item.itemName == "Speed Potion")
+                        {
+                            GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
+                            effectText.text = "x" + item.amountOfEffect.ToString();
+                        }
+
+                        else if (item.itemName == "Mana Potion")
+                        {
+                            GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
+                            effectText.text = "+" + item.amountOfEffect.ToString();
+                        }
+
+                        else if (item.itemName == "Healing Potion")
+                        {
+                            GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
+                            effectText.text = "+" + item.amountOfEffect.ToString();
+                        }
+
+                        else
+                        {
+                            GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 0;
+                        }
+
+                    }
+
+                    // SORT BY ARMOUR
+                    
+                    if (item.itemType == ItemsManager.ItemType.Armour)
+                    {
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        textUseEquipTake.text = "Equip";
+                    }
+
+                    // SORT BY WEAPON
+
+                    if (item.itemType == ItemsManager.ItemType.Weapon)
+                    {
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        textUseEquipTake.text = "Equip";
+                    }
+
+                    // SORT BY NORMAL ITEMS
+
+                    if (item.itemType == ItemsManager.ItemType.Item)
+                    {
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        textUseEquipTake.text = "Use";
+                    }
+
+
+
                 }
+
+
             }
         }
 
-        // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't need have to run until inventory has been built (above)
+        // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
 
         if (currentNewItems == 0)
         {
@@ -317,7 +407,7 @@ public class MenuManager : MonoBehaviour
         }
 
         GameManager.instance.currentNewItems = currentNewItems;
-        Debug.Log("No. of new Items: " + currentNewItems);
+        //Debug.Log("No. of new Items: " + currentNewItems);
 
     }
 
@@ -346,7 +436,7 @@ public class MenuManager : MonoBehaviour
     {
 
         // select is the choice of character in the dropdown menu, i.e. the character array slot. 
-        
+
         select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
         characterNameV.text = playerStats[select].playerName;
         descriptionV.text = playerStats[select].playerDesc;
@@ -374,7 +464,15 @@ public class MenuManager : MonoBehaviour
 
     public void equipCharStats()
     {
-        playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
+
+
+        // grey out the button
+
+        GameObject.FindGameObjectWithTag("button_use").GetComponent<Image>().sprite = buttonGrey;
+        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
+        GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.270f, 0.270f, 0.270f, 1);
+
+        playerStats = GameManager.instance.GetPlayerStats();
 
         for (int i = 0; i < playerStats.Length; i++)
         {
@@ -382,14 +480,14 @@ public class MenuManager : MonoBehaviour
             isTeamMember[i] = playerStats[i].isTeamMember;
             if (isTeamMember[i] == true)
             {
+                //text
                 characterEquip[i].SetActive(true);
                 hpEquipToString[i].text = playerStats[i].npcHP.ToString();
                 manaEquipToString[i].text = playerStats[i].npcMana.ToString();
                 defenceEquipToString[i].text = playerStats[i].npcDefence.ToString();
-                xpEquipToString[i].text = playerStats[i].npcXP.ToString();
-                xpEquipSlider[i].value = playerStats[i].npcXP;
-                manaEquipSlider[i].value = playerStats[i].npcMana;
+                //sliders
                 hpEquipSlider[i].value = playerStats[i].npcHP;
+                manaEquipSlider[i].value = playerStats[i].npcMana;
                 defenceEquipSlider[i].value = playerStats[i].npcDefence;
                 characterMugEquip[i].sprite = playerStats[i].characterMug;
 
@@ -410,16 +508,16 @@ public class MenuManager : MonoBehaviour
 
     public void CallToSellItem()
     {
-        Debug.Log("DiscardItem initiated");
         Inventory.instance.SellItem(activeItem);
         UpdateItemsInventory();
     }
 
-    public void CallToUseItem()
+    public void CallToUseItem(int selectedCharacter)
     {
         Debug.Log("UseItem initiated");
-        activeItem.UseItem();
+        activeItem.UseItem(selectedCharacter);
         Inventory.instance.UseAndRemoveItem(activeItem);
+        GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
         UpdateItemsInventory();
     }
 
@@ -430,7 +528,7 @@ public class MenuManager : MonoBehaviour
         Debug.Log("IsEquip status: " + isEquipOn);
     }
 
-    public void equipBackAndHome() //just some tidying when using back and home
+    public void equipBackAndHome() // tidying for back and home buttons
     {
         turnEquipOn();
         currentNewItems = 0;
@@ -444,7 +542,7 @@ public class MenuManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         GameManager.instance.isItemSelected = false;
         UpdateItemsInventory();
-        
+
     }
 
     public void PanelTestingKeyboardControl()
@@ -484,7 +582,7 @@ public class MenuManager : MonoBehaviour
 
 
 
-    // UI Tweeing on Equipment panel
+    // UI Tweeing on Equipment left panel, animations
 
     public void OnUseButton()
     {
@@ -525,6 +623,21 @@ public class MenuManager : MonoBehaviour
         }
 
         fadeText = chooseText.DOFade(endValue, duration);
+    }
+
+    public void SetUpCharacterChoice()
+    {
+        if (activeItem)
+        {
+            for (int i = 0; i < playerStats.Length; i++)
+            {
+                PlayerStats activePlayer = GameManager.instance.GetPlayerStats()[i];
+                playerChoice[i].text = activePlayer.playerName;
+
+                bool activePlayerAvailable = activePlayer.gameObject.activeInHierarchy;
+                playerChoice[i].transform.parent.gameObject.SetActive(activePlayerAvailable);
+            }
+        }
     }
 
 

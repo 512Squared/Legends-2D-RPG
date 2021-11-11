@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemsManager : MonoBehaviour
 {
-    
+    public static ItemsManager instance;
     public enum ItemType { Item, Potion, Weapon, Armour, Skill}
     public ItemType itemType;
 
@@ -13,6 +13,7 @@ public class ItemsManager : MonoBehaviour
     public Sprite itemsImage;
     public bool itemSelected = false;
     public bool isNewItem = true;
+    public bool itemSold = false;
 
 
     public enum AffectType { HP, Mana, Defence, Dexterity, Perception}
@@ -21,38 +22,53 @@ public class ItemsManager : MonoBehaviour
 
     public int WeaponDexterity;
     public int armourDefence;
-    public int speedIncrease;
+
 
     public bool isStackable;
 
     public int amount;
 
 
-    public void UseItem()
+
+
+    public void UseItem(int characterToUseOn)
     {
 
+        PlayerStats selectedCharacter = GameManager.instance.GetPlayerStats()[characterToUseOn];
+        
         Debug.Log("UseItem called from ItemsManager");
         if (itemType == ItemType.Potion)
         {
             if (affectType == AffectType.HP)
             {
-                PlayerStats.instance.AddHP(amountOfEffect);
-                Debug.Log("HP Added");
+                selectedCharacter.AddHP(amountOfEffect);
+                Debug.Log("HP given to " + selectedCharacter.name);
             }
 
             else if (affectType == AffectType.Mana)
             {
-                PlayerStats.instance.AddMana(amountOfEffect);
-                Debug.Log("HP Added");
+                selectedCharacter.AddMana(amountOfEffect);
+                Debug.Log("Mana given to " + selectedCharacter.name);
             }
         }
 
         if (itemType == ItemType.Armour)
         {
-            PlayerStats.instance.AddDefence(amountOfEffect);             
-            
+            selectedCharacter.AddDefence(amountOfEffect);             
+                Debug.Log("Defence given to " + selectedCharacter.name);
         }
+
+        if (itemType == ItemType.Weapon)
+        {
+            Debug.Log("Weapon given to " + selectedCharacter.name);
+        }
+
+        // Maybe here for giving weapon and armour to characters?
+
+
     }
+    
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
@@ -63,6 +79,9 @@ public class ItemsManager : MonoBehaviour
            
         }
     }
+
+
+
 
     public void SelfDestroy()
     {

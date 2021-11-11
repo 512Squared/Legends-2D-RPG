@@ -7,7 +7,12 @@ using TMPro;
 using Sirenix.OdinInspector;
 
 
-public class CoinsManager : MonoBehaviour
+// handles coins, mana and HP animations in Equipment panel.
+// interacts with MenuManager for displaying sell and use items UpdateInventoryItems()
+// interacts with Inventory for updating and interacting with UI display functions on MenuManager. Inventory functions and SellItem(), UseAndRemoveItem().
+// item button controls 
+
+public class CoinsManager : MonoBehaviour 
 {
     [Header("Main connectors")]
     [TabGroup("UI references")]
@@ -18,31 +23,46 @@ public class CoinsManager : MonoBehaviour
     [SerializeField] GameObject animatedHPPrefab;
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] Transform target;
+    [SerializeField] GameObject animatedManaPrefab;
+    [TabGroup("UI references")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] Transform targetCoin;
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] Transform targetHP;
+    [TabGroup("UI references")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] Transform targetMana;
 
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] private Transform sourceTransform;
+    [SerializeField] private Transform sourceTransformCoin;
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] private Transform sourceTransformHP;
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TMP_Text coinUIText;
+    [SerializeField] private Transform sourceTransformMana;
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TMP_Text hpUIText;
+    [SerializeField] TextMeshProUGUI coinUIText;
+    [TabGroup("UI references")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TextMeshProUGUI hpUIText;
+    [TabGroup("UI references")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TextMeshProUGUI manaUIText;
 
 
-
-
-    private Vector2 source;
+    private Vector2 sourceCoins;
     private Vector2 sourceHP;
+    private Vector2 sourceMana;
 
+    private ItemsManager item;
 
+    Vector2 targetPositionCoins;
+    Vector2 targetPositionHP;
+    Vector2 targetPositionMana;
 
 
     [Header("Available coins : (coins to pool)")]
@@ -54,13 +74,17 @@ public class CoinsManager : MonoBehaviour
     [SerializeField] int maxHP;
     [TabGroup("Miscellaneous")]
     [GUIColor(0.670f, 1, 0.560f)]
-    [SerializeField] PlayerStats player;
+    [SerializeField] int maxMana;
     [TabGroup("Miscellaneous")]
     [GUIColor(0.670f, 1, 0.560f)]
-    private ItemsManager item;
+    public PlayerStats mainCharacter;
+    [TabGroup("Miscellaneous")]
+    [GUIColor(0.670f, 1, 0.560f)]
+    
 
     Queue<GameObject> coinsQueue = new Queue<GameObject>();
     Queue<GameObject> hpQueue = new Queue<GameObject>();
+    Queue<GameObject> manaQueue = new Queue<GameObject>();
 
     [Header("Animation settings")]
     [TabGroup("New Group", "Animation settings")]
@@ -78,10 +102,6 @@ public class CoinsManager : MonoBehaviour
 
 
 
-
-    Vector2 targetPosition;
-    Vector2 targetPositionHP;
-
     // STRATEGIES
 
     // Could use the RemoveItems code to add in a variable for which animation trigger to use.  MenuManager.instance.animTrigger = item.GetComponent<Animator>().SetTrigger("ItemSold");
@@ -91,7 +111,8 @@ public class CoinsManager : MonoBehaviour
     // As ever, the choice is between where to put the script and where to call the data that is thereby missing to make the script work
 
 
-    private int _c = 0;
+    private int _c;
+    
 
     public int Coins
     {
@@ -106,7 +127,7 @@ public class CoinsManager : MonoBehaviour
         }
     }
 
-    private int _hp = 0;
+    private int _hp;
 
     public int Hp
     {
@@ -115,9 +136,29 @@ public class CoinsManager : MonoBehaviour
         {
             _hp = value;
 
-            //update UI Text whenever "Coins variable is changed
-            coinUIText.text = Hp.ToString();
+            //update UI Text whenever HP variable is changed
+            if (Hp < mainCharacter.maxHP + 1)
 
+            {
+                hpUIText.text = Hp.ToString();
+            }
+        }
+    }
+
+    private int _mana;
+
+    public int Mana
+    {
+        get { return _mana; }
+        set
+        {
+            _mana = value;
+
+            //update UI Text whenever Mana variable is changed
+            if (Mana < mainCharacter.maxMana + 1)
+            {
+                manaUIText.text = Mana.ToString();
+            }
         }
     }
 
@@ -125,11 +166,16 @@ public class CoinsManager : MonoBehaviour
 
     void Awake() {
        
-        // prepare coins
         PrepareCoins();
-        coinUIText.text = Coins.ToString();
         PrepareHP();
-        hpUIText.text = Hp.ToString();
+        PrepareMana();
+
+        _c += mainCharacter.thulGold;
+        _hp += mainCharacter.npcHP;
+        _mana += mainCharacter.npcMana;
+        coinUIText.text = _c.ToString();
+        hpUIText.text = _hp.ToString();
+        manaUIText.text = _mana.ToString();
 
     }
 
@@ -144,7 +190,7 @@ public class CoinsManager : MonoBehaviour
         {
             GameObject coin;
             coin = Instantiate(animatedCoinPrefab);
-            coin.transform.SetParent(sourceTransform, false);
+            coin.transform.SetParent(sourceTransformCoin, false);
             coin.SetActive(false);
             coinsQueue.Enqueue(coin);
 
@@ -164,13 +210,27 @@ public class CoinsManager : MonoBehaviour
         }
     }
 
+    void PrepareMana()
+    {
+        for (int i = 0; i < maxMana; i++)
+        {
+            GameObject mana;
+            mana = Instantiate(animatedManaPrefab);
+            mana.transform.SetParent(sourceTransformMana, false);
+            mana.SetActive(false);
+            manaQueue.Enqueue(mana);
+
+        }
+    }
+
 
 
 
 
     public void Animate(Vector2 source, int valueInCoins) //previously 'collectedCoinPosition'
     {
-        
+
+        Debug.Log("Animate coins called");
         for (int i = 0; i < valueInCoins; i++)
         {
             // check if there's coins in the pool
@@ -185,7 +245,7 @@ public class CoinsManager : MonoBehaviour
 
                 // animate coin to target position
                 float duration = Random.Range(minAnimDuration, maxAnimDuration);
-                coin.transform.DOMove(targetPosition, duration)
+                coin.transform.DOMove(targetPositionCoins, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
                     {
@@ -203,26 +263,26 @@ public class CoinsManager : MonoBehaviour
 
     public void AnimateHP(Vector2 sourceHP, int amountOfEffect) //previously 'collectedCoinPosition' // amountOfEffect is called in Inventory.cs
     {
-
+        Debug.Log("Animate HP called");
         for (int i = 0; i < amountOfEffect; i++)
         {
-            // check if there's coins in the pool
+            // check if there's hearts in the pool
             if (hpQueue.Count > 0)
             {
                 GameObject hp = hpQueue.Dequeue();
                 hp.SetActive(true);
 
-                // move coin to the collected coin position
+                // move hearts to the collected heart position
                 hp.transform.position = sourceHP + new Vector2(Random.Range(-spread, spread), 0f);
 
 
-                // animate coin to target position
+                // animate hearts to target position
                 float duration = Random.Range(minAnimDuration, maxAnimDuration);
                 hp.transform.DOMove(targetPositionHP, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
                     {
-                        // executes whenever coin reach target position;
+                        // executes whenever heart reaches target position;
                         hp.SetActive(false);
                         coinsQueue.Enqueue(hp);
                         Hp++;
@@ -234,28 +294,78 @@ public class CoinsManager : MonoBehaviour
 
     }
 
-    public void AddCoins(int valueInCoins) //previously 'collectedCoinPosition'
+    public void AnimateMana(Vector2 sourceMana, int amountOfEffect) //previously 'collectedCoinPosition' // amountOfEffect is called in Inventory.cs
     {
-        Animate(source, valueInCoins);
+        Debug.Log("Animate runes called");
+        for (int i = 0; i < amountOfEffect; i++)
+        {
+            // check if there's coins in the pool
+            if (manaQueue.Count > 0)
+            {
+                GameObject mana = manaQueue.Dequeue();
+                mana.SetActive(true);
+
+                // move coin to the collected coin position
+                mana.transform.position = sourceMana + new Vector2(Random.Range(-spread, spread), 0f);
+
+
+                // animate coin to target position
+                float duration = Random.Range(minAnimDuration, maxAnimDuration);
+                mana.transform.DOMove(targetPositionMana, duration)
+                    .SetEase(easeType)
+                    .OnComplete(() =>
+                    {
+                        // executes whenever mana runes reach target position;
+                        mana.SetActive(false);
+                        manaQueue.Enqueue(mana);
+                        Mana++;
+                    });
+
+            }
+        }
+
+
+    }
+
+
+
+    public void UIAddCoins(int valueInCoins) //previously 'collectedCoinPosition'
+    {
+        Debug.Log("UIAddCoins called from CoinsManager");
+        Animate(sourceCoins, valueInCoins);
         
     }
 
     public void UIAddHp(int amountOfEffect) //previously 'collectedCoinPosition'
     {
         AnimateHP(sourceHP, amountOfEffect);
+        Debug.Log("UIAddHP called from CoinsManager");
+
+    }
+
+    public void UIAddMana(int amountOfEffect) //previously 'collectedCoinPosition'
+    {
+        AnimateMana(sourceMana, amountOfEffect);
+        Debug.Log("UIAddMana called from CoinsManager");
 
     }
 
 
     public void updateCoins() 
     {
-        targetPosition = target.position;
-        source = sourceTransform.position;
+        targetPositionCoins = targetCoin.position;
+        sourceCoins = sourceTransformCoin.position;
     }
 
     public void updateHP()
     {
         targetPositionHP = targetHP.position;
         sourceHP = sourceTransformHP.position;
+    }
+
+    public void updateMana()
+    {
+        targetPositionMana = targetMana.position;
+        sourceMana = sourceTransformMana.position;
     }
 }

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
+using System.Linq;
 
 public class ItemButton : MonoBehaviour
 {
 
     public ItemsManager itemOnButton;
-    
-
 
     [TabGroup("Buttons"), Button]
     public void Press()
@@ -18,6 +17,7 @@ public class ItemButton : MonoBehaviour
         MenuManager.instance.itemDescription.text = itemOnButton.itemDescription;
         MenuManager.instance.itemImage.sprite = itemOnButton.itemsImage;
         MenuManager.instance.itemValue.text = itemOnButton.valueInCoins.ToString();
+        MenuManager.instance.effectText.text = itemOnButton.amountOfEffect.ToString();
         
         MenuManager.instance.activeItem = itemOnButton;
         GameManager.instance.activeItem = itemOnButton;
@@ -26,10 +26,10 @@ public class ItemButton : MonoBehaviour
         itemOnButton.itemSelected = GameManager.instance.activeItem;
 
         MenuManager.instance.UpdateItemsInventory();
-       
+
     }
 
-
+   
 
 
 
