@@ -19,6 +19,11 @@ public class PlayerGlobalData : MonoBehaviour
     private Vector3 bottomLeftEdge;
     private Vector3 topRightEdge;
 
+    public bool controllerSwitch = false;
+
+    float horizontalMovement;
+    float verticalMovement;
+
     // Start is called before the first frame update
 
 
@@ -36,16 +41,35 @@ public class PlayerGlobalData : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        
 
+    }
+
+
+
+    public void AndroidController()
+    {
+
+        if (controllerSwitch == true)
+        {
+            horizontalMovement = Input.GetAxisRaw("Horizontal");
+            verticalMovement = Input.GetAxisRaw("Vertical");
+        }
+
+        if (controllerSwitch == false)
+        {
+            horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
+            verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        //float horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
-        //float verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");        
-        float horizontalMovement = Input.GetAxisRaw("Horizontal");
-        float verticalMovement = Input.GetAxisRaw("Vertical");
+
+        controllerSwitch = MenuManager.instance.controlSwitch;
+
+        AndroidController();
 
         if (deactivedMovement == true)
         {

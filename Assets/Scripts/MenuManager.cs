@@ -149,6 +149,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Sprite buttonGrey;
 
 
+    public bool controlSwitch = false;
+
     private Tween fadeText;
 
 
@@ -240,7 +242,10 @@ public class MenuManager : MonoBehaviour
 
     }
 
-
+    public void AndroidControls()
+    {
+        controlSwitch = !controlSwitch;
+    }
 
 
     public void UpdateItemsInventory()     // create  UI Equip table and side panel. Item sorting at the bottom
