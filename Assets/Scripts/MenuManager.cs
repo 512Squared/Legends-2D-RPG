@@ -100,6 +100,9 @@ public class MenuManager : MonoBehaviour
     [TabGroup("New Group", "Equip")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public Image[] characterMugEquip;
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar;
 
 
 
@@ -192,7 +195,7 @@ public class MenuManager : MonoBehaviour
     public void UpdateStats()
     {
 
-        playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
+        playerStats = GameManager.instance.GetPlayerStats();
 
         for (int i = 0; i < playerStats.Length; i++)
         {
@@ -226,13 +229,14 @@ public class MenuManager : MonoBehaviour
                 levelP[i].text = playerStats[i].npcLevel.ToString();
                 characterMug[i].sprite = playerStats[i].characterMug;
                 thulGold[i].text = playerStats[0].thulGold.ToString();
-                //thulMana[i].text = playerStats[0].npcMana.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
 
 
+
             }
         }
+
 
     }
 
@@ -430,6 +434,9 @@ public class MenuManager : MonoBehaviour
         manaMain.text = playerStats[0].npcMana.ToString() + "/" + playerStats[0].maxMana;
         hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
         goldMain.text = playerStats[0].thulGold.ToString();
+        //manaEquipTopBar.text = playerStats[0].npcMana.ToString();
+        //hpEquipTopBar.text = playerStats[0].npcHP.ToString();
+        //goldEquipTopBar.text = playerStats[0].thulGold.ToString();
     }
 
     public void InventoryStats()
@@ -516,7 +523,7 @@ public class MenuManager : MonoBehaviour
     {
         Debug.Log("UseItem initiated");
         activeItem.UseItem(selectedCharacter);
-        Inventory.instance.UseAndRemoveItem(activeItem);
+        Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
         UpdateItemsInventory();
     }
@@ -592,6 +599,7 @@ public class MenuManager : MonoBehaviour
 
     public void OnPlayerButton()
     {
+
         mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
         characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
         UpdateStats();

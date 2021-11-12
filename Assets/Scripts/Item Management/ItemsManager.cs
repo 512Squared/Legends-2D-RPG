@@ -28,13 +28,15 @@ public class ItemsManager : MonoBehaviour
 
     public int amount;
 
-
+    
 
 
     public void UseItem(int characterToUseOn)
     {
 
         PlayerStats selectedCharacter = GameManager.instance.GetPlayerStats()[characterToUseOn];
+
+       
         
         Debug.Log("UseItem called from ItemsManager");
         if (itemType == ItemType.Potion)
@@ -86,6 +88,7 @@ public class ItemsManager : MonoBehaviour
     public void SelfDestroy()
     {
         gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
 
 

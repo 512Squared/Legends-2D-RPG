@@ -19,7 +19,6 @@ public class PlayerStats : MonoBehaviour
     public int thulGold;
     public int thulSpells;
     public int thulPotions;
-    //public int thulMana;
     public int[] xpLevelUp;
     public int maxLevel;
     public int baseLevelXP;
@@ -61,9 +60,9 @@ public class PlayerStats : MonoBehaviour
             xpLevelUp[i] = (int)(0.02f * Math.Pow(i, 3) + 3.06f * Math.Pow(i, 2) + 105.6f * i);
         }
     }
-    
 
-    // Update is called once per frame
+
+    // Update is called once per frame YnPCmrtgUB0uhClQKlSTeTjVJ82fkbzf
     void Update()
     {
 

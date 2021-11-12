@@ -14,7 +14,7 @@ public class Inventory : MonoBehaviour
     public static Inventory instance;
 
     private List<ItemsManager> itemsList;
-    public PlayerStats mainCharacter;
+    public PlayerStats[] mainCharacter;
 
     [SerializeField] CoinsManager coinsManager;
 
@@ -26,6 +26,8 @@ public class Inventory : MonoBehaviour
         instance = this;
         itemsList = new List<ItemsManager>();
         coinsManager = FindObjectOfType<CoinsManager>();
+
+        //DontDestroyOnLoad(this);
     }
 
 
@@ -76,8 +78,8 @@ public class Inventory : MonoBehaviour
                     inventoryItem = itemInInventory;
 
                     // implementing the sell
-                   
-                    mainCharacter.thulGold += item.valueInCoins;
+
+                    mainCharacter[0].thulGold += item.valueInCoins;
                     item.itemSold = true;
                     coinsManager.updateCoins();
                     coinsManager.UIAddCoins(item.valueInCoins);
@@ -103,21 +105,21 @@ public class Inventory : MonoBehaviour
 
         else
         {
- 
+
 
 
             // implementing the coinAnimation
             Debug.Log(item.itemName + " sold");
             coinsManager.updateCoins();
             coinsManager.UIAddCoins(item.valueInCoins);
-            mainCharacter.thulGold += item.valueInCoins;
+            mainCharacter[0].thulGold += item.valueInCoins;
             itemsList.Remove(item);
             MenuManager.instance.UpdateStats();
-            
+
         }
     }
 
-    public void UseAndRemoveItem(ItemsManager item)
+    public void UseAndRemoveItem(ItemsManager item, int selectedCharacter)
     {
 
 
@@ -134,8 +136,8 @@ public class Inventory : MonoBehaviour
                     itemInInventory.amount--;
                     Debug.Log("Inventory stack subtraction");
                     inventoryItem = itemInInventory;
-                    
-                    
+
+
 
                     // implementing EQUIP, GIVE or USE ANIMATIONS
 
@@ -145,18 +147,42 @@ public class Inventory : MonoBehaviour
                         if (item.itemName == "Mana Potion")
                         {
                             // animations
-                            coinsManager.updateMana();
-                            coinsManager.UIAddMana(item.amountOfEffect);
-                            MenuManager.instance.UpdateStats();
+
+                            // animation only runs for Thulgren
+
+                            if (selectedCharacter == 0)
+                            {
+                                Debug.Log("1_Animation should work, because it's Thulgran");
+                                coinsManager.updateMana();
+                                coinsManager.UIAddMana(item.amountOfEffect);
+                                MenuManager.instance.UpdateStats();
+                            }
+
+                            else
+                            {
+                                MenuManager.instance.UpdateStats();
+                            }
 
                         }
 
                         else if (item.itemName == "Healing Potion")
                         {
                             // animations
-                            coinsManager.updateHP();
-                            coinsManager.UIAddHp(item.amountOfEffect);
-                            MenuManager.instance.UpdateStats();
+
+                            // animation only runs for Thulgren
+
+                            if (selectedCharacter == 0)
+                            {
+                                Debug.Log("2_Animation should work, because it's Thulgran");
+                                coinsManager.updateHP();
+                                coinsManager.UIAddHp(item.amountOfEffect);
+                                MenuManager.instance.UpdateStats();
+                            }
+
+                            else
+                            {
+                                MenuManager.instance.UpdateStats();
+                            }
 
                         }
                     }
@@ -177,26 +203,51 @@ public class Inventory : MonoBehaviour
         {
             itemsList.Remove(item);
             Debug.Log("Item removed");
-            
+
 
             if (item.itemType == ItemsManager.ItemType.Potion)
             {
 
                 if (item.itemName == "Mana Potion")
                 {
-                    // animations ONLY
-                    coinsManager.updateMana();
-                    coinsManager.UIAddMana(item.amountOfEffect);
-                    MenuManager.instance.UpdateStats();
+                    // animations 
+
+                    // animation only runs for Thulgren
+
+                    if (selectedCharacter == 0)
+                    {
+                        Debug.Log("3_Animation should work, because it's Thulgran");
+                        coinsManager.updateMana();
+                        coinsManager.UIAddMana(item.amountOfEffect);
+                        MenuManager.instance.UpdateStats();
+                    }
+
+                    else
+                    {
+                        MenuManager.instance.UpdateStats();
+                    }
 
                 }
 
                 else if (item.itemName == "Healing Potion")
                 {
-                    // animations ONLY
-                    coinsManager.updateHP();
-                    coinsManager.UIAddHp(item.amountOfEffect);
-                    MenuManager.instance.UpdateStats();
+                    // animations
+
+                    // animation only runs for Thulgren
+
+                    if (selectedCharacter == 0)
+
+                    {
+                        Debug.Log("4_Animation should work, because it's Thulgran");
+                        coinsManager.updateHP();
+                        coinsManager.UIAddHp(item.amountOfEffect);
+                        MenuManager.instance.UpdateStats();
+                    }
+
+                    else
+                    {
+                        MenuManager.instance.UpdateStats();
+                    }
 
                 }
             }

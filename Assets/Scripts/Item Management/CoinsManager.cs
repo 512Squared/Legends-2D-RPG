@@ -58,6 +58,8 @@ public class CoinsManager : MonoBehaviour
     private Vector2 sourceHP;
     private Vector2 sourceMana;
 
+    public PlayerStats selectedCharacter;
+
     private ItemsManager item;
 
     Vector2 targetPositionCoins;
@@ -155,6 +157,7 @@ public class CoinsManager : MonoBehaviour
             _mana = value;
 
             //update UI Text whenever Mana variable is changed
+
             if (Mana < mainCharacter.maxMana + 1)
             {
                 manaUIText.text = Mana.ToString();
