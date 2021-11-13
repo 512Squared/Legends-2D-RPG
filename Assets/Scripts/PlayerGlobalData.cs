@@ -19,7 +19,7 @@ public class PlayerGlobalData : MonoBehaviour
     private Vector3 bottomLeftEdge;
     private Vector3 topRightEdge;
 
-    public bool controllerSwitch = false;
+    public bool controllerSwitch = true;
 
     float horizontalMovement;
     float verticalMovement;
@@ -50,13 +50,13 @@ public class PlayerGlobalData : MonoBehaviour
     public void AndroidController()
     {
 
-        if (controllerSwitch == true)
+        if (controllerSwitch == false)
         {
             horizontalMovement = Input.GetAxisRaw("Horizontal");
             verticalMovement = Input.GetAxisRaw("Vertical");
         }
 
-        if (controllerSwitch == false)
+        if (controllerSwitch == true)
         {
             horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
             verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");

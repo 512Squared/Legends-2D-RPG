@@ -114,7 +114,7 @@ public class CoinsManager : MonoBehaviour
 
 
     private int _c;
-    
+    private int chosenCharacter;
 
     public int Coins
     {
@@ -122,9 +122,12 @@ public class CoinsManager : MonoBehaviour
         set
         {
             _c = value;
-            
+
             //update UI Text whenever "Coins variable is changed
-            coinUIText.text = Coins.ToString();
+            if (chosenCharacter == 0)
+            {
+                coinUIText.text = Coins.ToString();
+            }
             
         }
     }
@@ -142,7 +145,10 @@ public class CoinsManager : MonoBehaviour
             if (Hp < mainCharacter.maxHP + 1)
 
             {
-                hpUIText.text = Hp.ToString();
+                if (chosenCharacter == 0)
+                {
+                    hpUIText.text = Hp.ToString();
+                }
             }
         }
     }
@@ -160,7 +166,10 @@ public class CoinsManager : MonoBehaviour
 
             if (Mana < mainCharacter.maxMana + 1)
             {
-                manaUIText.text = Mana.ToString();
+                if (chosenCharacter == 0)
+                {
+                    manaUIText.text = Mana.ToString();
+                }
             }
         }
     }
@@ -332,23 +341,26 @@ public class CoinsManager : MonoBehaviour
 
 
 
-    public void UIAddCoins(int valueInCoins) //previously 'collectedCoinPosition'
+    public void UIAddCoins(int valueInCoins, int selectedCharacter) //previously 'collectedCoinPosition'
     {
         Debug.Log("UIAddCoins called from CoinsManager");
+        chosenCharacter = selectedCharacter;
         Animate(sourceCoins, valueInCoins);
         
     }
 
-    public void UIAddHp(int amountOfEffect) //previously 'collectedCoinPosition'
+    public void UIAddHp(int amountOfEffect, int selectedCharacter) //previously 'collectedCoinPosition'
     {
         AnimateHP(sourceHP, amountOfEffect);
+        chosenCharacter = selectedCharacter;
         Debug.Log("UIAddHP called from CoinsManager");
 
     }
 
-    public void UIAddMana(int amountOfEffect) //previously 'collectedCoinPosition'
+    public void UIAddMana(int amountOfEffect, int selectedCharacter) //previously 'collectedCoinPosition'
     {
         AnimateMana(sourceMana, amountOfEffect);
+        chosenCharacter = selectedCharacter;
         Debug.Log("UIAddMana called from CoinsManager");
 
     }

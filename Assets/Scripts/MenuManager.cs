@@ -128,7 +128,9 @@ public class MenuManager : MonoBehaviour
     [BoxGroup("UI Bools")]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool keyboardKeyI = false;
-
+    [BoxGroup("UI Bools")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool controlSwitch;
 
 
 
@@ -149,7 +151,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Sprite buttonGrey;
 
 
-    public bool controlSwitch = false;
+
 
     private Tween fadeText;
 
@@ -518,16 +520,21 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void CallToSellItem()
+    public void CallToSellItem(int selectedCharacter)
     {
-        Inventory.instance.SellItem(activeItem);
+        Debug.Log("CallToSellItem initiated | Selected character: " + selectedCharacter);
+        Inventory.instance.SellItem(activeItem, selectedCharacter);
+        Debug.Log("CallToSellItem has moved passed SellItem()");
         UpdateItemsInventory();
+        Debug.Log("CallToSellItem calling UpdateItemsInventory");
+
     }
 
     public void CallToUseItem(int selectedCharacter)
     {
-        Debug.Log("UseItem initiated");
+        Debug.Log("UseItem initiated | Selected character: " + selectedCharacter); 
         activeItem.UseItem(selectedCharacter);
+        Debug.Log("ItemManager called from MenuManager"); 
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
         UpdateItemsInventory();

@@ -14,7 +14,7 @@ public class Inventory : MonoBehaviour
     public static Inventory instance;
 
     private List<ItemsManager> itemsList;
-    public PlayerStats[] mainCharacter;
+    public PlayerStats[] characterArray;
 
     [SerializeField] CoinsManager coinsManager;
 
@@ -26,6 +26,7 @@ public class Inventory : MonoBehaviour
         instance = this;
         itemsList = new List<ItemsManager>();
         coinsManager = FindObjectOfType<CoinsManager>();
+        characterArray = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
 
         //DontDestroyOnLoad(this);
     }
@@ -60,7 +61,7 @@ public class Inventory : MonoBehaviour
 
     }
 
-    public void SellItem(ItemsManager item)
+    public void SellItem(ItemsManager item, int selectCharacter)
     {
         if (item.isStackable)
         {
@@ -79,16 +80,20 @@ public class Inventory : MonoBehaviour
 
                     // implementing the sell
 
-                    mainCharacter[0].thulGold += item.valueInCoins;
+                    characterArray[selectCharacter].thulGold += item.valueInCoins;
                     item.itemSold = true;
-                    coinsManager.updateCoins();
-                    coinsManager.UIAddCoins(item.valueInCoins);
-                    MenuManager.instance.UpdateStats();
-
-
-
-                    Debug.Log(item.itemName + " removed from stack and sold");
-
+                    if (selectCharacter == 0)
+                    {
+                        coinsManager.updateCoins();
+                        coinsManager.UIAddCoins(item.valueInCoins, selectCharacter);
+                        MenuManager.instance.UpdateStats();
+                        Debug.Log(item.itemName + " removed from stack and sold 1");
+                    }
+                    else if (selectCharacter != 0)
+                    {
+                        MenuManager.instance.UpdateStats();
+                        Debug.Log(item.itemName + " removed from stack and sold 2");
+                    }
                 }
             }
 
@@ -105,17 +110,29 @@ public class Inventory : MonoBehaviour
 
         else
         {
-
-
-
             // implementing the coinAnimation
             Debug.Log(item.itemName + " sold");
-            coinsManager.updateCoins();
-            coinsManager.UIAddCoins(item.valueInCoins);
-            mainCharacter[0].thulGold += item.valueInCoins;
-            itemsList.Remove(item);
-            MenuManager.instance.UpdateStats();
+            if (selectCharacter == 0)
+            {
 
+                characterArray[selectCharacter].thulGold += item.valueInCoins;
+                itemsList.Remove(item); 
+                coinsManager.updateCoins();
+                coinsManager.UIAddCoins(item.valueInCoins, selectCharacter);
+
+                Debug.Log(item.itemName + " removed from inventory UI 1");
+                MenuManager.instance.UpdateStats();
+            }
+
+            else if (selectCharacter != 0)
+            {
+                characterArray[selectCharacter].thulGold += item.valueInCoins;
+                itemsList.Remove(item);
+                Debug.Log(item.itemName + " removed from inventory UI 2");
+
+                MenuManager.instance.UpdateStats();
+            }
+            Debug.Log("Debugs bypassed");
         }
     }
 
@@ -154,7 +171,7 @@ public class Inventory : MonoBehaviour
                             {
                                 Debug.Log("1_Animation should work, because it's Thulgran");
                                 coinsManager.updateMana();
-                                coinsManager.UIAddMana(item.amountOfEffect);
+                                coinsManager.UIAddMana(item.amountOfEffect, selectedCharacter);
                                 MenuManager.instance.UpdateStats();
                             }
 
@@ -175,7 +192,7 @@ public class Inventory : MonoBehaviour
                             {
                                 Debug.Log("2_Animation should work, because it's Thulgran");
                                 coinsManager.updateHP();
-                                coinsManager.UIAddHp(item.amountOfEffect);
+                                coinsManager.UIAddHp(item.amountOfEffect, selectedCharacter);
                                 MenuManager.instance.UpdateStats();
                             }
 
@@ -218,7 +235,7 @@ public class Inventory : MonoBehaviour
                     {
                         Debug.Log("3_Animation should work, because it's Thulgran");
                         coinsManager.updateMana();
-                        coinsManager.UIAddMana(item.amountOfEffect);
+                        coinsManager.UIAddMana(item.amountOfEffect, selectedCharacter);
                         MenuManager.instance.UpdateStats();
                     }
 
@@ -240,7 +257,7 @@ public class Inventory : MonoBehaviour
                     {
                         Debug.Log("4_Animation should work, because it's Thulgran");
                         coinsManager.updateHP();
-                        coinsManager.UIAddHp(item.amountOfEffect);
+                        coinsManager.UIAddHp(item.amountOfEffect, selectedCharacter);
                         MenuManager.instance.UpdateStats();
                     }
 
