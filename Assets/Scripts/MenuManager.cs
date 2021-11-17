@@ -127,6 +127,10 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool keyboardKeyI = false;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
@@ -151,11 +155,14 @@ public class MenuManager : MonoBehaviour
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     public bool controlSwitch = false;
 
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
     public bool controlSwitch = false;
 
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
@@ -532,6 +539,7 @@ public class MenuManager : MonoBehaviour
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         Inventory.instance.SellItem(activeItem, selectedCharacter);
 
@@ -546,15 +554,24 @@ public class MenuManager : MonoBehaviour
         Inventory.instance.SellItem(activeItem);
         UpdateItemsInventory();
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
     }
 
     public void CallToUseItem(int selectedCharacter)
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
         panelStuff = selectedCharacter;
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
         Debug.Log("UseItem initiated");
         activeItem.UseItem(selectedCharacter);

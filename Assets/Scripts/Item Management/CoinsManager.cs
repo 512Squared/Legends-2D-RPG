@@ -124,10 +124,13 @@ public class CoinsManager : MonoBehaviour
             //update UI Text whenever "Coins variable is changed
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             {
                 coinUIText.text = Coins.ToString();
             }
 =======
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
             coinUIText.text = Coins.ToString();
@@ -151,7 +154,11 @@ public class CoinsManager : MonoBehaviour
             {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     hpUIText.text = Hp.ToString();
+=======
+                hpUIText.text = Hp.ToString();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
                 hpUIText.text = Hp.ToString();
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
@@ -177,7 +184,11 @@ public class CoinsManager : MonoBehaviour
             {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     manaUIText.text = Mana.ToString();
+=======
+                manaUIText.text = Mana.ToString();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
                 manaUIText.text = Mana.ToString();
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
@@ -369,7 +380,11 @@ public class CoinsManager : MonoBehaviour
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         chosenCharacter = selectedCharacter;
+=======
+        Debug.Log("UIAddCoins called from CoinsManager");
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
         Debug.Log("UIAddCoins called from CoinsManager");
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
@@ -386,8 +401,11 @@ public class CoinsManager : MonoBehaviour
         AnimateHP(sourceHP, amountOfEffect);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         chosenCharacter = selectedCharacter;
 =======
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
         Debug.Log("UIAddHP called from CoinsManager");
@@ -400,8 +418,11 @@ public class CoinsManager : MonoBehaviour
         AnimateMana(sourceMana, amountOfEffect);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         chosenCharacter = selectedCharacter;
 =======
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
         Debug.Log("UIAddMana called from CoinsManager");
