@@ -112,7 +112,7 @@ public class CoinsManager : MonoBehaviour
 
 
     private int _c;
-    private int chosenCharacter;
+    
 
     public int Coins
     {
@@ -120,11 +120,16 @@ public class CoinsManager : MonoBehaviour
         set
         {
             _c = value;
-
+            
             //update UI Text whenever "Coins variable is changed
+<<<<<<< HEAD
             {
                 coinUIText.text = Coins.ToString();
             }
+=======
+            coinUIText.text = Coins.ToString();
+            
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
         }
     }
 
@@ -141,7 +146,11 @@ public class CoinsManager : MonoBehaviour
             if (Hp < characters.maxHP + 1)
 
             {
+<<<<<<< HEAD
                     hpUIText.text = Hp.ToString();
+=======
+                hpUIText.text = Hp.ToString();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
             }
         }
     }
@@ -159,7 +168,11 @@ public class CoinsManager : MonoBehaviour
 
             if (Mana < characters.maxMana + 1)
             {
+<<<<<<< HEAD
                     manaUIText.text = Mana.ToString();
+=======
+                manaUIText.text = Mana.ToString();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
             }
         }
     }
@@ -341,25 +354,37 @@ public class CoinsManager : MonoBehaviour
 
 
 
-    public void UIAddCoins(int valueInCoins, int selectedCharacter) //previously 'collectedCoinPosition'
+    public void UIAddCoins(int valueInCoins) //previously 'collectedCoinPosition'
     {
+<<<<<<< HEAD
         chosenCharacter = selectedCharacter;
+=======
+        Debug.Log("UIAddCoins called from CoinsManager");
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
         Animate(sourceCoins, valueInCoins);
 
 
     }
 
-    public void UIAddHp(int amountOfEffect, int selectedCharacter) //previously 'collectedCoinPosition'
+    public void UIAddHp(int amountOfEffect) //previously 'collectedCoinPosition'
     {
         AnimateHP(sourceHP, amountOfEffect);
+<<<<<<< HEAD
         chosenCharacter = selectedCharacter;
+=======
+        Debug.Log("UIAddHP called from CoinsManager");
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 
     }
 
-    public void UIAddMana(int amountOfEffect, int selectedCharacter) //previously 'collectedCoinPosition'
+    public void UIAddMana(int amountOfEffect) //previously 'collectedCoinPosition'
     {
         AnimateMana(sourceMana, amountOfEffect);
+<<<<<<< HEAD
         chosenCharacter = selectedCharacter;
+=======
+        Debug.Log("UIAddMana called from CoinsManager");
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 
     }
 

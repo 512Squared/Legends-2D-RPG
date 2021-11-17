@@ -126,9 +126,7 @@ public class MenuManager : MonoBehaviour
     [BoxGroup("UI Bools")]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool keyboardKeyI = false;
-    [BoxGroup("UI Bools")]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool controlSwitch;
+
 
 
     [Header("UI Tweening")]
@@ -147,6 +145,11 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Sprite buttonGrey;
 
 
+<<<<<<< HEAD
+=======
+    public bool controlSwitch = false;
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
     private Tween fadeText;
 
 
@@ -516,21 +519,31 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void CallToSellItem(int selectedCharacter)
+    public void CallToSellItem()
     {
+<<<<<<< HEAD
         Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         Inventory.instance.SellItem(activeItem, selectedCharacter);
 
         UpdateItemsInventory();
 
 
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
     }
 
     public void CallToUseItem(int selectedCharacter)
     {
+<<<<<<< HEAD
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
         panelStuff = selectedCharacter;
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
 

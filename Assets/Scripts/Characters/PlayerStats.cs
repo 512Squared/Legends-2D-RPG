@@ -40,7 +40,10 @@ public class PlayerStats : MonoBehaviour
     public int npcIntelligence;
     public int npcPerception;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 
 // Start is called before the first frame update
     void Start()
