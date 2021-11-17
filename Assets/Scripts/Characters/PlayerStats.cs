@@ -40,37 +40,18 @@ public class PlayerStats : MonoBehaviour
     public int npcIntelligence;
     public int npcPerception;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+    private float smoothing = 5;
 
-=======
->>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
-=======
->>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
-=======
->>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
-=======
->>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
-=======
->>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+
 
 // Start is called before the first frame update
     void Start()
     {
 
-        if (instance != null && instance != this)
-        {
-            Destroy(this.gameObject);
-        }
 
-        else
-        {
-            instance = this;
-        }
 
+        instance = this;
+    
         DontDestroyOnLoad(gameObject);
 
         // assigning XP and leveling up from XP

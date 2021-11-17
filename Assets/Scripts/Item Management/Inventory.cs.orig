@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.UI;
-using TMPro;
+using System.Collections;
+
 
 public class Inventory : MonoBehaviour
 {
@@ -14,7 +13,7 @@ public class Inventory : MonoBehaviour
     public static Inventory instance;
 
     private List<ItemsManager> itemsList;
-    public PlayerStats[] characterArray;
+    public PlayerStats[] mainCharacter;
 
     [SerializeField] CoinsManager coinsManager;
 
@@ -22,16 +21,48 @@ public class Inventory : MonoBehaviour
 
     // Start is called before the first frame update
 
+    private void Awake()
+    {
+
+    }
     void Start()
     {
-        instance = this;
-        itemsList = new List<ItemsManager>();
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+
+        else
+        {
+            instance = this;
+        }
+
+        DontDestroyOnLoad(gameObject);
+ 
+
         coinsManager = FindObjectOfType<CoinsManager>();
-
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         characterArray = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
+        itemsList = new List<ItemsManager>();
 
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 
-        //DontDestroyOnLoad(this);
     }
 
 
@@ -83,8 +114,14 @@ public class Inventory : MonoBehaviour
 
                     // implementing the sell
 
-                    characterArray[selectCharacter].thulGold += item.valueInCoins;
+                    mainCharacter[0].thulGold += item.valueInCoins;
                     item.itemSold = true;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                     if (selectCharacter == 0)
                     {
                         coinsManager.updateCoins();
@@ -97,6 +134,41 @@ public class Inventory : MonoBehaviour
                         MenuManager.instance.UpdateStats();
                         Debug.Log(item.itemName + " removed from stack and sold (notThulgran");
                     }
+=======
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+                    coinsManager.updateCoins();
+                    coinsManager.UIAddCoins(item.valueInCoins);
+                    MenuManager.instance.UpdateStats();
+
+
+
+                    Debug.Log(item.itemName + " removed from stack and sold");
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
                 }
             }
 
@@ -113,17 +185,15 @@ public class Inventory : MonoBehaviour
 
         else
         {
-            // implementing the coinAnimation
-            Debug.Log(item.itemName + " sold");
-            if (selectCharacter == 0)
-            {
 
-                characterArray[selectCharacter].thulGold += item.valueInCoins;
-                itemsList.Remove(item); 
-                coinsManager.updateCoins();
-                coinsManager.UIAddCoins(item.valueInCoins, selectCharacter);
 
-                Debug.Log(item.itemName + " removed from inventory UI 1");
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+                Debug.Log(item.itemName + " removed from inventory UI (Thulgran)");
                 MenuManager.instance.UpdateStats();
             }
 
@@ -131,11 +201,78 @@ public class Inventory : MonoBehaviour
             {
                 characterArray[selectCharacter].thulGold += item.valueInCoins;
                 itemsList.Remove(item);
-                Debug.Log(item.itemName + " removed from inventory UI 2");
+
+                Debug.Log(item.itemName + " removed from inventory UI (notThulgran)");
 
                 MenuManager.instance.UpdateStats();
             }
-            Debug.Log("Debugs bypassed");
+           
+=======
+
+            // implementing the coinAnimation
+            Debug.Log(item.itemName + " sold");
+            coinsManager.updateCoins();
+            coinsManager.UIAddCoins(item.valueInCoins);
+            mainCharacter[0].thulGold += item.valueInCoins;
+            itemsList.Remove(item);
+            MenuManager.instance.UpdateStats();
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+            // implementing the coinAnimation
+            Debug.Log(item.itemName + " sold");
+            coinsManager.updateCoins();
+            coinsManager.UIAddCoins(item.valueInCoins);
+            mainCharacter[0].thulGold += item.valueInCoins;
+            itemsList.Remove(item);
+            MenuManager.instance.UpdateStats();
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+            // implementing the coinAnimation
+            Debug.Log(item.itemName + " sold");
+            coinsManager.updateCoins();
+            coinsManager.UIAddCoins(item.valueInCoins);
+            mainCharacter[0].thulGold += item.valueInCoins;
+            itemsList.Remove(item);
+            MenuManager.instance.UpdateStats();
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+            // implementing the coinAnimation
+            Debug.Log(item.itemName + " sold");
+            coinsManager.updateCoins();
+            coinsManager.UIAddCoins(item.valueInCoins);
+            mainCharacter[0].thulGold += item.valueInCoins;
+            itemsList.Remove(item);
+            MenuManager.instance.UpdateStats();
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+            // implementing the coinAnimation
+            Debug.Log(item.itemName + " sold");
+            coinsManager.updateCoins();
+            coinsManager.UIAddCoins(item.valueInCoins);
+            mainCharacter[0].thulGold += item.valueInCoins;
+            itemsList.Remove(item);
+            MenuManager.instance.UpdateStats();
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+            // implementing the coinAnimation
+            Debug.Log(item.itemName + " sold");
+            coinsManager.updateCoins();
+            coinsManager.UIAddCoins(item.valueInCoins);
+            mainCharacter[0].thulGold += item.valueInCoins;
+            itemsList.Remove(item);
+            MenuManager.instance.UpdateStats();
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
         }
     }
 

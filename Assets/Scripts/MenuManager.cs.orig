@@ -126,9 +126,26 @@ public class MenuManager : MonoBehaviour
     [BoxGroup("UI Bools")]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool keyboardKeyI = false;
-    [BoxGroup("UI Bools")]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool controlSwitch;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 
 
 
@@ -148,8 +165,30 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Sprite buttonGrey;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
     public bool controlSwitch = false;
 
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+    public bool controlSwitch = false;
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+    public bool controlSwitch = false;
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
     private Tween fadeText;
 
 
@@ -158,6 +197,8 @@ public class MenuManager : MonoBehaviour
 
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+        
+        DontDestroyOnLoad(gameObject);
 
     }
 
@@ -312,7 +353,7 @@ public class MenuManager : MonoBehaviour
                         itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
                     }
                 }
-                
+
                 // ITEM SORTING
 
                 else if (item.itemSelected == true) // if item has been selected
@@ -323,7 +364,7 @@ public class MenuManager : MonoBehaviour
                     // ITEM SELECTED animation
 
                     itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-                    
+
                     // NEW ITEM tagging
 
                     item.isNewItem = false; // switch off new item tag after selection
@@ -335,15 +376,15 @@ public class MenuManager : MonoBehaviour
 
 
                     //  SORT BY POTIONS
-                    
+
                     if (item.itemType == ItemsManager.ItemType.Potion)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
 
                         textUseEquipTake.text = "Give";
 
                         // EFFECT MODIFIER (on item info)
-                        
+
                         if (item.itemName == "Speed Potion")
                         {
                             GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
@@ -370,10 +411,10 @@ public class MenuManager : MonoBehaviour
                     }
 
                     // SORT BY ARMOUR
-                    
+
                     if (item.itemType == ItemsManager.ItemType.Armour)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
 
@@ -381,7 +422,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Weapon)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
 
@@ -389,7 +430,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Item)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Use";
                     }
 
@@ -517,21 +558,81 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void CallToSellItem(int selectedCharacter)
+    public void CallToSellItem()
     {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         Inventory.instance.SellItem(activeItem, selectedCharacter);
 
         UpdateItemsInventory();
-        Debug.Log("CallToSellItem calling UpdateItemsInventory");
 
+
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
     }
 
     public void CallToUseItem(int selectedCharacter)
     {
- Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+        Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
-        Debug.Log("ItemManager called from MenuManager"); 
+        panelStuff = selectedCharacter;
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
 
