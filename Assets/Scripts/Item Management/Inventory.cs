@@ -45,9 +45,12 @@ public class Inventory : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         characterArray = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
         itemsList = new List<ItemsManager>();
 
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
@@ -114,6 +117,7 @@ public class Inventory : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if (selectCharacter == 0)
                     {
                         coinsManager.updateCoins();
@@ -133,6 +137,8 @@ public class Inventory : MonoBehaviour
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
                     coinsManager.updateCoins();
                     coinsManager.UIAddCoins(item.valueInCoins);
                     MenuManager.instance.UpdateStats();
@@ -144,6 +150,9 @@ public class Inventory : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
+=======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
@@ -173,6 +182,7 @@ public class Inventory : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Debug.Log(item.itemName + " removed from inventory UI (Thulgran)");
                 MenuManager.instance.UpdateStats();
             }
@@ -187,6 +197,17 @@ public class Inventory : MonoBehaviour
                 MenuManager.instance.UpdateStats();
             }
            
+=======
+
+            // implementing the coinAnimation
+            Debug.Log(item.itemName + " sold");
+            coinsManager.updateCoins();
+            coinsManager.UIAddCoins(item.valueInCoins);
+            mainCharacter[0].thulGold += item.valueInCoins;
+            itemsList.Remove(item);
+            MenuManager.instance.UpdateStats();
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 
             // implementing the coinAnimation

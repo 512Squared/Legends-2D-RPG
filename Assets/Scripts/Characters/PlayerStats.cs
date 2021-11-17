@@ -44,7 +44,10 @@ public class PlayerStats : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======

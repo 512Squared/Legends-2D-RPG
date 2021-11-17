@@ -129,6 +129,10 @@ public class MenuManager : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
@@ -161,11 +165,14 @@ public class MenuManager : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     public bool controlSwitch = false;
 
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
+=======
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
 >>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
@@ -548,12 +555,17 @@ public class MenuManager : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         Inventory.instance.SellItem(activeItem, selectedCharacter);
 
         UpdateItemsInventory();
 
 
+=======
+        Inventory.instance.SellItem(activeItem);
+        UpdateItemsInventory();
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
         Inventory.instance.SellItem(activeItem);
         UpdateItemsInventory();
@@ -578,9 +590,14 @@ public class MenuManager : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
         panelStuff = selectedCharacter;
+=======
+        Debug.Log("UseItem initiated");
+        activeItem.UseItem(selectedCharacter);
+>>>>>>> parent of c72fc792 (added selectedCharacter (slider related) + bug fixes + nightly build)
 =======
         Debug.Log("UseItem initiated");
         activeItem.UseItem(selectedCharacter);
