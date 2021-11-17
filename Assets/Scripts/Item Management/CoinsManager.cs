@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using Sirenix.OdinInspector;
@@ -14,6 +12,9 @@ using Sirenix.OdinInspector;
 
 public class CoinsManager : MonoBehaviour 
 {
+
+    public static CoinsManager instance;
+    
     [Header("Main connectors")]
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
@@ -58,9 +59,6 @@ public class CoinsManager : MonoBehaviour
     private Vector2 sourceHP;
     private Vector2 sourceMana;
 
-    public PlayerStats selectedCharacter;
-
-    private ItemsManager item;
 
     Vector2 targetPositionCoins;
     Vector2 targetPositionHP;
@@ -79,7 +77,7 @@ public class CoinsManager : MonoBehaviour
     [SerializeField] int maxMana;
     [TabGroup("Miscellaneous")]
     [GUIColor(0.670f, 1, 0.560f)]
-    public PlayerStats mainCharacter;
+    public PlayerStats characters;
     [TabGroup("Miscellaneous")]
     [GUIColor(0.670f, 1, 0.560f)]
     
@@ -124,11 +122,9 @@ public class CoinsManager : MonoBehaviour
             _c = value;
 
             //update UI Text whenever "Coins variable is changed
-            if (chosenCharacter == 0)
             {
                 coinUIText.text = Coins.ToString();
             }
-            
         }
     }
 
@@ -142,13 +138,10 @@ public class CoinsManager : MonoBehaviour
             _hp = value;
 
             //update UI Text whenever HP variable is changed
-            if (Hp < mainCharacter.maxHP + 1)
+            if (Hp < characters.maxHP + 1)
 
             {
-                if (chosenCharacter == 0)
-                {
                     hpUIText.text = Hp.ToString();
-                }
             }
         }
     }
@@ -164,12 +157,9 @@ public class CoinsManager : MonoBehaviour
 
             //update UI Text whenever Mana variable is changed
 
-            if (Mana < mainCharacter.maxMana + 1)
+            if (Mana < characters.maxMana + 1)
             {
-                if (chosenCharacter == 0)
-                {
                     manaUIText.text = Mana.ToString();
-                }
             }
         }
     }
@@ -182,9 +172,9 @@ public class CoinsManager : MonoBehaviour
         PrepareHP();
         PrepareMana();
 
-        _c += mainCharacter.thulGold;
-        _hp += mainCharacter.npcHP;
-        _mana += mainCharacter.npcMana;
+        _c += characters.thulGold;
+        _hp += characters.npcHP;
+        _mana += characters.npcMana;
         coinUIText.text = _c.ToString();
         hpUIText.text = _hp.ToString();
         manaUIText.text = _mana.ToString();
@@ -194,7 +184,17 @@ public class CoinsManager : MonoBehaviour
 
     private void Start()
     {
-        
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+
+        else
+        {
+            instance = this;
+        }
+
+        DontDestroyOnLoad(gameObject);
     }
 
     void PrepareCoins() {
@@ -343,17 +343,16 @@ public class CoinsManager : MonoBehaviour
 
     public void UIAddCoins(int valueInCoins, int selectedCharacter) //previously 'collectedCoinPosition'
     {
-        Debug.Log("UIAddCoins called from CoinsManager");
         chosenCharacter = selectedCharacter;
         Animate(sourceCoins, valueInCoins);
-        
+
+
     }
 
     public void UIAddHp(int amountOfEffect, int selectedCharacter) //previously 'collectedCoinPosition'
     {
         AnimateHP(sourceHP, amountOfEffect);
         chosenCharacter = selectedCharacter;
-        Debug.Log("UIAddHP called from CoinsManager");
 
     }
 
@@ -361,7 +360,6 @@ public class CoinsManager : MonoBehaviour
     {
         AnimateMana(sourceMana, amountOfEffect);
         chosenCharacter = selectedCharacter;
-        Debug.Log("UIAddMana called from CoinsManager");
 
     }
 

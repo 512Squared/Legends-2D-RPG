@@ -40,16 +40,22 @@ public class PlayerStats : MonoBehaviour
     public int npcIntelligence;
     public int npcPerception;
 
-    private float smoothing = 5;
 
 
 // Start is called before the first frame update
     void Start()
     {
 
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
 
-        instance = this;
-    
+        else
+        {
+            instance = this;
+        }
+
         DontDestroyOnLoad(gameObject);
 
         // assigning XP and leveling up from XP

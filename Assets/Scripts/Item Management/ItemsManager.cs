@@ -28,7 +28,12 @@ public class ItemsManager : MonoBehaviour
 
     public int amount;
 
-    
+    private void Start()
+    {
+
+            instance = this;
+        
+    }
 
 
     public void UseItem(int characterToUseOn)
@@ -44,25 +49,25 @@ public class ItemsManager : MonoBehaviour
             if (affectType == AffectType.HP)
             {
                 selectedCharacter.AddHP(amountOfEffect);
-                Debug.Log("HP given to " + selectedCharacter.name);
+                Debug.Log("HP given to " + selectedCharacter.playerName);
             }
 
             else if (affectType == AffectType.Mana)
             {
                 selectedCharacter.AddMana(amountOfEffect);
-                Debug.Log("Mana given to " + selectedCharacter.name);
+                Debug.Log("Mana given to " + selectedCharacter.playerName);
             }
         }
 
         if (itemType == ItemType.Armour)
         {
             selectedCharacter.AddDefence(amountOfEffect);             
-                Debug.Log("Defence given to " + selectedCharacter.name);
+                Debug.Log("Defence given to " + selectedCharacter.playerName);
         }
 
         if (itemType == ItemType.Weapon)
         {
-            Debug.Log("Weapon given to " + selectedCharacter.name);
+            Debug.Log("Weapon given to " + selectedCharacter.playerName);
         }
 
         // Maybe here for giving weapon and armour to characters?

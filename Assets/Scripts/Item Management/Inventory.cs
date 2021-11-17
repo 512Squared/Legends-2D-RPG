@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.UI;
-using TMPro;
+using System.Collections;
+
 
 public class Inventory : MonoBehaviour
 {
@@ -21,14 +20,31 @@ public class Inventory : MonoBehaviour
     private bool isTeamMember;
 
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+
+    }
     void Start()
     {
-        instance = this;
-        itemsList = new List<ItemsManager>();
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+
+        else
+        {
+            instance = this;
+        }
+
+        DontDestroyOnLoad(gameObject);
+ 
+
         coinsManager = FindObjectOfType<CoinsManager>();
         characterArray = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
+        itemsList = new List<ItemsManager>();
 
-        //DontDestroyOnLoad(this);
+
     }
 
 
@@ -87,12 +103,12 @@ public class Inventory : MonoBehaviour
                         coinsManager.updateCoins();
                         coinsManager.UIAddCoins(item.valueInCoins, selectCharacter);
                         MenuManager.instance.UpdateStats();
-                        Debug.Log(item.itemName + " removed from stack and sold 1");
+                        Debug.Log(item.itemName + " removed from stack and sold (Thulgran)");
                     }
                     else if (selectCharacter != 0)
                     {
                         MenuManager.instance.UpdateStats();
-                        Debug.Log(item.itemName + " removed from stack and sold 2");
+                        Debug.Log(item.itemName + " removed from stack and sold (notThulgran");
                     }
                 }
             }
@@ -120,7 +136,7 @@ public class Inventory : MonoBehaviour
                 coinsManager.updateCoins();
                 coinsManager.UIAddCoins(item.valueInCoins, selectCharacter);
 
-                Debug.Log(item.itemName + " removed from inventory UI 1");
+                Debug.Log(item.itemName + " removed from inventory UI (Thulgran)");
                 MenuManager.instance.UpdateStats();
             }
 
@@ -128,11 +144,12 @@ public class Inventory : MonoBehaviour
             {
                 characterArray[selectCharacter].thulGold += item.valueInCoins;
                 itemsList.Remove(item);
-                Debug.Log(item.itemName + " removed from inventory UI 2");
+
+                Debug.Log(item.itemName + " removed from inventory UI (notThulgran)");
 
                 MenuManager.instance.UpdateStats();
             }
-            Debug.Log("Debugs bypassed");
+           
         }
     }
 
@@ -169,7 +186,7 @@ public class Inventory : MonoBehaviour
 
                             if (selectedCharacter == 0)
                             {
-                                Debug.Log("1_Animation should work, because it's Thulgran");
+                                Debug.Log("Animation call sent (Thulgran)");
                                 coinsManager.updateMana();
                                 coinsManager.UIAddMana(item.amountOfEffect, selectedCharacter);
                                 MenuManager.instance.UpdateStats();
@@ -178,6 +195,7 @@ public class Inventory : MonoBehaviour
                             else
                             {
                                 MenuManager.instance.UpdateStats();
+                                Debug.Log("Animation call not sent (notThulgran)");
                             }
 
                         }
@@ -190,7 +208,7 @@ public class Inventory : MonoBehaviour
 
                             if (selectedCharacter == 0)
                             {
-                                Debug.Log("2_Animation should work, because it's Thulgran");
+                                Debug.Log("Animation call sent (Thulgran)");
                                 coinsManager.updateHP();
                                 coinsManager.UIAddHp(item.amountOfEffect, selectedCharacter);
                                 MenuManager.instance.UpdateStats();
@@ -199,6 +217,7 @@ public class Inventory : MonoBehaviour
                             else
                             {
                                 MenuManager.instance.UpdateStats();
+                                Debug.Log("Animation not sent (notThulgran)");
                             }
 
                         }

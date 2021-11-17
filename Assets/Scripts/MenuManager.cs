@@ -36,6 +36,8 @@ public class MenuManager : MonoBehaviour
 
     public static MenuManager instance;
 
+    private int panelStuff;
+
     //adding serializeField gives possibility to add Simple Joystick object in inspector and thereby share its functions. Not possible if in prefab unless both are in a prefab
 
     public static int select;
@@ -105,10 +107,6 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar;
 
 
-
-
-
-
     [ShowInInspector]
     [Title("INVENTORY")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
@@ -133,7 +131,6 @@ public class MenuManager : MonoBehaviour
     public bool controlSwitch;
 
 
-
     [Header("UI Tweening")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] private CanvasGroup chooseText;
@@ -143,14 +140,11 @@ public class MenuManager : MonoBehaviour
     public RectTransform mainEquipInfoPanel, characterChoicePanel;
 
 
-
     [Header("Player Choice")]
     [GUIColor(1f, 0.2f, 0.515f)]
     [SerializeField] TextMeshProUGUI[] playerChoice;
     [GUIColor(1f, 0.2f, 0.515f)]
     [SerializeField] Sprite buttonGrey;
-
-
 
 
     private Tween fadeText;
@@ -161,6 +155,8 @@ public class MenuManager : MonoBehaviour
 
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+        
+        DontDestroyOnLoad(gameObject);
 
     }
 
@@ -315,7 +311,7 @@ public class MenuManager : MonoBehaviour
                         itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
                     }
                 }
-                
+
                 // ITEM SORTING
 
                 else if (item.itemSelected == true) // if item has been selected
@@ -326,7 +322,7 @@ public class MenuManager : MonoBehaviour
                     // ITEM SELECTED animation
 
                     itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-                    
+
                     // NEW ITEM tagging
 
                     item.isNewItem = false; // switch off new item tag after selection
@@ -338,15 +334,15 @@ public class MenuManager : MonoBehaviour
 
 
                     //  SORT BY POTIONS
-                    
+
                     if (item.itemType == ItemsManager.ItemType.Potion)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
 
                         textUseEquipTake.text = "Give";
 
                         // EFFECT MODIFIER (on item info)
-                        
+
                         if (item.itemName == "Speed Potion")
                         {
                             GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
@@ -373,10 +369,10 @@ public class MenuManager : MonoBehaviour
                     }
 
                     // SORT BY ARMOUR
-                    
+
                     if (item.itemType == ItemsManager.ItemType.Armour)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
 
@@ -384,7 +380,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Weapon)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
 
@@ -392,7 +388,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Item)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Use";
                     }
 
@@ -522,21 +518,22 @@ public class MenuManager : MonoBehaviour
 
     public void CallToSellItem(int selectedCharacter)
     {
-        Debug.Log("CallToSellItem initiated | Selected character: " + selectedCharacter);
+        Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         Inventory.instance.SellItem(activeItem, selectedCharacter);
-        Debug.Log("CallToSellItem has moved passed SellItem()");
+
         UpdateItemsInventory();
-        Debug.Log("CallToSellItem calling UpdateItemsInventory");
+
 
     }
 
     public void CallToUseItem(int selectedCharacter)
     {
-        Debug.Log("UseItem initiated | Selected character: " + selectedCharacter); 
+        Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
-        Debug.Log("ItemManager called from MenuManager"); 
+        panelStuff = selectedCharacter;
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
+
         UpdateItemsInventory();
     }
 
@@ -612,9 +609,41 @@ public class MenuManager : MonoBehaviour
     public void OnPlayerButton()
     {
 
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+        StartCoroutine(DelayPanelReturn());
         UpdateStats();
+    }
+
+
+    IEnumerator DelayPanelReturn()
+    {
+        if (panelStuff != 0)
+        {
+
+            Debug.Log("Giving stuff to other characters");
+            //playerStats[panelStuff].npcHP += activeItem.amountOfEffect;
+            if (activeItem.itemName == "Healing Potion")
+            {
+                hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
+                hpEquipSlider[panelStuff].value = playerStats[panelStuff].npcHP;
+            }
+
+            else if (activeItem.itemName == "Mana Potion")
+            {
+                manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
+                manaEquipSlider[panelStuff].value = playerStats[panelStuff].npcMana;
+            }
+
+            yield return new WaitForSecondsRealtime(1.2f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+
+        }
+        
+        else
+        {
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+        }
     }
 
     public void FadeOutText(float duration)
