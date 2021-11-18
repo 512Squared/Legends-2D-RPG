@@ -16,11 +16,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
     
-    [Title("Management")]
+    //[Title("Management")]
+    //[GUIColor(0.878f, 0.219f, 0.219f)]
+    //[SerializeField] MenuManager menuManager;
     [GUIColor(0.878f, 0.219f, 0.219f)]
-    [SerializeField] MenuManager menuManager;
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    [SerializeField] CoinsManager coinsManager;
+    private Canvas canvas;
 
     [Space]
     [GUIColor(0.447f, 0.654f, 0.996f)]
@@ -71,7 +71,8 @@ public class GameManager : MonoBehaviour
 
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
 
-
+        //menuManager = FindObjectOfType<MenuManager>();
+        canvas = FindObjectOfType<Canvas>();
 
     }
 

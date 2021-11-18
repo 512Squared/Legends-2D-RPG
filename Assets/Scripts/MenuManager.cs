@@ -338,7 +338,7 @@ public class MenuManager : MonoBehaviour
                     
                     if (item.itemType == ItemsManager.ItemType.Potion)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
 
                         textUseEquipTake.text = "Give";
 
@@ -373,7 +373,7 @@ public class MenuManager : MonoBehaviour
                     
                     if (item.itemType == ItemsManager.ItemType.Armour)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
 
@@ -381,7 +381,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Weapon)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
 
@@ -389,7 +389,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Item)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Use";
                     }
 
@@ -438,9 +438,6 @@ public class MenuManager : MonoBehaviour
         manaMain.text = playerStats[0].npcMana.ToString() + "/" + playerStats[0].maxMana;
         hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
         goldMain.text = playerStats[0].thulGold.ToString();
-        //manaEquipTopBar.text = playerStats[0].npcMana.ToString();
-        //hpEquipTopBar.text = playerStats[0].npcHP.ToString();
-        //goldEquipTopBar.text = playerStats[0].thulGold.ToString();
     }
 
     public void InventoryStats()
@@ -523,7 +520,7 @@ public class MenuManager : MonoBehaviour
         Inventory.instance.SellItem(activeItem, selectedCharacter);
 
         UpdateItemsInventory();
-        Debug.Log("CallToSellItem calling UpdateItemsInventory");
+
 
     }
 
@@ -531,10 +528,9 @@ public class MenuManager : MonoBehaviour
     {
  Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
-        Debug.Log("ItemManager called from MenuManager"); 
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
-
+        panelStuff = selectedCharacter;
         UpdateItemsInventory();
     }
 
