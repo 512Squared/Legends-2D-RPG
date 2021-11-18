@@ -148,7 +148,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Sprite buttonGrey;
 
 
-    public bool controlSwitch = false;
+   
 
     private Tween fadeText;
 

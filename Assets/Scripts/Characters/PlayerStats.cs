@@ -40,7 +40,7 @@ public class PlayerStats : MonoBehaviour
     public int npcIntelligence;
     public int npcPerception;
 
-    private float smoothing = 5;
+
 
 
 

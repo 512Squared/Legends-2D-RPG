@@ -64,7 +64,7 @@ public class Inventory : MonoBehaviour
 
     }
 
-    public void SellItem(ItemsManager item)
+    public void SellItem(ItemsManager item, int selectCharacter)
     {
         if (item.isStackable)
         {
