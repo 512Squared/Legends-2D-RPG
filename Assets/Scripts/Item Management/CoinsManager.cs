@@ -114,7 +114,7 @@ public class CoinsManager : MonoBehaviour
 
 
     private int _c;
-    private int chosenCharacter;
+    
 
     public int Coins
     {
@@ -340,24 +340,24 @@ public class CoinsManager : MonoBehaviour
     public void UIAddCoins(int valueInCoins, int selectedCharacter) //previously 'collectedCoinPosition'
     {
         Debug.Log("UIAddCoins called from CoinsManager");
-        chosenCharacter = selectedCharacter;
+
         Animate(sourceCoins, valueInCoins);
         
     }
 
-    public void UIAddHp(int amountOfEffect, int selectedCharacter) //previously 'collectedCoinPosition'
+    public void UIAddHp(int amountOfEffect) //previously 'collectedCoinPosition'
     {
         AnimateHP(sourceHP, amountOfEffect);
-        chosenCharacter = selectedCharacter;
+
         Debug.Log("UIAddHP called from CoinsManager");
 
 
     }
 
-    public void UIAddMana(int amountOfEffect, int selectedCharacter) //previously 'collectedCoinPosition'
+    public void UIAddMana(int amountOfEffect) //previously 'collectedCoinPosition'
     {
         AnimateMana(sourceMana, amountOfEffect);
-        chosenCharacter = selectedCharacter;
+
         Debug.Log("UIAddMana called from CoinsManager");
 
 
