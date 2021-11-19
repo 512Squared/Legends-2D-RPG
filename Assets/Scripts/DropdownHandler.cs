@@ -34,8 +34,8 @@ public class DropdownHandler : MonoBehaviour
         dropdown.options.Clear();
 
         List<string> dropdownListOfPlayers = new List<string>();
+        characters = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
 
-        
         for (int i = 0; i < characters.Length; i++)
         {
             isTeamMember = characters[i].isTeamMember;
@@ -63,7 +63,6 @@ public class DropdownHandler : MonoBehaviour
         
         );
 
-        DontDestroyOnLoad(gameObject);
 
     }
 

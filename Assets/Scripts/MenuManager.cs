@@ -156,7 +156,18 @@ public class MenuManager : MonoBehaviour
     private void Start()
     {
 
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+
+        else
+        {
+            instance = this;
+        }
+
+        DontDestroyOnLoad(gameObject);
+
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
 
     }
@@ -531,10 +542,11 @@ public class MenuManager : MonoBehaviour
     {
  Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
-        Debug.Log("ItemManager called from MenuManager"); 
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
 
+        //GameManager.instance.chosenCharacter = playerStats[selectedCharacter].playerName; // just inspector stuff
+        panelStuff = selectedCharacter;
         UpdateItemsInventory();
     }
 
@@ -621,7 +633,7 @@ public class MenuManager : MonoBehaviour
         {
 
             Debug.Log("Giving stuff to other characters");
-            //playerStats[panelStuff].npcHP += activeItem.amountOfEffect;
+            
             if (activeItem.itemName == "Healing Potion")
             {
                 hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
@@ -634,7 +646,7 @@ public class MenuManager : MonoBehaviour
                 manaEquipSlider[panelStuff].value = playerStats[panelStuff].npcMana;
             }
 
-            yield return new WaitForSecondsRealtime(1.2f);
+            yield return new WaitForSecondsRealtime(1f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
             characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
 

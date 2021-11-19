@@ -64,7 +64,7 @@ public class Inventory : MonoBehaviour
 
     }
 
-    public void SellItem(ItemsManager item, int selectCharacter)
+    public void SellItem(ItemsManager item, int selectedCharacterSell)
     {
         if (item.isStackable)
         {
@@ -83,16 +83,16 @@ public class Inventory : MonoBehaviour
 
                     // implementing the sell
 
-                    characterArray[selectCharacter].thulGold += item.valueInCoins;
+                    characterArray[selectedCharacterSell].thulGold += item.valueInCoins;
                     item.itemSold = true;
-                    if (selectCharacter == 0)
+                    if (selectedCharacterSell == 0)
                     {
                         coinsManager.updateCoins();
-                        coinsManager.UIAddCoins(item.valueInCoins, selectCharacter);
+                        coinsManager.UIAddCoins(item.valueInCoins, selectedCharacterSell);
                         MenuManager.instance.UpdateStats();
                         Debug.Log(item.itemName + " removed from stack and sold (Thulgran)");
                     }
-                    else if (selectCharacter != 0)
+                    else if (selectedCharacterSell != 0)
                     {
                         MenuManager.instance.UpdateStats();
                         Debug.Log(item.itemName + " removed from stack and sold (notThulgran");
@@ -115,21 +115,21 @@ public class Inventory : MonoBehaviour
         {
             // implementing the coinAnimation
             Debug.Log(item.itemName + " sold");
-            if (selectCharacter == 0)
+            if (selectedCharacterSell == 0)
             {
 
-                characterArray[selectCharacter].thulGold += item.valueInCoins;
+                characterArray[selectedCharacterSell].thulGold += item.valueInCoins;
                 itemsList.Remove(item); 
                 coinsManager.updateCoins();
-                coinsManager.UIAddCoins(item.valueInCoins, selectCharacter);
+                coinsManager.UIAddCoins(item.valueInCoins, selectedCharacterSell);
 
                 Debug.Log(item.itemName + " removed from inventory UI 1");
                 MenuManager.instance.UpdateStats();
             }
 
-            else if (selectCharacter != 0)
+            else if (selectedCharacterSell != 0)
             {
-                characterArray[selectCharacter].thulGold += item.valueInCoins;
+                characterArray[selectedCharacterSell].thulGold += item.valueInCoins;
                 itemsList.Remove(item);
                 Debug.Log(item.itemName + " removed from inventory UI 2");
 
@@ -139,7 +139,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void UseAndRemoveItem(ItemsManager item, int selectedCharacter)
+    public void UseAndRemoveItem(ItemsManager item, int selectedCharacterUse)
     {
 
 
@@ -170,7 +170,7 @@ public class Inventory : MonoBehaviour
 
                             // animation only runs for Thulgren
 
-                            if (selectedCharacter == 0)
+                            if (selectedCharacterUse == 0)
                             {
                                 Debug.Log("Animation call sent (Thulgran)");
                                 coinsManager.updateMana();
@@ -192,7 +192,7 @@ public class Inventory : MonoBehaviour
 
                             // animation only runs for Thulgren
 
-                            if (selectedCharacter == 0)
+                            if (selectedCharacterUse == 0)
                             {
                                 Debug.Log("Animation call sent (Thulgran)");
                                 coinsManager.updateHP();
@@ -236,7 +236,7 @@ public class Inventory : MonoBehaviour
 
                     // animation only runs for Thulgren
 
-                    if (selectedCharacter == 0)
+                    if (selectedCharacterUse == 0)
                     {
                         Debug.Log("3_Animation should work, because it's Thulgran");
                         coinsManager.updateMana();
@@ -257,7 +257,7 @@ public class Inventory : MonoBehaviour
 
                     // animation only runs for Thulgren
 
-                    if (selectedCharacter == 0)
+                    if (selectedCharacterUse == 0)
 
                     {
                         Debug.Log("4_Animation should work, because it's Thulgran");
