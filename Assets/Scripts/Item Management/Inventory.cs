@@ -18,7 +18,6 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] CoinsManager coinsManager;
 
-    private bool isTeamMember;
 
     // Start is called before the first frame update
 

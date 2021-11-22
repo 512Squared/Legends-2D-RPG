@@ -131,7 +131,6 @@ public class MenuManager : MonoBehaviour
     public bool controlSwitch;
 
 
-
     [Header("UI Tweening")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] private CanvasGroup chooseText;
@@ -147,31 +146,16 @@ public class MenuManager : MonoBehaviour
     [GUIColor(1f, 0.2f, 0.515f)]
     [SerializeField] Sprite buttonGrey;
 
-
-   
-
     private Tween fadeText;
 
 
     private void Start()
     {
-
-        if (instance != null && instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-
-        else
-        {
-            instance = this;
-        }
-
-        DontDestroyOnLoad(gameObject);
+        instance = this;
 
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
 
     }
-
 
     private void Update()
     {
@@ -202,7 +186,6 @@ public class MenuManager : MonoBehaviour
             PanelTestingKeyboardControl();
         }
     }
-
 
     public void UpdateStats()
     {
@@ -244,8 +227,6 @@ public class MenuManager : MonoBehaviour
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
 
-
-
             }
         }
 
@@ -256,7 +237,6 @@ public class MenuManager : MonoBehaviour
     {
         controlSwitch = !controlSwitch;
     }
-
 
     public void UpdateItemsInventory()     // create  UI Equip table and side panel. Item sorting at the bottom
     {
@@ -403,12 +383,7 @@ public class MenuManager : MonoBehaviour
                         Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
                         textUseEquipTake.text = "Use";
                     }
-
-
-
                 }
-
-
             }
         }
 
@@ -449,9 +424,7 @@ public class MenuManager : MonoBehaviour
         manaMain.text = playerStats[0].npcMana.ToString() + "/" + playerStats[0].maxMana;
         hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
         goldMain.text = playerStats[0].thulGold.ToString();
-        //manaEquipTopBar.text = playerStats[0].npcMana.ToString();
-        //hpEquipTopBar.text = playerStats[0].npcHP.ToString();
-        //goldEquipTopBar.text = playerStats[0].thulGold.ToString();
+
     }
 
     public void InventoryStats()
@@ -532,10 +505,8 @@ public class MenuManager : MonoBehaviour
     {
         Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         Inventory.instance.SellItem(activeItem, selectedCharacter);
-
         UpdateItemsInventory();
         Debug.Log("CallToSellItem calling UpdateItemsInventory");
-
     }
 
     public void CallToUseItem(int selectedCharacter)
@@ -544,7 +515,6 @@ public class MenuManager : MonoBehaviour
         activeItem.UseItem(selectedCharacter);
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
-
         //GameManager.instance.chosenCharacter = playerStats[selectedCharacter].playerName; // just inspector stuff
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
@@ -637,13 +607,13 @@ public class MenuManager : MonoBehaviour
             if (activeItem.itemName == "Healing Potion")
             {
                 hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
-                hpEquipSlider[panelStuff].value = playerStats[panelStuff].npcHP;
+                hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 0.5f);
             }
 
             else if (activeItem.itemName == "Mana Potion")
             {
                 manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
-                manaEquipSlider[panelStuff].value = playerStats[panelStuff].npcMana;
+                manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 0.5f);
             }
 
             yield return new WaitForSecondsRealtime(1f);

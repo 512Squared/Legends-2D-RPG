@@ -128,8 +128,6 @@ public class CoinsManager : MonoBehaviour
             
                 coinUIText.text = Coins.ToString();
             
-
-            coinUIText.text = Coins.ToString();
             
         }
     }

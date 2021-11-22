@@ -51,8 +51,6 @@ public class PlayerStats : MonoBehaviour
 
 
         instance = this;
-    
-        DontDestroyOnLoad(gameObject);
 
         // assigning XP and leveling up from XP
 
