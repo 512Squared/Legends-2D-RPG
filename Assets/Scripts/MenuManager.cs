@@ -607,23 +607,27 @@ public class MenuManager : MonoBehaviour
             if (activeItem.itemName == "Healing Potion")
             {
                 hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
-                //DOTween.Sequence()
-                    //GameObject.FindGameObjectWithTag("HPFillArea").GetComponent<Transform>().DOScaleY(1.5f, 1f)
-                    hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.5f);
-                    Debug.Log("Slider HP fill scale enacted");
+                var sequence = DOTween.Sequence()
+                    .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.4f))
+                    .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                    .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+
+                Debug.Log("Slider HP fill scale enacted");
             }
 
             else if (activeItem.itemName == "Mana Potion")
             {
                 manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
-                DOTween.Sequence()
-                    .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.5f))
-                    //.Join(manaEquipSlider[panelStuff].GetComponent<>().DOColor("A652C8", 0.8f))
-                    .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.5f));
-                    Debug.Log("Slider Mana fill expand and slide");
+                var sequence = DOTween.Sequence()
+                    .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.4f))
+                    .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                    .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+                Debug.Log("Slider Mana fill expand and slide");
             }
 
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(1.4f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
             characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
 
