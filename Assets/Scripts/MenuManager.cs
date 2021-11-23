@@ -303,7 +303,7 @@ public class MenuManager : MonoBehaviour
                         itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
                     }
                 }
-                
+
                 // ITEM SORTING
 
                 else if (item.itemSelected == true) // if item has been selected
@@ -314,7 +314,7 @@ public class MenuManager : MonoBehaviour
                     // ITEM SELECTED animation
 
                     itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-                    
+
                     // NEW ITEM tagging
 
                     item.isNewItem = false; // switch off new item tag after selection
@@ -326,7 +326,7 @@ public class MenuManager : MonoBehaviour
 
 
                     //  SORT BY POTIONS
-                    
+
                     if (item.itemType == ItemsManager.ItemType.Potion)
                     {
                         Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
@@ -334,7 +334,7 @@ public class MenuManager : MonoBehaviour
                         textUseEquipTake.text = "Give";
 
                         // EFFECT MODIFIER (on item info)
-                        
+
                         if (item.itemName == "Speed Potion")
                         {
                             GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
@@ -361,7 +361,7 @@ public class MenuManager : MonoBehaviour
                     }
 
                     // SORT BY ARMOUR
-                    
+
                     if (item.itemType == ItemsManager.ItemType.Armour)
                     {
                         Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
@@ -511,7 +511,7 @@ public class MenuManager : MonoBehaviour
 
     public void CallToUseItem(int selectedCharacter)
     {
- Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
+        Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
@@ -603,17 +603,24 @@ public class MenuManager : MonoBehaviour
         {
 
             Debug.Log("Giving stuff to other characters");
-            
+
             if (activeItem.itemName == "Healing Potion")
             {
                 hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
-                hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 0.5f);
+                //DOTween.Sequence()
+                    //GameObject.FindGameObjectWithTag("HPFillArea").GetComponent<Transform>().DOScaleY(1.5f, 1f)
+                    hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.5f);
+                    Debug.Log("Slider HP fill scale enacted");
             }
 
             else if (activeItem.itemName == "Mana Potion")
             {
                 manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
-                manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 0.5f);
+                DOTween.Sequence()
+                    .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.5f))
+                    //.Join(manaEquipSlider[panelStuff].GetComponent<>().DOColor("A652C8", 0.8f))
+                    .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.5f));
+                    Debug.Log("Slider Mana fill expand and slide");
             }
 
             yield return new WaitForSecondsRealtime(1f);
@@ -621,7 +628,7 @@ public class MenuManager : MonoBehaviour
             characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
 
         }
-        
+
         else
         {
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
