@@ -602,35 +602,46 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator DelayPanelReturn()
     {
-            Debug.Log("InventoryLeft panel animations engaged");
+        Debug.Log("InventoryLeft panel animations engaged");
 
-            if (activeItem.itemName == "Healing Potion")
-            {
-                hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
-                var sequence = DOTween.Sequence()
-                    .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.3f))
-                    .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                    .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
-                sequence.SetLoops(1, LoopType.Yoyo);
+        if (activeItem.itemName == "Healing Potion")
+        {
+            hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
+            var sequence = DOTween.Sequence()
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.3f))
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
+            sequence.SetLoops(1, LoopType.Yoyo);
 
-                Debug.Log("Slider HP fill scale enacted");
-            }
-
-            else if (activeItem.itemName == "Mana Potion")
-            {
-                manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
-                var sequence = DOTween.Sequence()
-                    .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.3f))
-                    .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                    .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
-                sequence.SetLoops(1, LoopType.Yoyo);
-            
-                    Debug.Log("Slider Mana fill expand and slide");
-            }
 
             yield return new WaitForSecondsRealtime(2f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
             characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+
+            Debug.Log("Slider HP fill scale enacted");
+        }
+
+        else if (activeItem.itemName == "Mana Potion")
+        {
+            manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
+            var sequence = DOTween.Sequence()
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.3f))
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
+            sequence.SetLoops(1, LoopType.Yoyo);
+
+            Debug.Log("Slider Mana fill expand and slide");
+
+
+            yield return new WaitForSecondsRealtime(2f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+
+        }
+
+        yield return new WaitForSecondsRealtime(0.3f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
 
     }
 
