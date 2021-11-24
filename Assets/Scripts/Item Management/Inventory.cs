@@ -138,7 +138,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void UseAndRemoveItem(ItemsManager item, int selectedCharacterUse)
+    public void UseAndRemoveItem(ItemsManager item, int selectedCharacterUse, Vector2 target)
     {
 
 
@@ -171,16 +171,18 @@ public class Inventory : MonoBehaviour
 
                             if (selectedCharacterUse == 0)
                             {
-                                Debug.Log("Animation call sent (Thulgran)");
+                                Debug.Log("Mana animation called (Thulgran)");
                                 coinsManager.updateMana();
-                                coinsManager.UIAddMana(item.amountOfEffect);
+                                coinsManager.UIAddMana(item.amountOfEffect, target);
                                 MenuManager.instance.UpdateStats();
                             }
 
                             else
                             {
+                                coinsManager.updateMana();
+                                coinsManager.UIAddMana(item.amountOfEffect, target);
                                 MenuManager.instance.UpdateStats();
-                                Debug.Log("Animation call not sent (notThulgran)");
+                                Debug.Log("Mana animation called (notThulgran)");
                             }
 
                         }
@@ -189,20 +191,22 @@ public class Inventory : MonoBehaviour
                         {
                             // animations
 
-                            // animation only runs for Thulgren
-
                             if (selectedCharacterUse == 0)
                             {
                                 Debug.Log("Animation call sent (Thulgran)");
                                 coinsManager.updateHP();
-                                coinsManager.UIAddHp(item.amountOfEffect);
+                                coinsManager.UIAddHp(item.amountOfEffect, target);
                                 MenuManager.instance.UpdateStats();
                             }
 
                             else
                             {
+                                // now adding same anim for other characters
+                                coinsManager.updateHP();
+                                coinsManager.UIAddHp(item.amountOfEffect, target);
+                                
                                 MenuManager.instance.UpdateStats();
-                                Debug.Log("Animation not sent (notThulgran)");
+                                Debug.Log("HP animation called (notThulgran)");
                             }
 
                         }
@@ -220,7 +224,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        else
+        else // same code as above but for non-stackable items
         {
             itemsList.Remove(item);
             Debug.Log("Item removed");
@@ -233,19 +237,20 @@ public class Inventory : MonoBehaviour
                 {
                     // animations 
 
-                    // animation only runs for Thulgren
-
                     if (selectedCharacterUse == 0)
                     {
-                        Debug.Log("3_Animation should work, because it's Thulgran");
+                        Debug.Log("Mana animation called (Thulgran)");
                         coinsManager.updateMana();
-                        coinsManager.UIAddMana(item.amountOfEffect);
+                        coinsManager.UIAddMana(item.amountOfEffect, target);
                         MenuManager.instance.UpdateStats();
                     }
 
                     else
                     {
-                        MenuManager.instance.UpdateStats();
+
+                       Debug.Log("Mana animation called (notThulgran)");
+                       coinsManager.updateMana();
+                       coinsManager.UIAddMana(item.amountOfEffect, target); MenuManager.instance.UpdateStats();
                     }
 
                 }
@@ -254,19 +259,20 @@ public class Inventory : MonoBehaviour
                 {
                     // animations
 
-                    // animation only runs for Thulgren
-
                     if (selectedCharacterUse == 0)
 
                     {
-                        Debug.Log("4_Animation should work, because it's Thulgran");
+                        Debug.Log("HP animation called (Thulgran)");
                         coinsManager.updateHP();
-                        coinsManager.UIAddHp(item.amountOfEffect);
+                        coinsManager.UIAddHp(item.amountOfEffect, target);
                         MenuManager.instance.UpdateStats();
                     }
 
                     else
                     {
+                        Debug.Log("HP animation called (notThulgran)");
+                        coinsManager.updateHP();
+                        coinsManager.UIAddHp(item.amountOfEffect, target);
                         MenuManager.instance.UpdateStats();
                     }
 

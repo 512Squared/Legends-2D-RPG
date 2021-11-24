@@ -329,7 +329,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Potion)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
 
                         textUseEquipTake.text = "Give";
 
@@ -364,7 +364,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Armour)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
 
@@ -372,7 +372,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Weapon)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
 
@@ -380,7 +380,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Item)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | " + "Selected: " + !item.itemSelected);
+                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Use";
                     }
                 }
@@ -513,7 +513,10 @@ public class MenuManager : MonoBehaviour
     {
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
-        Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter);
+
+        // pass player image position for CoinsManager animations
+        Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
         //GameManager.instance.chosenCharacter = playerStats[selectedCharacter].playerName; // just inspector stuff
         panelStuff = selectedCharacter;
@@ -599,16 +602,13 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator DelayPanelReturn()
     {
-        if (panelStuff != 0)
-        {
-
-            Debug.Log("Giving stuff to other characters");
+            Debug.Log("InventoryLeft panel animations engaged");
 
             if (activeItem.itemName == "Healing Potion")
             {
                 hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
                 var sequence = DOTween.Sequence()
-                    .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.4f))
+                    .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.3f))
                     .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
                     .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
                 sequence.SetLoops(1, LoopType.Yoyo);
@@ -620,24 +620,18 @@ public class MenuManager : MonoBehaviour
             {
                 manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
                 var sequence = DOTween.Sequence()
-                    .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.4f))
+                    .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.3f))
                     .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
                     .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
                 sequence.SetLoops(1, LoopType.Yoyo);
-                Debug.Log("Slider Mana fill expand and slide");
+            
+                    Debug.Log("Slider Mana fill expand and slide");
             }
 
-            yield return new WaitForSecondsRealtime(1.4f);
+            yield return new WaitForSecondsRealtime(2f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
             characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
 
-        }
-
-        else
-        {
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
-        }
     }
 
     public void FadeOutText(float duration)

@@ -13380,10 +13380,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3106752160443925235, guid: a2b4d0a0f4a88004a9aa13222af6d38d, type: 3}
-      propertyPath: m_Name
-      value: ManaFill
-      objectReference: {fileID: 0}
     - target: {fileID: 3139501192519071423, guid: a2b4d0a0f4a88004a9aa13222af6d38d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -14316,6 +14312,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -540.87665
       objectReference: {fileID: 0}
+    - target: {fileID: 6338328060797898796, guid: a2b4d0a0f4a88004a9aa13222af6d38d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6461732603886886173, guid: a2b4d0a0f4a88004a9aa13222af6d38d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -14426,7 +14426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7074033550901367576, guid: a2b4d0a0f4a88004a9aa13222af6d38d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1371.1764
+      value: 1371.1763
       objectReference: {fileID: 0}
     - target: {fileID: 7143433691592034751, guid: a2b4d0a0f4a88004a9aa13222af6d38d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -30217,8 +30217,8 @@ MonoBehaviour:
   maxLevel: 5
   baseLevelXP: 0
   maxMana: 200
-  maxHP: 200
-  isTeamMember: 0
+  maxHP: 300
+  isTeamMember: 1
   playerName: Winrussel
   playerDesc: Winrussel can move as swift as the wind, while his cane is as sharp
     and venomous as a snake.
@@ -30350,7 +30350,7 @@ MonoBehaviour:
   maxLevel: 5
   baseLevelXP: 0
   maxMana: 200
-  maxHP: 200
+  maxHP: 300
   isTeamMember: 1
   playerName: Briarfoot
   playerDesc: Briarfoot is a fierce blacksmith known for cracking skulls and marrying
@@ -30388,7 +30388,7 @@ MonoBehaviour:
   maxLevel: 5
   baseLevelXP: 0
   maxMana: 200
-  maxHP: 200
+  maxHP: 300
   isTeamMember: 1
   playerName: Haefra Do'hea
   playerDesc: Haefra is a talented healer and witch. In a fight, her healing powers
@@ -32415,7 +32415,7 @@ MonoBehaviour:
   maxLevel: 5
   baseLevelXP: 0
   maxMana: 200
-  maxHP: 200
+  maxHP: 300
   isTeamMember: 1
   playerName: Grumpy Greta
   playerDesc: Retired assassin. Could play a barmaid or flower seller with equal

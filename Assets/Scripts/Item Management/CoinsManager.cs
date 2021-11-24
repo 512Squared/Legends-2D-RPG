@@ -267,8 +267,14 @@ public class CoinsManager : MonoBehaviour
 
     }
 
-    public void AnimateHP(Vector2 sourceHP, int amountOfEffect) //previously 'collectedCoinPosition' // amountOfEffect is called in Inventory.cs
+    public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget) //previously 'collectedCoinPosition' // amountOfEffect is called in Inventory.cs
     {
+
+        // trying to assign a target position to player image
+        
+        targetPositionHP = receivedTarget;
+
+
         Debug.Log("Animate HP called");
         for (int i = 0; i < amountOfEffect; i++)
         {
@@ -300,8 +306,12 @@ public class CoinsManager : MonoBehaviour
 
     }
 
-    public void AnimateMana(Vector2 sourceMana, int amountOfEffect) //previously 'collectedCoinPosition' // amountOfEffect is called in Inventory.cs
+    public void AnimateMana(Vector2 sourceMana, int amountOfEffect, Vector2 receivedTarget) //previously 'collectedCoinPosition' // amountOfEffect is called in Inventory.cs
     {
+        // assigning target position to polayer image
+
+        targetPositionMana = receivedTarget;
+
         Debug.Log("Animate runes called");
         for (int i = 0; i < amountOfEffect; i++)
         {
@@ -343,18 +353,18 @@ public class CoinsManager : MonoBehaviour
         
     }
 
-    public void UIAddHp(int amountOfEffect) //previously 'collectedCoinPosition'
+    public void UIAddHp(int amountOfEffect, Vector2 target) //previously 'collectedCoinPosition'
     {
-        AnimateHP(sourceHP, amountOfEffect);
+        AnimateHP(sourceHP, amountOfEffect, target);
 
         Debug.Log("UIAddHP called from CoinsManager");
 
 
     }
 
-    public void UIAddMana(int amountOfEffect) //previously 'collectedCoinPosition'
+    public void UIAddMana(int amountOfEffect, Vector2 target) //previously 'collectedCoinPosition'
     {
-        AnimateMana(sourceMana, amountOfEffect);
+        AnimateMana(sourceMana, amountOfEffect, target);
 
         Debug.Log("UIAddMana called from CoinsManager");
 

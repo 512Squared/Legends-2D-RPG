@@ -142005,7 +142005,7 @@ GameObject:
   - component: {fileID: 1399511474764968693}
   m_Layer: 5
   m_Name: 0Mug_equip_0
-  m_TagString: Untagged
+  m_TagString: TargetMana
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143804,8 +143804,8 @@ GameObject:
   - component: {fileID: 1947100527561139001}
   - component: {fileID: 8060924590202058122}
   m_Layer: 5
-  m_Name: Character mug
-  m_TagString: Untagged
+  m_Name: CharacterMug
+  m_TagString: TargetMana
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146825,6 +146825,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TargetMana
       objectReference: {fileID: 0}
+    - target: {fileID: 3796057382935195526, guid: d33d3288340995940895416ef45a0655, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d33d3288340995940895416ef45a0655, type: 3}
 --- !u!224 &533484188880660688 stripped
@@ -146947,7 +146951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3643864279700707609, guid: 1ba4a7a87129c524881b9887945b2e5b, type: 3}
       propertyPath: maxHP
-      value: 200
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 3643864279700707609, guid: 1ba4a7a87129c524881b9887945b2e5b, type: 3}
       propertyPath: target
@@ -147271,11 +147275,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.900055
+      value: -870.6833
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.8000305
+      value: -540.87665
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
