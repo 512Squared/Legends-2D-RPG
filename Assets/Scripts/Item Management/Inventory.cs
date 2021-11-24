@@ -173,14 +173,14 @@ public class Inventory : MonoBehaviour
                             {
                                 Debug.Log("Mana animation called (Thulgran)");
                                 coinsManager.updateMana();
-                                coinsManager.UIAddMana(item.amountOfEffect, target);
+                                coinsManager.UIAddMana(item.amountOfEffect, target, selectedCharacterUse);
                                 MenuManager.instance.UpdateStats();
                             }
 
                             else
                             {
                                 coinsManager.updateMana();
-                                coinsManager.UIAddMana(item.amountOfEffect, target);
+                                coinsManager.UIAddMana(item.amountOfEffect, target, selectedCharacterUse);
                                 MenuManager.instance.UpdateStats();
                                 Debug.Log("Mana animation called (notThulgran)");
                             }
@@ -195,7 +195,7 @@ public class Inventory : MonoBehaviour
                             {
                                 Debug.Log("Animation call sent (Thulgran)");
                                 coinsManager.updateHP();
-                                coinsManager.UIAddHp(item.amountOfEffect, target);
+                                coinsManager.UIAddHp(item.amountOfEffect, target, selectedCharacterUse);
                                 MenuManager.instance.UpdateStats();
                             }
 
@@ -203,7 +203,7 @@ public class Inventory : MonoBehaviour
                             {
                                 // now adding same anim for other characters
                                 coinsManager.updateHP();
-                                coinsManager.UIAddHp(item.amountOfEffect, target);
+                                coinsManager.UIAddHp(item.amountOfEffect, target, selectedCharacterUse);
                                 
                                 MenuManager.instance.UpdateStats();
                                 Debug.Log("HP animation called (notThulgran)");
@@ -241,7 +241,7 @@ public class Inventory : MonoBehaviour
                     {
                         Debug.Log("Mana animation called (Thulgran)");
                         coinsManager.updateMana();
-                        coinsManager.UIAddMana(item.amountOfEffect, target);
+                        coinsManager.UIAddMana(item.amountOfEffect, target, selectedCharacterUse);
                         MenuManager.instance.UpdateStats();
                     }
 
@@ -250,7 +250,7 @@ public class Inventory : MonoBehaviour
 
                        Debug.Log("Mana animation called (notThulgran)");
                        coinsManager.updateMana();
-                       coinsManager.UIAddMana(item.amountOfEffect, target); MenuManager.instance.UpdateStats();
+                       coinsManager.UIAddMana(item.amountOfEffect, target, selectedCharacterUse); MenuManager.instance.UpdateStats();
                     }
 
                 }
@@ -264,7 +264,7 @@ public class Inventory : MonoBehaviour
                     {
                         Debug.Log("HP animation called (Thulgran)");
                         coinsManager.updateHP();
-                        coinsManager.UIAddHp(item.amountOfEffect, target);
+                        coinsManager.UIAddHp(item.amountOfEffect, target, selectedCharacterUse);
                         MenuManager.instance.UpdateStats();
                     }
 
@@ -272,7 +272,7 @@ public class Inventory : MonoBehaviour
                     {
                         Debug.Log("HP animation called (notThulgran)");
                         coinsManager.updateHP();
-                        coinsManager.UIAddHp(item.amountOfEffect, target);
+                        coinsManager.UIAddHp(item.amountOfEffect, target, selectedCharacterUse);
                         MenuManager.instance.UpdateStats();
                     }
 
