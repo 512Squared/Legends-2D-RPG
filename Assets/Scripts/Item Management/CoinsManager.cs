@@ -145,7 +145,7 @@ public class CoinsManager : MonoBehaviour
             if (Hp < mainCharacter.maxHP + 1)
 
             {
-                hpUIText.text = Hp.ToString();
+                hpUIText.text = Hp.ToString() + "/" + mainCharacter.maxHP;
             }
         }
     }
@@ -163,7 +163,7 @@ public class CoinsManager : MonoBehaviour
 
             if (Mana < mainCharacter.maxMana + 1)
             {
-                manaUIText.text = Mana.ToString();
+                manaUIText.text = Mana.ToString() + "/" + mainCharacter.maxMana;
             }
         }
     }
@@ -180,15 +180,15 @@ public class CoinsManager : MonoBehaviour
         _hp += mainCharacter.npcHP;
         _mana += mainCharacter.npcMana;
         coinUIText.text = _c.ToString();
-        hpUIText.text = _hp.ToString();
-        manaUIText.text = _mana.ToString();
+        hpUIText.text = _hp.ToString() + "/" + mainCharacter.maxHP;
+        manaUIText.text = _mana.ToString() + "/" + mainCharacter.maxMana;
 
     }
 
 
     private void Start()
     {
-        
+        DontDestroyOnLoad(gameObject);
     }
 
     void PrepareCoins() {

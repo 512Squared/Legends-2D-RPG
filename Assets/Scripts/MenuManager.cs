@@ -104,7 +104,8 @@ public class MenuManager : MonoBehaviour
     public Image[] characterMugEquip;
     [TabGroup("New Group", "Equip")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar;
+    public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar; // doesn't look like I used these. Done in CoinsManager.
+
 
 
     [ShowInInspector]
@@ -226,6 +227,7 @@ public class MenuManager : MonoBehaviour
                 thulGold[i].text = playerStats[0].thulGold.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
+
 
             }
         }
@@ -425,6 +427,7 @@ public class MenuManager : MonoBehaviour
         hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
         goldMain.text = playerStats[0].thulGold.ToString();
 
+
     }
 
     public void InventoryStats()
@@ -506,7 +509,9 @@ public class MenuManager : MonoBehaviour
         Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         Inventory.instance.SellItem(activeItem, selectedCharacter);
         UpdateItemsInventory();
+        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
         Debug.Log("CallToSellItem calling UpdateItemsInventory");
+        textUseEquipTake.text = "Select";
     }
 
     public void CallToUseItem(int selectedCharacter)
@@ -521,6 +526,8 @@ public class MenuManager : MonoBehaviour
         //GameManager.instance.chosenCharacter = playerStats[selectedCharacter].playerName; // just inspector stuff
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
+        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
+        textUseEquipTake.text = "Select";
     }
 
     public void turnEquipOn()
@@ -596,19 +603,20 @@ public class MenuManager : MonoBehaviour
     {
 
         StartCoroutine(DelayPanelReturn());
-        UpdateStats();
+        
     }
 
 
     IEnumerator DelayPanelReturn()
     {
+        
         Debug.Log("InventoryLeft panel animations engaged");
 
         if (activeItem.itemName == "Healing Potion")
         {
             hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
             var sequence = DOTween.Sequence()
-                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.5f, 0.2f))
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
                 .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
                 .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
@@ -625,7 +633,7 @@ public class MenuManager : MonoBehaviour
         {
             manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
             var sequence = DOTween.Sequence()
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.5f, 0.2f))
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
                 .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
