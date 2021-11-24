@@ -608,7 +608,7 @@ public class MenuManager : MonoBehaviour
         {
             hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
             var sequence = DOTween.Sequence()
-                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.3f))
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.5f, 0.2f))
                 .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
                 .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
@@ -625,7 +625,7 @@ public class MenuManager : MonoBehaviour
         {
             manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
             var sequence = DOTween.Sequence()
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2f, 0.3f))
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.5f, 0.2f))
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
                 .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
