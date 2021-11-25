@@ -19,9 +19,5 @@ public class levelManager : MonoBehaviour
         PlayerGlobalData.instance.SetLimit(bottomLeftEdge, topRightEdge);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
+
 }

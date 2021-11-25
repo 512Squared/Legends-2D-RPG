@@ -9,31 +9,36 @@ public class Exit : MonoBehaviour
 
     [SerializeField] string sceneToLoad;
     [SerializeField] string goingTo;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] string arrivingFrom;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+    bool loaded;
+    bool unloaded;
+
+
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
+
+
         if (collision.CompareTag("Player"))
         {
-            PlayerGlobalData.instance.arrivedAt = goingTo;
-            
-            MenuManager.instance.FadeImage();
+            if (!loaded)
+            {
+                PlayerGlobalData.instance.arrivedAt = goingTo;
 
-            StartCoroutine(LoadSceneCoroutine());
+                //MenuManager.instance.FadeImage();
+
+                StartCoroutine(LoadSceneCoroutine());
+
+                Debug.Log("Scene load called: " + sceneToLoad);
+
+                loaded = true;
+            }
+
         }
-
-       
 
     }
 
@@ -43,9 +48,11 @@ public class Exit : MonoBehaviour
         {
             PlayerGlobalData.instance.arrivedAt = goingTo;
 
-            MenuManager.instance.FadeImage();
+            //MenuManager.instance.FadeImage();
 
             StartCoroutine(LoadSceneCoroutine());
+
+            loaded = true;
         }
     }
 
@@ -53,7 +60,17 @@ public class Exit : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        SceneManager.LoadScene(sceneToLoad);
+        SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+
+        if (!unloaded)
+        {
+            unloaded = true;
+            AnyManager.anyManager.UnloadScene(arrivingFrom);
+            Debug.Log("Scene unload called: " + arrivingFrom);
+        }
+
 
     }
+
+
 }

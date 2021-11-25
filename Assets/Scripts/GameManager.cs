@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     // game manager is holding the player stats and preserving them. It's public, which allows it to be called. 
 
     public static GameManager instance;
-    
+
     [Title("Management")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
     [SerializeField] MenuManager menuManager;
@@ -56,22 +56,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this.gameObject);
-        }
 
-        else
-        {
-            instance = this;
-        }
-
-        DontDestroyOnLoad(gameObject);
-
+        instance = this;
 
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
-
-
 
     }
 

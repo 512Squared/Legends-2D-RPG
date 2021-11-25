@@ -144,11 +144,11 @@ public class CoinsManager : MonoBehaviour
 
 
             //update UI Text whenever HP variable is changed
-            if (chosenCharacter == 0 && Hp < mainCharacter.maxHP + 1)
+            if (chosenCharacter == 0 && Hp < chosenCharacters[0].maxHP + 1)
 
             {
                 _hp = value;
-                hpUIText.text = Hp.ToString() + "/" + mainCharacter.maxHP;
+                hpUIText.text = Hp.ToString() + "/" + chosenCharacters[0].maxHP;
             }
         }
     }
@@ -164,10 +164,10 @@ public class CoinsManager : MonoBehaviour
 
             //update UI Text whenever Mana variable is changed
 
-            if (chosenCharacter == 0 && Mana < mainCharacter.maxMana + 1)
+            if (chosenCharacter == 0 && Mana < chosenCharacters[0].maxMana + 1)
             {
                 _mana = value;
-                manaUIText.text = Mana.ToString() + "/" + mainCharacter.maxMana;
+                manaUIText.text = Mana.ToString() + "/" + chosenCharacters[0].maxMana;
             }
         }
     }
@@ -177,25 +177,27 @@ public class CoinsManager : MonoBehaviour
     void Awake()
     {
 
-        PrepareCoins();
-        PrepareHP();
-        PrepareMana();
 
-        _c += mainCharacter.thulGold;
-        _hp += mainCharacter.npcHP;
-        _mana += mainCharacter.npcMana;
-        coinUIText.text = _c.ToString();
-        hpUIText.text = _hp.ToString() + "/" + mainCharacter.maxHP;
-        manaUIText.text = _mana.ToString() + "/" + mainCharacter.maxMana;
 
     }
 
 
     private void Start()
     {
+
         chosenCharacters = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
 
-        DontDestroyOnLoad(gameObject);
+        PrepareCoins();
+        PrepareHP();
+        PrepareMana();
+
+        _c += chosenCharacters[0].thulGold;
+        _hp += chosenCharacters[0].npcHP;
+        _mana += chosenCharacters[0].npcMana;
+        coinUIText.text = _c.ToString();
+        hpUIText.text = _hp.ToString() + "/" + chosenCharacters[0].maxHP;
+        manaUIText.text = _mana.ToString() + "/" + chosenCharacters[0].maxMana;
+
     }
 
     void PrepareCoins()

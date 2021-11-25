@@ -48,16 +48,6 @@ public class PlayerStats : MonoBehaviour
     void Start()
     {
 
-
-
-        instance = this;
-
-        // trying to preserve stats through scene changes - added 24.11.2021
-        
-        DontDestroyOnLoad(this);
-
-        // assigning XP and leveling up from XP
-
         xpLevelUp = new int[maxLevel];
         xpLevelUp[1] = baseLevelXP;
 

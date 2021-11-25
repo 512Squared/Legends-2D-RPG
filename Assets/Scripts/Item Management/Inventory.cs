@@ -26,11 +26,7 @@ public class Inventory : MonoBehaviour
         instance = this;
         itemsList = new List<ItemsManager>();
         coinsManager = FindObjectOfType<CoinsManager>();
-
         characterArray = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
-
-
-        //DontDestroyOnLoad(this);
     }
 
 

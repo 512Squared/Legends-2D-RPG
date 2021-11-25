@@ -30,9 +30,7 @@ public class ItemsManager : MonoBehaviour
 
     private void Start()
     {
-
-            instance = this;
-        
+        instance = this;
     }
 
 

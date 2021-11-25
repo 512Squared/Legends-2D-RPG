@@ -34,8 +34,8 @@ public class MenuManager : MonoBehaviour
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject panelTesting;
 
-    public static MenuManager instance;
-
+    public static MenuManager instance;   
+    
     private int panelStuff;
 
     //adding serializeField gives possibility to add Simple Joystick object in inspector and thereby share its functions. Not possible if in prefab unless both are in a prefab
@@ -152,9 +152,10 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        instance = this;
 
-        mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+       instance = this;
+
+       mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
 
     }
 

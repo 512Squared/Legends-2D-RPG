@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 4489525805091259517}
   - component: {fileID: 4489525805091259518}
   - component: {fileID: 4489525805091259519}
-  - component: {fileID: 2066105723804582873}
   m_Layer: 5
   m_Name: Camera
   m_TagString: Untagged
@@ -151,19 +150,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2066105723804582873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4489525805091259505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fa520f4166ad4943a544ad8744873e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiElement: {fileID: 0}
 --- !u!1 &4489525805260180499
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +300,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.6, y: 1}
+    m_SensorSize: {x: 1.6666666, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

@@ -29,18 +29,7 @@ public class PlayerGlobalData : MonoBehaviour
 
     void Start()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-
-        else 
-        {
             instance = this;
-        }
-
-        DontDestroyOnLoad(gameObject);
-
     }
 
 

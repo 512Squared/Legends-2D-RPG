@@ -5,19 +5,14 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-    public static ButtonHandler instance;
 
-  
-        public void Start()
-    {
-        instance = this;
-    }
-
+    
+    public bool interfaceOn;
+    
     public void IsinterfaceOn()
     {
-
         GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
-
+        interfaceOn = !interfaceOn;
 
     }
 
