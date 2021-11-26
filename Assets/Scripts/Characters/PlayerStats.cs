@@ -40,6 +40,13 @@ public class PlayerStats : MonoBehaviour
     public int npcIntelligence;
     public int npcPerception;
 
+    public string equippedWeaponName;
+    public string equippedArmourName;
+
+    public int weaponPower;
+    public int armourDefence;
+
+    public ItemsManager equippedWeapon, equippedArmour;
 
 
 

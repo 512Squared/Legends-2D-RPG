@@ -18,7 +18,10 @@ public class ItemButton : MonoBehaviour
         MenuManager.instance.itemImage.sprite = itemOnButton.itemsImage;
         MenuManager.instance.itemValue.text = itemOnButton.valueInCoins.ToString();
         MenuManager.instance.effectText.text = itemOnButton.amountOfEffect.ToString();
-        
+
+        MenuManager.instance.itemWeaponPower.text = "+" + itemOnButton.weaponPower.ToString();
+        MenuManager.instance.itemArmourDefence.text = "+" + itemOnButton.armourDefence.ToString();
+
         MenuManager.instance.activeItem = itemOnButton;
         GameManager.instance.activeItem = itemOnButton;
         

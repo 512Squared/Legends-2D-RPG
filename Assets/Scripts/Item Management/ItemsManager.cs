@@ -20,7 +20,7 @@ public class ItemsManager : MonoBehaviour
     public AffectType affectType;
     public int amountOfEffect;
 
-    public int WeaponDexterity;
+    public int weaponPower;
     public int armourDefence;
 
 

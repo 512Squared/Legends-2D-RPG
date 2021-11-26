@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
@@ -31,6 +32,10 @@ public class Exit : MonoBehaviour
 
                 //MenuManager.instance.FadeImage();
 
+                //StartCoroutine(GameObject.FindObjectOfType<SceneFader>().FadeAndLoadScene(SceneFader.FadeDirection.Out, sceneToLoad));
+
+                //StartCoroutine(UnloadScene());
+                
                 StartCoroutine(LoadSceneCoroutine());
 
                 Debug.Log("Scene load called: " + sceneToLoad);
@@ -48,7 +53,7 @@ public class Exit : MonoBehaviour
         {
             PlayerGlobalData.instance.arrivedAt = goingTo;
 
-            //MenuManager.instance.FadeImage();
+            MenuManager.instance.FadeImage();
 
             StartCoroutine(LoadSceneCoroutine());
 
@@ -70,6 +75,18 @@ public class Exit : MonoBehaviour
         }
 
 
+    }
+
+    IEnumerator UnloadScene()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if (!unloaded)
+        {
+            unloaded = true;
+            AnyManager.anyManager.UnloadScene(arrivingFrom);
+            Debug.Log("Scene unload called: " + arrivingFrom);
+        }
     }
 
 

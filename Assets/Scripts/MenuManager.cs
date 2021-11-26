@@ -107,6 +107,24 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar; // doesn't look like I used these. Done in CoinsManager.
 
 
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public TextMeshProUGUI[] equippedWeaponName, equippedArmourName;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public Image[] weaponImage, armourImage;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public Image[] characterMugWeaponry;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public TextMeshProUGUI[] weaponPower, armourDefence;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.147f, 0.154f, 0.496f)]
+    public TextMeshProUGUI itemWeaponPower, itemArmourDefence;
+
+
+
 
     [ShowInInspector]
     [Title("INVENTORY")]
@@ -138,7 +156,7 @@ public class MenuManager : MonoBehaviour
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] TextMeshProUGUI textUseEquipTake;
     [GUIColor(1f, 1f, 0.215f)]
-    public RectTransform mainEquipInfoPanel, characterChoicePanel;
+    public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
 
 
     [Header("Player Choice")]
@@ -228,6 +246,13 @@ public class MenuManager : MonoBehaviour
                 thulGold[i].text = playerStats[0].thulGold.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
+
+                equippedWeaponName[i].text = playerStats[i].equippedWeaponName;
+                equippedArmourName[i].text = playerStats[i].equippedArmourName;
+
+                weaponPower[i].text = "+" + playerStats[i].weaponPower.ToString();
+                armourDefence[i].text = "+" + playerStats[i].armourDefence.ToString();
+                characterMugWeaponry[i].sprite = playerStats[i].characterMug;
 
 
             }
@@ -597,7 +622,18 @@ public class MenuManager : MonoBehaviour
     public void OnUseButton()
     {
         mainEquipInfoPanel.DOAnchorPos(new Vector2(-750, 0), 1f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 0), 1f);
+        
+        if (activeItem.itemType == ItemsManager.ItemType.Potion)
+        {
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 0), 1f);
+        }
+
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
+        {
+            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 0), 1f);
+        }
+
+
     }
 
     public void OnPlayerButton()
@@ -645,6 +681,14 @@ public class MenuManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(2f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
             characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+
+        }
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
+        {
+
+            yield return new WaitForSecondsRealtime(0.5f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
+            characterWeaponryPanel.DOAnchorPos(new Vector2(0, -1200), 1f);
 
         }
 
