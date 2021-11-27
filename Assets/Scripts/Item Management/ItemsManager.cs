@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager instance;
-    public enum ItemType { Item, Potion, Weapon, Armour, Skill}
+    public enum ItemType { Item, Potion, Weapon, Armour, Skill }
     public ItemType itemType;
 
     public string itemName, itemDescription;
@@ -16,12 +16,12 @@ public class ItemsManager : MonoBehaviour
     public bool itemSold = false;
 
 
-    public enum AffectType { HP, Mana, Defence, Dexterity, Perception}
+    public enum AffectType { HP, Mana, Defence, Attack, Perception }
     public AffectType affectType;
     public int amountOfEffect;
 
-    public int weaponPower;
-    public int armourDefence;
+    public int itemWeaponPower;
+    public int itemArmourDefence;
 
 
     public bool isStackable;
@@ -39,8 +39,8 @@ public class ItemsManager : MonoBehaviour
 
         PlayerStats selectedCharacter = GameManager.instance.GetPlayerStats()[characterToUseOn];
 
-       
-        
+
+
         Debug.Log("UseItem called from ItemsManager");
         if (itemType == ItemType.Potion)
         {
@@ -57,31 +57,50 @@ public class ItemsManager : MonoBehaviour
             }
         }
 
-        if (itemType == ItemType.Armour)
+        else if (itemType == ItemType.Armour)
         {
-            selectedCharacter.AddDefence(amountOfEffect);             
-                Debug.Log("Defence given to " + selectedCharacter.playerName);
+            if (selectedCharacter.equippedArmourName != "")
+            {
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.equippedArmour.itemName + " has been added back into the Inventory");
+                Inventory.instance.AddItems(selectedCharacter.equippedArmour);
+
+                MenuManager.instance.UpdateItemsInventory();
+            }
+            selectedCharacter.AddArmourDefence(itemArmourDefence);
+            selectedCharacter.EquipArmour(this);
+            MenuManager.instance.UpdateStats();
+            
+            Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
-        if (itemType == ItemType.Weapon)
+        else if (itemType == ItemType.Weapon)
         {
-            Debug.Log("Weapon given to " + selectedCharacter.playerName);
+            if (selectedCharacter.equippedWeaponName != "")
+            {
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.equippedWeapon.itemName + " has been added back into the Inventory");
+                Inventory.instance.AddItems(selectedCharacter.equippedWeapon);
+                
+                MenuManager.instance.UpdateItemsInventory();
+            }
+
+            selectedCharacter.AddWeaponPower(itemWeaponPower);
+            selectedCharacter.EquipWeapon(this);
+            MenuManager.instance.UpdateStats();
+
+            Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
-
-        // Maybe here for giving weapon and armour to characters?
-
 
     }
-    
-    
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
             print("You picked up a " + itemName);
             SelfDestroy();
             Inventory.instance.AddItems(this);
-           
+
         }
     }
 

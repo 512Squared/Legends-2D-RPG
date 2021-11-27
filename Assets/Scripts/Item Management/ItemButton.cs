@@ -19,8 +19,22 @@ public class ItemButton : MonoBehaviour
         MenuManager.instance.itemValue.text = itemOnButton.valueInCoins.ToString();
         MenuManager.instance.effectText.text = itemOnButton.amountOfEffect.ToString();
 
-        MenuManager.instance.itemWeaponPower.text = "+" + itemOnButton.weaponPower.ToString();
-        MenuManager.instance.itemArmourDefence.text = "+" + itemOnButton.armourDefence.ToString();
+        //Set up item stats in side panel. Reset values call values based on item type
+        
+        if (itemOnButton.itemType == ItemsManager.ItemType.Weapon )
+        {
+            MenuManager.instance.itemWeaponPower.text = "+" + itemOnButton.itemWeaponPower.ToString();
+            MenuManager.instance.itemDamageBox.SetActive(true);
+            MenuManager.instance.itemArmourBox.SetActive(false);
+        }
+        else if (itemOnButton.itemType == ItemsManager.ItemType.Armour)
+        {
+            MenuManager.instance.itemArmourDefence.text = "+" + itemOnButton.itemArmourDefence.ToString();
+            MenuManager.instance.itemArmourBox.SetActive(true);
+            MenuManager.instance.itemDamageBox.SetActive(false);
+        }
+
+
 
         MenuManager.instance.activeItem = itemOnButton;
         GameManager.instance.activeItem = itemOnButton;

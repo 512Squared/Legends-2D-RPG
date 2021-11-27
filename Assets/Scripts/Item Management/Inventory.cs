@@ -204,11 +204,8 @@ public class Inventory : MonoBehaviour
                                 MenuManager.instance.UpdateStats();
                                 Debug.Log("HP animation called (notThulgran)");
                             }
-
                         }
                     }
-
-                    // Add code HERE for weapons, items and armour OR UseItem in ItemsManager???
                 }
             }
 
@@ -275,7 +272,11 @@ public class Inventory : MonoBehaviour
                 }
             }
 
-            // Add code HERE for weapons, items and armour
+
+
+            // Add code HERE for weapons, items and armour OR UseItem in ItemsManager???
+
+
         }
     }
 

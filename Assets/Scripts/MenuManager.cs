@@ -47,7 +47,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] GameObject[] characterCards, characterParty, characterEquip;
+    [SerializeField] GameObject[] characterCards, characterParty, characterEquip, characterWeaponry;
 
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
@@ -87,7 +87,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Transform itemBoxParent;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] GameObject itemBox;
+    public GameObject itemBox, itemDamageBox, itemArmourBox;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public TextMeshProUGUI effectText;
@@ -112,16 +112,19 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI[] equippedWeaponName, equippedArmourName;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.447f, 0.454f, 0.496f)]
-    public Image[] weaponImage, armourImage;
+    public Image[] equippedWeaponImage, equippedArmourImage;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.447f, 0.454f, 0.496f)]
     public Image[] characterMugWeaponry;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.447f, 0.454f, 0.496f)]
-    public TextMeshProUGUI[] weaponPower, armourDefence;
+    public TextMeshProUGUI[] inventoryWeaponPower, inventoryArmourDefence;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.147f, 0.154f, 0.496f)]
     public TextMeshProUGUI itemWeaponPower, itemArmourDefence;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.147f, 0.154f, 0.496f)]
+    public Sprite basicAxe, basicArmour;
 
 
 
@@ -212,15 +215,25 @@ public class MenuManager : MonoBehaviour
 
         playerStats = GameManager.instance.GetPlayerStats();
 
+
+
         for (int i = 0; i < playerStats.Length; i++)
         {
 
+
             isTeamMember[i] = playerStats[i].isTeamMember;
+
+
+            // set to false first, to account for changes in character party updating
+
             if (isTeamMember[i] == true)
             {
                 //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
                 characterCards[i].SetActive(true);
                 characterParty[i].SetActive(true);
+                //characterWeaponry[i].SetActive(true);
+               
+                
                 characterName[i].text = playerStats[i].playerName;
                 description[i].text = playerStats[i].playerDesc;
                 health[i].text = playerStats[i].npcHP.ToString();
@@ -246,14 +259,6 @@ public class MenuManager : MonoBehaviour
                 thulGold[i].text = playerStats[0].thulGold.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
-
-                equippedWeaponName[i].text = playerStats[i].equippedWeaponName;
-                equippedArmourName[i].text = playerStats[i].equippedArmourName;
-
-                weaponPower[i].text = "+" + playerStats[i].weaponPower.ToString();
-                armourDefence[i].text = "+" + playerStats[i].armourDefence.ToString();
-                characterMugWeaponry[i].sprite = playerStats[i].characterMug;
-
 
             }
         }
@@ -429,7 +434,7 @@ public class MenuManager : MonoBehaviour
         }
 
         GameManager.instance.currentNewItems = currentNewItems;
-        //Debug.Log("No. of new Items: " + currentNewItems);
+        Debug.Log("No. of new Items: " + currentNewItems);
 
     }
 
@@ -515,6 +520,46 @@ public class MenuManager : MonoBehaviour
                 defenceEquipSlider[i].value = playerStats[i].npcDefence;
                 characterMugEquip[i].sprite = playerStats[i].characterMug;
 
+                //weaponry
+
+                
+                
+                characterWeaponry[i].SetActive(true);
+                
+                if (playerStats[i].equippedWeaponName == "")
+                {
+                    equippedWeaponName[i].text = "Basic Axe";
+                    equippedWeaponImage[i].sprite = basicAxe;
+                    inventoryWeaponPower[i].text = "+5";
+                }
+
+
+
+
+                characterMugWeaponry[i].sprite = playerStats[i].characterMug;
+                
+                equippedWeaponName[i].text = playerStats[i].equippedWeaponName;
+                equippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
+                inventoryWeaponPower[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
+                
+                equippedArmourName[i].text = playerStats[i].equippedArmourName;
+                equippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
+                inventoryArmourDefence[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
+
+                if (playerStats[i].equippedWeaponName == "")
+                {
+                    equippedWeaponName[i].text = "Basic Axe";
+                    equippedWeaponImage[i].sprite = basicAxe;
+                    inventoryWeaponPower[i].text = "+5";
+                }
+
+                if (playerStats[i].equippedArmourName == "")
+                {
+                    equippedArmourName[i].text = "Basic Armour";
+                    equippedArmourImage[i].sprite = basicArmour;
+                    inventoryArmourDefence[i].text = "+5";
+                }
+
             }
         }
     }
@@ -549,7 +594,7 @@ public class MenuManager : MonoBehaviour
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
 
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
-        //GameManager.instance.chosenCharacter = playerStats[selectedCharacter].playerName; // just inspector stuff
+        
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
         GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
@@ -636,7 +681,7 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void OnPlayerButton()
+    public void OnPlayerButton() // CALLS PANEL TWEEN
     {
 
         StartCoroutine(DelayPanelReturn());

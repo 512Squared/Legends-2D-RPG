@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -40,13 +41,16 @@ public class PlayerStats : MonoBehaviour
     public int npcIntelligence;
     public int npcPerception;
 
-    public string equippedWeaponName;
-    public string equippedArmourName;
+    public string equippedWeaponName = null;
+    public int characterWeaponPower = 0;
+    public Sprite equippedWeaponImage = null;
+    
+    public string equippedArmourName = null;
+    public int characterArmourDefence = 0;
+    public Sprite equippedArmourImage = null;
 
-    public int weaponPower;
-    public int armourDefence;
 
-    public ItemsManager equippedWeapon, equippedArmour;
+    public ItemsManager equippedWeapon, equippedArmour = null;
 
 
 
@@ -136,11 +140,32 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    public void AddDefence(int amountofDefenceToAdd)
+    public void AddArmourDefence(int amountOfDefenceToAdd)
     {
-
+        npcDefence += amountOfDefenceToAdd;
+    }
+    
+    public void AddWeaponPower(int amountOfDefenceToAdd)
+    {
+        npcDefence += amountOfDefenceToAdd;
     }
 
+    public void EquipWeapon(ItemsManager weaponToEquip)
+    {
+        equippedWeapon = weaponToEquip;
+        equippedWeaponName = equippedWeapon.itemName;
+        characterWeaponPower = equippedWeapon.itemWeaponPower;
+        equippedWeaponImage = equippedWeapon.itemsImage;
+
+    }
+    
+    public void EquipArmour(ItemsManager armourToEquip)
+    {
+        equippedArmour = armourToEquip;
+        equippedArmourName = equippedArmour.itemName;
+        characterArmourDefence = equippedArmour.itemArmourDefence;
+        equippedArmourImage = equippedArmour.itemsImage;
+    }
 
 }
 
