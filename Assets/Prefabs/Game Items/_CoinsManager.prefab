@@ -60,8 +60,8 @@ MonoBehaviour:
   coinUIText: {fileID: 0}
   hpUIText: {fileID: 0}
   manaUIText: {fileID: 0}
-  selectedCharacter: {fileID: 0}
-  maxCoins: 200
+  chosenCharacters: []
+  maxCoins: 1000
   maxHP: 300
   maxMana: 300
   mainCharacter: {fileID: 0}
@@ -69,3 +69,4 @@ MonoBehaviour:
   maxAnimDuration: 1.8
   easeType: 26
   spread: 1
+  chosenCharacter: 0

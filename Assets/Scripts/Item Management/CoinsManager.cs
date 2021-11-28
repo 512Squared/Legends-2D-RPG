@@ -80,9 +80,7 @@ public class CoinsManager : MonoBehaviour
     [SerializeField] int maxMana;
     [TabGroup("Miscellaneous")]
     [GUIColor(0.670f, 1, 0.560f)]
-    public PlayerStats mainCharacter;
-    [TabGroup("Miscellaneous")]
-    [GUIColor(0.670f, 1, 0.560f)]
+
 
 
     Queue<GameObject> coinsQueue = new Queue<GameObject>();

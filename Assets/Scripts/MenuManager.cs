@@ -503,18 +503,21 @@ public class MenuManager : MonoBehaviour
 
         playerStats = GameManager.instance.GetPlayerStats();
 
+        
+        // populates a character array and assigns stats, weapons, and armour
+        
         for (int i = 0; i < playerStats.Length; i++)
         {
 
             isTeamMember[i] = playerStats[i].isTeamMember;
             if (isTeamMember[i] == true)
             {
-                //text
+                //stat text values
                 characterEquip[i].SetActive(true);
                 hpEquipToString[i].text = playerStats[i].npcHP.ToString();
                 manaEquipToString[i].text = playerStats[i].npcMana.ToString();
                 defenceEquipToString[i].text = playerStats[i].npcDefence.ToString();
-                //sliders
+                //stat sliders
                 hpEquipSlider[i].value = playerStats[i].npcHP;
                 manaEquipSlider[i].value = playerStats[i].npcMana;
                 defenceEquipSlider[i].value = playerStats[i].npcDefence;
@@ -522,20 +525,7 @@ public class MenuManager : MonoBehaviour
 
                 //weaponry
 
-                
-                
                 characterWeaponry[i].SetActive(true);
-                
-                if (playerStats[i].equippedWeaponName == "")
-                {
-                    equippedWeaponName[i].text = "Basic Axe";
-                    equippedWeaponImage[i].sprite = basicAxe;
-                    inventoryWeaponPower[i].text = "+5";
-                }
-
-
-
-
                 characterMugWeaponry[i].sprite = playerStats[i].characterMug;
                 
                 equippedWeaponName[i].text = playerStats[i].equippedWeaponName;
@@ -546,6 +536,8 @@ public class MenuManager : MonoBehaviour
                 equippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
                 inventoryArmourDefence[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
 
+                // this assigns a basic weapon and armour if none are set so that UI doesn't return blanks
+                
                 if (playerStats[i].equippedWeaponName == "")
                 {
                     equippedWeaponName[i].text = "Basic Axe";
@@ -587,16 +579,21 @@ public class MenuManager : MonoBehaviour
 
     public void CallToUseItem(int selectedCharacter)
     {
+        // debug info
+        
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
 
         // pass player image position for CoinsManager animations
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
 
+        // give a new color to button. Can add to this later with color coding for selecting equip, use, give 
         GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
         
+        // panelStuff is used in the tween animations on OnPlayerButton() (i.e. give stuff to character)
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
+        
         GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
         textUseEquipTake.text = "Select";
     }
@@ -731,7 +728,24 @@ public class MenuManager : MonoBehaviour
         else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
         {
 
-            yield return new WaitForSecondsRealtime(0.5f);
+            if (activeItem.itemType == ItemsManager.ItemType.Armour)
+            {
+                equipCharStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.4f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+            if (activeItem.itemType == ItemsManager.ItemType.Weapon)
+            {
+                equipCharStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1f, 0.4f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+            
+            yield return new WaitForSecondsRealtime(1f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
             characterWeaponryPanel.DOAnchorPos(new Vector2(0, -1200), 1f);
 
