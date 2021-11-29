@@ -497,9 +497,9 @@ public class MenuManager : MonoBehaviour
 
         // grey out the button
 
-        GameObject.FindGameObjectWithTag("button_use").GetComponent<Image>().sprite = buttonGrey;
-        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
-        GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.270f, 0.270f, 0.270f, 1);
+        //GameObject.FindGameObjectWithTag("button_use").GetComponent<Image>().sprite = buttonGrey;
+        //GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
+        //GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.270f, 0.270f, 0.270f, 1);
 
         playerStats = GameManager.instance.GetPlayerStats();
 
@@ -588,13 +588,13 @@ public class MenuManager : MonoBehaviour
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
 
         // give a new color to button. Can add to this later with color coding for selecting equip, use, give 
-        GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
+        //GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
         
         // panelStuff is used in the tween animations on OnPlayerButton() (i.e. give stuff to character)
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
         
-        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
+        //GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
         textUseEquipTake.text = "Select";
     }
 
@@ -686,6 +686,8 @@ public class MenuManager : MonoBehaviour
     }
 
 
+
+
     IEnumerator DelayPanelReturn()
     {
         
@@ -747,7 +749,7 @@ public class MenuManager : MonoBehaviour
             
             yield return new WaitForSecondsRealtime(1f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-            characterWeaponryPanel.DOAnchorPos(new Vector2(0, -1200), 1f);
+            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 1f);
 
         }
 
@@ -756,6 +758,21 @@ public class MenuManager : MonoBehaviour
         characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
 
     }
+
+    public void onCancelButton()
+    {
+        StartCoroutine(PanelCancel());
+    }
+
+    IEnumerator PanelCancel()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
+        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+    }
+
+
 
     public void FadeOutText(float duration)
     {
