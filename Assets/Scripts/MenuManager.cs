@@ -34,8 +34,8 @@ public class MenuManager : MonoBehaviour
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject panelTesting;
 
-    public static MenuManager instance;   
-    
+    public static MenuManager instance;
+
     private int panelStuff;
 
     //adding serializeField gives possibility to add Simple Joystick object in inspector and thereby share its functions. Not possible if in prefab unless both are in a prefab
@@ -151,6 +151,9 @@ public class MenuManager : MonoBehaviour
     [BoxGroup("UI Bools")]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool controlSwitch;
+    [BoxGroup("UI Bools")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool weaponBool, armourBool, itemBool, potionBool, skillBool;
 
 
     [Header("UI Tweening")]
@@ -174,9 +177,9 @@ public class MenuManager : MonoBehaviour
     private void Start()
     {
 
-       instance = this;
+        instance = this;
 
-       mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+        mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
 
     }
 
@@ -232,8 +235,8 @@ public class MenuManager : MonoBehaviour
                 characterCards[i].SetActive(true);
                 characterParty[i].SetActive(true);
                 //characterWeaponry[i].SetActive(true);
-               
-                
+
+
                 characterName[i].text = playerStats[i].playerName;
                 description[i].text = playerStats[i].playerDesc;
                 health[i].text = playerStats[i].npcHP.ToString();
@@ -276,10 +279,12 @@ public class MenuManager : MonoBehaviour
 
         currentNewItems = 0;
 
+
         foreach (Transform itemSlot in itemBoxParent)
         {
             Destroy(itemSlot.gameObject);
         }
+
 
         foreach (ItemsManager item in Inventory.instance.GetItemsList())
         {
@@ -301,7 +306,7 @@ public class MenuManager : MonoBehaviour
                 itemsAmountText.text = "";
             }
 
-            itemSlot.GetComponent<ItemButton>().itemOnButton = item;
+            itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
 
 
             // new items - needs to run here to count how many new items
@@ -337,7 +342,7 @@ public class MenuManager : MonoBehaviour
                     }
                 }
 
-                // ITEM SORTING
+                // ITEM SORTING FOR SELECTED ITEM
 
                 else if (item.itemSelected == true) // if item has been selected
                 {
@@ -418,24 +423,138 @@ public class MenuManager : MonoBehaviour
                     }
                 }
             }
+
+            // sorting strategy - simply destroy everything else but the chosen type
+
+            if (weaponBool == true)
+
+            {
+                if (item.itemType == ItemsManager.ItemType.Potion)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+
+                if (item.itemType == ItemsManager.ItemType.Armour)
+
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Item)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Skill)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+            }
+            else if (armourBool == true)
+
+            {
+                if (item.itemType == ItemsManager.ItemType.Potion)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+
+                if (item.itemType == ItemsManager.ItemType.Weapon)
+
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Item)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Skill)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+            }
+            else if (itemBool == true)
+
+            {
+                if (item.itemType == ItemsManager.ItemType.Potion)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+
+                if (item.itemType == ItemsManager.ItemType.Weapon)
+
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Armour)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Skill)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+            }
+            else if (skillBool == true)
+
+            {
+                if (item.itemType == ItemsManager.ItemType.Potion)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+
+                if (item.itemType == ItemsManager.ItemType.Weapon)
+
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Armour)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Item)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+            }
+            else if (potionBool == true)
+
+            {
+                if (item.itemType == ItemsManager.ItemType.Item)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+
+                if (item.itemType == ItemsManager.ItemType.Weapon)
+
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Armour)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+                if (item.itemType == ItemsManager.ItemType.Skill)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+            }
+
+            // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
+
+            if (currentNewItems == 0)
+            {
+                GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+            }
+
+            else if (currentNewItems > 0)
+            {
+                GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                newItemsText.text = currentNewItems.ToString();
+            }
+
+            GameManager.instance.currentNewItems = currentNewItems;
+            //Debug.Log("No. of new Items: " + currentNewItems);
+
+
         }
-
-        // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
-
-        if (currentNewItems == 0)
-        {
-            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-        }
-
-        else if (currentNewItems > 0)
-        {
-            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-            newItemsText.text = currentNewItems.ToString();
-        }
-
-        GameManager.instance.currentNewItems = currentNewItems;
-        Debug.Log("No. of new Items: " + currentNewItems);
-
     }
 
     public void StatsMenu()
@@ -461,7 +580,7 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void InventoryStats()
+    public void InventoryStats() // this is rather the skills panel
     {
 
         // select is the choice of character in the dropdown menu, i.e. the character array slot. 
@@ -503,9 +622,9 @@ public class MenuManager : MonoBehaviour
 
         playerStats = GameManager.instance.GetPlayerStats();
 
-        
+
         // populates a character array and assigns stats, weapons, and armour
-        
+
         for (int i = 0; i < playerStats.Length; i++)
         {
 
@@ -527,17 +646,17 @@ public class MenuManager : MonoBehaviour
 
                 characterWeaponry[i].SetActive(true);
                 characterMugWeaponry[i].sprite = playerStats[i].characterMug;
-                
+
                 equippedWeaponName[i].text = playerStats[i].equippedWeaponName;
                 equippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
                 inventoryWeaponPower[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
-                
+
                 equippedArmourName[i].text = playerStats[i].equippedArmourName;
                 equippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
                 inventoryArmourDefence[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
 
                 // this assigns a basic weapon and armour if none are set so that UI doesn't return blanks
-                
+
                 if (playerStats[i].equippedWeaponName == "")
                 {
                     equippedWeaponName[i].text = "Basic Axe";
@@ -580,7 +699,7 @@ public class MenuManager : MonoBehaviour
     public void CallToUseItem(int selectedCharacter)
     {
         // debug info
-        
+
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         activeItem.UseItem(selectedCharacter);
 
@@ -589,11 +708,11 @@ public class MenuManager : MonoBehaviour
 
         // give a new color to button. Can add to this later with color coding for selecting equip, use, give 
         //GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
-        
+
         // panelStuff is used in the tween animations on OnPlayerButton() (i.e. give stuff to character)
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
-        
+
         //GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
         textUseEquipTake.text = "Select";
     }
@@ -664,7 +783,7 @@ public class MenuManager : MonoBehaviour
     public void OnUseButton()
     {
         mainEquipInfoPanel.DOAnchorPos(new Vector2(-750, 0), 1f);
-        
+
         if (activeItem.itemType == ItemsManager.ItemType.Potion)
         {
             characterChoicePanel.DOAnchorPos(new Vector2(0, 0), 1f);
@@ -682,15 +801,12 @@ public class MenuManager : MonoBehaviour
     {
 
         StartCoroutine(DelayPanelReturn());
-        
+
     }
-
-
-
 
     IEnumerator DelayPanelReturn()
     {
-        
+
         Debug.Log("InventoryLeft panel animations engaged");
 
         if (activeItem.itemName == "Healing Potion")
@@ -746,7 +862,7 @@ public class MenuManager : MonoBehaviour
                     .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1f, 0.4f));
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
-            
+
             yield return new WaitForSecondsRealtime(1f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
             characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 1f);
@@ -771,8 +887,6 @@ public class MenuManager : MonoBehaviour
         characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 1f);
         characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
     }
-
-
 
     public void FadeOutText(float duration)
     {
@@ -815,6 +929,19 @@ public class MenuManager : MonoBehaviour
                 playerChoice[i].transform.parent.gameObject.SetActive(activePlayerAvailable);
             }
         }
+    }
+
+    public void SortByItemType(string boolName)
+    {
+        weaponBool = armourBool = itemBool = potionBool = skillBool = false;
+
+        if (boolName == "weapon") weaponBool = true;
+        else if (boolName == "armour") armourBool = true;
+        else if (boolName == "item") itemBool = true;
+        else if (boolName == "potion") potionBool = true;
+        else if (boolName == "skill") skillBool = true;
+        UpdateItemsInventory();
+        Debug.Log("Sort by item initiated: " + boolName);
     }
 
 
