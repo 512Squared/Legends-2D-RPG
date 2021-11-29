@@ -940,6 +940,17 @@ public class MenuManager : MonoBehaviour
         else if (boolName == "item") itemBool = true;
         else if (boolName == "potion") potionBool = true;
         else if (boolName == "skill") skillBool = true;
+        if (boolName != "all")
+        {
+            TextMeshProUGUI allText = GameObject.FindGameObjectWithTag("allTab").GetComponent<TextMeshProUGUI>();
+            allText.color = new Color32(82, 77, 80, 255);
+        }
+
+        if (boolName == "all")
+        {
+            TextMeshProUGUI allText = GameObject.FindGameObjectWithTag("allTab").GetComponent<TextMeshProUGUI>();
+            allText.color = new Color32(236, 216, 150, 255);
+        }
         UpdateItemsInventory();
         Debug.Log("Sort by item initiated: " + boolName);
     }
