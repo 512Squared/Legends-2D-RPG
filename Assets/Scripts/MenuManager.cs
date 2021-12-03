@@ -43,6 +43,7 @@ public class MenuManager : MonoBehaviour
 
     private int panelStuff;
     private string whichPanelIsOn = "";
+    private UIFader uiFader;
 
     //adding serializeField gives possibility to add Simple Joystick object in inspector and thereby share its functions. Not possible if in prefab unless both are in a prefab
 
@@ -920,7 +921,7 @@ public class MenuManager : MonoBehaviour
 
     public void TeamUISettings(string teamPanelTrigger)
     {
- 
+
 
         if (teamPanelTrigger == "overview")
         {
@@ -933,16 +934,14 @@ public class MenuManager : MonoBehaviour
             WhichPanelIsOn();
 
             focusTitle.text = "Overview";
-            
-            teamTabMenu.SetActive(true);
-            
+
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = true;
             overviewText.color = new Color(0.964f, 0.882f, 0.611f, 1);
             overviewSprite.sprite = overviewSpriteOn;
-            
+
             focusOverview.SetActive(true);
 
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha = 0;
@@ -951,7 +950,7 @@ public class MenuManager : MonoBehaviour
             statsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
             statsSprite.sprite = statsSpriteOff;
 
-            
+
             focusStats.SetActive(false);
 
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha = 0;
@@ -975,7 +974,7 @@ public class MenuManager : MonoBehaviour
             Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
             WhichPanelIsOn();
             teamTabMenu.SetActive(true);
-            
+
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = false;
@@ -1012,7 +1011,7 @@ public class MenuManager : MonoBehaviour
             WhichPanelIsOn();
 
             teamTabMenu.SetActive(true);
-            
+
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = false;
@@ -1033,7 +1032,7 @@ public class MenuManager : MonoBehaviour
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = true;
             weaponrySprite.sprite = weaponrySpriteOn;
             weaponryText.color = new Color(0.964f, 0.882f, 0.611f, 1);
-            
+
             focusWeaponry.SetActive(true);
         }
         else if (teamPanelTrigger == "exit")
@@ -1043,67 +1042,77 @@ public class MenuManager : MonoBehaviour
             isWeaponryOn = false;
 
             Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
-            WhichPanelIsOn();
 
+
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusOverview.GetComponentInParent<Image>().sprite = overviewSpriteOff;
-            
+
+
             focusOverview.SetActive(false);
 
+
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusStats.GetComponentInParent<Image>().sprite = statsSpriteOff;
-            
+
+
             focusStats.SetActive(false);
 
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusWeaponry.GetComponentInParent<Image>().sprite = weaponrySpriteOff;
-            
+
+
             focusWeaponry.SetActive(false);
-            
-            GameObject.FindGameObjectWithTag("fade_back_party").GetComponent<CanvasGroup>().alpha = 0;
 
-            UIFader.instance.FadeOut();
+            //GameObject.FindGameObjectWithTag("fade_back_party").GetComponent<CanvasGroup>().alpha = 0;
 
-            teamTabMenu.SetActive(false);
+            //teamTabMenu.SetActive(false);
 
-        }
+            WhichPanelIsOn();
 
-        void WhichPanelIsOn()
-        {
-            if (isWeaponryOn == true)
-            {
-                whichPanelIsOn = "Weaponry";
-                UIFader.instance.uiElement = GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>();
-
-            }
-
-            else if (isOverviewOn == true)
-            {
-                whichPanelIsOn = "Overview";
-                UIFader.instance.uiElement = GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>();
-                Debug.Log("Which panel is on: " + whichPanelIsOn);
-            }
-
-            else if (isStatsOn == true)
-            {
-                whichPanelIsOn = "Stats";
-                UIFader.instance.uiElement = GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>();
-                
-            }
-            else if (isStatsOn == false && isWeaponryOn == false && isOverviewOn == false)
-            {
-                whichPanelIsOn = "None";
-            }
+            Debug.Log("Panel status - Overview: " + GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha + " | Stats: " + GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha + " | Weaponry: " + GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha);
 
         }
-
 
     }
 
+    public void WhichPanelIsOn()
+    {
+
+        if (isOverviewOn == true)
+        {
+            whichPanelIsOn = "Overview";
+            //uiFader.uiElement = GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>();
+            Debug.Log("Which panel is on: " + whichPanelIsOn);
+        }
+
+        else if (isStatsOn == true)
+        {
+            whichPanelIsOn = "Stats";
+            //uiFader.uiElement = GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>();
+            Debug.Log("Which panel is on: " + whichPanelIsOn);
+        }
+
+        else if (isWeaponryOn == true)
+        {
+            whichPanelIsOn = "Weaponry";
+            //uiFader.uiElement = GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>();
+            Debug.Log("Which panel is on: " + whichPanelIsOn);
+        }
+        else if (isStatsOn == false && isWeaponryOn == false && isOverviewOn == false)
+        {
+            whichPanelIsOn = "None";
+            Debug.Log("Which panel is on: " + whichPanelIsOn);
+        }
+
+    }
+
+
 }
+
+
 
 
 //public IEnumerator FadeInCall()
