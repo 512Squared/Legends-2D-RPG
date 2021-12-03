@@ -186,9 +186,11 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] Sprite overviewSpriteOn, overviewSpriteOff, statsSpriteOn, statsSpriteOff, weaponrySpriteOn, weaponrySpriteOff;
     [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] Image overviewSprite, statsSprite, weaponrySprite;
+    [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] TextMeshProUGUI focusTitle;
+    [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
 
 
 
@@ -581,12 +583,6 @@ public class MenuManager : MonoBehaviour
     {
 
 
-        // grey out the button
-
-        //GameObject.FindGameObjectWithTag("button_use").GetComponent<Image>().sprite = buttonGrey;
-        //GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
-        //GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.270f, 0.270f, 0.270f, 1);
-
         playerStats = GameManager.instance.GetPlayerStats();
 
 
@@ -944,22 +940,26 @@ public class MenuManager : MonoBehaviour
 
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = true;
-            //focusOverview.GetComponentInParent<Image>().sprite = overviewSpriteOn;
+            overviewText.color = new Color(0.964f, 0.882f, 0.611f, 1);
+            overviewSprite.sprite = overviewSpriteOn;
             
             focusOverview.SetActive(true);
 
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusStats.GetComponentInParent<Image>().sprite = statsSpriteOff;
+            statsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            statsSprite.sprite = statsSpriteOff;
+
             
             focusStats.SetActive(false);
 
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusWeaponry.GetComponentInParent<Image>().sprite = weaponrySpriteOff;
-            
+            weaponrySprite.sprite = weaponrySpriteOff;
+            weaponryText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+
             focusWeaponry.SetActive(false);
 
         }
@@ -979,21 +979,24 @@ public class MenuManager : MonoBehaviour
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusOverview.GetComponentInParent<Image>().sprite = overviewSpriteOff;
-            
+            overviewText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            overviewSprite.sprite = overviewSpriteOff;
+
             focusOverview.SetActive(false);
 
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().interactable = true;
-            //focusStats.GetComponentInParent<Image>().sprite = statsSpriteOn;
-            
+            statsText.color = new Color(0.964f, 0.882f, 0.611f, 1);
+            statsSprite.sprite = statsSpriteOn;
+
             focusStats.SetActive(true);
 
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusWeaponry.GetComponentInParent<Image>().sprite = weaponrySpriteOff;
-            
+            weaponryText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            weaponrySprite.sprite = weaponrySpriteOff;
+
             focusWeaponry.SetActive(false);
         }
         else if (teamPanelTrigger == "weaponry")
@@ -1013,20 +1016,23 @@ public class MenuManager : MonoBehaviour
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusOverview.GetComponentInParent<Image>().sprite = overviewSpriteOff;
-            
+            overviewText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            overviewSprite.sprite = overviewSpriteOff;
+
             focusOverview.SetActive(false);
 
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
             GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().interactable = false;
-            //focusStats.GetComponentInParent<Image>().sprite = statsSpriteOff;
-            
+            statsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            statsSprite.sprite = statsSpriteOff;
+
             focusStats.SetActive(false);
 
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
             GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = true;
-            //focusWeaponry.GetComponentInParent<Image>().sprite = weaponrySpriteOn;
+            weaponrySprite.sprite = weaponrySpriteOn;
+            weaponryText.color = new Color(0.964f, 0.882f, 0.611f, 1);
             
             focusWeaponry.SetActive(true);
         }
