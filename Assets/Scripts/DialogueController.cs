@@ -49,7 +49,6 @@ public class DialogueController : MonoBehaviour
                     {
                         CheckForName();
                         dialogueText.text = dialogueSentences[currentSentence];
-
                     }
                 }
                 else

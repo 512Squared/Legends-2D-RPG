@@ -5,11 +5,13 @@ using UnityEngine;
 public class UIFader : MonoBehaviour
 {
 
+    public static UIFader instance;
+       
     public CanvasGroup uiElement;
 
     void Start()
     {
-        
+        instance = this;        
     }
 
 

@@ -9,8 +9,9 @@ public class DialogueHandler : MonoBehaviour
 
     public string[] sentences;
     private bool canActivateBox;
-    
-    
+
+    public int runCount = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,20 +25,11 @@ public class DialogueHandler : MonoBehaviour
         if (canActivateBox && runCount < 1 && Input.GetButtonDown("Fire1") && !DialogueController.instance.isDialogueBoxActive())
         {
             DialogueController.instance.ActivateDialogue(sentences);
-
-            //var camera = Camera.main;
-            //var brain = (camera == null) ? null : camera.GetComponent<CinemachineBrain>();
-            //var vcam = (brain == null) ? null : brain.ActiveVirtualCamera as CinemachineVirtualCamera;
-            //if (vcam != null)
-            //{
-            //    vcam.m_Lens.OrthographicSize = 8;
-            //}
-                
             runCount++;
         } 
     }
 
-    public int runCount = 0;
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -60,5 +52,5 @@ public class DialogueHandler : MonoBehaviour
         }
     }
 
-
+    
 }

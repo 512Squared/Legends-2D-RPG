@@ -33,10 +33,16 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject panelTesting;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject teamTabMenu;
 
     public static MenuManager instance;
 
+
+
     private int panelStuff;
+    private string whichPanelIsOn = "";
 
     //adding serializeField gives possibility to add Simple Joystick object in inspector and thereby share its functions. Not possible if in prefab unless both are in a prefab
 
@@ -139,21 +145,24 @@ public class MenuManager : MonoBehaviour
     public ItemsManager activeItem; //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
 
 
-    [BoxGroup("UI Bools")]
+    [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     [SerializeField] bool[] isTeamMember;
-    [BoxGroup("UI Bools")]
+    [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isEquipOn = false;
-    [BoxGroup("UI Bools")]
+    [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool keyboardKeyI = false;
-    [BoxGroup("UI Bools")]
+    [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool controlSwitch;
-    [BoxGroup("UI Bools")]
+    [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool weaponBool, armourBool, itemBool, potionBool, skillBool;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isOverviewOn, isStatsOn, isWeaponryOn;
 
 
     [Header("UI Tweening")]
@@ -170,6 +179,18 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI[] playerChoice;
     [GUIColor(1f, 0.2f, 0.515f)]
     [SerializeField] Sprite buttonGrey;
+
+    [Header("Team UI Sprites")]
+    [Space]
+    [FoldoutGroup("UI Sprites", expanded: false)]
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] Sprite overviewSpriteOn, overviewSpriteOff, statsSpriteOn, statsSpriteOff, weaponrySpriteOn, weaponrySpriteOff;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] TextMeshProUGUI focusTitle;
+
+
 
     private Tween fadeText;
 
@@ -424,48 +445,27 @@ public class MenuManager : MonoBehaviour
                 }
             }
 
-            // sorting strategy - simply destroy everything else but the chosen type
+            // sorting strategy - destroy everything else but the chosen type
 
             if (weaponBool == true)
 
             {
-                if (item.itemType == ItemsManager.ItemType.Potion)
+                if ((item.itemType == ItemsManager.ItemType.Potion) ||
+       (item.itemType == ItemsManager.ItemType.Armour) ||
+       (item.itemType == ItemsManager.ItemType.Item) ||
+       (item.itemType == ItemsManager.ItemType.Skill))
                 {
                     Destroy(itemSlot.gameObject);
                 }
 
-                if (item.itemType == ItemsManager.ItemType.Armour)
-
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Item)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Skill)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
             }
             else if (armourBool == true)
 
             {
-                if (item.itemType == ItemsManager.ItemType.Potion)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-
-                if (item.itemType == ItemsManager.ItemType.Weapon)
-
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Item)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Skill)
+                if ((item.itemType == ItemsManager.ItemType.Potion) ||
+       (item.itemType == ItemsManager.ItemType.Weapon) ||
+       (item.itemType == ItemsManager.ItemType.Item) ||
+       (item.itemType == ItemsManager.ItemType.Skill))
                 {
                     Destroy(itemSlot.gameObject);
                 }
@@ -473,21 +473,10 @@ public class MenuManager : MonoBehaviour
             else if (itemBool == true)
 
             {
-                if (item.itemType == ItemsManager.ItemType.Potion)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-
-                if (item.itemType == ItemsManager.ItemType.Weapon)
-
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Armour)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Skill)
+                if ((item.itemType == ItemsManager.ItemType.Potion) ||
+       (item.itemType == ItemsManager.ItemType.Armour) ||
+       (item.itemType == ItemsManager.ItemType.Weapon) ||
+       (item.itemType == ItemsManager.ItemType.Skill))
                 {
                     Destroy(itemSlot.gameObject);
                 }
@@ -495,21 +484,10 @@ public class MenuManager : MonoBehaviour
             else if (skillBool == true)
 
             {
-                if (item.itemType == ItemsManager.ItemType.Potion)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-
-                if (item.itemType == ItemsManager.ItemType.Weapon)
-
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Armour)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Item)
+                if ((item.itemType == ItemsManager.ItemType.Potion) ||
+       (item.itemType == ItemsManager.ItemType.Armour) ||
+       (item.itemType == ItemsManager.ItemType.Item) ||
+       (item.itemType == ItemsManager.ItemType.Weapon))
                 {
                     Destroy(itemSlot.gameObject);
                 }
@@ -517,21 +495,10 @@ public class MenuManager : MonoBehaviour
             else if (potionBool == true)
 
             {
-                if (item.itemType == ItemsManager.ItemType.Item)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-
-                if (item.itemType == ItemsManager.ItemType.Weapon)
-
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Armour)
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-                if (item.itemType == ItemsManager.ItemType.Skill)
+                if ((item.itemType == ItemsManager.ItemType.Weapon) ||
+       (item.itemType == ItemsManager.ItemType.Armour) ||
+       (item.itemType == ItemsManager.ItemType.Item) ||
+       (item.itemType == ItemsManager.ItemType.Skill))
                 {
                     Destroy(itemSlot.gameObject);
                 }
@@ -955,6 +922,180 @@ public class MenuManager : MonoBehaviour
         Debug.Log("Sort by item initiated: " + boolName);
     }
 
+    public void TeamUISettings(string teamPanelTrigger)
+    {
+ 
+
+        if (teamPanelTrigger == "overview")
+        {
+
+            isOverviewOn = true;
+            isStatsOn = false;
+            isWeaponryOn = false;
+
+            Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
+            WhichPanelIsOn();
+
+            focusTitle.text = "Overview";
+            
+            teamTabMenu.SetActive(true);
+            
+            // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
+
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = true;
+            //focusOverview.GetComponentInParent<Image>().sprite = overviewSpriteOn;
+            
+            focusOverview.SetActive(true);
+
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusStats.GetComponentInParent<Image>().sprite = statsSpriteOff;
+            
+            focusStats.SetActive(false);
+
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusWeaponry.GetComponentInParent<Image>().sprite = weaponrySpriteOff;
+            
+            focusWeaponry.SetActive(false);
+
+        }
+        else if (teamPanelTrigger == "stats")
+        {
+            isOverviewOn = false;
+            isStatsOn = true;
+            isWeaponryOn = false;
+
+            focusTitle.text = "Stats & Skills";
+
+
+            Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
+            WhichPanelIsOn();
+            teamTabMenu.SetActive(true);
+            
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusOverview.GetComponentInParent<Image>().sprite = overviewSpriteOff;
+            
+            focusOverview.SetActive(false);
+
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().interactable = true;
+            //focusStats.GetComponentInParent<Image>().sprite = statsSpriteOn;
+            
+            focusStats.SetActive(true);
+
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusWeaponry.GetComponentInParent<Image>().sprite = weaponrySpriteOff;
+            
+            focusWeaponry.SetActive(false);
+        }
+        else if (teamPanelTrigger == "weaponry")
+        {
+
+            isOverviewOn = false;
+            isStatsOn = false;
+            isWeaponryOn = true;
+
+            focusTitle.text = "Weaponry";
+
+            Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
+            WhichPanelIsOn();
+
+            teamTabMenu.SetActive(true);
+            
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusOverview.GetComponentInParent<Image>().sprite = overviewSpriteOff;
+            
+            focusOverview.SetActive(false);
+
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusStats.GetComponentInParent<Image>().sprite = statsSpriteOff;
+            
+            focusStats.SetActive(false);
+
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = true;
+            //focusWeaponry.GetComponentInParent<Image>().sprite = weaponrySpriteOn;
+            
+            focusWeaponry.SetActive(true);
+        }
+        else if (teamPanelTrigger == "exit")
+        {
+            isOverviewOn = false;
+            isStatsOn = false;
+            isWeaponryOn = false;
+
+            Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
+            WhichPanelIsOn();
+
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusOverview.GetComponentInParent<Image>().sprite = overviewSpriteOff;
+            
+            focusOverview.SetActive(false);
+
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusStats.GetComponentInParent<Image>().sprite = statsSpriteOff;
+            
+            focusStats.SetActive(false);
+
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().interactable = false;
+            //focusWeaponry.GetComponentInParent<Image>().sprite = weaponrySpriteOff;
+            
+            focusWeaponry.SetActive(false);
+            
+            GameObject.FindGameObjectWithTag("fade_back_party").GetComponent<CanvasGroup>().alpha = 0;
+
+            UIFader.instance.FadeOut();
+
+            teamTabMenu.SetActive(false);
+
+        }
+
+        void WhichPanelIsOn()
+        {
+            if (isWeaponryOn == true)
+            {
+                whichPanelIsOn = "Weaponry";
+                UIFader.instance.uiElement = GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>();
+
+            }
+
+            else if (isOverviewOn == true)
+            {
+                whichPanelIsOn = "Overview";
+                UIFader.instance.uiElement = GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>();
+                Debug.Log("Which panel is on: " + whichPanelIsOn);
+            }
+
+            else if (isStatsOn == true)
+            {
+                whichPanelIsOn = "Stats";
+                UIFader.instance.uiElement = GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>();
+                
+            }
+            else if (isStatsOn == false && isWeaponryOn == false && isOverviewOn == false)
+            {
+                whichPanelIsOn = "None";
+            }
+
+        }
+
+
+    }
 
 }
 
