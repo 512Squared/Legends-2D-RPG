@@ -939,8 +939,10 @@ public class MenuManager : MonoBehaviour
 
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().interactable = true;
+            GameObject.FindGameObjectWithTag("overviewTab").GetComponent<Button>().Select();
             overviewText.color = new Color(0.964f, 0.882f, 0.611f, 1);
             overviewSprite.sprite = overviewSpriteOn;
+
 
             focusOverview.SetActive(true);
 
