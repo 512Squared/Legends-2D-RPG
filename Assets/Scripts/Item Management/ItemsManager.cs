@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager instance;
-    public enum ItemType { Item, Potion, Weapon, Armour, Skill }
+    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell }
     public ItemType itemType;
 
     public string itemName, itemDescription;
