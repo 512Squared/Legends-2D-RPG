@@ -930,7 +930,7 @@ public class MenuManager : MonoBehaviour
             isStatsOn = false;
             isWeaponryOn = false;
 
-            Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
+            
             WhichPanelIsOn();
 
             focusTitle.text = "Overview";
@@ -971,7 +971,6 @@ public class MenuManager : MonoBehaviour
             focusTitle.text = "Stats & Skills";
 
 
-            Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
             WhichPanelIsOn();
             teamTabMenu.SetActive(true);
 
@@ -1007,7 +1006,6 @@ public class MenuManager : MonoBehaviour
 
             focusTitle.text = "Weaponry";
 
-            Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
             WhichPanelIsOn();
 
             teamTabMenu.SetActive(true);
@@ -1041,8 +1039,6 @@ public class MenuManager : MonoBehaviour
             isStatsOn = false;
             isWeaponryOn = false;
 
-            Debug.Log("TeamUISettings called with trigger: " + teamPanelTrigger);
-
 
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -1068,7 +1064,8 @@ public class MenuManager : MonoBehaviour
 
             //GameObject.FindGameObjectWithTag("fade_back_party").GetComponent<CanvasGroup>().alpha = 0;
 
-            //teamTabMenu.SetActive(false);
+            teamTabMenu.GetComponent<CanvasGroup>().interactable = false;
+            teamTabMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
             WhichPanelIsOn();
 
@@ -1084,21 +1081,18 @@ public class MenuManager : MonoBehaviour
         if (isOverviewOn == true)
         {
             whichPanelIsOn = "Overview";
-            //uiFader.uiElement = GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>();
             Debug.Log("Which panel is on: " + whichPanelIsOn);
         }
 
         else if (isStatsOn == true)
         {
             whichPanelIsOn = "Stats";
-            //uiFader.uiElement = GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>();
             Debug.Log("Which panel is on: " + whichPanelIsOn);
         }
 
         else if (isWeaponryOn == true)
         {
             whichPanelIsOn = "Weaponry";
-            //uiFader.uiElement = GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>();
             Debug.Log("Which panel is on: " + whichPanelIsOn);
         }
         else if (isStatsOn == false && isWeaponryOn == false && isOverviewOn == false)
