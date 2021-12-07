@@ -183,7 +183,7 @@ public class Inventory : MonoBehaviour
 
                         }
 
-                        else if (item.itemName == "Healing Potion")
+                        else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion")
                         {
                             // animations
 
@@ -248,7 +248,7 @@ public class Inventory : MonoBehaviour
 
                 }
 
-                else if (item.itemName == "Healing Potion")
+                else if (item.itemName == "Green Healing Potion" || item.itemName == "Red Healing Potion")
                 {
                     // animations
 

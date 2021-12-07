@@ -134,6 +134,28 @@ public class MenuManager : MonoBehaviour
     public Sprite basicAxe, basicArmour;
 
 
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI[] teamEquippedWeaponName, teamEquippedArmourName;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Image[] teamEquippedWeaponImage, teamEquippedArmourImage;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Image[] teamCharacterMugWeaponry;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI[] teamInventoryWeaponPower, teamInventoryArmourDefence;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI teamItemWeaponPower, teamItemArmourDefence;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Sprite teamBasicAxe, teamBasicArmour;
+
+
+
+
 
 
     [ShowInInspector]
@@ -409,7 +431,7 @@ public class MenuManager : MonoBehaviour
                             effectText.text = "+" + item.amountOfEffect.ToString();
                         }
 
-                        else if (item.itemName == "Healing Potion")
+                        else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion")
                         {
                             GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
                             effectText.text = "+" + item.amountOfEffect.ToString();
@@ -773,7 +795,7 @@ public class MenuManager : MonoBehaviour
 
         Debug.Log("InventoryLeft panel animations engaged");
 
-        if (activeItem.itemName == "Healing Potion")
+        if (activeItem.itemName == "Red Healing Potion" || activeItem.itemName == "Green Healing Potion")
         {
             hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
             var sequence = DOTween.Sequence()

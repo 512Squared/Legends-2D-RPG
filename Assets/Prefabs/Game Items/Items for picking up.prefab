@@ -178,7 +178,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
+    oldSize: {x: 1.9, y: 1.9}
     newSize: {x: 2.56, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1070,6 +1070,7 @@ Transform:
   - {fileID: 1284250250}
   - {fileID: 15754682}
   - {fileID: 498929121}
+  - {fileID: 3322306179006047319}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1822,14 +1823,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 082af782e5a0f3e4db6130c79666bd19, type: 3}
---- !u!1 &498929126 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2083219082706661258, guid: 082af782e5a0f3e4db6130c79666bd19, type: 3}
-  m_PrefabInstance: {fileID: 2083219083070186092}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &498929121 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2083219082706661261, guid: 082af782e5a0f3e4db6130c79666bd19, type: 3}
+  m_PrefabInstance: {fileID: 2083219083070186092}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &498929126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2083219082706661258, guid: 082af782e5a0f3e4db6130c79666bd19, type: 3}
   m_PrefabInstance: {fileID: 2083219083070186092}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2096031617776590935
@@ -1975,14 +1976,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f97a4b377bd85664bb00d66c2ad577a7, type: 3}
---- !u!4 &875317185 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2867729817685553681, guid: f97a4b377bd85664bb00d66c2ad577a7, type: 3}
-  m_PrefabInstance: {fileID: 2867729818422425040}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &875317190 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2867729817685553686, guid: f97a4b377bd85664bb00d66c2ad577a7, type: 3}
+  m_PrefabInstance: {fileID: 2867729818422425040}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &875317185 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2867729817685553681, guid: f97a4b377bd85664bb00d66c2ad577a7, type: 3}
   m_PrefabInstance: {fileID: 2867729818422425040}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3026535341488266630
@@ -2198,14 +2199,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 799f06ca183d6f94da9d8749fa02c353, type: 3}
---- !u!4 &1284250250 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3138252571633180957, guid: 799f06ca183d6f94da9d8749fa02c353, type: 3}
-  m_PrefabInstance: {fileID: 3138252572900129687}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1284250251 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3138252571633180956, guid: 799f06ca183d6f94da9d8749fa02c353, type: 3}
+  m_PrefabInstance: {fileID: 3138252572900129687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1284250250 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3138252571633180957, guid: 799f06ca183d6f94da9d8749fa02c353, type: 3}
   m_PrefabInstance: {fileID: 3138252572900129687}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3285837861360796442
@@ -2215,25 +2216,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4171480784311286805}
     m_Modifications:
+    - target: {fileID: 3285837861446593219, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
+      propertyPath: amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285837861446593219, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
+      propertyPath: itemName
+      value: Green Healing Potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285837861446593219, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
+      propertyPath: amountOfEffect
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285837861446593219, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
+      propertyPath: itemDescription
+      value: Healing potion and all round tonic. Restores health to maximum.
+      objectReference: {fileID: 0}
     - target: {fileID: 3285837861446593220, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
       propertyPath: m_RootOrder
       value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 3285837861446593220, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3285837861446593220, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3285837861446593220, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.04
+      value: -7.11
       objectReference: {fileID: 0}
     - target: {fileID: 3285837861446593220, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.42
+      value: -1.44
       objectReference: {fileID: 0}
     - target: {fileID: 3285837861446593220, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2269,7 +2286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3285837861446593221, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
       propertyPath: m_Name
-      value: 15_Heal_potion_nobg
+      value: green healing potion
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbe79d4961d2faa49a2ceddb5f25f183, type: 3}
@@ -2340,14 +2357,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6933c81bb66c79a4480831bec5091e9d, type: 3}
---- !u!4 &1497813547 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3684188978389991506, guid: 6933c81bb66c79a4480831bec5091e9d, type: 3}
-  m_PrefabInstance: {fileID: 3684188979610948217}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1497813544 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3684188978389991505, guid: 6933c81bb66c79a4480831bec5091e9d, type: 3}
+  m_PrefabInstance: {fileID: 3684188979610948217}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1497813547 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3684188978389991506, guid: 6933c81bb66c79a4480831bec5091e9d, type: 3}
   m_PrefabInstance: {fileID: 3684188979610948217}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4171480784352562993
@@ -2404,6 +2421,10 @@ PrefabInstance:
     - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -56.971
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemName
+      value: Red Healing Potion
       objectReference: {fileID: 0}
     - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: valueInCoins
@@ -2604,6 +2625,10 @@ PrefabInstance:
       value: -56.971
       objectReference: {fileID: 0}
     - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemName
+      value: Red Healing Potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: valueInCoins
       value: 20
       objectReference: {fileID: 0}
@@ -2676,6 +2701,10 @@ PrefabInstance:
     - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -56.971
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemName
+      value: Red Healing Potion
       objectReference: {fileID: 0}
     - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: valueInCoins
@@ -3030,6 +3059,10 @@ PrefabInstance:
     - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -56.971
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemName
+      value: Red Healing Potion
       objectReference: {fileID: 0}
     - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: valueInCoins
@@ -3440,6 +3473,10 @@ PrefabInstance:
       value: -56.971
       objectReference: {fileID: 0}
     - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemName
+      value: Red Healing Potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: valueInCoins
       value: 20
       objectReference: {fileID: 0}
@@ -3507,14 +3544,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c39a771fbb77844dae494bac6164dcf, type: 3}
---- !u!1 &2138538301 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4440210779343205425, guid: 3c39a771fbb77844dae494bac6164dcf, type: 3}
-  m_PrefabInstance: {fileID: 4440210779667117324}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2138538300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4440210779343205424, guid: 3c39a771fbb77844dae494bac6164dcf, type: 3}
+  m_PrefabInstance: {fileID: 4440210779667117324}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2138538301 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4440210779343205425, guid: 3c39a771fbb77844dae494bac6164dcf, type: 3}
   m_PrefabInstance: {fileID: 4440210779667117324}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5180620892404810084
@@ -3598,14 +3635,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0665c484c228ead4d9a62b8f209ed833, type: 3}
---- !u!1 &2002398054 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5180620890942712322, guid: 0665c484c228ead4d9a62b8f209ed833, type: 3}
-  m_PrefabInstance: {fileID: 5180620892404810084}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2002398049 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5180620890942712325, guid: 0665c484c228ead4d9a62b8f209ed833, type: 3}
+  m_PrefabInstance: {fileID: 5180620892404810084}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2002398054 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5180620890942712322, guid: 0665c484c228ead4d9a62b8f209ed833, type: 3}
   m_PrefabInstance: {fileID: 5180620892404810084}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5356778343151366530
@@ -3674,6 +3711,108 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8337018510580147267, guid: 3081504e2bcf0a44aa885942ca1e2f0d, type: 3}
   m_PrefabInstance: {fileID: 5356778343151366530}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5360700533477774575
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4171480784311286805}
+    m_Modifications:
+    - target: {fileID: 7241290558915555511, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_Name
+      value: green healing potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_RootOrder
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.1399999
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8789371
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.47693765
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -56.971
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemName
+      value: Green Healing Potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemsImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 4e8b35477a7fb5a46870c1973a523722, type: 3}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: valueInCoins
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: amountOfEffect
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemDescription
+      value: Healing potion and all round tonic. Restores health to maximum.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555514, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4e8b35477a7fb5a46870c1973a523722, type: 3}
+    - target: {fileID: 7241290558915555515, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555515, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+--- !u!4 &3322306179006047319 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+  m_PrefabInstance: {fileID: 5360700533477774575}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5551227168639974082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3731,14 +3870,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 949acc602d5041c4d84160715248112a, type: 3}
---- !u!1 &65996345 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5551227168629423355, guid: 949acc602d5041c4d84160715248112a, type: 3}
-  m_PrefabInstance: {fileID: 5551227168639974082}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &65996344 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5551227168629423354, guid: 949acc602d5041c4d84160715248112a, type: 3}
+  m_PrefabInstance: {fileID: 5551227168639974082}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &65996345 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5551227168629423355, guid: 949acc602d5041c4d84160715248112a, type: 3}
   m_PrefabInstance: {fileID: 5551227168639974082}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5991467244470195037
@@ -3864,14 +4003,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b672aa1924ee1734d85ddf4a4c4f1bad, type: 3}
---- !u!1 &245360750 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6371243998244989083, guid: b672aa1924ee1734d85ddf4a4c4f1bad, type: 3}
-  m_PrefabInstance: {fileID: 6371243998067327221}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &245360745 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6371243998244989084, guid: b672aa1924ee1734d85ddf4a4c4f1bad, type: 3}
+  m_PrefabInstance: {fileID: 6371243998067327221}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &245360750 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6371243998244989083, guid: b672aa1924ee1734d85ddf4a4c4f1bad, type: 3}
   m_PrefabInstance: {fileID: 6371243998067327221}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6492315039388264851
@@ -4010,6 +4149,10 @@ PrefabInstance:
     - target: {fileID: 7241290558915555512, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -56.971
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: itemName
+      value: Red Healing Potion
       objectReference: {fileID: 0}
     - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: valueInCoins
