@@ -140,14 +140,14 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    public void AddArmourDefence(int amountOfDefenceToAdd)
+    public void AddArmourDefence(int amountOfArmourDefenceToAdd)
     {
-        npcDefence += amountOfDefenceToAdd;
+        npcDefence += amountOfArmourDefenceToAdd;
     }
     
-    public void AddWeaponPower(int amountOfDefenceToAdd)
+    public void AddWeaponPower(int amountOfWeaponPowerToAdd)
     {
-        npcDefence += amountOfDefenceToAdd;
+        npcDexterity += amountOfWeaponPowerToAdd;
     }
 
     public void EquipWeapon(ItemsManager weaponToEquip)

@@ -54,7 +54,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] GameObject[] characterCards, characterParty, characterEquip, characterWeaponry;
+    [SerializeField] GameObject[] characterCards, characterParty, characterEquip, characterWeaponry, teamCharacterWeaponry;
 
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
@@ -136,7 +136,7 @@ public class MenuManager : MonoBehaviour
 
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamEquippedWeaponName, teamEquippedArmourName;
+    public TextMeshProUGUI[] teamEquippedWeaponName, teamEquippedArmourName, teamCharacterName;
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
     public Image[] teamEquippedWeaponImage, teamEquippedArmourImage;
@@ -145,10 +145,10 @@ public class MenuManager : MonoBehaviour
     public Image[] teamCharacterMugWeaponry;
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamInventoryWeaponPower, teamInventoryArmourDefence;
+    public TextMeshProUGUI[] teamInventoryAttackTotal, teamInventoryDefenceTotal; // attack power is actually Dexterity in PlayerStats (yeah, I had to same thought... wtf??
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI teamItemWeaponPower, teamItemArmourDefence;
+    public TextMeshProUGUI[] teamItemWeaponBonus, teamItemArmourBonus;
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
     public Sprite teamBasicAxe, teamBasicArmour;
@@ -280,7 +280,8 @@ public class MenuManager : MonoBehaviour
                 //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
                 characterCards[i].SetActive(true);
                 characterParty[i].SetActive(true);
-                //characterWeaponry[i].SetActive(true);
+                teamCharacterWeaponry[i].SetActive(true);
+                
 
 
                 characterName[i].text = playerStats[i].playerName;
@@ -308,6 +309,39 @@ public class MenuManager : MonoBehaviour
                 thulGold[i].text = playerStats[0].thulGold.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
+                teamEquippedWeaponImage[i].sprite = playerStats[i].characterImage;
+
+                if (playerStats[i].characterArmourDefence > 5)
+                {
+                    teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
+                    Debug.Log(playerStats[i].playerName + "'s armour defence: " + playerStats[i].characterArmourDefence);
+                }
+                else if (playerStats[i].characterArmourDefence == 5)
+                {
+                    teamEquippedArmourImage[i].sprite = teamBasicArmour;
+                    Debug.Log(playerStats[i].playerName + "'s armour defence: " + playerStats[i].characterArmourDefence);
+                }
+
+                if (playerStats[i].characterWeaponPower > 5)
+                {
+                    teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
+                    Debug.Log(playerStats[i].playerName + "'s weapon power: " + playerStats[i].characterWeaponPower);
+                }
+                else if (playerStats[i].characterWeaponPower == 5)
+                {
+                    teamEquippedWeaponImage[i].sprite = teamBasicAxe;
+                    Debug.Log(playerStats[i].playerName + "'s weapon power: " + playerStats[i].characterWeaponPower);
+                }
+
+
+                teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
+                teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
+                teamInventoryAttackTotal[i].text = (playerStats[i].npcDexterity - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
+                teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
+                teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
+                teamCharacterName[i].text = playerStats[i].playerName;
+                //teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
+                //teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
 
             }
         }
@@ -600,6 +634,7 @@ public class MenuManager : MonoBehaviour
         characterImageV.sprite = playerStats[select].characterImage;
 
 
+
     }
 
     public void equipCharStats()
@@ -685,21 +720,16 @@ public class MenuManager : MonoBehaviour
     public void CallToUseItem(int selectedCharacter)
     {
         // debug info
-
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
+        
         activeItem.UseItem(selectedCharacter);
 
         // pass player image position for CoinsManager animations
         Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
 
-        // give a new color to button. Can add to this later with color coding for selecting equip, use, give 
-        //GameObject.FindGameObjectWithTag("text_UseEquipTake").GetComponent<TextMeshProUGUI>().color = new Color(0.015f, 0.352f, 0.223f, 1);
-
         // panelStuff is used in the tween animations on OnPlayerButton() (i.e. give stuff to character)
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
-
-        //GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
         textUseEquipTake.text = "Select";
     }
 
@@ -1131,16 +1161,3 @@ public class MenuManager : MonoBehaviour
 }
 
 
-
-
-//public IEnumerator FadeInCall()
-//{
-//    yield return new WaitForSeconds(1f);
-//    FadeIn(1f);
-//}
-
-//public IEnumerator FadeOutCall()
-//{
-//    yield return new WaitForSeconds(1f);
-//    FadeOut(1f);
-//}

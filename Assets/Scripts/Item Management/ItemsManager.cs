@@ -60,6 +60,9 @@ public class ItemsManager : MonoBehaviour
 
         else if (itemType == ItemType.Armour)
         {
+
+            selectedCharacter.npcDefence -= selectedCharacter.characterArmourDefence;
+            
             if (selectedCharacter.equippedArmourName != "")
             {
                 Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.equippedArmour.itemName + " has been added back into the Inventory");
@@ -76,6 +79,9 @@ public class ItemsManager : MonoBehaviour
 
         else if (itemType == ItemType.Weapon)
         {
+
+            selectedCharacter.npcDexterity -= selectedCharacter.characterWeaponPower;
+            
             if (selectedCharacter.equippedWeaponName != "")
             {
                 Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.equippedWeapon.itemName + " has been added back into the Inventory");
