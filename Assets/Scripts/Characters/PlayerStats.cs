@@ -49,6 +49,9 @@ public class PlayerStats : MonoBehaviour
     public int characterArmourDefence = 0;
     public Sprite equippedArmourImage = null;
 
+    public string equippedArmourDescription;
+    public string equippedWeaponDescription;
+
 
     public ItemsManager equippedWeapon, equippedArmour = null;
 
@@ -156,6 +159,7 @@ public class PlayerStats : MonoBehaviour
         equippedWeaponName = equippedWeapon.itemName;
         characterWeaponPower = equippedWeapon.itemWeaponPower;
         equippedWeaponImage = equippedWeapon.itemsImage;
+        equippedWeaponDescription = equippedWeapon.itemDescription;
 
     }
     
@@ -165,6 +169,7 @@ public class PlayerStats : MonoBehaviour
         equippedArmourName = equippedArmour.itemName;
         characterArmourDefence = equippedArmour.itemArmourDefence;
         equippedArmourImage = equippedArmour.itemsImage;
+        equippedArmourDescription = equippedArmour.itemDescription;
     }
 
 }

@@ -153,7 +153,15 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.047f, 0.254f, 0.296f)]
     public Sprite teamBasicAxe, teamBasicArmour;
 
-
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.447f, 0.254f, 0.896f)]
+    public Image teamPopWeaponryImage;
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.447f, 0.254f, 0.896f)]
+    public TextMeshProUGUI teamPopWeaponryName, teamPopWeaponryDescription, teamPopWeaponryBonusText;
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.447f, 0.254f, 0.896f)]
+    public TextMeshProUGUI teamPopWeaponryBonus;
 
 
 
@@ -340,8 +348,6 @@ public class MenuManager : MonoBehaviour
                 teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
                 teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
                 teamCharacterName[i].text = playerStats[i].playerName;
-                //teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
-                //teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
 
             }
         }
@@ -1157,7 +1163,26 @@ public class MenuManager : MonoBehaviour
 
     }
 
+    public void TeamWeaponryPopup(int selectedCharacter, string itemType)
+    {
+        if (itemType == "armour")
+        {
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].equippedArmourImage;
+            teamPopWeaponryName.text = playerStats[selectedCharacter].equippedArmourName;
+            teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedArmourDescription;
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmourDefence.ToString();
+            teamPopWeaponryBonusText.text = "Weapon Power:";
+        }
 
+        else if (itemType == "weapon")
+        {
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].equippedWeaponImage;
+            teamPopWeaponryName.text = playerStats[selectedCharacter].equippedWeaponName;
+            teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedWeaponDescription;
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeaponPower.ToString();
+            teamPopWeaponryBonusText.text = "Armour Defence:";
+        }
+    }
 }
 
 
