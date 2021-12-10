@@ -163,6 +163,18 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.207f, 0.121f, 0.027f)]
     public TextMeshProUGUI teamPopWeaponryBonus;
 
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public Button inventTabsAllHolder, inventTabsWeaponsHolder, inventTabsArmourHolder, inventTabsItemsHolder, inventTabsPotionsHolder;
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public TextMeshProUGUI inventTabsAllText;
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public GameObject inventTabsAllFocus, inventTabsWeaponsFocus, inventTabsArmourFocus, inventTabsItemsFocus, inventTabsPotionsFocus;
+
+
+
 
 
 
@@ -957,11 +969,53 @@ public class MenuManager : MonoBehaviour
     {
         weaponBool = armourBool = itemBool = potionBool = skillBool = false;
 
-        if (boolName == "weapon") weaponBool = true;
-        else if (boolName == "armour") armourBool = true;
-        else if (boolName == "item") itemBool = true;
-        else if (boolName == "potion") potionBool = true;
-        else if (boolName == "skill") skillBool = true;
+
+        if (boolName == "weapon")
+        {
+            weaponBool = true;
+            inventTabsAllFocus.SetActive(false);
+            inventTabsWeaponsFocus.SetActive(true);
+            inventTabsArmourFocus.SetActive(false);
+            inventTabsItemsFocus.SetActive(false);
+            inventTabsPotionsFocus.SetActive(false);
+
+            inventTabsWeaponsHolder.Select();
+        }
+        else if (boolName == "armour")
+        {
+            armourBool = true;
+            inventTabsAllFocus.SetActive(false);
+            inventTabsWeaponsFocus.SetActive(false);
+            inventTabsArmourFocus.SetActive(true);
+            inventTabsItemsFocus.SetActive(false);
+            inventTabsPotionsFocus.SetActive(false);
+
+            inventTabsArmourHolder.Select();
+
+        }
+        else if (boolName == "item")
+        {
+            itemBool = true;
+            inventTabsAllFocus.SetActive(false);
+            inventTabsWeaponsFocus.SetActive(false);
+            inventTabsArmourFocus.SetActive(false);
+            inventTabsItemsFocus.SetActive(true);
+            inventTabsPotionsFocus.SetActive(false);
+        }
+        else if (boolName == "potion")
+        {
+            potionBool = true;
+            inventTabsAllFocus.SetActive(false);
+            inventTabsWeaponsFocus.SetActive(false);
+            inventTabsArmourFocus.SetActive(false);
+            inventTabsItemsFocus.SetActive(false);
+            inventTabsPotionsFocus.SetActive(true);
+        }
+        else if (boolName == "skill")
+        {
+            skillBool = true;
+    
+        }
         if (boolName != "all")
         {
             TextMeshProUGUI allText = GameObject.FindGameObjectWithTag("allTab").GetComponent<TextMeshProUGUI>();
@@ -972,6 +1026,11 @@ public class MenuManager : MonoBehaviour
         {
             TextMeshProUGUI allText = GameObject.FindGameObjectWithTag("allTab").GetComponent<TextMeshProUGUI>();
             allText.color = new Color32(236, 216, 150, 255);
+            inventTabsAllFocus.SetActive(true);
+            inventTabsWeaponsFocus.SetActive(false);
+            inventTabsArmourFocus.SetActive(false);
+            inventTabsItemsFocus.SetActive(false);
+            inventTabsPotionsFocus.SetActive(false);
         }
         UpdateItemsInventory();
         Debug.Log("Sort by item initiated: " + boolName);
