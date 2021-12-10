@@ -748,6 +748,8 @@ public class MenuManager : MonoBehaviour
         // panelStuff is used in the tween animations on OnPlayerButton() (i.e. give stuff to character)
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
+
+        Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         textUseEquipTake.text = "Select";
     }
 
