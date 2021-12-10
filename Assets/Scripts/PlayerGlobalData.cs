@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
+using DG.Tweening;
 
 
 public class PlayerGlobalData : MonoBehaviour
@@ -24,12 +26,15 @@ public class PlayerGlobalData : MonoBehaviour
     float horizontalMovement;
     float verticalMovement;
 
+    [SerializeField] TextMeshProUGUI message;
+
     // Start is called before the first frame update
 
 
     void Start()
     {
-            instance = this;
+        instance = this;
+        message = GameManager.instance.playerMessages;
     }
 
 
@@ -97,6 +102,26 @@ public class PlayerGlobalData : MonoBehaviour
     {
         bottomLeftEdge = bottomEdgeToSet;
         topRightEdge = topEdgeToSet;
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Character"))
+        {
+            Debug.Log("Player character " + collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
+            collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
+            MenuManager.instance.UpdateItemsInventory();
+            //message.DOFade(1f, 0.5f);
+;
+            StartCoroutine(SendNotification("A new character is available to add to your character party", 3));
+        }
+    }
+
+    IEnumerator SendNotification(string text, int time)
+    {
+        message.text = text;
+        yield return new WaitForSeconds(time);
+        message.text = "";
     }
 
 }

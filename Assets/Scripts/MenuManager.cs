@@ -172,6 +172,11 @@ public class MenuManager : MonoBehaviour
     [TabGroup("Weapon Group", "Inventory Tabs")]
     [GUIColor(0.207f, 0.921f, 0.027f)]
     public GameObject inventTabsAllFocus, inventTabsWeaponsFocus, inventTabsArmourFocus, inventTabsItemsFocus, inventTabsPotionsFocus;
+    [TabGroup("Weapon Group", "Add to Party")]
+    [GUIColor(0.307f, 0.321f, 0.027f)]
+    public Button[] addToParty, retireFromParty;
+
+
 
 
 
@@ -299,7 +304,11 @@ public class MenuManager : MonoBehaviour
             {
                 //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
                 characterCards[i].SetActive(true);
-                characterParty[i].SetActive(true);
+
+                if (playerStats[i].isAvailable == true)
+                {
+                    characterParty[i].SetActive(true);
+                }
                 teamCharacterWeaponry[i].SetActive(true);
                 
 

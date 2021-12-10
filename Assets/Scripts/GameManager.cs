@@ -4,6 +4,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -49,6 +50,9 @@ public class GameManager : MonoBehaviour
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
     public bool keyboardKeyI = false;
+
+    [SerializeField]
+    public TextMeshProUGUI playerMessages;
 
 
 
