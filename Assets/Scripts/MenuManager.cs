@@ -154,13 +154,13 @@ public class MenuManager : MonoBehaviour
     public Sprite teamBasicAxe, teamBasicArmour;
 
     [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.447f, 0.254f, 0.896f)]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
     public Image teamPopWeaponryImage;
     [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.447f, 0.254f, 0.896f)]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
     public TextMeshProUGUI teamPopWeaponryName, teamPopWeaponryDescription, teamPopWeaponryBonusText;
     [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.447f, 0.254f, 0.896f)]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
     public TextMeshProUGUI teamPopWeaponryBonus;
 
 
@@ -1172,7 +1172,6 @@ public class MenuManager : MonoBehaviour
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedArmourDescription;
             teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmourDefence.ToString();
             teamPopWeaponryBonusText.text = "Armour Defence:";
-            SortByItemType("armour");
         }
 
         else if (itemType == "weapon")
@@ -1182,7 +1181,6 @@ public class MenuManager : MonoBehaviour
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedWeaponDescription;
             teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeaponPower.ToString();
             teamPopWeaponryBonusText.text = "Weapon Power:";
-            SortByItemType("weapon");
         }
     }
 }

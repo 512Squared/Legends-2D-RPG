@@ -45,10 +45,10 @@ public class TeamWeaponryPopup : MonoBehaviour
     
     public void Change()
     {
+        MenuManager.instance.SortByItemType(weaponryType);
         transform.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
         fadeImage.LeanAlpha(0, 0.5f);
         fadeImage2.LeanAlpha(0f, 0.5f);
-
         
     }
 }
