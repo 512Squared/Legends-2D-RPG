@@ -8,6 +8,7 @@ public class TeamWeaponryPopup : MonoBehaviour
     private string weaponryType;
     public CanvasGroup fadeImage;
     public CanvasGroup fadeImage2;
+
     
     // Start is called before the first frame update
     void Start()
@@ -29,10 +30,10 @@ public class TeamWeaponryPopup : MonoBehaviour
     public void Open(int chosenPlayer)
     {
         fadeImage.alpha = 0;
-        fadeImage.LeanAlpha(1, 0.5f);
-        fadeImage2.LeanAlpha(0.5f, 0.5f);
+        fadeImage.LeanAlpha(1, 0.3f);
+        fadeImage2.LeanAlpha(0.1f, 0.3f);
         MenuManager.instance.TeamWeaponryPopup(chosenPlayer, weaponryType);
-        transform.LeanScale(Vector3.one, 0.6f);
+        transform.LeanScale(Vector3.one, 0.6f).setEaseOutBack();
     }
 
     public void Close()
@@ -40,5 +41,14 @@ public class TeamWeaponryPopup : MonoBehaviour
         transform.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
         fadeImage.LeanAlpha(0, 0.5f);
         fadeImage2.LeanAlpha(1f, 0.5f);
+    }
+    
+    public void Change()
+    {
+        transform.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
+        fadeImage.LeanAlpha(0, 0.5f);
+        fadeImage2.LeanAlpha(0f, 0.5f);
+
+        
     }
 }

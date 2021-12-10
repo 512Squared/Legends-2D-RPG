@@ -1129,7 +1129,7 @@ public class MenuManager : MonoBehaviour
 
             WhichPanelIsOn();
 
-            Debug.Log("Panel status - Overview: " + GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha + " | Stats: " + GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha + " | Weaponry: " + GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha);
+            Debug.Log("Exiting. Panel status - Overview Alpha: " + GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha + " | Stats Alpha: " + GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha + " | Weaponry Alpha: " + GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha);
 
         }
 
@@ -1171,7 +1171,8 @@ public class MenuManager : MonoBehaviour
             teamPopWeaponryName.text = playerStats[selectedCharacter].equippedArmourName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedArmourDescription;
             teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmourDefence.ToString();
-            teamPopWeaponryBonusText.text = "Weapon Power:";
+            teamPopWeaponryBonusText.text = "Armour Defence:";
+            SortByItemType("armour");
         }
 
         else if (itemType == "weapon")
@@ -1180,7 +1181,8 @@ public class MenuManager : MonoBehaviour
             teamPopWeaponryName.text = playerStats[selectedCharacter].equippedWeaponName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedWeaponDescription;
             teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeaponPower.ToString();
-            teamPopWeaponryBonusText.text = "Armour Defence:";
+            teamPopWeaponryBonusText.text = "Weapon Power:";
+            SortByItemType("weapon");
         }
     }
 }
