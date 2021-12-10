@@ -1181,8 +1181,6 @@ public class MenuManager : MonoBehaviour
 
             focusWeaponry.SetActive(false);
 
-            //GameObject.FindGameObjectWithTag("fade_back_party").GetComponent<CanvasGroup>().alpha = 0;
-
             teamTabMenu.GetComponent<CanvasGroup>().interactable = false;
             teamTabMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
 

@@ -33,6 +33,7 @@ public class TeamWeaponryPopup : MonoBehaviour
         fadeImage.LeanAlpha(1, 0.3f);
         fadeImage2.LeanAlpha(0.1f, 0.3f);
         fadeImage.blocksRaycasts = true;
+        fadeImage.interactable = true;
 
         MenuManager.instance.TeamWeaponryPopup(chosenPlayer, weaponryType);
         transform.LeanScale(Vector3.one, 0.6f).setEaseOutBack();
@@ -43,6 +44,8 @@ public class TeamWeaponryPopup : MonoBehaviour
         transform.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
         fadeImage.LeanAlpha(0, 0.5f);
         fadeImage2.LeanAlpha(1f, 0.5f);
+        fadeImage.blocksRaycasts = false;
+        fadeImage.interactable = false;
     }
     
     public void Change()
