@@ -98,6 +98,9 @@ public class MenuManager : MonoBehaviour
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public TextMeshProUGUI effectText;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject effectBox;
 
 
     [TabGroup("New Group", "Equip")]
@@ -307,71 +310,78 @@ public class MenuManager : MonoBehaviour
 
             // set to false first, to account for changes in character party updating
 
-            if (isTeamMember[i] == true)
+            if (playerStats[i].isAvailable == true) // on 'add to party screen'
             {
                 //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
                 characterCards[i].SetActive(true);
-
-                if (playerStats[i].isAvailable == true)
+                characterParty[i].SetActive(true);
+                if (playerStats[i].isTeamMember == true)
                 {
-                    characterParty[i].SetActive(true);
+                    // on screens where isTeamMember is necessary
+
+                    characterName[i].text = playerStats[i].playerName;
+                    description[i].text = playerStats[i].playerDesc;
+                    health[i].text = playerStats[i].npcHP.ToString();
+                    characterImage[i].sprite = playerStats[i].characterImage;
+                    level[i].text = playerStats[i].npcLevel.ToString();
+                    xp[i].text = playerStats[i].npcXP.ToString();
+                    mana[i].text = playerStats[i].npcMana.ToString();
+                    dexterity[i].text = playerStats[i].npcDexterity.ToString();
+                    defence[i].text = playerStats[i].npcDefence.ToString();
+                    intelligence[i].text = playerStats[i].npcIntelligence.ToString();
+                    perception[i].text = playerStats[i].npcPerception.ToString();
+                    intelligenceS[i].value = playerStats[i].npcIntelligence;
+                    xpS[i].value = playerStats[i].npcXP;
+                    manaS[i].value = playerStats[i].npcMana;
+                    healthS[i].value = playerStats[i].npcHP;
+                    dexterityS[i].value = playerStats[i].npcDexterity;
+                    defenceS[i].value = playerStats[i].npcDefence;
+                    intelligenceS[i].value = playerStats[i].npcIntelligence;
+                    perceptionS[i].value = playerStats[i].npcPerception;
+
+                    // Some team equipped stuff
+
+                    teamCharacterWeaponry[i].SetActive(true);
+                    if (playerStats[i].characterArmourDefence > 5)
+                    {
+                        teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
+                    }
+                    else if (playerStats[i].characterArmourDefence == 5)
+                    {
+                        teamEquippedArmourImage[i].sprite = teamBasicArmour;
+                    }
+
+                    if (playerStats[i].characterWeaponPower > 5)
+                    {
+                        teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
+                    }
+                    else if (playerStats[i].characterWeaponPower == 5)
+                    {
+                        teamEquippedWeaponImage[i].sprite = teamBasicAxe;
+                    }
+
+
+                    teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
+                    teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
+                    teamInventoryAttackTotal[i].text = (playerStats[i].npcDexterity - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
+                    teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
+                    teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
+                    teamCharacterName[i].text = playerStats[i].playerName;
+
+                    teamEquippedWeaponImage[i].sprite = playerStats[i].characterImage;
                 }
-                teamCharacterWeaponry[i].SetActive(true);
+
                 
-
-
-                characterName[i].text = playerStats[i].playerName;
-                description[i].text = playerStats[i].playerDesc;
-                health[i].text = playerStats[i].npcHP.ToString();
-                characterImage[i].sprite = playerStats[i].characterImage;
-                level[i].text = playerStats[i].npcLevel.ToString();
-                xp[i].text = playerStats[i].npcXP.ToString();
-                mana[i].text = playerStats[i].npcMana.ToString();
-                dexterity[i].text = playerStats[i].npcDexterity.ToString();
-                defence[i].text = playerStats[i].npcDefence.ToString();
-                intelligence[i].text = playerStats[i].npcIntelligence.ToString();
-                perception[i].text = playerStats[i].npcPerception.ToString();
-                intelligenceS[i].value = playerStats[i].npcIntelligence;
-                xpS[i].value = playerStats[i].npcXP;
-                manaS[i].value = playerStats[i].npcMana;
-                healthS[i].value = playerStats[i].npcHP;
-                dexterityS[i].value = playerStats[i].npcDexterity;
-                defenceS[i].value = playerStats[i].npcDefence;
-                intelligenceS[i].value = playerStats[i].npcIntelligence;
-                perceptionS[i].value = playerStats[i].npcPerception;
                 characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
                 levelP[i].text = playerStats[i].npcLevel.ToString();
                 characterMug[i].sprite = playerStats[i].characterMug;
                 thulGold[i].text = playerStats[0].thulGold.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
-                teamEquippedWeaponImage[i].sprite = playerStats[i].characterImage;
-
-                if (playerStats[i].characterArmourDefence > 5)
-                {
-                    teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;                    
-                }
-                else if (playerStats[i].characterArmourDefence == 5)
-                {
-                    teamEquippedArmourImage[i].sprite = teamBasicArmour;
-                }
-
-                if (playerStats[i].characterWeaponPower > 5)
-                {
-                    teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
-                }
-                else if (playerStats[i].characterWeaponPower == 5)
-                {
-                    teamEquippedWeaponImage[i].sprite = teamBasicAxe;
-                }
 
 
-                teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
-                teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
-                teamInventoryAttackTotal[i].text = (playerStats[i].npcDexterity - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
-                teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
-                teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
-                teamCharacterName[i].text = playerStats[i].playerName;
+                
+
 
             }
         }
@@ -470,7 +480,7 @@ public class MenuManager : MonoBehaviour
 
                     // SORTING BY ITEM TYPE
 
-                    GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 0; // necessary reset
+                    effectBox.GetComponent<CanvasGroup>().alpha = 0; // necessary reset
 
 
                     //  SORT BY POTIONS
@@ -485,25 +495,27 @@ public class MenuManager : MonoBehaviour
 
                         if (item.itemName == "Speed Potion")
                         {
-                            GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
+                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
                             effectText.text = "x" + item.amountOfEffect.ToString();
                         }
 
                         else if (item.itemName == "Mana Potion")
                         {
-                            GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
+                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
                             effectText.text = "+" + item.amountOfEffect.ToString();
                         }
 
                         else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion")
                         {
-                            GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 1;
+                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
                             effectText.text = "+" + item.amountOfEffect.ToString();
+                            Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
                         }
 
                         else
                         {
-                            GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha = 0;
+                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                            Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
                         }
 
                     }
@@ -512,6 +524,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Armour)
                     {
+                        effectBox.GetComponent<CanvasGroup>().alpha = 0;
                         Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
@@ -520,6 +533,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Weapon)
                     {
+                        effectBox.GetComponent<CanvasGroup>().alpha = 0;
                         Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Equip";
                     }
@@ -528,6 +542,7 @@ public class MenuManager : MonoBehaviour
 
                     if (item.itemType == ItemsManager.ItemType.Item)
                     {
+                        effectBox.GetComponent<CanvasGroup>().alpha = 0;
                         Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         textUseEquipTake.text = "Use";
                     }
@@ -639,7 +654,7 @@ public class MenuManager : MonoBehaviour
     public void InventoryStats() // this is rather the skills panel
     {
 
-        // select is the choice of character in the dropdown menu, i.e. the character array slot. 
+        // select is the choice of character in the dropdown menu, i.e. the character array slot. 'select' is used instead of the 'for each' loop and 'isTeamMember'
 
         select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
         characterNameV.text = playerStats[select].playerName;
@@ -771,7 +786,6 @@ public class MenuManager : MonoBehaviour
     public void equipBackAndHome() // tidying for back and home buttons
     {
 
-        SortByItemType("all"); // this is to reset if panel slide is on when exiting inventory
         turnEquipOn();
         currentNewItems = 0;
         if (keyboardKeyI == true)
@@ -789,7 +803,7 @@ public class MenuManager : MonoBehaviour
 
     public void PanelTestingKeyboardControl()
     {
-        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
+        IsInterfaceOn();
 
         if (panelTesting.GetComponent<CanvasGroup>().alpha == 0)
         {
@@ -820,6 +834,8 @@ public class MenuManager : MonoBehaviour
             joystick.EnableJoystick();
 
         }
+
+
     }
 
 
@@ -1291,6 +1307,30 @@ public class MenuManager : MonoBehaviour
         foreach (Button button in weaponPanelButtons)
         {
             button.interactable = false;
+        }
+    }
+
+    public static void IsInterfaceOn()
+    {
+        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
+    }
+
+    public void AddCharacterToParty(int character)
+    {
+        playerStats = GameManager.instance.GetPlayerStats();
+
+        for (int i = 0; i < playerStats.Length; i++)
+        {
+            if (i == character)
+            {
+                playerStats[character].isTeamMember = true;
+                characterParty[character].GetComponent<Button>().Select();
+                addToParty[character - 1].gameObject.SetActive(false);
+                retireFromParty[character - 1].gameObject.SetActive(true);
+                UpdateStats();
+                Debug.Log(playerStats[character].playerName + " added to party");
+            }
+
         }
     }
 }

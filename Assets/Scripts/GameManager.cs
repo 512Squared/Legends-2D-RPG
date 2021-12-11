@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     [GUIColor(1f, 1f, 0.215f)]
     public bool keyboardKeyI = false;
 
-    [SerializeField]
+    
     public TextMeshProUGUI playerMessages;
 
 

@@ -24,6 +24,7 @@ public class ButtonHandler : MonoBehaviour
         GameObject.FindGameObjectWithTag("button_sell").GetComponent<Button>().interactable = true;
 
         Debug.Log("USE button re-activated. Status: " + GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable);
+        Debug.Log("Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
     }
 
     [SerializeField]

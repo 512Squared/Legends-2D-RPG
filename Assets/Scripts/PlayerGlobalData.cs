@@ -111,6 +111,7 @@ public class PlayerGlobalData : MonoBehaviour
             Debug.Log("Player character " + collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
             collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
             MenuManager.instance.UpdateItemsInventory();
+
             //message.DOFade(1f, 0.5f);
 ;
             StartCoroutine(SendNotification("A new character is available to add to your character party", 3));

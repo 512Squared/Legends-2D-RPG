@@ -22,20 +22,12 @@ public class Exit : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-
-
         if (collision.CompareTag("Player"))
         {
             if (!loaded)
             {
                 PlayerGlobalData.instance.arrivedAt = goingTo;
 
-                //MenuManager.instance.FadeImage();
-
-                //StartCoroutine(GameObject.FindObjectOfType<SceneFader>().FadeAndLoadScene(SceneFader.FadeDirection.Out, sceneToLoad));
-
-                //StartCoroutine(UnloadScene());
-                
                 StartCoroutine(LoadSceneCoroutine());
 
                 Debug.Log("Scene load called: " + sceneToLoad);
@@ -49,19 +41,40 @@ public class Exit : MonoBehaviour
 
     public void teleport()
     {
-        if (gameObject.CompareTag("teleport"))
-        {
-            PlayerGlobalData.instance.arrivedAt = goingTo;
 
-            MenuManager.instance.FadeImage();
 
-            StartCoroutine(LoadSceneCoroutine());
+        Debug.Log("Active scene name: " + arrivingFrom);
 
-            loaded = true;
-        }
+        if (!loaded)
+                {
+                    PlayerGlobalData.instance.arrivedAt = "WishingWell";
+
+                    StartCoroutine(LoadTeleportCoroutine());
+
+                    Debug.Log("Scene load called: " + sceneToLoad);
+
+                    loaded = true;
+                }
+            
     }
 
     IEnumerator LoadSceneCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+
+        if (!unloaded)
+        {
+            unloaded = true;
+            AnyManager.anyManager.UnloadScene(arrivingFrom);
+            Debug.Log("Scene unload called: " + arrivingFrom);
+        }
+
+    }
+
+
+    IEnumerator LoadTeleportCoroutine()
     {
         yield return new WaitForSeconds(0.5f);
 
@@ -87,6 +100,11 @@ public class Exit : MonoBehaviour
             AnyManager.anyManager.UnloadScene(arrivingFrom);
             Debug.Log("Scene unload called: " + arrivingFrom);
         }
+    }
+
+    public void ActiveScene()
+    {
+        arrivingFrom = SceneManager.GetActiveScene().name;
     }
 
 
