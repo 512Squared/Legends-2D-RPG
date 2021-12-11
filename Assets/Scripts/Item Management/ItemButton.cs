@@ -34,15 +34,11 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.itemDamageBox.SetActive(false);
         }
 
-
-
         MenuManager.instance.activeItem = itemOnButton;
         GameManager.instance.activeItem = itemOnButton;
-        
+ 
         itemOnButton.itemSelected = MenuManager.instance.activeItem;
         itemOnButton.itemSelected = GameManager.instance.activeItem;
-
-        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = true;
 
         MenuManager.instance.UpdateItemsInventory();
 

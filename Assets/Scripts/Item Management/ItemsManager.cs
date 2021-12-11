@@ -94,7 +94,7 @@ public class ItemsManager : MonoBehaviour
             selectedCharacter.EquipWeapon(this);
             MenuManager.instance.UpdateStats();
 
-            Debug.Log(selectedCharacter.playerName + " equipped with " + this);
+            Debug.Log(selectedCharacter.playerName + " equipped with " + this.itemName);
         }
 
     }

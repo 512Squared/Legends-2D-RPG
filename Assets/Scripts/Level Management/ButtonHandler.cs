@@ -16,4 +16,43 @@ public class ButtonHandler : MonoBehaviour
 
     }
 
+    public void UseButtonOn()
+    {
+        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = true;
+        Debug.Log("USE button re-activated. Status: " + GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable);
+    }
+
+    [SerializeField]
+    private Button[] buttons;
+
+    public void SetAllButtonsInteractable()
+    {
+        foreach (Button button in buttons)
+        {
+            button.interactable = true;
+        }
+    }
+
+    public void OnButtonClicked(Button clickedButton)
+    {
+        int buttonIndex = System.Array.IndexOf(buttons, clickedButton);
+
+        if (buttonIndex == -1)
+            return;
+
+        SetAllButtonsInteractable();
+
+        clickedButton.interactable = false;
+
+    }
+
+    public void OnButtonCalled(string calledTab)
+    {
+
+        SetAllButtonsInteractable();
+
+        if (calledTab == "weapon") buttons[1].interactable = false;
+        else if (calledTab == "armour") buttons[2].interactable = false;
+    }
+
 }

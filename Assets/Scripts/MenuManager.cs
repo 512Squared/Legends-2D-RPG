@@ -342,24 +342,20 @@ public class MenuManager : MonoBehaviour
 
                 if (playerStats[i].characterArmourDefence > 5)
                 {
-                    teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
-                    Debug.Log(playerStats[i].playerName + "'s armour defence: " + playerStats[i].characterArmourDefence);
+                    teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;                    
                 }
                 else if (playerStats[i].characterArmourDefence == 5)
                 {
                     teamEquippedArmourImage[i].sprite = teamBasicArmour;
-                    Debug.Log(playerStats[i].playerName + "'s armour defence: " + playerStats[i].characterArmourDefence);
                 }
 
                 if (playerStats[i].characterWeaponPower > 5)
                 {
                     teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
-                    Debug.Log(playerStats[i].playerName + "'s weapon power: " + playerStats[i].characterWeaponPower);
                 }
                 else if (playerStats[i].characterWeaponPower == 5)
                 {
                     teamEquippedWeaponImage[i].sprite = teamBasicAxe;
-                    Debug.Log(playerStats[i].playerName + "'s weapon power: " + playerStats[i].characterWeaponPower);
                 }
 
 
@@ -739,8 +735,6 @@ public class MenuManager : MonoBehaviour
         Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         Inventory.instance.SellItem(activeItem, selectedCharacter);
         UpdateItemsInventory();
-        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
-        Debug.Log("CallToSellItem calling UpdateItemsInventory");
         textUseEquipTake.text = "Select";
     }
 
@@ -758,8 +752,6 @@ public class MenuManager : MonoBehaviour
         panelStuff = selectedCharacter;
         UpdateItemsInventory();
 
-        Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
-        textUseEquipTake.text = "Select";
     }
 
     public void turnEquipOn()
@@ -864,9 +856,9 @@ public class MenuManager : MonoBehaviour
             sequence.SetLoops(1, LoopType.Yoyo);
 
 
-            yield return new WaitForSecondsRealtime(2f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+            yield return new WaitForSecondsRealtime(1.8f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
 
             Debug.Log("Slider HP fill scale enacted");
         }
@@ -883,9 +875,9 @@ public class MenuManager : MonoBehaviour
             Debug.Log("Slider Mana fill expand and slide");
 
 
-            yield return new WaitForSecondsRealtime(2f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+            yield return new WaitForSecondsRealtime(1.8f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
 
         }
         else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
@@ -909,14 +901,14 @@ public class MenuManager : MonoBehaviour
             }
 
             yield return new WaitForSecondsRealtime(1f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
 
         }
 
         yield return new WaitForSecondsRealtime(0.3f);
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
 
     }
 
@@ -928,9 +920,9 @@ public class MenuManager : MonoBehaviour
     IEnumerator PanelCancel()
     {
         yield return new WaitForSecondsRealtime(0.1f);
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 1f);
-        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 1f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 1f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
     }
 
     public void FadeOutText(float duration)
@@ -990,7 +982,7 @@ public class MenuManager : MonoBehaviour
             inventTabsItemsFocus.SetActive(false);
             inventTabsPotionsFocus.SetActive(false);
 
-            inventTabsWeaponsHolder.Select();
+            //inventTabsWeaponsHolder.Select();
         }
         else if (boolName == "armour")
         {
@@ -1001,7 +993,7 @@ public class MenuManager : MonoBehaviour
             inventTabsItemsFocus.SetActive(false);
             inventTabsPotionsFocus.SetActive(false);
 
-            inventTabsArmourHolder.Select();
+            //inventTabsArmourHolder.Select();
 
         }
         else if (boolName == "item")
