@@ -112,6 +112,9 @@ public class MenuManager : MonoBehaviour
     [TabGroup("New Group", "Equip")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar; // doesn't look like I used these. Done in CoinsManager.
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Button[] weaponPanelButtons, potionPanelButtons; // doesn't look like I used these. Done in CoinsManager.
 
 
     [TabGroup("New Group", "Weaponry")]
@@ -740,9 +743,12 @@ public class MenuManager : MonoBehaviour
 
     public void CallToUseItem(int selectedCharacter)
     {
+
         // debug info
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         
+
+
         activeItem.UseItem(selectedCharacter);
 
         // pass player image position for CoinsManager animations
@@ -909,6 +915,7 @@ public class MenuManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.3f);
         mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
         characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        SetAllButtonsInteractable();
 
     }
 
@@ -1241,6 +1248,31 @@ public class MenuManager : MonoBehaviour
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedWeaponDescription;
             teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeaponPower.ToString();
             teamPopWeaponryBonusText.text = "Weapon Power:";
+        }
+    }
+
+    public void SetAllButtonsInteractable()
+    {
+        foreach (Button button in potionPanelButtons)
+        {
+            button.interactable = true;
+        }
+
+        foreach (Button button in weaponPanelButtons)
+        {
+            button.interactable = true;
+        }
+    }
+    public void SetAllButtonsUninteractable()
+    {
+        foreach (Button button in potionPanelButtons)
+        {
+            button.interactable = false;
+        }
+
+        foreach (Button button in weaponPanelButtons)
+        {
+            button.interactable = false;
         }
     }
 }

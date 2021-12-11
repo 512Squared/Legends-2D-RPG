@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class ButtonHandler : MonoBehaviour
 {
 
-    
+    public static ButtonHandler instance;
+
+
     public bool interfaceOn;
     
     public void IsinterfaceOn()
@@ -19,6 +21,8 @@ public class ButtonHandler : MonoBehaviour
     public void UseButtonOn()
     {
         GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = true;
+        GameObject.FindGameObjectWithTag("button_sell").GetComponent<Button>().interactable = true;
+
         Debug.Log("USE button re-activated. Status: " + GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable);
     }
 
@@ -30,6 +34,14 @@ public class ButtonHandler : MonoBehaviour
         foreach (Button button in buttons)
         {
             button.interactable = true;
+        }
+    }
+
+    public void SetAllButtonsUninteractable()
+    {
+        foreach (Button button in buttons)
+        {
+            button.interactable = false;
         }
     }
 
@@ -54,5 +66,7 @@ public class ButtonHandler : MonoBehaviour
         if (calledTab == "weapon") buttons[1].interactable = false;
         else if (calledTab == "armour") buttons[2].interactable = false;
     }
+
+
 
 }
