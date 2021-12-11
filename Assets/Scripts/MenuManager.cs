@@ -214,6 +214,10 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isOverviewOn, isStatsOn, isWeaponryOn;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isInventorySlidePanelOn;
+
 
 
     [Header("UI Tweening")]
@@ -665,8 +669,6 @@ public class MenuManager : MonoBehaviour
 
     public void equipCharStats()
     {
-
-
         playerStats = GameManager.instance.GetPlayerStats();
 
 
@@ -736,6 +738,7 @@ public class MenuManager : MonoBehaviour
     public void CallToSellItem(int selectedCharacter)
     {
         Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
+        isInventorySlidePanelOn = true;
         Inventory.instance.SellItem(activeItem, selectedCharacter);
         UpdateItemsInventory();
         textUseEquipTake.text = "Select";
@@ -747,8 +750,6 @@ public class MenuManager : MonoBehaviour
         // debug info
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
         
-
-
         activeItem.UseItem(selectedCharacter);
 
         // pass player image position for CoinsManager animations
@@ -769,6 +770,8 @@ public class MenuManager : MonoBehaviour
 
     public void equipBackAndHome() // tidying for back and home buttons
     {
+
+        SortByItemType("all"); // this is to reset if panel slide is on when exiting inventory
         turnEquipOn();
         currentNewItems = 0;
         if (keyboardKeyI == true)
@@ -836,6 +839,7 @@ public class MenuManager : MonoBehaviour
         {
             characterWeaponryPanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
+        isInventorySlidePanelOn = true;
 
 
     }
@@ -916,6 +920,7 @@ public class MenuManager : MonoBehaviour
         mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
         characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
         SetAllButtonsInteractable();
+        isInventorySlidePanelOn = false;
 
     }
 
@@ -977,6 +982,22 @@ public class MenuManager : MonoBehaviour
 
     public void SortByItemType(string boolName)
     {
+        
+        if (isInventorySlidePanelOn == true)
+        {
+            onCancelButton();
+            isInventorySlidePanelOn = false;
+            GameObject.FindGameObjectWithTag("button_cancel").SetActive(false);
+            textUseEquipTake.text = "Select";
+            GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
+            FadeOutText(1f);
+        }
+
+        else
+        {
+
+        }
+        
         weaponBool = armourBool = itemBool = potionBool = skillBool = false;
 
 
@@ -989,7 +1010,6 @@ public class MenuManager : MonoBehaviour
             inventTabsItemsFocus.SetActive(false);
             inventTabsPotionsFocus.SetActive(false);
 
-            //inventTabsWeaponsHolder.Select();
         }
         else if (boolName == "armour")
         {
@@ -999,8 +1019,6 @@ public class MenuManager : MonoBehaviour
             inventTabsArmourFocus.SetActive(true);
             inventTabsItemsFocus.SetActive(false);
             inventTabsPotionsFocus.SetActive(false);
-
-            //inventTabsArmourHolder.Select();
 
         }
         else if (boolName == "item")
