@@ -28,6 +28,7 @@ public class PlayerStats : MonoBehaviour
 
     public bool isTeamMember;
     public bool isAvailable;
+    public bool isNew = true;
 
     public string playerName;
     public string playerDesc;

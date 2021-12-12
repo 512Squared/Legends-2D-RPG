@@ -85,7 +85,7 @@ public class MenuManager : MonoBehaviour
 
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemValue;
+    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemPotion, itemValue;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public Image itemImage;
@@ -94,7 +94,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Transform itemBoxParent;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject itemBox, itemDamageBox, itemArmourBox;
+    public GameObject itemBox, itemDamageBox, itemArmourBox, itemPotionBox;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public TextMeshProUGUI effectText;
@@ -134,7 +134,7 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI[] inventoryWeaponPower, inventoryArmourDefence;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.147f, 0.154f, 0.496f)]
-    public TextMeshProUGUI itemWeaponPower, itemArmourDefence;
+    public TextMeshProUGUI itemWeaponPower, itemArmourDefence, itemPotionPower;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.147f, 0.154f, 0.496f)]
     public Sprite basicAxe, basicArmour;
@@ -180,7 +180,10 @@ public class MenuManager : MonoBehaviour
     public GameObject inventTabsAllFocus, inventTabsWeaponsFocus, inventTabsArmourFocus, inventTabsItemsFocus, inventTabsPotionsFocus;
     [TabGroup("Weapon Group", "Add to Party")]
     [GUIColor(0.307f, 0.321f, 0.027f)]
-    public Button[] addToParty, retireFromParty;
+    public Button[] addToPartyButton, retireFromPartyButton;
+    [TabGroup("Weapon Group", "Add to Party")]
+    [GUIColor(0.307f, 0.321f, 0.027f)]
+    public GameObject[] isNewNotification;
 
 
 
@@ -188,8 +191,7 @@ public class MenuManager : MonoBehaviour
 
 
 
-
-    [ShowInInspector]
+[ShowInInspector]
     [Title("INVENTORY")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
     public int currentNewItems;
@@ -300,24 +302,22 @@ public class MenuManager : MonoBehaviour
         playerStats = GameManager.instance.GetPlayerStats();
 
 
-
         for (int i = 0; i < playerStats.Length; i++)
         {
-
-
-            isTeamMember[i] = playerStats[i].isTeamMember;
-
 
             // set to false first, to account for changes in character party updating
 
             if (playerStats[i].isAvailable == true) // on 'add to party screen'
             {
                 //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
-                characterCards[i].SetActive(true);
+                
                 characterParty[i].SetActive(true);
+
                 if (playerStats[i].isTeamMember == true)
                 {
                     // on screens where isTeamMember is necessary
+
+                    characterCards[i].SetActive(true);
 
                     characterName[i].text = playerStats[i].playerName;
                     description[i].text = playerStats[i].playerDesc;
@@ -361,6 +361,8 @@ public class MenuManager : MonoBehaviour
                     }
 
 
+        
+
                     teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
                     teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
                     teamInventoryAttackTotal[i].text = (playerStats[i].npcDexterity - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
@@ -368,19 +370,17 @@ public class MenuManager : MonoBehaviour
                     teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
                     teamCharacterName[i].text = playerStats[i].playerName;
 
-                    teamEquippedWeaponImage[i].sprite = playerStats[i].characterImage;
+
                 }
 
-                
+                // these are the references for the Team Overview (add to party)
+
                 characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
                 levelP[i].text = playerStats[i].npcLevel.ToString();
                 characterMug[i].sprite = playerStats[i].characterMug;
                 thulGold[i].text = playerStats[0].thulGold.ToString();
                 thulPotions.text = playerStats[0].thulPotions.ToString();
                 thulSpells.text = playerStats[0].thulSpells.ToString();
-
-
-                
 
 
             }
@@ -655,29 +655,30 @@ public class MenuManager : MonoBehaviour
     {
 
         // select is the choice of character in the dropdown menu, i.e. the character array slot. 'select' is used instead of the 'for each' loop and 'isTeamMember'
-
-        select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
-        characterNameV.text = playerStats[select].playerName;
-        descriptionV.text = playerStats[select].playerDesc;
-        healthV.text = playerStats[select].npcHP.ToString();
-        characterImageV.sprite = playerStats[select].characterImage;
-        levelV.text = playerStats[select].npcLevel.ToString();
-        xpV.text = playerStats[select].npcXP.ToString();
-        manaV.text = playerStats[select].npcMana.ToString();
-        dexterityV.text = playerStats[select].npcDexterity.ToString();
-        defenceV.text = playerStats[select].npcDefence.ToString();
-        intelligenceV.text = playerStats[select].npcIntelligence.ToString();
-        perceptionV.text = playerStats[select].npcPerception.ToString();
-        intelligenceVS.value = playerStats[select].npcIntelligence;
-        xpVS.value = playerStats[select].npcXP;
-        manaVS.value = playerStats[select].npcMana;
-        healthVS.value = playerStats[select].npcHP;
-        dexterityVS.value = playerStats[select].npcDexterity;
-        defenceVS.value = playerStats[select].npcDefence;
-        intelligenceVS.value = playerStats[select].npcIntelligence;
-        perceptionVS.value = playerStats[select].npcPerception;
-        characterImageV.sprite = playerStats[select].characterImage;
-
+        if (playerStats[select].isTeamMember == true)
+        {
+            select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
+            characterNameV.text = playerStats[select].playerName;
+            descriptionV.text = playerStats[select].playerDesc;
+            healthV.text = playerStats[select].npcHP.ToString();
+            characterImageV.sprite = playerStats[select].characterImage;
+            levelV.text = playerStats[select].npcLevel.ToString();
+            xpV.text = playerStats[select].npcXP.ToString();
+            manaV.text = playerStats[select].npcMana.ToString();
+            dexterityV.text = playerStats[select].npcDexterity.ToString();
+            defenceV.text = playerStats[select].npcDefence.ToString();
+            intelligenceV.text = playerStats[select].npcIntelligence.ToString();
+            perceptionV.text = playerStats[select].npcPerception.ToString();
+            intelligenceVS.value = playerStats[select].npcIntelligence;
+            xpVS.value = playerStats[select].npcXP;
+            manaVS.value = playerStats[select].npcMana;
+            healthVS.value = playerStats[select].npcHP;
+            dexterityVS.value = playerStats[select].npcDexterity;
+            defenceVS.value = playerStats[select].npcDefence;
+            intelligenceVS.value = playerStats[select].npcIntelligence;
+            perceptionVS.value = playerStats[select].npcPerception;
+            characterImageV.sprite = playerStats[select].characterImage;
+        }
 
 
     }
@@ -687,13 +688,14 @@ public class MenuManager : MonoBehaviour
         playerStats = GameManager.instance.GetPlayerStats();
 
 
+        // a panel for displaying in Inventory Equip character with weapon/armour panel
         // populates a character array and assigns stats, weapons, and armour
 
         for (int i = 0; i < playerStats.Length; i++)
         {
 
-            isTeamMember[i] = playerStats[i].isTeamMember;
-            if (isTeamMember[i] == true)
+            
+            if (playerStats[i].isTeamMember == true)
             {
                 //stat text values
                 characterEquip[i].SetActive(true);
@@ -1324,15 +1326,39 @@ public class MenuManager : MonoBehaviour
             if (i == character)
             {
                 playerStats[character].isTeamMember = true;
-                characterParty[character].GetComponent<Button>().Select();
-                addToParty[character - 1].gameObject.SetActive(false);
-                retireFromParty[character - 1].gameObject.SetActive(true);
+                playerStats[character].isNew = false;
+                addToPartyButton[character].gameObject.SetActive(false);
+                isNewNotification[character].SetActive(false);
+                retireFromPartyButton[character].gameObject.SetActive(true);
                 UpdateStats();
+                equipCharStats();
                 Debug.Log(playerStats[character].playerName + " added to party");
             }
 
         }
     }
+    public void RemoveCharacterFromParty(int character)
+    {
+        playerStats = GameManager.instance.GetPlayerStats();
+
+        for (int i = 0; i < playerStats.Length; i++)
+        {
+            if (i == character)
+            {
+                playerStats[character].isTeamMember = false;
+                characterCards[character].SetActive(false);
+                teamCharacterWeaponry[character].SetActive(false);
+                characterEquip[character].SetActive(false);
+                addToPartyButton[character].gameObject.SetActive(true);
+                retireFromPartyButton[character].gameObject.SetActive(false);
+                UpdateStats();
+                equipCharStats();
+                Debug.Log(playerStats[character].playerName + " removed from party");
+            }
+
+        }
+    }
+
 }
 
 
