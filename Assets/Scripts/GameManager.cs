@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+
     [Title("Management")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
     [SerializeField] MenuManager menuManager;

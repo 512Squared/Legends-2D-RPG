@@ -37,6 +37,8 @@ public class MenuManager : MonoBehaviour
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject teamTabMenu;
 
+
+
     public static MenuManager instance;
 
 
@@ -360,9 +362,6 @@ public class MenuManager : MonoBehaviour
                         teamEquippedWeaponImage[i].sprite = teamBasicAxe;
                     }
 
-
-        
-
                     teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
                     teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
                     teamInventoryAttackTotal[i].text = (playerStats[i].npcDexterity - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
@@ -630,6 +629,9 @@ public class MenuManager : MonoBehaviour
 
     public void StatsMenu()
     {
+
+        playerStats = GameManager.instance.GetPlayerStats();
+
         for (int i = 0; i < playerStats.Length; i++)
         {
             statsButtons[i].SetActive(true);

@@ -27,6 +27,9 @@ public class ButtonHandler : MonoBehaviour
         Debug.Log("Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
     }
 
+    
+    // this is to turn Inventory tab buttons into toggles, where when selected, tab is interactable
+    
     [SerializeField]
     private Button[] buttons;
 
@@ -37,6 +40,7 @@ public class ButtonHandler : MonoBehaviour
             button.interactable = true;
         }
     }
+
 
     public void SetAllButtonsUninteractable()
     {

@@ -26,6 +26,8 @@ public class PlayerGlobalData : MonoBehaviour
     float horizontalMovement;
     float verticalMovement;
 
+
+
     [SerializeField] TextMeshProUGUI message;
 
     // Start is called before the first frame update
@@ -34,7 +36,8 @@ public class PlayerGlobalData : MonoBehaviour
     void Start()
     {
         instance = this;
-        message = GameManager.instance.playerMessages;
+
+
     }
 
 
@@ -108,22 +111,15 @@ public class PlayerGlobalData : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Character"))
         {
-            Debug.Log("Player character " + collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
+            Debug.Log(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
             collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
             MenuManager.instance.UpdateItemsInventory();
-
-            //message.DOFade(1f, 0.5f);
-;
-            StartCoroutine(SendNotification("A new character is available to add to your character party", 3));
+            NotificationFader.instance.CallFadeInOut(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available to add to character party!", collision.gameObject.GetComponent<PlayerStats>().characterMug);
         }
     }
 
-    IEnumerator SendNotification(string text, int time)
-    {
-        message.text = text;
-        yield return new WaitForSeconds(time);
-        message.text = "";
-    }
+
+
 
 }
 
