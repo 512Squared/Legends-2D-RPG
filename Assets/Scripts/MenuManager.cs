@@ -61,10 +61,12 @@ public class MenuManager : MonoBehaviour
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
     [PreviewField, Required]
-    [SerializeField] Image[] characterImage, characterMug;
+    [SerializeField] Image[] characterImage, characterMug, characterPlain;
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
     [SerializeField] Image characterImageV;
+
+
 
     [TabGroup("Sliders")]
     [GUIColor(1f, 0.886f, 0.780f)]
@@ -691,7 +693,8 @@ public class MenuManager : MonoBehaviour
         playerStats = GameManager.instance.GetPlayerStats();
 
 
-        // a panel for displaying in Inventory Equip character with weapon/armour panel
+        // INVENTORY: a panel that slides in to Equip character with weapon/armour or potions
+
         // populates a character array and assigns stats, weapons, and armour
 
         for (int i = 0; i < playerStats.Length; i++)

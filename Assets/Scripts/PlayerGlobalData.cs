@@ -116,7 +116,7 @@ public class PlayerGlobalData : MonoBehaviour
                 Debug.Log(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
                 collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
                 MenuManager.instance.UpdateItemsInventory();
-                NotificationFader.instance.CallFadeInOut(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available to add to character party!", collision.gameObject.GetComponent<PlayerStats>().characterMug);
+                NotificationFader.instance.CallFadeInOut(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available to add to character party!", collision.gameObject.GetComponent<PlayerStats>().characterPlain);
             }
         }
     }

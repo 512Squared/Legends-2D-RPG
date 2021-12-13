@@ -12,6 +12,7 @@ public class PlayerStats : MonoBehaviour
 
     public Sprite characterImage;
     public Sprite characterMug;
+    public Sprite characterPlain;
     public Sprite[] skills;
 
 
