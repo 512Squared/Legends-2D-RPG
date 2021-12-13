@@ -103,6 +103,9 @@ public class MenuManager : MonoBehaviour
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public GameObject effectBox;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject cancelButton, useButton;
 
 
     [TabGroup("New Group", "Equip")]
@@ -186,8 +189,6 @@ public class MenuManager : MonoBehaviour
     [TabGroup("Weapon Group", "Add to Party")]
     [GUIColor(0.307f, 0.321f, 0.027f)]
     public GameObject[] isNewNotification;
-
-
 
 
 
@@ -699,6 +700,9 @@ public class MenuManager : MonoBehaviour
             
             if (playerStats[i].isTeamMember == true)
             {
+                
+                // GIVE potions
+                
                 //stat text values
                 characterEquip[i].SetActive(true);
                 hpEquipToString[i].text = playerStats[i].npcHP.ToString();
@@ -710,7 +714,7 @@ public class MenuManager : MonoBehaviour
                 defenceEquipSlider[i].value = playerStats[i].npcDefence;
                 characterMugEquip[i].sprite = playerStats[i].characterMug;
 
-                //weaponry
+                // EQUIP weaponry
 
                 characterWeaponry[i].SetActive(true);
                 characterMugWeaponry[i].sprite = playerStats[i].characterMug;
@@ -1007,9 +1011,9 @@ public class MenuManager : MonoBehaviour
         {
             onCancelButton();
             isInventorySlidePanelOn = false;
-            GameObject.FindGameObjectWithTag("button_cancel").SetActive(false);
+            cancelButton.SetActive(false);
             textUseEquipTake.text = "Select";
-            GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = false;
+            useButton.GetComponent<Button>().interactable = false;
             FadeOutText(1f);
         }
 
@@ -1348,13 +1352,18 @@ public class MenuManager : MonoBehaviour
             if (i == character)
             {
                 playerStats[character].isTeamMember = false;
+                
                 characterCards[character].SetActive(false);
                 teamCharacterWeaponry[character].SetActive(false);
                 characterEquip[character].SetActive(false);
+                characterWeaponry[character].SetActive(false);
+                
                 addToPartyButton[character].gameObject.SetActive(true);
                 retireFromPartyButton[character].gameObject.SetActive(false);
+                
                 UpdateStats();
                 equipCharStats();
+                
                 Debug.Log(playerStats[character].playerName + " removed from party");
             }
 
