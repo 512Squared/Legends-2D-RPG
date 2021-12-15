@@ -15,6 +15,7 @@ public class Inventory : MonoBehaviour
 
     private List<ItemsManager> itemsList;
     public PlayerStats[] characterArray;
+    [SerializeField] PlayerStats thulgran;
 
     [SerializeField] CoinsManager coinsManager;
 
@@ -34,28 +35,28 @@ public class Inventory : MonoBehaviour
     public void AddItems(ItemsManager item)
     {
 
-            if (item.isStackable)
+        if (item.isStackable)
+        {
+            bool itemAleadyInInventory = false;
+
+            foreach (ItemsManager itemInInventory in itemsList)
             {
-                bool itemAleadyInInventory = false;
-
-                foreach (ItemsManager itemInInventory in itemsList)
+                if (itemInInventory.itemName == item.itemName)
                 {
-                    if (itemInInventory.itemName == item.itemName)
-                    {
-                        itemInInventory.amount += item.amount;
-                        itemAleadyInInventory = true;
-                    }
-                }
-
-                if (!itemAleadyInInventory)
-                {
-                    itemsList.Add(item);
+                    itemInInventory.amount += item.amount;
+                    itemAleadyInInventory = true;
                 }
             }
-            else
+
+            if (!itemAleadyInInventory)
             {
                 itemsList.Add(item);
             }
+        }
+        else
+        {
+            itemsList.Add(item);
+        }
 
 
     }
@@ -114,7 +115,7 @@ public class Inventory : MonoBehaviour
             {
 
                 characterArray[selectedCharacterSell].thulGold += item.valueInCoins;
-                itemsList.Remove(item); 
+                itemsList.Remove(item);
                 coinsManager.updateCoins();
                 coinsManager.UIAddCoins(item.valueInCoins, selectedCharacterSell);
 
@@ -200,7 +201,7 @@ public class Inventory : MonoBehaviour
                                 // now adding same anim for other characters
                                 coinsManager.updateHP();
                                 coinsManager.UIAddHp(item.amountOfEffect, target, selectedCharacterUse);
-                                
+
                                 MenuManager.instance.UpdateStats();
                                 Debug.Log("HP animation called (notThulgran)");
                             }
@@ -241,9 +242,9 @@ public class Inventory : MonoBehaviour
                     else
                     {
 
-                       Debug.Log("Mana animation called (notThulgran)");
-                       coinsManager.updateMana();
-                       coinsManager.UIAddMana(item.amountOfEffect, target, selectedCharacterUse); MenuManager.instance.UpdateStats();
+                        Debug.Log("Mana animation called (notThulgran)");
+                        coinsManager.updateMana();
+                        coinsManager.UIAddMana(item.amountOfEffect, target, selectedCharacterUse); MenuManager.instance.UpdateStats();
                     }
 
                 }
@@ -283,44 +284,17 @@ public class Inventory : MonoBehaviour
 
     public void BuyItem(ItemsManager item)
     {
-        
-        
-        
-        if (item.isStackable)
-        {
-            ItemsManager inventoryItem = null;
-
-            foreach (ItemsManager itemInInventory in itemsList)
-
-            {
-                if (itemInInventory.itemName == item.itemName && itemInInventory.shopItem == item.shopItem)
-                {
-                    // run the update on the main stats
 
 
-                    itemInInventory.amount++;
-                    inventoryItem = itemInInventory;
-                    item.shopItem = false;
+        item.shopItem = false;
 
-                    // implementing the sell
+        // implementing the sell
 
-                    characterArray[0].thulGold -= item.valueInCoins;
-                    MenuManager.instance.UpdateStats();
-                    Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
-                    
-                }
-            }
-
-        }
-
-        else if (item.shopItem == true)
-        {
-            // implementing the coinAnimation
-            Debug.Log("unstackable item " + item.itemName + " bought");
-            item.shopItem = false;
-            characterArray[0].thulGold -= item.valueInCoins;
-            MenuManager.instance.UpdateStats();
-        }
+        thulgran.PayUpTheGold(item.valueInCoins);
+        ShopManager.instance.currentThulGold.text = characterArray[0].thulGold.ToString();
+        ShopManager.instance.currentThulGold2.text = characterArray[0].thulGold.ToString();
+        MenuManager.instance.UpdateStats();
+        Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
     }
 
 

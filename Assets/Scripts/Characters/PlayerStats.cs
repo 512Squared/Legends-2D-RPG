@@ -176,5 +176,10 @@ public class PlayerStats : MonoBehaviour
         equippedArmourDescription = equippedArmour.itemDescription;
     }
 
+    public void PayUpTheGold(int itemValue)
+    {
+        thulGold -= itemValue;
+    }
+
 }
 
