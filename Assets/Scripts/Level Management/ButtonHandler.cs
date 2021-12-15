@@ -18,13 +18,10 @@ public class ButtonHandler : MonoBehaviour
 
     }
 
-    public void UseButtonOn()
+    public void UseButtonIsOn()
     {
         GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = true;
         GameObject.FindGameObjectWithTag("button_sell").GetComponent<Button>().interactable = true;
-
-        Debug.Log("USE button re-activated. Status: " + GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable);
-        Debug.Log("Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
     }
 
     

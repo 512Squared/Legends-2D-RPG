@@ -45,10 +45,6 @@ public class MenuManager : MonoBehaviour
 
     private int panelStuff;
     private string whichPanelIsOn = "";
-    private UIFader uiFader;
-
-    //adding serializeField gives possibility to add Simple Joystick object in inspector and thereby share its functions. Not possible if in prefab unless both are in a prefab
-
     public static int select;
 
     [TabGroup("Char Stats")]
@@ -196,7 +192,7 @@ public class MenuManager : MonoBehaviour
 
 
 
-[ShowInInspector]
+    [ShowInInspector]
     [Title("INVENTORY")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
     public int currentNewItems;
@@ -315,7 +311,7 @@ public class MenuManager : MonoBehaviour
             if (playerStats[i].isAvailable == true) // on 'add to party screen'
             {
                 //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
-                
+
                 characterParty[i].SetActive(true);
 
                 if (playerStats[i].isTeamMember == true)
@@ -410,223 +406,228 @@ public class MenuManager : MonoBehaviour
 
         foreach (ItemsManager item in Inventory.instance.GetItemsList())
         {
-            RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
 
-
-            // show item image
-
-            Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
-            itemImage.sprite = item.itemsImage;
-
-            TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
-            if (item.amount > 1)
-            {
-                itemsAmountText.text = item.amount.ToString();
-            }
-            else
-            {
-                itemsAmountText.text = "";
-            }
-
-            itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
-
-
-            // new items - needs to run here to count how many new items
-
-            if (item.isNewItem == true)
-            {
-                GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                currentNewItems++;
-            }
-
-
-            // Stuff to activate ONLY when inside inventory
-
-            if (isEquipOn == true)
+            if (item.shopItem == false)
             {
 
-                // Removing focus from previously selected items 
+                RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
 
-                if (item.itemSelected == false)
+
+                // show item image
+
+                Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
+                itemImage.sprite = item.itemsImage;
+
+                TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
+                if (item.amount > 1)
                 {
-                    itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
-                    GameManager.instance.isItemSelected = false;
-
-                    if (item.isNewItem == true)
-                    {
-                        itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
-                    }
-                    // new items - set red marker; count item
-
-                    if (item.isNewItem == false)
-                    {
-                        itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
-                    }
+                    itemsAmountText.text = item.amount.ToString();
+                }
+                else
+                {
+                    itemsAmountText.text = "";
                 }
 
-                // ITEM SORTING FOR SELECTED ITEM
+                itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
 
-                else if (item.itemSelected == true) // if item has been selected
+
+                // new items - needs to run here to count how many new items
+
+                if (item.isNewItem == true)
                 {
-                    item.itemSelected = false;
-                    itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
-
-                    // ITEM SELECTED animation
-
-                    itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-
-                    // NEW ITEM tagging
-
-                    item.isNewItem = false; // switch off new item tag after selection
-                    itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
-
-                    // SORTING BY ITEM TYPE
-
-                    effectBox.GetComponent<CanvasGroup>().alpha = 0; // necessary reset
+                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                    currentNewItems++;
+                }
 
 
-                    //  SORT BY POTIONS
+                // Stuff to activate ONLY when inside inventory
 
-                    if (item.itemType == ItemsManager.ItemType.Potion)
+                if (isEquipOn == true)
+                {
+
+                    // Removing focus from previously selected items 
+
+                    if (item.itemSelected == false)
                     {
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                        itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
+                        GameManager.instance.isItemSelected = false;
 
-                        textUseEquipTake.text = "Give";
-
-                        // EFFECT MODIFIER (on item info)
-
-                        if (item.itemName == "Speed Potion")
+                        if (item.isNewItem == true)
                         {
-                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            effectText.text = "x" + item.amountOfEffect.ToString();
+                            itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
+                        }
+                        // new items - set red marker; count item
+
+                        if (item.isNewItem == false)
+                        {
+                            itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+                        }
+                    }
+
+                    // ITEM SORTING FOR SELECTED ITEM
+
+                    else if (item.itemSelected == true) // if item has been selected
+                    {
+                        item.itemSelected = false;
+                        itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
+
+                        // ITEM SELECTED animation
+
+                        itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
+
+                        // NEW ITEM tagging
+
+                        item.isNewItem = false; // switch off new item tag after selection
+                        itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+
+                        // SORTING BY ITEM TYPE
+
+                        effectBox.GetComponent<CanvasGroup>().alpha = 0; // necessary reset
+
+
+                        //  SORT BY POTIONS
+
+                        if (item.itemType == ItemsManager.ItemType.Potion)
+                        {
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+
+                            textUseEquipTake.text = "Give";
+
+                            // EFFECT MODIFIER (on item info)
+
+                            if (item.itemName == "Speed Potion")
+                            {
+                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                effectText.text = "x" + item.amountOfEffect.ToString();
+                            }
+
+                            else if (item.itemName == "Mana Potion")
+                            {
+                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                effectText.text = "+" + item.amountOfEffect.ToString();
+                            }
+
+                            else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion")
+                            {
+                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                effectText.text = "+" + item.amountOfEffect.ToString();
+                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
+                            }
+
+                            else
+                            {
+                                effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
+                            }
+
                         }
 
-                        else if (item.itemName == "Mana Potion")
-                        {
-                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            effectText.text = "+" + item.amountOfEffect.ToString();
-                        }
+                        // SORT BY ARMOUR
 
-                        else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion")
-                        {
-                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            effectText.text = "+" + item.amountOfEffect.ToString();
-                            Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
-                        }
-
-                        else
+                        if (item.itemType == ItemsManager.ItemType.Armour)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                            textUseEquipTake.text = "Equip";
                         }
 
+                        // SORT BY WEAPON
+
+                        if (item.itemType == ItemsManager.ItemType.Weapon)
+                        {
+                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                            textUseEquipTake.text = "Equip";
+                        }
+
+                        // SORT BY NORMAL ITEMS
+
+                        if (item.itemType == ItemsManager.ItemType.Item)
+                        {
+                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                            textUseEquipTake.text = "Use";
+                        }
                     }
+                }
 
-                    // SORT BY ARMOUR
+                // sorting strategy - destroy everything else but the chosen type
 
-                    if (item.itemType == ItemsManager.ItemType.Armour)
+                if (weaponBool == true)
+
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+           (item.itemType == ItemsManager.ItemType.Armour) ||
+           (item.itemType == ItemsManager.ItemType.Item) ||
+           (item.itemType == ItemsManager.ItemType.Skill))
                     {
-                        effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-                        textUseEquipTake.text = "Equip";
+                        Destroy(itemSlot.gameObject);
                     }
 
-                    // SORT BY WEAPON
+                }
+                else if (armourBool == true)
 
-                    if (item.itemType == ItemsManager.ItemType.Weapon)
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+           (item.itemType == ItemsManager.ItemType.Weapon) ||
+           (item.itemType == ItemsManager.ItemType.Item) ||
+           (item.itemType == ItemsManager.ItemType.Skill))
                     {
-                        effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-                        textUseEquipTake.text = "Equip";
+                        Destroy(itemSlot.gameObject);
                     }
+                }
+                else if (itemBool == true)
 
-                    // SORT BY NORMAL ITEMS
-
-                    if (item.itemType == ItemsManager.ItemType.Item)
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+           (item.itemType == ItemsManager.ItemType.Armour) ||
+           (item.itemType == ItemsManager.ItemType.Weapon) ||
+           (item.itemType == ItemsManager.ItemType.Skill))
                     {
-                        effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-                        textUseEquipTake.text = "Use";
+                        Destroy(itemSlot.gameObject);
                     }
                 }
-            }
+                else if (skillBool == true)
 
-            // sorting strategy - destroy everything else but the chosen type
-
-            if (weaponBool == true)
-
-            {
-                if ((item.itemType == ItemsManager.ItemType.Potion) ||
-       (item.itemType == ItemsManager.ItemType.Armour) ||
-       (item.itemType == ItemsManager.ItemType.Item) ||
-       (item.itemType == ItemsManager.ItemType.Skill))
                 {
-                    Destroy(itemSlot.gameObject);
+                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+           (item.itemType == ItemsManager.ItemType.Armour) ||
+           (item.itemType == ItemsManager.ItemType.Item) ||
+           (item.itemType == ItemsManager.ItemType.Weapon))
+                    {
+                        Destroy(itemSlot.gameObject);
+                    }
+                }
+                else if (potionBool == true)
+
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Weapon) ||
+           (item.itemType == ItemsManager.ItemType.Armour) ||
+           (item.itemType == ItemsManager.ItemType.Item) ||
+           (item.itemType == ItemsManager.ItemType.Skill))
+                    {
+                        Destroy(itemSlot.gameObject);
+                    }
                 }
 
-            }
-            else if (armourBool == true)
+                // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
 
-            {
-                if ((item.itemType == ItemsManager.ItemType.Potion) ||
-       (item.itemType == ItemsManager.ItemType.Weapon) ||
-       (item.itemType == ItemsManager.ItemType.Item) ||
-       (item.itemType == ItemsManager.ItemType.Skill))
+                if (currentNewItems == 0)
                 {
-                    Destroy(itemSlot.gameObject);
+                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
                 }
-            }
-            else if (itemBool == true)
 
-            {
-                if ((item.itemType == ItemsManager.ItemType.Potion) ||
-       (item.itemType == ItemsManager.ItemType.Armour) ||
-       (item.itemType == ItemsManager.ItemType.Weapon) ||
-       (item.itemType == ItemsManager.ItemType.Skill))
+                else if (currentNewItems > 0)
                 {
-                    Destroy(itemSlot.gameObject);
+                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                    newItemsText.text = currentNewItems.ToString();
                 }
+
+                GameManager.instance.currentNewItems = currentNewItems;
+                //Debug.Log("No. of new Items: " + currentNewItems);
+
             }
-            else if (skillBool == true)
-
-            {
-                if ((item.itemType == ItemsManager.ItemType.Potion) ||
-       (item.itemType == ItemsManager.ItemType.Armour) ||
-       (item.itemType == ItemsManager.ItemType.Item) ||
-       (item.itemType == ItemsManager.ItemType.Weapon))
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-            }
-            else if (potionBool == true)
-
-            {
-                if ((item.itemType == ItemsManager.ItemType.Weapon) ||
-       (item.itemType == ItemsManager.ItemType.Armour) ||
-       (item.itemType == ItemsManager.ItemType.Item) ||
-       (item.itemType == ItemsManager.ItemType.Skill))
-                {
-                    Destroy(itemSlot.gameObject);
-                }
-            }
-
-            // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
-
-            if (currentNewItems == 0)
-            {
-                GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-            }
-
-            else if (currentNewItems > 0)
-            {
-                GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                newItemsText.text = currentNewItems.ToString();
-            }
-
-            GameManager.instance.currentNewItems = currentNewItems;
-            //Debug.Log("No. of new Items: " + currentNewItems);
-
-
+            
         }
     }
 
@@ -700,12 +701,12 @@ public class MenuManager : MonoBehaviour
         for (int i = 0; i < playerStats.Length; i++)
         {
 
-            
+
             if (playerStats[i].isTeamMember == true)
             {
-                
+
                 // GIVE potions
-                
+
                 //stat text values
                 characterEquip[i].SetActive(true);
                 hpEquipToString[i].text = playerStats[i].npcHP.ToString();
@@ -775,7 +776,7 @@ public class MenuManager : MonoBehaviour
 
         // debug info
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
-        
+
         activeItem.UseItem(selectedCharacter);
 
         // pass player image position for CoinsManager animations
@@ -1009,7 +1010,7 @@ public class MenuManager : MonoBehaviour
 
     public void SortByItemType(string boolName)
     {
-        
+
         if (isInventorySlidePanelOn == true)
         {
             onCancelButton();
@@ -1024,7 +1025,7 @@ public class MenuManager : MonoBehaviour
         {
 
         }
-        
+
         weaponBool = armourBool = itemBool = potionBool = skillBool = false;
 
 
@@ -1069,18 +1070,16 @@ public class MenuManager : MonoBehaviour
         else if (boolName == "skill")
         {
             skillBool = true;
-    
+
         }
         if (boolName != "all")
         {
-            TextMeshProUGUI allText = GameObject.FindGameObjectWithTag("allTab").GetComponent<TextMeshProUGUI>();
-            allText.color = new Color32(82, 77, 80, 255);
+            inventTabsAllText.GetComponent<TextMeshProUGUI>().color = new Color32(82, 77, 80, 255);
         }
 
         if (boolName == "all")
         {
-            TextMeshProUGUI allText = GameObject.FindGameObjectWithTag("allTab").GetComponent<TextMeshProUGUI>();
-            allText.color = new Color32(236, 216, 150, 255);
+            inventTabsAllText.GetComponent<TextMeshProUGUI>().color = new Color32(236, 216, 150, 255);
             inventTabsAllFocus.SetActive(true);
             inventTabsWeaponsFocus.SetActive(false);
             inventTabsArmourFocus.SetActive(false);
@@ -1102,10 +1101,10 @@ public class MenuManager : MonoBehaviour
             isStatsOn = false;
             isWeaponryOn = false;
 
-            
+
             WhichPanelIsOn();
 
-            focusTitle.text = "Overview";
+            focusTitle.text = "Character Party";
 
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
@@ -1355,18 +1354,18 @@ public class MenuManager : MonoBehaviour
             if (i == character)
             {
                 playerStats[character].isTeamMember = false;
-                
+
                 characterCards[character].SetActive(false);
                 teamCharacterWeaponry[character].SetActive(false);
                 characterEquip[character].SetActive(false);
                 characterWeaponry[character].SetActive(false);
-                
+
                 addToPartyButton[character].gameObject.SetActive(true);
                 retireFromPartyButton[character].gameObject.SetActive(false);
-                
+
                 UpdateStats();
                 equipCharStats();
-                
+
                 Debug.Log(playerStats[character].playerName + " removed from party");
             }
 

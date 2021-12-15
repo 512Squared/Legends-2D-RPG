@@ -28,7 +28,7 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.itemDamage.text = "+" + itemOnButton.itemWeaponPower.ToString();
             MenuManager.instance.itemArmourBox.SetActive(false);
             MenuManager.instance.itemPotionBox.SetActive(false);
-            Debug.Log("Item is a weapon: " + itemOnButton.itemWeaponPower);
+            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemWeaponPower);
         }
         else if (itemOnButton.itemType == ItemsManager.ItemType.Armour)
         {
@@ -37,7 +37,7 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.itemArmour.text = "+" + itemOnButton.itemArmourDefence.ToString();
             MenuManager.instance.itemDamageBox.SetActive(false);
             MenuManager.instance.itemPotionBox.SetActive(false);
-            Debug.Log("Item is armour: " + itemOnButton.itemArmourDefence);
+            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemArmourDefence);
         }
 
         else if (itemOnButton.itemType == ItemsManager.ItemType.Potion)
@@ -47,30 +47,38 @@ public class ItemButton : MonoBehaviour
             if (itemOnButton.itemName == "Speed Potion") MenuManager.instance.itemPotion.text = "x" + itemOnButton.amountOfEffect.ToString();
             MenuManager.instance.itemArmourBox.SetActive(false);
             MenuManager.instance.itemDamageBox.SetActive(false);
-            Debug.Log("Item is a potion: " + itemOnButton.amountOfEffect);
+            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.amountOfEffect);
 
         }
         
         else if (itemOnButton.itemType == ItemsManager.ItemType.Item)
         {
-            //MenuManager.instance.itemArmourDefence.text = "";
-            //MenuManager.instance.itemPotionPower.text = "";
-            //MenuManager.instance.itemWeaponPower.text = "";
             MenuManager.instance.itemArmourBox.SetActive(false);
             MenuManager.instance.itemDamageBox.SetActive(false);
             MenuManager.instance.itemPotionBox.SetActive(false);
-            Debug.Log("Item is an item: " + itemOnButton.itemName);
+            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemName);
         }
 
 
-
-        MenuManager.instance.activeItem = itemOnButton;
         GameManager.instance.activeItem = itemOnButton;
  
-        itemOnButton.itemSelected = MenuManager.instance.activeItem;
-        itemOnButton.itemSelected = GameManager.instance.activeItem;
 
-        MenuManager.instance.UpdateItemsInventory();
+        if (itemOnButton.shopItem == true)
+        {
+            ShopManager.instance.activeItem = itemOnButton;
+            itemOnButton.itemSelected = ShopManager.instance.activeItem;
+            ShopManager.instance.UpdateShopItemsInventory();
+        }
+        else if (itemOnButton.shopItem == false)
+        {
+            itemOnButton.itemSelected = MenuManager.instance.activeItem;
+            MenuManager.instance.activeItem = itemOnButton;
+            MenuManager.instance.UpdateItemsInventory();
+        }
+        
+
+
+        Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemName);
 
     }
 

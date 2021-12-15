@@ -33,28 +33,29 @@ public class Inventory : MonoBehaviour
 
     public void AddItems(ItemsManager item)
     {
-        if (item.isStackable)
-        {
-            bool itemAleadyInInventory = false;
 
-            foreach (ItemsManager itemInInventory in itemsList)
+            if (item.isStackable)
             {
-                if (itemInInventory.itemName == item.itemName)
+                bool itemAleadyInInventory = false;
+
+                foreach (ItemsManager itemInInventory in itemsList)
                 {
-                    itemInInventory.amount += item.amount;
-                    itemAleadyInInventory = true;
+                    if (itemInInventory.itemName == item.itemName)
+                    {
+                        itemInInventory.amount += item.amount;
+                        itemAleadyInInventory = true;
+                    }
+                }
+
+                if (!itemAleadyInInventory)
+                {
+                    itemsList.Add(item);
                 }
             }
-
-            if (!itemAleadyInInventory)
+            else
             {
                 itemsList.Add(item);
             }
-        }
-        else
-        {
-            itemsList.Add(item);
-        }
 
 
     }
@@ -79,7 +80,6 @@ public class Inventory : MonoBehaviour
                     // implementing the sell
 
                     characterArray[selectedCharacterSell].thulGold += item.valueInCoins;
-                    item.itemSold = true;
                     if (selectedCharacterSell == 0)
                     {
                         coinsManager.updateCoins();
@@ -279,6 +279,51 @@ public class Inventory : MonoBehaviour
 
         }
     }
+
+
+    public void BuyItem(ItemsManager item)
+    {
+        
+        
+        
+        if (item.isStackable)
+        {
+            ItemsManager inventoryItem = null;
+
+            foreach (ItemsManager itemInInventory in itemsList)
+
+            {
+                if (itemInInventory.itemName == item.itemName && itemInInventory.shopItem == item.shopItem)
+                {
+                    // run the update on the main stats
+
+
+                    itemInInventory.amount++;
+                    inventoryItem = itemInInventory;
+                    item.shopItem = false;
+
+                    // implementing the sell
+
+                    characterArray[0].thulGold -= item.valueInCoins;
+                    MenuManager.instance.UpdateStats();
+                    Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
+                    
+                }
+            }
+
+        }
+
+        else if (item.shopItem == true)
+        {
+            // implementing the coinAnimation
+            Debug.Log("unstackable item " + item.itemName + " bought");
+            item.shopItem = false;
+            characterArray[0].thulGold -= item.valueInCoins;
+            MenuManager.instance.UpdateStats();
+        }
+    }
+
+
 
 
     public List<ItemsManager> GetItemsList()

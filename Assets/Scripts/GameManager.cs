@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour
     [Space]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public int currentNewItems;
+    [Space]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public int shopCurrentNewItems;
 
 
 
@@ -44,7 +47,7 @@ public class GameManager : MonoBehaviour
     public bool isInterfaceOn, dialogueBoxOpened;
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
-    public bool isEquipOn;
+    public bool isEquipOn, isShopOn;
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
     public bool isItemSelected;

@@ -37,4 +37,8 @@ public class AnyManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(scene);
 
     }
+
+
+
+
 }

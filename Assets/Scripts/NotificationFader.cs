@@ -66,7 +66,7 @@ public class NotificationFader : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         FadeIn(0.5f, passedMessage, characterMug);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.5f);
         FadeOut(0.5f);
     }
 

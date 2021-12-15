@@ -1180,7 +1180,7 @@ MonoBehaviour:
   itemsImage: {fileID: 0}
   itemSelected: 0
   isNewItem: 1
-  itemSold: 0
+  shopItem: 0
   affectType: 0
   amountOfEffect: 0
   itemWeaponPower: 0
@@ -1246,6 +1246,10 @@ PrefabInstance:
     - target: {fileID: 102512807189851332, guid: 15b96f501365d6f419e8659ef14ad3e3, type: 3}
       propertyPath: m_Name
       value: bag
+      objectReference: {fileID: 0}
+    - target: {fileID: 102512807189851334, guid: 15b96f501365d6f419e8659ef14ad3e3, type: 3}
+      propertyPath: shopItem
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 102512807189851335, guid: 15b96f501365d6f419e8659ef14ad3e3, type: 3}
       propertyPath: m_RootOrder
@@ -1556,6 +1560,10 @@ PrefabInstance:
     - target: {fileID: 443439273727162904, guid: 0efffedb1e186974d96f51c18810fa81, type: 3}
       propertyPath: itemType
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 443439273727162904, guid: 0efffedb1e186974d96f51c18810fa81, type: 3}
+      propertyPath: shopItem
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 443439273727162904, guid: 0efffedb1e186974d96f51c18810fa81, type: 3}
       propertyPath: affectType
@@ -2863,6 +2871,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 4171480784311286805}
     m_Modifications:
     - target: {fileID: 8337018510580147266, guid: 3081504e2bcf0a44aa885942ca1e2f0d, type: 3}
+      propertyPath: shopItem
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8337018510580147266, guid: 3081504e2bcf0a44aa885942ca1e2f0d, type: 3}
       propertyPath: valueInCoins
       value: 70
       objectReference: {fileID: 0}
@@ -3353,12 +3365,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 4171480784311286805}
     m_Modifications:
     - target: {fileID: 6128279810230569935, guid: 89e431b8c4b36f8499943d9823669601, type: 3}
+      propertyPath: shopItem
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6128279810230569935, guid: 89e431b8c4b36f8499943d9823669601, type: 3}
       propertyPath: valueInCoins
-      value: 5
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6128279810230569935, guid: 89e431b8c4b36f8499943d9823669601, type: 3}
       propertyPath: itemArmourDefence
-      value: 22
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 6128279810230569968, guid: 89e431b8c4b36f8499943d9823669601, type: 3}
       propertyPath: m_RootOrder
@@ -3497,6 +3513,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 4171480784311286805}
     m_Modifications:
     - target: {fileID: 8337018510580147266, guid: 3081504e2bcf0a44aa885942ca1e2f0d, type: 3}
+      propertyPath: shopItem
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8337018510580147266, guid: 3081504e2bcf0a44aa885942ca1e2f0d, type: 3}
       propertyPath: valueInCoins
       value: 70
       objectReference: {fileID: 0}
@@ -3615,6 +3635,10 @@ PrefabInstance:
       value: Red Healing Potion
       objectReference: {fileID: 0}
     - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
+      propertyPath: shopItem
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241290558915555513, guid: a5a829d20e6d67f4d805898beda74cc8, type: 3}
       propertyPath: valueInCoins
       value: 20
       objectReference: {fileID: 0}
@@ -3679,6 +3703,10 @@ PrefabInstance:
     - target: {fileID: 4440210779343205425, guid: 3c39a771fbb77844dae494bac6164dcf, type: 3}
       propertyPath: m_Name
       value: necklace
+      objectReference: {fileID: 0}
+    - target: {fileID: 4440210779343205427, guid: 3c39a771fbb77844dae494bac6164dcf, type: 3}
+      propertyPath: shopItem
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c39a771fbb77844dae494bac6164dcf, type: 3}
@@ -4138,6 +4166,10 @@ PrefabInstance:
     - target: {fileID: 6371243998244989084, guid: b672aa1924ee1734d85ddf4a4c4f1bad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6371243998244989085, guid: b672aa1924ee1734d85ddf4a4c4f1bad, type: 3}
+      propertyPath: shopItem
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b672aa1924ee1734d85ddf4a4c4f1bad, type: 3}
@@ -4680,6 +4712,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4171480784311286805}
     m_Modifications:
+    - target: {fileID: 8518652281154848677, guid: 4b077861deda5794fb1af3fbdc3d41af, type: 3}
+      propertyPath: shopItem
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8518652281154848698, guid: 4b077861deda5794fb1af3fbdc3d41af, type: 3}
       propertyPath: m_RootOrder
       value: 46
@@ -4754,6 +4790,10 @@ PrefabInstance:
     - target: {fileID: 8624690100668308222, guid: d734d141f25091f40a17abb03bb7cb3b, type: 3}
       propertyPath: itemType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8624690100668308222, guid: d734d141f25091f40a17abb03bb7cb3b, type: 3}
+      propertyPath: shopItem
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8624690100668308223, guid: d734d141f25091f40a17abb03bb7cb3b, type: 3}
       propertyPath: m_RootOrder
