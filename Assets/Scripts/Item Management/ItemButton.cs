@@ -13,6 +13,10 @@ public class ItemButton : MonoBehaviour
     [TabGroup("Buttons"), Button]
     public void Press()
     {
+
+        ShopManager.instance.ShopFadeOutText(3);
+        
+        
         MenuManager.instance.itemName.text = itemOnButton.itemName;
         MenuManager.instance.itemDescription.text = itemOnButton.itemDescription;
         MenuManager.instance.itemImage.sprite = itemOnButton.itemsImage;

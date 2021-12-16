@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using TMPro;
-using DG.Tweening;
+
 
 
 public class PlayerGlobalData : MonoBehaviour
@@ -26,17 +25,13 @@ public class PlayerGlobalData : MonoBehaviour
     float horizontalMovement;
     float verticalMovement;
 
-
-
-    [SerializeField] TextMeshProUGUI message;
-
+    
     // Start is called before the first frame update
 
 
     void Start()
     {
         instance = this;
-
 
     }
 
@@ -116,7 +111,10 @@ public class PlayerGlobalData : MonoBehaviour
                 Debug.Log(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
                 collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
                 MenuManager.instance.UpdateItemsInventory();
-                NotificationFader.instance.CallFadeInOut(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available to add to your character party!", collision.gameObject.GetComponent<PlayerStats>().characterPlain);
+                NotificationFader.instance.CallFadeInOut(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available to add to your character party!",
+                collision.gameObject.GetComponent<PlayerStats>().characterPlain,
+                3.4f,
+                1000);
             }
         }
     }

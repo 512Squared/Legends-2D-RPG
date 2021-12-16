@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 
 public class ShopManager : MonoBehaviour
@@ -25,19 +26,25 @@ public class ShopManager : MonoBehaviour
     public Image shopItemImage;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Sprite shopMasking, bagOfGold;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public CanvasGroup itemSoldMessage;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
     public TextMeshProUGUI shopEffectText, shopItemArmourDefence, shopItemWeaponPower;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject shopItemBox, shopItemDamageBox, shopItemArmourBox, shopItemPotionBox, shopEffectBox;
+    public GameObject shopItemBox, shopItemDamageBox, shopItemArmourBox, shopItemPotionBox, shopEffectBox, messageContainer;
 
 
-    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [TabGroup("Weapon Group", "Shop Tabs")]
     [GUIColor(0.207f, 0.921f, 0.027f)]
     public Button shopTabsAllHolder, shopTabsWeaponsHolder, shopTabsArmourHolder, shopTabsItemsHolder, shopTabsPotionsHolder;
-    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [TabGroup("Weapon Group", "Shop Tabs")]
     [GUIColor(0.207f, 0.921f, 0.027f)]
     public TextMeshProUGUI shopTabsAllText, currentThulGold, currentThulGold2, shopNewItemsText;
-    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [TabGroup("Weapon Group", "Shop Tabs")]
     [GUIColor(0.207f, 0.921f, 0.027f)]
     public GameObject shopTabsAllFocus, shopTabsWeaponsFocus, shopTabsArmourFocus, shopTabsItemsFocus, shopTabsPotionsFocus;
 
@@ -46,6 +53,7 @@ public class ShopManager : MonoBehaviour
     private int shopCurrentNewItems = 0;
     private bool isShopOn = false;
     public bool shopWeaponBool, shopArmourBool, shopItemBool, shopSkillBool, shopPotionBool;
+    private Tween fadeText;
 
 
 
@@ -109,7 +117,7 @@ public class ShopManager : MonoBehaviour
 
                 if (item.isNewItem == true)
                 {
-                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
                     shopCurrentNewItems++;
                 }
 
@@ -288,12 +296,12 @@ public class ShopManager : MonoBehaviour
 
                 if (shopCurrentNewItems == 0)
                 {
-                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
                 }
 
                 else if (shopCurrentNewItems > 0)
                 {
-                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
                     shopNewItemsText.text = shopCurrentNewItems.ToString();
                 }
 
@@ -376,9 +384,19 @@ public class ShopManager : MonoBehaviour
 
     public void CallToBuyItem()
     {
-        Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
-        Inventory.instance.BuyItem(activeItem);
-        UpdateShopItemsInventory();
+        if (activeItem.valueInCoins < playerStats.thulGold)
+        {
+            Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
+            Inventory.instance.BuyItem(activeItem);
+            NotificationFader.instance.CallFadeInOut("You have bought a " + activeItem.itemName + " for " + activeItem.valueInCoins + " gold coins. Item has been added to your inventory.", activeItem.itemsImage, 3f, 1400f);
+            UpdateShopItemsInventory();
+        }
+
+        else if (activeItem.valueInCoins > playerStats.thulGold)
+        {
+            Debug.Log("Not enough gold");
+            NotificationFader.instance.CallFadeInOut("You don't have enough gold coins to buy this item. \n The item costs " + activeItem.valueInCoins + " and you have " + playerStats.thulGold + " gold coins.", bagOfGold, 5f, 1400f);
+        }
     }
 
 
@@ -394,10 +412,67 @@ public class ShopManager : MonoBehaviour
 
         turnShopOn();
         shopCurrentNewItems = 0;
-        GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+        GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0; //???? needs to be off?
         GameManager.instance.isItemSelected = false;
         UpdateShopItemsInventory();
 
+    }
+
+    public void ShopItemInfoReset()
+    {
+        shopItemName.text = "Select an item";
+        shopItemDescription.text = "";
+        instance.shopItemValue.text = "";
+        shopEffectText.text = "+0";
+        shopItemDamage.text = "";
+        shopItemDamageBox.SetActive(false);
+        shopItemArmourBox.SetActive(false);
+        shopItemPotionBox.SetActive(false); 
+        Debug.Log("Item info panel has been reset");
+    }
+
+    private void ShopFade(float endValue, float duration, TweenCallback onEnd)
+    {
+        if (fadeText != null)
+        {
+            fadeText.Kill(false);
+        }
+
+        fadeText = itemSoldMessage.DOFade(endValue, duration);
+    }
+
+    public void ItemSoldAnim()
+    {
+        if (activeItem.valueInCoins < playerStats.thulGold)
+        {
+            var sequence = DOTween.Sequence()
+      .Append(shopItemImage.GetComponentInChildren<Transform>().DOScale(2.2f, 0.2f))
+      .Append(shopItemImage.GetComponentInChildren<Transform>().DOScale(0f, 2f));
+            sequence.SetLoops(1, LoopType.Yoyo);
+        }
+
+    }
+
+    public void ShopFadeOutText(float duration)
+    {
+        ShopFade(0f, duration, () =>
+        {
+            itemSoldMessage.interactable = false;
+            itemSoldMessage.blocksRaycasts = false;
+        });
+
+    }
+
+    public void ShopFadeInText(float duration)
+    {
+        if (activeItem.valueInCoins < playerStats.thulGold)
+        {
+            ShopFade(1f, duration, () =>
+          {
+              itemSoldMessage.interactable = true;
+              itemSoldMessage.blocksRaycasts = true;
+          });
+        }
     }
 
 }

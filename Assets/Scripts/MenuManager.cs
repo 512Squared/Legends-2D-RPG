@@ -36,6 +36,10 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject teamTabMenu;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] CanvasGroup teamNofify;
+    [SerializeField] TextMeshProUGUI teamMemberCount;
 
 
 
@@ -46,6 +50,7 @@ public class MenuManager : MonoBehaviour
     private int panelStuff;
     private string whichPanelIsOn = "";
     public static int select;
+    public int teamCount;
 
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
@@ -89,6 +94,9 @@ public class MenuManager : MonoBehaviour
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public Image itemImage;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Sprite masking;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] Transform itemBoxParent;
@@ -300,6 +308,8 @@ public class MenuManager : MonoBehaviour
     public void UpdateStats()
     {
 
+        TeamMembersCount();
+        
         playerStats = GameManager.instance.GetPlayerStats();
 
 
@@ -792,7 +802,7 @@ public class MenuManager : MonoBehaviour
     {
         isEquipOn = !isEquipOn;
         GameManager.instance.isEquipOn = !GameManager.instance.isEquipOn;
-        Debug.Log("IsEquip status: " + isEquipOn);
+        Debug.Log("IsEquipOn status: " + isEquipOn);
     }
 
     public void equipBackAndHome() // tidying for back and home buttons
@@ -1335,6 +1345,7 @@ public class MenuManager : MonoBehaviour
             {
                 playerStats[character].isTeamMember = true;
                 playerStats[character].isNew = false;
+                teamCount--;
                 addToPartyButton[character].gameObject.SetActive(false);
                 isNewNotification[character].SetActive(false);
                 retireFromPartyButton[character].gameObject.SetActive(true);
@@ -1372,6 +1383,44 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    public void ItemInfoReset()
+    {
+        itemName.text = "Select an item";
+        itemDescription.text = "";
+        itemImage.sprite = masking;
+        instance.itemValue.text = "";
+        effectText.text = "0";
+        itemDamage.text = "";
+        itemDamageBox.SetActive(false);
+        itemArmourBox.SetActive(false);
+        itemPotionBox.SetActive(false);
+        Debug.Log("Item info panel has been reset");
+    }
+
+    public void TeamMembersCount()
+    {
+        teamCount = 0;
+
+        playerStats = GameManager.instance.GetPlayerStats();
+
+        for (int i = 0; i < playerStats.Length; i++)
+        {
+            
+            
+            if (playerStats[i].isAvailable == true && playerStats[i].isNew == true) teamCount++;
+
+            if (teamCount > 0)
+            {
+                teamNofify.alpha = 1;
+                teamMemberCount.text = teamCount.ToString();
+            }
+            else if (teamCount == 0)
+            {
+                teamNofify.alpha = 0;
+            }
+
+        }
+    }
 }
 
 

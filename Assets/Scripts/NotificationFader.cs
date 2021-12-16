@@ -14,6 +14,7 @@ public class NotificationFader : MonoBehaviour
     private Tween fadeTween;
     public TextMeshProUGUI message;
     public Image noteCharacter;
+    [SerializeField] private Transform messageContainer; 
 
 
     // Start is called before the first frame update
@@ -43,7 +44,6 @@ public class NotificationFader : MonoBehaviour
 
     public void FadeOut(float duration)
     {
-        Debug.Log("Fade out called");
         Fade(0f, duration, () =>
         {
             canvasGroup.interactable = false;
@@ -62,16 +62,19 @@ public class NotificationFader : MonoBehaviour
         fadeTween.onComplete += onEnd;
     }
 
-    private IEnumerator Fader(string passedMessage, Sprite characterMug)
+    private IEnumerator Fader(string passedMessage, Sprite characterMug, float duration, float pos)
     {
+
+        yield return new WaitForSeconds(0.1f);
+        messageContainer.position = new Vector3(pos, 30f, 0f);
         yield return new WaitForSeconds(0.2f);
         FadeIn(0.5f, passedMessage, characterMug);
-        yield return new WaitForSeconds(3.5f);
-        FadeOut(0.5f);
+        yield return new WaitForSeconds(duration);
+        FadeOut(1f);
     }
 
-    public void CallFadeInOut(string message, Sprite character)
+    public void CallFadeInOut(string message, Sprite character, float dur, float position)
     {
-        StartCoroutine(Fader(message, character));
+        StartCoroutine(Fader(message, character, dur, position));
     }
 }
