@@ -55,6 +55,7 @@ public class ShopManager : MonoBehaviour
     public bool shopWeaponBool, shopArmourBool, shopItemBool, shopSkillBool, shopPotionBool;
     private Tween fadeText;
 
+    public bool hasEnoughGold = true;
 
 
 
@@ -386,16 +387,18 @@ public class ShopManager : MonoBehaviour
     {
         if (activeItem.valueInCoins < playerStats.thulGold)
         {
+            hasEnoughGold = true;
             Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
             Inventory.instance.BuyItem(activeItem);
-            NotificationFader.instance.CallFadeInOut("You have bought a " + activeItem.itemName + " for " + activeItem.valueInCoins + " gold coins. Item has been added to your inventory.", activeItem.itemsImage, 3f, 1400f);
+            NotificationFader.instance.CallFadeInOut("You have bought a " + activeItem.itemName + " for " + activeItem.valueInCoins + " gold coins. Item has been added to your inventory.", activeItem.itemsImage, 5f, 1400f);
             UpdateShopItemsInventory();
         }
 
         else if (activeItem.valueInCoins > playerStats.thulGold)
         {
+            hasEnoughGold = false;
             Debug.Log("Not enough gold");
-            NotificationFader.instance.CallFadeInOut("You don't have enough gold coins to buy this item. \n The item costs " + activeItem.valueInCoins + " and you have " + playerStats.thulGold + " gold coins.", bagOfGold, 5f, 1400f);
+            NotificationFader.instance.CallFadeInOut("Go away! You're too poor. The item costs " + activeItem.valueInCoins + " and you have " + playerStats.thulGold + " gold coins.", activeItem.itemsImage, 6f, 1400f);
         }
     }
 
@@ -412,7 +415,7 @@ public class ShopManager : MonoBehaviour
 
         turnShopOn();
         shopCurrentNewItems = 0;
-        GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0; //???? needs to be off?
+        //GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0; //???? needs to be off?
         GameManager.instance.isItemSelected = false;
         UpdateShopItemsInventory();
 
@@ -420,15 +423,20 @@ public class ShopManager : MonoBehaviour
 
     public void ShopItemInfoReset()
     {
-        shopItemName.text = "Select an item";
-        shopItemDescription.text = "";
-        instance.shopItemValue.text = "";
-        shopEffectText.text = "+0";
-        shopItemDamage.text = "";
-        shopItemDamageBox.SetActive(false);
-        shopItemArmourBox.SetActive(false);
-        shopItemPotionBox.SetActive(false); 
-        Debug.Log("Item info panel has been reset");
+        if (hasEnoughGold == true)
+        {
+            shopItemName.text = "Select an item";
+            shopItemDescription.text = "";
+            instance.shopItemValue.text = "";
+            shopEffectText.text = "+0";
+            shopItemDamage.text = "";
+            shopItemImage.sprite = shopMasking;
+            shopItemDamageBox.SetActive(false);
+            shopItemArmourBox.SetActive(false);
+            shopItemPotionBox.SetActive(false);
+            Debug.Log("Item info panel has been reset");
+        }
+        else hasEnoughGold = true;
     }
 
     private void ShopFade(float endValue, float duration, TweenCallback onEnd)
