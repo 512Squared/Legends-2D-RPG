@@ -65,9 +65,9 @@ public class NotificationFader : MonoBehaviour
     private IEnumerator Fader(string passedMessage, Sprite characterMug, float duration, float pos)
     {
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0f);
         messageContainer.position = new Vector3(pos, 30f, 0f);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0f);
         FadeIn(0.5f, passedMessage, characterMug);
         yield return new WaitForSeconds(duration);
         FadeOut(1f);

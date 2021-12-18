@@ -17,7 +17,7 @@ public class Exit : MonoBehaviour
     bool unloaded;
 
 
-    
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -29,7 +29,7 @@ public class Exit : MonoBehaviour
                 PlayerGlobalData.instance.arrivedAt = goingTo;
 
                 StartCoroutine(LoadSceneCoroutine());
-
+               
                 Debug.Log("Scene load called: " + sceneToLoad);
 
                 loaded = true;
@@ -37,25 +37,6 @@ public class Exit : MonoBehaviour
 
         }
 
-    }
-
-    public void teleport()
-    {
-
-
-        Debug.Log("Active scene name: " + arrivingFrom);
-
-        if (!loaded)
-                {
-                    PlayerGlobalData.instance.arrivedAt = "WishingWell";
-
-                    StartCoroutine(LoadTeleportCoroutine());
-
-                    Debug.Log("Scene load called: " + sceneToLoad);
-
-                    loaded = true;
-                }
-            
     }
 
     IEnumerator LoadSceneCoroutine()
@@ -74,38 +55,12 @@ public class Exit : MonoBehaviour
     }
 
 
-    IEnumerator LoadTeleportCoroutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
-
-        if (!unloaded)
-        {
-            unloaded = true;
-            AnyManager.anyManager.UnloadScene(arrivingFrom);
-            Debug.Log("Scene unload called: " + arrivingFrom);
-        }
-
-
-    }
-
-    IEnumerator UnloadScene()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        if (!unloaded)
-        {
-            unloaded = true;
-            AnyManager.anyManager.UnloadScene(arrivingFrom);
-            Debug.Log("Scene unload called: " + arrivingFrom);
-        }
-    }
-
     public void ActiveScene()
     {
         arrivingFrom = SceneManager.GetActiveScene().name;
     }
+
+
 
 
 }

@@ -13,9 +13,6 @@ public class ItemButton : MonoBehaviour
     [TabGroup("Buttons"), Button]
     public void Press()
     {
-
-        ShopManager.instance.ShopFadeOutText(3);
-        
         
         MenuManager.instance.itemName.text = itemOnButton.itemName;
         MenuManager.instance.itemDescription.text = itemOnButton.itemDescription;
@@ -105,16 +102,8 @@ public class ItemButton : MonoBehaviour
             Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemName);
         }
 
-
-
-
-
-
-
         GameManager.instance.activeItem = itemOnButton;
- 
         MenuManager.instance.activeItem = itemOnButton;
-
         ShopManager.instance.activeItem = itemOnButton;
 
         itemOnButton.itemSelected = GameManager.instance.activeItem;
@@ -130,7 +119,6 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.UpdateItemsInventory();
         }
         
-
 
         Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemName);
 

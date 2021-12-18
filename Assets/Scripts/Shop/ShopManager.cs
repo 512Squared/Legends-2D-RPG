@@ -55,9 +55,6 @@ public class ShopManager : MonoBehaviour
     public bool shopWeaponBool, shopArmourBool, shopItemBool, shopSkillBool, shopPotionBool;
     private Tween fadeText;
 
-    public bool hasEnoughGold = true;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -69,7 +66,7 @@ public class ShopManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void OpenShop()
@@ -175,7 +172,7 @@ public class ShopManager : MonoBehaviour
                         {
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
 
-                            
+
 
                             // EFFECT MODIFIER (on item info)
 
@@ -220,7 +217,7 @@ public class ShopManager : MonoBehaviour
                         {
                             shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-                            
+
                         }
 
                         // SORT BY NORMAL ITEMS
@@ -229,7 +226,7 @@ public class ShopManager : MonoBehaviour
                         {
                             shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-                            
+
                         }
                     }
                 }
@@ -387,18 +384,18 @@ public class ShopManager : MonoBehaviour
     {
         if (activeItem.valueInCoins < playerStats.thulGold)
         {
-            hasEnoughGold = true;
             Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
             Inventory.instance.BuyItem(activeItem);
-            NotificationFader.instance.CallFadeInOut("You have bought a " + activeItem.itemName + " for " + activeItem.valueInCoins + " gold coins. Item has been added to your inventory.", activeItem.itemsImage, 5f, 1400f);
+            NotificationFader.instance.CallFadeInOut("You have bought a " + activeItem.itemName + " for <color=#E0A515>" + activeItem.valueInCoins + "</color> gold coins. Item has been added to your inventory.", activeItem.itemsImage, 3f, 1400f);
             UpdateShopItemsInventory();
+            ItemSoldAnim();
         }
 
         else if (activeItem.valueInCoins > playerStats.thulGold)
         {
-            hasEnoughGold = false;
-            Debug.Log("Not enough gold");
-            NotificationFader.instance.CallFadeInOut("Go away! You're too poor. The item costs " + activeItem.valueInCoins + " and you have " + playerStats.thulGold + " gold coins.", activeItem.itemsImage, 6f, 1400f);
+            NotificationFader.instance.CallFadeInOut("<color=#C60B0B>You're too poor!</color> The item costs <color=#E0A515>" + activeItem.valueInCoins + " </color>and you have <color=#E0A515>" + playerStats.thulGold + "</color> gold coins.", activeItem.itemsImage, 3f, 1400f);
+            ItemNotSoldAnim();
+
         }
     }
 
@@ -415,16 +412,57 @@ public class ShopManager : MonoBehaviour
 
         turnShopOn();
         shopCurrentNewItems = 0;
-        //GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0; //???? needs to be off?
         GameManager.instance.isItemSelected = false;
         UpdateShopItemsInventory();
 
     }
 
+
+
+
+    public void ItemSoldAnim()
+    {
+        StartCoroutine(ItemSoldCoR());
+    }
+
+    public void ItemNotSoldAnim()
+    {
+        StartCoroutine(ItemNotSoldCoR());
+    }
+
+    IEnumerator ItemSoldCoR()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        var sequence = DOTween.Sequence()
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(1.8f, 0.3f))
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(0f, 1f));
+        sequence.SetLoops(1, LoopType.Yoyo);
+        yield return new WaitForSecondsRealtime(2f);
+        ShopItemInfoReset();
+        yield return new WaitForSecondsRealtime(0.1f);
+        shopItemImage.GetComponentInParent<Transform>().localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    IEnumerator ItemNotSoldCoR()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+            var sequence = DOTween.Sequence()
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
+                .Append(shopItemImage.GetComponent<Transform>().DOScale(1f, 1f));
+            sequence.SetLoops(1, LoopType.Yoyo);        
+    }
+
+
+
     public void ShopItemInfoReset()
     {
-        if (hasEnoughGold == true)
-        {
+            activeItem = null;    
             shopItemName.text = "Select an item";
             shopItemDescription.text = "";
             instance.shopItemValue.text = "";
@@ -435,52 +473,6 @@ public class ShopManager : MonoBehaviour
             shopItemArmourBox.SetActive(false);
             shopItemPotionBox.SetActive(false);
             Debug.Log("Item info panel has been reset");
-        }
-        else hasEnoughGold = true;
-    }
-
-    private void ShopFade(float endValue, float duration, TweenCallback onEnd)
-    {
-        if (fadeText != null)
-        {
-            fadeText.Kill(false);
-        }
-
-        fadeText = itemSoldMessage.DOFade(endValue, duration);
-    }
-
-    public void ItemSoldAnim()
-    {
-        if (activeItem.valueInCoins < playerStats.thulGold)
-        {
-            var sequence = DOTween.Sequence()
-      .Append(shopItemImage.GetComponentInChildren<Transform>().DOScale(2.2f, 0.2f))
-      .Append(shopItemImage.GetComponentInChildren<Transform>().DOScale(0f, 2f));
-            sequence.SetLoops(1, LoopType.Yoyo);
-        }
-
-    }
-
-    public void ShopFadeOutText(float duration)
-    {
-        ShopFade(0f, duration, () =>
-        {
-            itemSoldMessage.interactable = false;
-            itemSoldMessage.blocksRaycasts = false;
-        });
-
-    }
-
-    public void ShopFadeInText(float duration)
-    {
-        if (activeItem.valueInCoins < playerStats.thulGold)
-        {
-            ShopFade(1f, duration, () =>
-          {
-              itemSoldMessage.interactable = true;
-              itemSoldMessage.blocksRaycasts = true;
-          });
-        }
     }
 
 }

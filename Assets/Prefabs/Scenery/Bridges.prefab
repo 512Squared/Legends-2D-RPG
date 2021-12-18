@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4643243404510816982}
   - component: {fileID: 4643243404510816985}
   m_Layer: 3
-  m_Name: edgeColliders_1
+  m_Name: edgeCollider2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,8 +47,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 3.178206, y: 31.931944}
-  - {x: 11.10925, y: 31.990433}
+  - {x: 1.1055934, y: 33.044483}
+  - {x: 15.502501, y: 33.129032}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 4643243405397120192}
   - component: {fileID: 4643243405397120194}
   m_Layer: 3
-  m_Name: edgeColliders
+  m_Name: edgeCollider1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,8 +136,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 3.1221576, y: 29.484493}
-  - {x: 10.474033, y: 29.486937}
+  - {x: 1.240078, y: 29.544437}
+  - {x: 16.152527, y: 29.529379}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -154,6 +154,7 @@ GameObject:
   - component: {fileID: 4193422089013570403}
   - component: {fileID: 6594918061696182594}
   - component: {fileID: 4643243406569529807}
+  - component: {fileID: 2508220061107989096}
   m_Layer: 0
   m_Name: OnBridgeStone_left
   m_TagString: onBridge
@@ -169,7 +170,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6594918061696182595}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.8, y: 30.12, z: 0}
+  m_LocalPosition: {x: 2.34, y: 30.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4643243404867465472}
@@ -274,6 +275,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19438386, y: 2.707014}
   m_EdgeRadius: 0
+--- !u!114 &2508220061107989096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6594918061696182595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac5ac5cec4193da46a948acada24f35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  edge1: {fileID: 4643243405397120194}
+  edge2: {fileID: 4643243404510816985}
+  bridgeTilemap: {fileID: 0}
 --- !u!1 &6594918061977701505
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +302,7 @@ GameObject:
   - component: {fileID: 4193422088732036769}
   - component: {fileID: 6594918061977701504}
   - component: {fileID: 4643243406305788941}
+  - component: {fileID: 3239492318519334917}
   m_Layer: 0
   m_Name: OnBridgeStone_Right
   m_TagString: onBridge
@@ -301,7 +318,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6594918061977701505}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.89, y: 30.28, z: 0}
+  m_LocalPosition: {x: 14.37, y: 30.86, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4643243404867465472}
@@ -406,6 +423,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.89560604, y: 2.8406525}
   m_EdgeRadius: 0
+--- !u!114 &3239492318519334917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6594918061977701505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac5ac5cec4193da46a948acada24f35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  edge1: {fileID: 4643243405397120194}
+  edge2: {fileID: 4643243404510816985}
+  bridgeTilemap: {fileID: 0}
 --- !u!1 &6594918062783759642
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +450,7 @@ GameObject:
   - component: {fileID: 4193422090102359866}
   - component: {fileID: 6594918062783759645}
   - component: {fileID: 4643243405516574102}
+  - component: {fileID: 7927039488919469783}
   m_Layer: 0
   m_Name: OffBridgeStone_Right
   m_TagString: offBridge
@@ -433,7 +466,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6594918062783759642}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.77, y: 30.28, z: 0}
+  m_LocalPosition: {x: 16.59, y: 30.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4643243404867465472}
@@ -538,6 +571,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.739192, y: 2.7295704}
   m_EdgeRadius: 0
+--- !u!114 &7927039488919469783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6594918062783759642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f33d190075f814d9e90b33598f9da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  edge1: {fileID: 4643243405397120194}
+  edge2: {fileID: 4643243404510816985}
+  bridgeTilemap: {fileID: 0}
 --- !u!1 &6594918063202072266
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,6 +598,7 @@ GameObject:
   - component: {fileID: 4193422089688724714}
   - component: {fileID: 6594918063202072271}
   - component: {fileID: 6594918063202072268}
+  - component: {fileID: 8343947238180945810}
   m_Layer: 0
   m_Name: OffBridgeStone_left
   m_TagString: offBridge
@@ -565,7 +614,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6594918063202072266}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.09, y: 30.24, z: 0}
+  m_LocalPosition: {x: 1.03, y: 30.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4643243404867465472}
@@ -670,3 +719,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.30144268, y: 2.2741394}
   m_EdgeRadius: 0
+--- !u!114 &8343947238180945810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6594918063202072266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f33d190075f814d9e90b33598f9da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  edge1: {fileID: 4643243405397120194}
+  edge2: {fileID: 4643243404510816985}
+  bridgeTilemap: {fileID: 0}

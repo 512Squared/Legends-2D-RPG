@@ -293,6 +293,7 @@ public class Inventory : MonoBehaviour
         thulgran.PayUpTheGold(item.valueInCoins);
         ShopManager.instance.currentThulGold.text = characterArray[0].thulGold.ToString();
         ShopManager.instance.currentThulGold2.text = characterArray[0].thulGold.ToString();
+        MenuManager.instance.goldEquipTopBar.text = characterArray[0].thulGold.ToString();
         MenuManager.instance.UpdateStats();
         Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
     }

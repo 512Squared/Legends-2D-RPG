@@ -15,6 +15,9 @@ using System.Linq;
 
 public class CoinsManager : MonoBehaviour
 {
+
+    public static CoinsManager instance;
+    
     [Header("Main connectors")]
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
@@ -61,8 +64,6 @@ public class CoinsManager : MonoBehaviour
 
     public PlayerStats[] chosenCharacters;
 
-    private ItemsManager item;
-
     Vector2 targetPositionCoins;
     Vector2 targetPositionHP;
     Vector2 targetPositionMana;
@@ -80,7 +81,6 @@ public class CoinsManager : MonoBehaviour
     [SerializeField] int maxMana;
     [TabGroup("Miscellaneous")]
     [GUIColor(0.670f, 1, 0.560f)]
-
 
 
     Queue<GameObject> coinsQueue = new Queue<GameObject>();
@@ -112,7 +112,7 @@ public class CoinsManager : MonoBehaviour
     // As ever, the choice is between where to put the script and where to call the data that is thereby missing to make the script work
 
 
-    private int _c;
+    public int _c;
     public int chosenCharacter;
 
 
@@ -182,7 +182,7 @@ public class CoinsManager : MonoBehaviour
 
     private void Start()
     {
-
+        instance = this;
         chosenCharacters = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
 
         PrepareCoins();

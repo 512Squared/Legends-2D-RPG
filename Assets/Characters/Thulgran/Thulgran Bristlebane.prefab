@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 7658590310300458551}
   - component: {fileID: 1742322469595772402}
   - component: {fileID: 807171266}
-  - component: {fileID: 2056358390}
   m_Layer: 3
   m_Name: Thulgran Bristlebane
   m_TagString: Player
@@ -214,8 +213,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.69}
-  m_Size: {x: 0.92, y: 1.39}
+  m_Offset: {x: -0, y: 0.63}
+  m_Size: {x: 1.18, y: 1.2}
   m_Direction: 0
 --- !u!114 &807171266
 MonoBehaviour:
@@ -233,20 +232,3 @@ MonoBehaviour:
   message: {fileID: 0}
   noteCharacter: {fileID: 0}
   messageContainer: {fileID: 0}
---- !u!114 &2056358390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4283112051484239550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5ac5cec4193da46a948acada24f35c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 4283112051484239537}
-  edge1: {fileID: 0}
-  edge2: {fileID: 0}
-  edge3: {fileID: 0}
-  edge4: {fileID: 0}

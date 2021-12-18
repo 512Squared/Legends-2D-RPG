@@ -964,10 +964,10 @@ public class MenuManager : MonoBehaviour
 
     public void onCancelButton()
     {
-        StartCoroutine(PanelCancel());
+        StartCoroutine(PanelCancelCoR());
     }
 
-    IEnumerator PanelCancel()
+    IEnumerator PanelCancelCoR()
     {
         yield return new WaitForSecondsRealtime(0.1f);
         mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);

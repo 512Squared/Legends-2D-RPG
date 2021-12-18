@@ -179,6 +179,7 @@ public class PlayerStats : MonoBehaviour
     public void PayUpTheGold(int itemValue)
     {
         thulGold -= itemValue;
+        CoinsManager.instance._c -= itemValue;
     }
 
 }
