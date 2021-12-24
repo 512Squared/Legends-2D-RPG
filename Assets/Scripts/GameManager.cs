@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     // this is probably going to get called later. It's an array to hold the player stats
     [Space]
     public PlayerStats[] playerStats;
+    public MagicManager[] magicManager;
 
 
     [BoxGroup("UI Bools")]
@@ -69,6 +70,8 @@ public class GameManager : MonoBehaviour
 
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
 
+        magicManager = FindObjectsOfType<MagicManager>().OrderBy(m => m.transform.position.z).ToArray();
+
     }
 
     // Update is called once per frame
@@ -89,6 +92,11 @@ public class GameManager : MonoBehaviour
     public PlayerStats[] GetPlayerStats()
     {
         return playerStats;
+    }
+
+    public MagicManager[] GetMagicManager()
+    {
+        return magicManager;
     }
 
 

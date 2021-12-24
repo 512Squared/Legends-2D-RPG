@@ -298,7 +298,10 @@ public class Inventory : MonoBehaviour
         Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
     }
 
+    public void AddMagic(MagicManager selectedCharacter)
+    {
 
+    }
 
 
     public List<ItemsManager> GetItemsList()

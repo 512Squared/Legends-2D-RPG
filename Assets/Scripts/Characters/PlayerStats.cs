@@ -45,6 +45,10 @@ public class PlayerStats : MonoBehaviour
     public int npcIntelligence;
     public int npcPerception;
 
+    public int jumpAbility;
+    public int speed;
+    
+    
     public string equippedWeaponName = null;
     public int characterWeaponPower = 0;
     public Sprite equippedWeaponImage = null;
@@ -56,6 +60,8 @@ public class PlayerStats : MonoBehaviour
     public string equippedArmourDescription;
     public string equippedWeaponDescription;
 
+    public MagicManager[] magicSlots;
+
 
     public ItemsManager equippedWeapon, equippedArmour = null;
 
@@ -66,6 +72,8 @@ public class PlayerStats : MonoBehaviour
     void Start()
     {
 
+     
+        
         xpLevelUp = new int[maxLevel];
         xpLevelUp[1] = baseLevelXP;
 

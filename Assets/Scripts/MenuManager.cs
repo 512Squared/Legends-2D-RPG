@@ -29,7 +29,15 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] private UltimateButton actionButton;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] private UltimateJoystick joystick;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] private UltimateMobileQuickbar quickBar;
+
+
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject panelTesting;
