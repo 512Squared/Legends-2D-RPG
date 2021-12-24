@@ -675,37 +675,37 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void InventoryStats() // this is rather the skills panel
-    {
+    //public void InventoryStats() // this is rather the skills panel
+    //{
 
-        // select is the choice of character in the dropdown menu, i.e. the character array slot. 'select' is used instead of the 'for each' loop and 'isTeamMember'
-        if (playerStats[select].isTeamMember == true)
-        {
-            select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
-            characterNameV.text = playerStats[select].playerName;
-            descriptionV.text = playerStats[select].playerDesc;
-            healthV.text = playerStats[select].npcHP.ToString();
-            characterImageV.sprite = playerStats[select].characterImage;
-            levelV.text = playerStats[select].npcLevel.ToString();
-            xpV.text = playerStats[select].npcXP.ToString();
-            manaV.text = playerStats[select].npcMana.ToString();
-            dexterityV.text = playerStats[select].npcDexterity.ToString();
-            defenceV.text = playerStats[select].npcDefence.ToString();
-            intelligenceV.text = playerStats[select].npcIntelligence.ToString();
-            perceptionV.text = playerStats[select].npcPerception.ToString();
-            intelligenceVS.value = playerStats[select].npcIntelligence;
-            xpVS.value = playerStats[select].npcXP;
-            manaVS.value = playerStats[select].npcMana;
-            healthVS.value = playerStats[select].npcHP;
-            dexterityVS.value = playerStats[select].npcDexterity;
-            defenceVS.value = playerStats[select].npcDefence;
-            intelligenceVS.value = playerStats[select].npcIntelligence;
-            perceptionVS.value = playerStats[select].npcPerception;
-            characterImageV.sprite = playerStats[select].characterImage;
-        }
+    //    // select is the choice of character in the dropdown menu, i.e. the character array slot. 'select' is used instead of the 'for each' loop and 'isTeamMember'
+    //    if (playerStats[select].isTeamMember == true)
+    //    {
+    //        select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
+    //        characterNameV.text = playerStats[select].playerName;
+    //        descriptionV.text = playerStats[select].playerDesc;
+    //        healthV.text = playerStats[select].npcHP.ToString();
+    //        characterImageV.sprite = playerStats[select].characterImage;
+    //        levelV.text = playerStats[select].npcLevel.ToString();
+    //        xpV.text = playerStats[select].npcXP.ToString();
+    //        manaV.text = playerStats[select].npcMana.ToString();
+    //        dexterityV.text = playerStats[select].npcDexterity.ToString();
+    //        defenceV.text = playerStats[select].npcDefence.ToString();
+    //        intelligenceV.text = playerStats[select].npcIntelligence.ToString();
+    //        perceptionV.text = playerStats[select].npcPerception.ToString();
+    //        intelligenceVS.value = playerStats[select].npcIntelligence;
+    //        xpVS.value = playerStats[select].npcXP;
+    //        manaVS.value = playerStats[select].npcMana;
+    //        healthVS.value = playerStats[select].npcHP;
+    //        dexterityVS.value = playerStats[select].npcDexterity;
+    //        defenceVS.value = playerStats[select].npcDefence;
+    //        intelligenceVS.value = playerStats[select].npcIntelligence;
+    //        perceptionVS.value = playerStats[select].npcPerception;
+    //        characterImageV.sprite = playerStats[select].characterImage;
+    //    }
 
 
-    }
+    //}
 
     public void equipCharStats()
     {
