@@ -48,7 +48,15 @@ MonoBehaviour:
   coinsManager: {fileID: 0}
   activeItem: {fileID: 0}
   currentNewItems: 0
+  shopCurrentNewItems: 0
   playerStats:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  magicManager: []
+  sceneObjects:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -57,6 +65,7 @@ MonoBehaviour:
   isInterfaceOn: 0
   dialogueBoxOpened: 0
   isEquipOn: 0
+  isShopOn: 0
   isItemSelected: 0
   keyboardKeyI: 0
   playerMessages: {fileID: 0}
@@ -73,4 +82,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterArray: []
+  thulgran: {fileID: 0}
   coinsManager: {fileID: 0}

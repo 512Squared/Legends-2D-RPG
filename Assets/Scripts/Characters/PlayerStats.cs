@@ -14,6 +14,7 @@ public class PlayerStats : MonoBehaviour
     public Sprite characterMug;
     public Sprite characterPlain;
     public Sprite[] skills;
+    public string homeScene;
 
 
     public int[] skillBonus;

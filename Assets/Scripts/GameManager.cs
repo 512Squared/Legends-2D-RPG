@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using UnityEngine.UI;
 using System.Linq;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     [Space]
     public PlayerStats[] playerStats;
     public MagicManager[] magicManager;
+    public GameObject[] sceneObjects;
 
 
     [BoxGroup("UI Bools")]
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     
     public TextMeshProUGUI playerMessages;
+    private string firstScene;
 
 
 
@@ -68,9 +70,13 @@ public class GameManager : MonoBehaviour
 
         instance = this;
 
+        firstScene = "Homestead";
+
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
 
         magicManager = FindObjectsOfType<MagicManager>().OrderBy(m => m.transform.position.z).ToArray();
+
+        ActivateCharacters(firstScene);
 
     }
 
@@ -97,6 +103,26 @@ public class GameManager : MonoBehaviour
     public MagicManager[] GetMagicManager()
     {
         return magicManager;
+    }
+
+    public void ActivateCharacters(string sceneToLoad)
+    {
+
+        for (int i = 0; i < playerStats.Length; i++)
+        {
+            if (sceneToLoad == playerStats[i].homeScene)
+            {
+                playerStats[i].gameObject.SetActive(true);
+                Debug.Log(playerStats[i].playerName + " is active in " + sceneToLoad);
+            }
+            else if (sceneToLoad != playerStats[i].homeScene)
+            {
+                playerStats[i].gameObject.SetActive(false);
+                Debug.Log(playerStats[i].playerName + " is inactive in " + sceneToLoad);
+            }
+        }
+
+        playerStats[0].gameObject.SetActive(true);
     }
 
 

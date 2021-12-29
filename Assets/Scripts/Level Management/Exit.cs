@@ -12,13 +12,10 @@ public class Exit : MonoBehaviour
     [SerializeField] string goingTo;
     [SerializeField] string arrivingFrom;
 
-
     bool loaded;
     bool unloaded;
 
-
-
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
@@ -26,41 +23,56 @@ public class Exit : MonoBehaviour
         {
             if (!loaded)
             {
+                // disable old scene objects
+                GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(false);
+
                 PlayerGlobalData.instance.arrivedAt = goingTo;
 
                 StartCoroutine(LoadSceneCoroutine());
-               
-                Debug.Log("Scene load called: " + sceneToLoad);
+
+                Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom + " | Active scene: " + SceneManager.GetActiveScene().name);
 
                 loaded = true;
             }
-
         }
 
+        GameManager.instance.ActivateCharacters(sceneToLoad);
+
     }
+
 
     IEnumerator LoadSceneCoroutine()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return null;
 
-        SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+        AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
-        if (!unloaded)
+        while (!asyncLoadLevel.isDone)
         {
-            unloaded = true;
-            AnyManager.anyManager.UnloadScene(arrivingFrom);
-            Debug.Log("Scene unload called: " + arrivingFrom);
+            yield return null;
+            // Wait a frame so every Awake and Start method is called
+            yield return new WaitForEndOfFrame();
+
+            if (!unloaded)
+            {
+                unloaded = true;
+                AnyManager.anyManager.UnloadScene(arrivingFrom);
+            }
+
+            yield return StartCoroutine(SetActiveScene(sceneToLoad));
         }
 
     }
-
 
     public void ActiveScene()
     {
         arrivingFrom = SceneManager.GetActiveScene().name;
     }
 
-
-
+    IEnumerator SetActiveScene(string scene)
+    {
+        yield return null;
+        AnyManager.anyManager.SetActiveScene(scene);
+    }
 
 }

@@ -3297,6 +3297,7 @@ MonoBehaviour:
   characterMug: {fileID: 0}
   characterPlain: {fileID: 0}
   skills: []
+  homeScene: 
   skillBonus: 
   thulGold: 0
   thulSpells: 0
@@ -3320,6 +3321,8 @@ MonoBehaviour:
   npcDefence: 0
   npcIntelligence: 0
   npcPerception: 0
+  jumpAbility: 0
+  speed: 0
   equippedWeaponName: 
   characterWeaponPower: 0
   equippedWeaponImage: {fileID: 0}
@@ -3328,6 +3331,7 @@ MonoBehaviour:
   equippedArmourImage: {fileID: 0}
   equippedArmourDescription: 
   equippedWeaponDescription: 
+  magicSlots: []
   equippedWeapon: {fileID: 0}
   equippedArmour: {fileID: 0}
 --- !u!1 &3748982130003843049
@@ -3716,7 +3720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3750077873719058989
 Transform:
   m_ObjectHideFlags: 0
@@ -3750,6 +3754,7 @@ MonoBehaviour:
   characterMug: {fileID: 21300000, guid: 926387e612b745048b4b66fdc6e86c56, type: 3}
   characterPlain: {fileID: 21300000, guid: 2996f77028f4f4141ae70cbce5a149c4, type: 3}
   skills: []
+  homeScene: Homestead
   skillBonus: 
   thulGold: 0
   thulSpells: 0
@@ -3774,6 +3779,8 @@ MonoBehaviour:
   npcDefence: 75
   npcIntelligence: 15
   npcPerception: 20
+  jumpAbility: 0
+  speed: 0
   equippedWeaponName: Long Woodman's Axe
   characterWeaponPower: 5
   equippedWeaponImage: {fileID: 21300000, guid: d69b3d2126ca599449d43b95df828fb2, type: 3}
@@ -3783,6 +3790,7 @@ MonoBehaviour:
   equippedArmourDescription: Smart leather armour that Briarfoot keeps for hiking
     in the forest.
   equippedWeaponDescription: A long axe that Briarfoot keeps in the back of his forge.
+  magicSlots: []
   equippedWeapon: {fileID: 0}
   equippedArmour: {fileID: 0}
 --- !u!58 &3748298633651295931

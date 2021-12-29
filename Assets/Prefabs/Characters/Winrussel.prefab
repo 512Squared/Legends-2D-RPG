@@ -3501,7 +3501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5074042028986373111
 Transform:
   m_ObjectHideFlags: 0
@@ -3534,6 +3534,7 @@ MonoBehaviour:
   characterMug: {fileID: 21300000, guid: b4a52da71b67a064285582596c0dd038, type: 3}
   characterPlain: {fileID: 21300000, guid: 7aaeaa62cc3ccb247b9a8a332e5e9ccc, type: 3}
   skills: []
+  homeScene: Homestead
   skillBonus: 
   thulGold: 0
   thulSpells: 0
@@ -3558,6 +3559,8 @@ MonoBehaviour:
   npcDefence: 74
   npcIntelligence: 68
   npcPerception: 69
+  jumpAbility: 0
+  speed: 0
   equippedWeaponName: Basic short axe
   characterWeaponPower: 5
   equippedWeaponImage: {fileID: 21300000, guid: d69b3d2126ca599449d43b95df828fb2, type: 3}
@@ -3566,6 +3569,7 @@ MonoBehaviour:
   equippedArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
   equippedArmourDescription: 'Basic leather chest armour that can be bought at Biltema. '
   equippedWeaponDescription: A short axe that Winrussel keeps for making lean-toos
+  magicSlots: []
   equippedWeapon: {fileID: 0}
   equippedArmour: {fileID: 0}
 --- !u!58 &5078653621843993223

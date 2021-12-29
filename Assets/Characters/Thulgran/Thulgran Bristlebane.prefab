@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7658590310300458551}
   - component: {fileID: 1742322469595772402}
   - component: {fileID: 807171266}
+  - component: {fileID: 1677143442}
   m_Layer: 3
   m_Name: Thulgran Bristlebane
   m_TagString: Player
@@ -164,6 +165,7 @@ MonoBehaviour:
   characterMug: {fileID: 21300000, guid: 9e42d1329b457d244a4c1801f623c403, type: 3}
   characterPlain: {fileID: 21300000, guid: 40c1501ed8955a74b941601138ebd9a3, type: 3}
   skills: []
+  homeScene: Homestead
   skillBonus: 
   thulGold: 0
   thulSpells: 0
@@ -188,6 +190,8 @@ MonoBehaviour:
   npcDefence: 81
   npcIntelligence: 80
   npcPerception: 70
+  jumpAbility: 0
+  speed: 0
   equippedWeaponName: Long Woodman's Axe
   characterWeaponPower: 10
   equippedWeaponImage: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
@@ -198,6 +202,7 @@ MonoBehaviour:
     strengthen it. '
   equippedWeaponDescription: 'Long axe - you might have to ask a woodchopper to give
     you an axe like this. '
+  magicSlots: []
   equippedWeapon: {fileID: 0}
   equippedArmour: {fileID: 0}
 --- !u!70 &1742322469595772402
@@ -232,3 +237,35 @@ MonoBehaviour:
   message: {fileID: 0}
   noteCharacter: {fileID: 0}
   messageContainer: {fileID: 0}
+--- !u!114 &1677143442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4283112051484239550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a10fc96965c6e1b46883f90e58c6271c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability:
+  - name: 
+    description: 
+    manaCost: 0
+    lvlAvailable: 0
+    cooldown: 0
+    onCooldown: 0
+    power: 0
+    ticking: 0
+    tickTime: 0
+    projectileLifeTime: 0
+    spellActiveTime: 0
+    chargeDistance: 0
+    buttonSprite: {fileID: 0}
+    magicPrefab: {fileID: 0}
+    spellControl:
+      castType: 0
+      modify: 0
+      stats: 0
+      states: 0
