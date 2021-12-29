@@ -122,6 +122,7 @@ public class GameManager : MonoBehaviour
         }
 
         playerStats[0].gameObject.SetActive(true);
+        
         Debug.Log("Thulgran's Status: " + playerStats[0].enabled);
     }
 

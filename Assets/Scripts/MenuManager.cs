@@ -1037,7 +1037,7 @@ public class MenuManager : MonoBehaviour
             isInventorySlidePanelOn = false;
             cancelButton.SetActive(false);
             textUseEquipTake.text = "Select";
-            useButton.GetComponent<Button>().interactable = true;
+            useButton.GetComponent<Button>().interactable = false;
             FadeOutText(1f);
         }
 

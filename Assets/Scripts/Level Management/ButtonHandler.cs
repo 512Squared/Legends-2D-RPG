@@ -7,14 +7,14 @@ public class ButtonHandler : MonoBehaviour
 {
 
     public static ButtonHandler instance;
-    [SerializeField] GameObject useButton, sellButton;
+    private GameObject useButton, sellButton;
 
 
     public bool interfaceOn;
 
-    private void Start()
+    void Awake()
     {
-        useButton = GameObject.FindGameObjectWithTag("button_use");
+        useButton = GameObject.FindGameObjectWithTag("buttonUse");
         sellButton = GameObject.FindGameObjectWithTag("button_sell");
     }
 
@@ -29,8 +29,8 @@ public class ButtonHandler : MonoBehaviour
     {
         useButton.GetComponent<Button>().interactable = true;
         sellButton.GetComponent<Button>().interactable = true;
-        Debug.Log(useButton.GetComponent<Button>().interactable);
-        Debug.Log(sellButton.GetComponent<Button>().interactable);
+        Debug.Log("UseButton: " + useButton.GetComponent<Button>().interactable);
+        Debug.Log("SellButton: " + sellButton.GetComponent<Button>().interactable);
     }
 
     
