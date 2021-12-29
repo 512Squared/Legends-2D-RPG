@@ -249,6 +249,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI textUseEquipTake;
     [GUIColor(1f, 1f, 0.215f)]
     public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
+    [GUIColor(1f, 1f, 0.215f)]
+    public RectTransform leftShopPanel, rightShopPanel;
 
 
     [Header("Player Choice")]
@@ -1035,7 +1037,7 @@ public class MenuManager : MonoBehaviour
             isInventorySlidePanelOn = false;
             cancelButton.SetActive(false);
             textUseEquipTake.text = "Select";
-            useButton.GetComponent<Button>().interactable = false;
+            useButton.GetComponent<Button>().interactable = true;
             FadeOutText(1f);
         }
 
@@ -1429,6 +1431,8 @@ public class MenuManager : MonoBehaviour
 
         }
     }
+
+
 }
 
 

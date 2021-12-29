@@ -7,10 +7,17 @@ public class ButtonHandler : MonoBehaviour
 {
 
     public static ButtonHandler instance;
+    [SerializeField] GameObject useButton, sellButton;
 
 
     public bool interfaceOn;
-    
+
+    private void Start()
+    {
+        useButton = GameObject.FindGameObjectWithTag("button_use");
+        sellButton = GameObject.FindGameObjectWithTag("button_sell");
+    }
+
     public void IsinterfaceOn()
     {
         GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
@@ -20,8 +27,10 @@ public class ButtonHandler : MonoBehaviour
 
     public void UseButtonIsOn()
     {
-        GameObject.FindGameObjectWithTag("button_use").GetComponent<Button>().interactable = true;
-        GameObject.FindGameObjectWithTag("button_sell").GetComponent<Button>().interactable = true;
+        useButton.GetComponent<Button>().interactable = true;
+        sellButton.GetComponent<Button>().interactable = true;
+        Debug.Log(useButton.GetComponent<Button>().interactable);
+        Debug.Log(sellButton.GetComponent<Button>().interactable);
     }
 
     

@@ -118,11 +118,11 @@ public class GameManager : MonoBehaviour
             else if (sceneToLoad != playerStats[i].homeScene)
             {
                 playerStats[i].gameObject.SetActive(false);
-                Debug.Log(playerStats[i].playerName + " is inactive in " + sceneToLoad);
             }
         }
 
         playerStats[0].gameObject.SetActive(true);
+        Debug.Log("Thulgran's Status: " + playerStats[0].enabled);
     }
 
 
