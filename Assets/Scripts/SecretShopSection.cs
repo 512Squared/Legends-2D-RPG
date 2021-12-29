@@ -18,38 +18,55 @@ public class SecretShopSection : MonoBehaviour
     public GameObject definedButton;
     [GUIColor(1f, 1f, 0.215f)]
     public UnityEvent OnClick = new UnityEvent();
-
+    private int hitNumber = 0;
+    private bool isImageSpriteOn = false;
+    public SpriteRenderer bell;
+    public Sprite bellImageOn, bellImageOff;
 
 
     // Start is called before the first frame update
     void Start()
     {
         definedButton = this.gameObject;
+        bell.sprite = bellImageOff;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        float laserLength = 5f;
-        
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.WorldToScreenPoint(Input.mousePosition), Vector2.zero, laserLength);
 
-        Debug.DrawRay(transform.position, Vector2.right * laserLength, Color.red);
+  
+        Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
 
-        if (hit.collider != null)
-
+        if (hit.collider != null && hit.collider.gameObject.CompareTag("brass_bell"))
         {
+
             if (Input.GetMouseButtonDown(0))
             {
-                    Debug.Log("Button Clicked");
+                Debug.Log(hit.transform.name);
+                if (hitNumber < 1)
+                {
                     OnClick.Invoke();
+                    StartCoroutine(ResetBell());
+                    SetImageBool();
+                    hitNumber++;
+                }
             }
         }
-
+        
         else
         {
             return;
         }
+
+    }
+
+    IEnumerator ResetBell()
+    {
+        yield return new WaitForSeconds(1f);
+        hitNumber = 0;
+
     }
 
     public void OpenSecretPanel()
@@ -73,6 +90,18 @@ public class SecretShopSection : MonoBehaviour
         }
     }
 
+    public void SetImageBool()
+    {
+        isImageSpriteOn = !isImageSpriteOn;
+        if (isImageSpriteOn == true)
+        {
+            bell.sprite = bellImageOn;
+        }
+        else if (isImageSpriteOn == false)
+        {
+            bell.sprite = bellImageOff;
+        }
+    }
 
 
 }
