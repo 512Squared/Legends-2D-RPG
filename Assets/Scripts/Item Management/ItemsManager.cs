@@ -15,6 +15,9 @@ public class ItemsManager : MonoBehaviour
     public bool isNewItem = true;
     public bool shopItem = false;
 
+    public enum Shop { inventory, shop1, shop2, shop3 }
+    public Shop shop; // inventory, shop1, shop2, shop3
+
 
     public enum AffectType { HP, Mana, Defence, Attack, Perception }
     public AffectType affectType;

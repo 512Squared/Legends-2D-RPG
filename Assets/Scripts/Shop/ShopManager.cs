@@ -17,6 +17,11 @@ public class ShopManager : MonoBehaviour
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] Transform shopItemBoxParent;
 
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [SerializeField] int secretShopItemsCount;
+    public Transform shopSecretArmoury, shop;
+
 
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
@@ -46,27 +51,30 @@ public class ShopManager : MonoBehaviour
     public TextMeshProUGUI shopTabsAllText, currentThulGold, currentThulGold2, shopNewItemsText;
     [TabGroup("Weapon Group", "Shop Tabs")]
     [GUIColor(0.207f, 0.921f, 0.027f)]
-    public GameObject shopTabsAllFocus, shopTabsWeaponsFocus, shopTabsArmourFocus, shopTabsItemsFocus, shopTabsPotionsFocus;
+    public GameObject shopTabsAllFocus, shopTabsWeaponsFocus, shopTabsArmourFocus, shopTabsItemsFocus, shopTabsPotionsFocus; 
 
 
     public ItemsManager activeItem;
     private int shopCurrentNewItems = 0;
-    private bool isShopOn = false;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isShopOn = false;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool shopWeaponBool, shopArmourBool, shopItemBool, shopSkillBool, shopPotionBool;
-    private Tween fadeText;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isShopArmouryOpen = false;
 
+    private readonly Tween fadeText;
+
+    ItemsManager.Shop shopType;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void OpenShop()
@@ -228,9 +236,12 @@ public class ShopManager : MonoBehaviour
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
 
                         }
+
+
                     }
                 }
 
+                
                 // sorting strategy - destroy everything else but the chosen type
 
                 if (shopWeaponBool == true)
@@ -289,6 +300,18 @@ public class ShopManager : MonoBehaviour
                         Destroy(itemSlot.gameObject);
                     }
                 }
+
+                // sort by shop location: Shop1 (shopItem is already true, so inventory not needed here)
+
+                Debug.Log("Is shoptype identified correctly? " + shopType);
+                
+                if (item.shop != shopType)
+                {
+                    Destroy(itemSlot.gameObject);
+                }
+
+                if (shopArmourBool == false) Destroy(itemSlot.gameObject);
+
 
                 // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
 
@@ -400,17 +423,17 @@ public class ShopManager : MonoBehaviour
     }
 
 
-    public void turnShopOn()
+    public void TurnShopOn()
     {
         isShopOn = !isShopOn;
         GameManager.instance.isShopOn = !GameManager.instance.isShopOn;
         Debug.Log("IsEquip status: " + isShopOn);
     }
 
-    public void shopBackAndHome() // tidying for back and home buttons
+    public void ShopBackAndHome() // tidying for back and home buttons
     {
 
-        turnShopOn();
+        TurnShopOn();
         shopCurrentNewItems = 0;
         GameManager.instance.isItemSelected = false;
         UpdateShopItemsInventory();
@@ -474,5 +497,33 @@ public class ShopManager : MonoBehaviour
             shopItemPotionBox.SetActive(false);
             Debug.Log("Item info panel has been reset");
     }
+
+    public void ShopArmouryBool()
+    {
+        isShopArmouryOpen = !isShopArmouryOpen;
+        Debug.Log("Is the shop armoury open? " + isShopArmouryOpen);
+    }
+
+
+    public void GetChildObjects(string shoptype)
+    {
+        Debug.Log("Get Child Objects called");
+
+        ItemsManager.Shop parsed_enum = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), shoptype);
+        
+        foreach (Transform child in shopSecretArmoury)
+        {
+            Inventory.instance.AddItems(child.GetComponent<ItemsManager>());
+            secretShopItemsCount++;
+            Debug.Log("Number of secret shop items: " + secretShopItemsCount);
+            Debug.Log("Is shoptype identified correctly? " + parsed_enum);
+        }
+    }
+
+    public void ShopType(ItemsManager.Shop shopType)
+    {
+        this.shopType = shopType;
+    }
+
 
 }

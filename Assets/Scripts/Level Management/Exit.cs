@@ -30,13 +30,14 @@ public class Exit : MonoBehaviour
 
                 StartCoroutine(LoadSceneCoroutine());
 
-                Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom + " | Active scene: " + SceneManager.GetActiveScene().name);
+                Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom);
 
                 loaded = true;
             }
         }
 
         GameManager.instance.ActivateCharacters(sceneToLoad);
+        Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
 
     }
 
@@ -73,6 +74,19 @@ public class Exit : MonoBehaviour
     {
         yield return null;
         AnyManager.anyManager.SetActiveScene(scene);
+        yield return new WaitForSeconds(0.1f);
+        ShopIdentification(sceneToLoad);
+        Debug.Log("Shop Identification called: " + sceneToLoad);
+    }
+
+    public void ShopIdentification(string scene)
+    {
+        if (sceneToLoad == "Shop_counter")
+        {
+                ShopManager.instance.GetChildObjects("shop1");
+                Debug.Log("Is shoptype identified correctly? " + scene);
+        }
+
     }
 
 }

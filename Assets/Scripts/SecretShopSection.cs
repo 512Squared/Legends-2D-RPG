@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -23,6 +24,8 @@ public class SecretShopSection : MonoBehaviour
     public SpriteRenderer bell;
     public Sprite bellImageOn, bellImageOff;
 
+    private ItemsManager.Shop shop;
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +47,7 @@ public class SecretShopSection : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log(hit.transform.name);
+                Debug.Log(hit.transform.name + " has been hit with a raycast");
                 if (hitNumber < 1)
                 {
                     OnClick.Invoke();
@@ -105,6 +108,19 @@ public class SecretShopSection : MonoBehaviour
             isSecretPanelOpen = false;
         }
     }
+    public void ShopOpenArmoury(string shoptype)
+    {
+        ItemsManager.Shop parsed_enum = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), shoptype);
+        shop = parsed_enum;
+        ShopManager.instance.ShopArmouryBool();
+        ShopId(parsed_enum);
+        Debug.Log("Shop Armoury is now open: " + ShopManager.instance.isShopArmouryOpen + " | Parsed enum is: " + parsed_enum + " = " + shop);
+    }
+
+    public void ShopId(ItemsManager.Shop parsed_enum)
+    {
+        ShopManager.instance.ShopType(parsed_enum);
+    }
 
     public void SetImageBool()
     {
@@ -118,6 +134,7 @@ public class SecretShopSection : MonoBehaviour
             bell.sprite = bellImageOff;
         }
     }
+
 
 
 }
