@@ -24,7 +24,9 @@ public class SecretShopSection : MonoBehaviour
     public SpriteRenderer bell;
     public Sprite bellImageOn, bellImageOff;
 
-    private ItemsManager.Shop shop;
+    public ItemsManager.Shop shop;
+
+
 
 
     // Start is called before the first frame update
@@ -38,31 +40,17 @@ public class SecretShopSection : MonoBehaviour
     void FixedUpdate()
     {
 
+            //put your point to ray function here
 
-        Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-        RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
+            Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+            RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
 
-        if (hit.collider != null && hit.collider.gameObject.CompareTag("brass_bell"))
-        {
-
-            if (Input.GetMouseButtonDown(0))
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("brass_bell"))
             {
-                Debug.Log(hit.transform.name + " has been hit with a raycast");
-                if (hitNumber < 1)
-                {
-                    OnClick.Invoke();
-                    StartCoroutine(ResetBell());
-                    SetImageBool();
-                    hitNumber++;
-                }
-            }
 
-            else if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log(hit.transform.name);
+                    Debug.Log(hit.transform.name + " has been hit with a raycast");
                     if (hitNumber < 1)
                     {
                         OnClick.Invoke();
@@ -71,14 +59,36 @@ public class SecretShopSection : MonoBehaviour
                         hitNumber++;
                     }
                 }
+
+                else if (Input.touchCount > 0)
+                {
+                    Touch touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                    {
+                        Debug.Log(hit.transform.name);
+                        if (hitNumber < 1)
+                        {
+                            OnClick.Invoke();
+                            StartCoroutine(ResetBell());
+                            SetImageBool();
+                            hitNumber++;
+                        }
+                    }
+                }
+
+                else
+                {
+                    return;
+                }
+
             }
 
-            else
+            else if (hit.collider != null && hit.collider.gameObject.CompareTag("settingsButton") && hitNumber < 1)
             {
-                return;
+                StartCoroutine(ResetBell());
+                hitNumber++;
             }
-
-        }
+     
     }
 
     IEnumerator ResetBell()
@@ -112,6 +122,7 @@ public class SecretShopSection : MonoBehaviour
     {
         ItemsManager.Shop parsed_enum = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), shoptype);
         shop = parsed_enum;
+        ShopManager.instance.shopType = parsed_enum;
         ShopManager.instance.ShopArmouryBool();
         ShopId(parsed_enum);
         Debug.Log("Shop Armoury is now open: " + ShopManager.instance.isShopArmouryOpen + " | Parsed enum is: " + parsed_enum + " = " + shop);

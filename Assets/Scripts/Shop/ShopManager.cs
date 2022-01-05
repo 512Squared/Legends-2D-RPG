@@ -65,10 +65,13 @@ public class ShopManager : MonoBehaviour
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isShopArmouryOpen = false;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isSecretArmouryBool1 = false;
 
     private readonly Tween fadeText;
 
-    ItemsManager.Shop shopType;
+    public ItemsManager.Shop shopType;
 
     // Start is called before the first frame update
     void Start()
@@ -162,8 +165,7 @@ public class ShopManager : MonoBehaviour
                         // ITEM SELECTED animation
 
                         itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-                        Debug.Log("Animation should have been called");
-
+                        
                         // NEW ITEM tagging
 
                         item.isNewItem = false; // switch off new item tag after selection
@@ -303,15 +305,13 @@ public class ShopManager : MonoBehaviour
 
                 // sort by shop location: Shop1 (shopItem is already true, so inventory not needed here)
 
-                Debug.Log("Is shoptype identified correctly? " + shopType);
                 
                 if (item.shop != shopType)
                 {
                     Destroy(itemSlot.gameObject);
                 }
 
-                if (shopArmourBool == false) Destroy(itemSlot.gameObject);
-
+                //if (shopArmourBool == false) Destroy(itemSlot.gameObject);
 
                 // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
 
@@ -331,7 +331,7 @@ public class ShopManager : MonoBehaviour
 
 
             }
-        }
+         }
     }
 
 
@@ -405,7 +405,7 @@ public class ShopManager : MonoBehaviour
 
     public void CallToBuyItem()
     {
-        if (activeItem.valueInCoins < playerStats.thulGold)
+        if (activeItem.valueInCoins <= playerStats.thulGold)
         {
             Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
             Inventory.instance.BuyItem(activeItem);
@@ -427,7 +427,7 @@ public class ShopManager : MonoBehaviour
     {
         isShopOn = !isShopOn;
         GameManager.instance.isShopOn = !GameManager.instance.isShopOn;
-        Debug.Log("IsEquip status: " + isShopOn);
+        Debug.Log("IsShopOn status: " + isShopOn);
     }
 
     public void ShopBackAndHome() // tidying for back and home buttons
@@ -481,8 +481,6 @@ public class ShopManager : MonoBehaviour
             sequence.SetLoops(1, LoopType.Yoyo);        
     }
 
-
-
     public void ShopItemInfoReset()
     {
             activeItem = null;    
@@ -507,17 +505,25 @@ public class ShopManager : MonoBehaviour
 
     public void GetChildObjects(string shoptype)
     {
+        ItemsManager item;
         Debug.Log("Get Child Objects called");
 
         ItemsManager.Shop parsed_enum = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), shoptype);
+
+        secretShopItemsCount = 0;
         
         foreach (Transform child in shopSecretArmoury)
         {
-            Inventory.instance.AddItems(child.GetComponent<ItemsManager>());
+            item = child.GetComponent<ItemsManager>();
+            if (!isSecretArmouryBool1)
+            {
+                Inventory.instance.AddItems(item);
+            }
             secretShopItemsCount++;
-            Debug.Log("Number of secret shop items: " + secretShopItemsCount);
-            Debug.Log("Is shoptype identified correctly? " + parsed_enum);
+            Debug.Log("Shop type: " + parsed_enum + " | Secret shop items: " + secretShopItemsCount + " | Item: " + item.itemName);
+            ShopManager.instance.UpdateShopItemsInventory();
         }
+        isSecretArmouryBool1 = true;
     }
 
     public void ShopType(ItemsManager.Shop shopType)

@@ -985,8 +985,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -3.2209892, y: 1.5006895}
-  - {x: 14.247061, y: 1.5310497}
+  - {x: -3.3542452, y: 2.9220872}
+  - {x: 14.713456, y: 2.9302382}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -1489,12 +1489,13 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: shop2
+          m_StringArgument: shop1
           m_BoolArgument: 0
         m_CallState: 2
   bell: {fileID: 1136127780}
   bellImageOn: {fileID: 21300000, guid: 26e2588df978ff24881ed33924768702, type: 3}
   bellImageOff: {fileID: 21300000, guid: a86779c01a098f34490b21c48441fece, type: 3}
+  shop: 0
 --- !u!50 &1136127784
 Rigidbody2D:
   serializedVersion: 4
@@ -2384,6 +2385,10 @@ PrefabInstance:
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.y
       value: -2.8799996
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259505, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_TagString

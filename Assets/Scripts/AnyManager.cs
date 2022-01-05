@@ -52,7 +52,8 @@ public class AnyManager : MonoBehaviour
         
         GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(true);
         
-        Debug.Log("Additive scene: " + SceneManager.GetActiveScene().name);
+        Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
+
     }
 
 }

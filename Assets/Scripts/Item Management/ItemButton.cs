@@ -120,7 +120,7 @@ public class ItemButton : MonoBehaviour
         }
         
 
-        Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemName);
+        Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemWeaponPower);
 
     }
 

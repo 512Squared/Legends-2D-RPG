@@ -12,34 +12,36 @@ public class Exit : MonoBehaviour
     [SerializeField] string goingTo;
     [SerializeField] string arrivingFrom;
 
-    bool loaded;
+    bool isLoaded;
     bool unloaded;
 
-    
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
+        if (isLoaded) return;
+        Debug.Log("Is Loaded status: " + isLoaded);
+        isLoaded = true;
+
         if (collision.CompareTag("Player"))
         {
-            if (!loaded)
-            {
-                // disable old scene objects
-                GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(false);
+            GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(false);
 
-                PlayerGlobalData.instance.arrivedAt = goingTo;
+            PlayerGlobalData.instance.arrivedAt = goingTo;
 
-                StartCoroutine(LoadSceneCoroutine());
+            StartCoroutine(LoadSceneCoroutine());
 
-                Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom);
-
-                loaded = true;
-            }
+            Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom);
+            ShopIdentification(sceneToLoad);
+            Debug.Log("Shop Identification called: " + sceneToLoad);
         }
 
         GameManager.instance.ActivateCharacters(sceneToLoad);
-        Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
+        
 
     }
+
 
 
     IEnumerator LoadSceneCoroutine()
@@ -61,6 +63,7 @@ public class Exit : MonoBehaviour
             }
 
             yield return StartCoroutine(SetActiveScene(sceneToLoad));
+
         }
 
     }
@@ -74,17 +77,19 @@ public class Exit : MonoBehaviour
     {
         yield return null;
         AnyManager.anyManager.SetActiveScene(scene);
-        yield return new WaitForSeconds(0.1f);
-        ShopIdentification(sceneToLoad);
-        Debug.Log("Shop Identification called: " + sceneToLoad);
+        yield return new WaitForEndOfFrame();
+        isLoaded = false;
     }
 
     public void ShopIdentification(string scene)
     {
         if (sceneToLoad == "Shop_counter")
         {
-                ShopManager.instance.GetChildObjects("shop1");
-                Debug.Log("Is shoptype identified correctly? " + scene);
+            Debug.Log("Scene: " + scene);
+            ItemsManager.Shop parsed_enum = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), "shop1");
+            ShopManager.instance.shopType = parsed_enum;
+            Debug.Log("Shoptype: " + ShopManager.instance.shopType);    
+            ShopManager.instance.GetChildObjects("shop1");
         }
 
     }

@@ -58,7 +58,6 @@ public class Inventory : MonoBehaviour
             itemsList.Add(item);
         }
 
-
     }
 
     public void SellItem(ItemsManager item, int selectedCharacterSell)
