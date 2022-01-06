@@ -118,19 +118,19 @@ public class SecretShopSection : MonoBehaviour
             isSecretPanelOpen = false;
         }
     }
-    public void ShopOpenArmoury(string shoptype)
+    public void ShopOpenArmoury(string shoptype) // called inside shop
     {
-        ItemsManager.Shop parsed_enum = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), shoptype);
-        shop = parsed_enum;
-        ShopManager.instance.shopType = parsed_enum;
+        ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), shoptype);
+        shop = _enum_shopType;
+        ShopManager.instance.shopType = _enum_shopType;
         ShopManager.instance.ShopArmouryBool();
-        ShopId(parsed_enum);
-        Debug.Log("Shop Armoury is now open: " + ShopManager.instance.isShopArmouryOpen + " | Parsed enum is: " + parsed_enum + " = " + shop);
+        ShopId(_enum_shopType);
+        Debug.Log("Shop Armoury is now open: " + ShopManager.instance.isShopArmouryOpen + " | Parsed enum is: " + _enum_shopType + " = " + shop);
     }
 
-    public void ShopId(ItemsManager.Shop parsed_enum)
+    public void ShopId(ItemsManager.Shop parsed_shopType_enum)
     {
-        ShopManager.instance.ShopType(parsed_enum);
+        ShopManager.instance.ShopType(parsed_shopType_enum);
     }
 
     public void SetImageBool()

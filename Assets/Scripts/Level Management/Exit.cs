@@ -33,7 +33,7 @@ public class Exit : MonoBehaviour
             StartCoroutine(LoadSceneCoroutine());
 
             Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom);
-            ShopIdentification(sceneToLoad);
+            ShopInstantiation(sceneToLoad);
             Debug.Log("Shop Identification called: " + sceneToLoad);
         }
 
@@ -81,15 +81,15 @@ public class Exit : MonoBehaviour
         isLoaded = false;
     }
 
-    public void ShopIdentification(string scene)
+    public void ShopInstantiation(string scene) // called at first scene change
     {
-        if (sceneToLoad == "Shop_counter")
+        if (sceneToLoad == "Shop_counter") // shop1
         {
             Debug.Log("Scene: " + scene);
-            ItemsManager.Shop parsed_enum = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), "shop1");
-            ShopManager.instance.shopType = parsed_enum;
+            ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), "shop1");
+            ShopManager.instance.shopType = _enum_shopType;
             Debug.Log("Shoptype: " + ShopManager.instance.shopType);    
-            ShopManager.instance.GetChildObjects("shop1");
+            ShopManager.instance.ShopArmoury();
         }
 
     }

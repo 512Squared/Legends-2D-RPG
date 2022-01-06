@@ -20,7 +20,8 @@ public class ShopManager : MonoBehaviour
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] int secretShopItemsCount;
-    public Transform shopSecretArmoury, shop;
+    [SerializeField] int shopItemsCount;
+    public Transform[] shopItems;
 
 
     [TabGroup("New Group", "Items")]
@@ -51,7 +52,7 @@ public class ShopManager : MonoBehaviour
     public TextMeshProUGUI shopTabsAllText, currentThulGold, currentThulGold2, shopNewItemsText;
     [TabGroup("Weapon Group", "Shop Tabs")]
     [GUIColor(0.207f, 0.921f, 0.027f)]
-    public GameObject shopTabsAllFocus, shopTabsWeaponsFocus, shopTabsArmourFocus, shopTabsItemsFocus, shopTabsPotionsFocus; 
+    public GameObject shopTabsAllFocus, shopTabsWeaponsFocus, shopTabsArmourFocus, shopTabsItemsFocus, shopTabsPotionsFocus;
 
 
     public ItemsManager activeItem;
@@ -67,7 +68,7 @@ public class ShopManager : MonoBehaviour
     public bool isShopArmouryOpen = false;
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isSecretArmouryBool1 = false;
+    public bool isArmouryInstantiated = false;
 
     private readonly Tween fadeText;
 
@@ -155,7 +156,7 @@ public class ShopManager : MonoBehaviour
                         }
                     }
 
-                    // ITEM SORTING FOR SELECTED ITEM
+                    // SORTING - SELECTED ITEM
 
                     else if (item.itemSelected == true) // if item has been selected
                     {
@@ -165,7 +166,7 @@ public class ShopManager : MonoBehaviour
                         // ITEM SELECTED animation
 
                         itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-                        
+
                         // NEW ITEM tagging
 
                         item.isNewItem = false; // switch off new item tag after selection
@@ -213,7 +214,7 @@ public class ShopManager : MonoBehaviour
 
                         }
 
-                        // SORT BY ARMOUR
+                        // EFFECTS - ARMOUR
 
                         if (item.itemType == ItemsManager.ItemType.Armour)
                         {
@@ -221,7 +222,7 @@ public class ShopManager : MonoBehaviour
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         }
 
-                        // SORT BY WEAPON
+                        // EFFECTS - WEAPON
 
                         if (item.itemType == ItemsManager.ItemType.Weapon)
                         {
@@ -230,7 +231,7 @@ public class ShopManager : MonoBehaviour
 
                         }
 
-                        // SORT BY NORMAL ITEMS
+                        // EFFECTS - ITEMS
 
                         if (item.itemType == ItemsManager.ItemType.Item)
                         {
@@ -243,8 +244,8 @@ public class ShopManager : MonoBehaviour
                     }
                 }
 
-                
-                // sorting strategy - destroy everything else but the chosen type
+
+                // SORTING - ITEMS (plural)
 
                 if (shopWeaponBool == true)
 
@@ -303,35 +304,67 @@ public class ShopManager : MonoBehaviour
                     }
                 }
 
-                // sort by shop location: Shop1 (shopItem is already true, so inventory not needed here)
+                // SORTING - by shop location: 
 
-                
+
                 if (item.shop != shopType)
                 {
                     Destroy(itemSlot.gameObject);
                 }
 
-                //if (shopArmourBool == false) Destroy(itemSlot.gameObject);
+                // SORTING - WHEN ARMOURY IS OPEN
 
-                // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
+                if (isShopArmouryOpen != true && item.itemType != ItemsManager.ItemType.Item) Destroy(itemSlot.gameObject);
 
-                if (shopCurrentNewItems == 0)
+                // new items - nofify. 
+
+
+                if (shopCurrentNewItems > 0)
                 {
-                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+                    Debug.Log("Start - NF: " + shopCurrentNewItems + " | Item name: " + item.itemName);
+
+                    if (item.shop != shopType)
+                    {
+                        shopCurrentNewItems--;
+
+                        Debug.Log("1 - shop type - NF: " + shopCurrentNewItems + " | Item name: " + item.itemName);
+
+                        shopNewItemsText.text = shopCurrentNewItems.ToString();
+                    }
+                    
+                    if (isShopArmouryOpen == false && item.shop == shopType)
+                    {
+                        if (item.itemType != ItemsManager.ItemType.Item)
+                        {
+                            shopCurrentNewItems--;
+
+                            Debug.Log("2 - closed - NF: " + shopCurrentNewItems + " | Item name: " + item.itemName);
+
+                            shopNewItemsText.text = shopCurrentNewItems.ToString();
+                        }
+                    }
+
+                    else if (isShopArmouryOpen == true && item.shop == shopType)
+                    {
+                        GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+
+                        Debug.Log("3 - open - NF: " + shopCurrentNewItems + " | Item name: " + item.itemName);
+
+                        shopNewItemsText.text = shopCurrentNewItems.ToString();
+                    }
+
+
+
+                    if (shopCurrentNewItems == 0)
+                    {
+                        GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+                    }
+
+                    GameManager.instance.shopCurrentNewItems = shopCurrentNewItems; // tracker
+
                 }
-
-                else if (shopCurrentNewItems > 0)
-                {
-                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                    shopNewItemsText.text = shopCurrentNewItems.ToString();
-                }
-
-                GameManager.instance.shopCurrentNewItems = shopCurrentNewItems;
-                //Debug.Log("No. of new Items: " + currentNewItems);
-
-
             }
-         }
+        }
     }
 
 
@@ -469,31 +502,31 @@ public class ShopManager : MonoBehaviour
     IEnumerator ItemNotSoldCoR()
     {
         yield return new WaitForSecondsRealtime(0.1f);
-            var sequence = DOTween.Sequence()
-                .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
-                .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
-                .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
-                .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
-                .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
-                .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
-                .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
-                .Append(shopItemImage.GetComponent<Transform>().DOScale(1f, 1f));
-            sequence.SetLoops(1, LoopType.Yoyo);        
+        var sequence = DOTween.Sequence()
+            .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
+            .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
+            .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
+            .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
+            .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
+            .Append(shopItemImage.GetComponent<Transform>().DOScale(2.8f, 0.1f))
+            .Append(shopItemImage.GetComponent<Transform>().DOScale(3f, 0.1f))
+            .Append(shopItemImage.GetComponent<Transform>().DOScale(1f, 1f));
+        sequence.SetLoops(1, LoopType.Yoyo);
     }
 
     public void ShopItemInfoReset()
     {
-            activeItem = null;    
-            shopItemName.text = "Select an item";
-            shopItemDescription.text = "";
-            instance.shopItemValue.text = "";
-            shopEffectText.text = "+0";
-            shopItemDamage.text = "";
-            shopItemImage.sprite = shopMasking;
-            shopItemDamageBox.SetActive(false);
-            shopItemArmourBox.SetActive(false);
-            shopItemPotionBox.SetActive(false);
-            Debug.Log("Item info panel has been reset");
+        activeItem = null;
+        shopItemName.text = "Select an item";
+        shopItemDescription.text = "";
+        instance.shopItemValue.text = "";
+        shopEffectText.text = "+0";
+        shopItemDamage.text = "";
+        shopItemImage.sprite = shopMasking;
+        shopItemDamageBox.SetActive(false);
+        shopItemArmourBox.SetActive(false);
+        shopItemPotionBox.SetActive(false);
+        Debug.Log("Item info panel has been reset");
     }
 
     public void ShopArmouryBool()
@@ -503,28 +536,43 @@ public class ShopManager : MonoBehaviour
     }
 
 
-    public void GetChildObjects(string shoptype)
+    public void ShopArmoury()
     {
-        ItemsManager item;
-        Debug.Log("Get Child Objects called");
-
-        ItemsManager.Shop parsed_enum = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), shoptype);
-
-        secretShopItemsCount = 0;
-        
-        foreach (Transform child in shopSecretArmoury)
+        if (isArmouryInstantiated == false)
         {
-            item = child.GetComponent<ItemsManager>();
-            if (!isSecretArmouryBool1)
+            ItemsManager item;
+            Debug.Log("Get Child Objects called");
+
+            secretShopItemsCount = 0;
+
+            for (int i = 0; i < shopItems.Length; i++)
             {
-                Inventory.instance.AddItems(item);
+                foreach (Transform child in shopItems[i]) // one armoury, but sorted by shop1, shop2 etc
+                {
+                    item = child?.GetComponent<ItemsManager>();
+                    if (child.GetComponent<ItemsManager>() != null)
+                    {
+                        if (isArmouryInstantiated == false && item.itemType != ItemsManager.ItemType.Item)
+                        {
+                            Inventory.instance.AddItems(item);
+                            secretShopItemsCount++;
+                            Debug.Log("Shop no. " + (i + 1) + " | Secret items count: " + secretShopItemsCount + " | Item " + item.itemName);
+                        }
+                        else if (item.itemType == ItemsManager.ItemType.Item)
+                        {
+                            Inventory.instance.AddItems(item);
+                            shopItemsCount++;
+                            Debug.Log("Shop no. " + (i + 1) + " | Normal items count: " + shopItemsCount + " | Item " + item.itemName);
+                        }
+                    }
+                }
             }
-            secretShopItemsCount++;
-            Debug.Log("Shop type: " + parsed_enum + " | Secret shop items: " + secretShopItemsCount + " | Item: " + item.itemName);
-            ShopManager.instance.UpdateShopItemsInventory();
+
         }
-        isSecretArmouryBool1 = true;
+        isArmouryInstantiated = true; // armoury is instantiated on first shop onload
+        ShopManager.instance.UpdateShopItemsInventory();
     }
+
 
     public void ShopType(ItemsManager.Shop shopType)
     {
