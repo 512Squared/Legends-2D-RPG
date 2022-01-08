@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager instance;
-    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell }
+    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food }
     public ItemType itemType;
 
     public string itemName, itemDescription;
@@ -45,7 +45,7 @@ public class ItemsManager : MonoBehaviour
 
 
         Debug.Log("UseItem called from ItemsManager");
-        if (itemType == ItemType.Potion)
+        if (itemType == ItemType.Potion || itemType == ItemType.Food)
         {
             if (affectType == AffectType.HP)
             {

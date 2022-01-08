@@ -35,6 +35,8 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.itemDamage.text = "+" + itemOnButton.itemWeaponPower.ToString();
             MenuManager.instance.itemArmourBox.SetActive(false);
             MenuManager.instance.itemPotionBox.SetActive(false);
+            MenuManager.instance.itemFoodBox.SetActive(false);
+
             Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemWeaponPower);
         }
         else if (itemOnButton.itemType == ItemsManager.ItemType.Armour)
@@ -44,6 +46,7 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.itemArmour.text = "+" + itemOnButton.itemArmourDefence.ToString();
             MenuManager.instance.itemDamageBox.SetActive(false);
             MenuManager.instance.itemPotionBox.SetActive(false);
+            MenuManager.instance.itemFoodBox.SetActive(false);
             Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemArmourDefence);
         }
 
@@ -54,6 +57,7 @@ public class ItemButton : MonoBehaviour
             if (itemOnButton.itemName == "Speed Potion") MenuManager.instance.itemPotion.text = "x" + itemOnButton.amountOfEffect.ToString();
             MenuManager.instance.itemArmourBox.SetActive(false);
             MenuManager.instance.itemDamageBox.SetActive(false);
+            MenuManager.instance.itemFoodBox.SetActive(false);
             Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.amountOfEffect);
 
         }
@@ -63,7 +67,18 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.itemArmourBox.SetActive(false);
             MenuManager.instance.itemDamageBox.SetActive(false);
             MenuManager.instance.itemPotionBox.SetActive(false);
-            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemName);
+            MenuManager.instance.itemFoodBox.SetActive(false);
+            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.amountOfEffect);
+        }
+
+        else if (itemOnButton.itemType == ItemsManager.ItemType.Food)
+        {
+            MenuManager.instance.itemArmourBox.SetActive(false);
+            MenuManager.instance.itemDamageBox.SetActive(false);
+            MenuManager.instance.itemPotionBox.SetActive(false);
+            MenuManager.instance.itemFoodBox.SetActive(true);
+            MenuManager.instance.itemFood.text = "+" + itemOnButton.amountOfEffect.ToString();
+            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.amountOfEffect);
         }
 
         if (itemOnButton.itemType == ItemsManager.ItemType.Weapon)
@@ -72,6 +87,7 @@ public class ItemButton : MonoBehaviour
             ShopManager.instance.shopItemDamage.text = "+" + itemOnButton.itemWeaponPower.ToString();
             ShopManager.instance.shopItemArmourBox.SetActive(false);
             ShopManager.instance.shopItemPotionBox.SetActive(false);
+            ShopManager.instance.shopItemFoodBox.SetActive(false);
             Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemWeaponPower);
         }
         else if (itemOnButton.itemType == ItemsManager.ItemType.Armour)
@@ -80,6 +96,7 @@ public class ItemButton : MonoBehaviour
             ShopManager.instance.shopItemArmour.text = "+" + itemOnButton.itemArmourDefence.ToString();
             ShopManager.instance.shopItemDamageBox.SetActive(false);
             ShopManager.instance.shopItemPotionBox.SetActive(false);
+            ShopManager.instance.shopItemFoodBox.SetActive(false);
             Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemArmourDefence);
         }
 
@@ -90,6 +107,8 @@ public class ItemButton : MonoBehaviour
             if (itemOnButton.itemName == "Speed Potion") ShopManager.instance.shopItemPotion.text = "x" + itemOnButton.amountOfEffect.ToString();
             ShopManager.instance.shopItemArmourBox.SetActive(false);
             ShopManager.instance.shopItemDamageBox.SetActive(false);
+            ShopManager.instance.shopItemFoodBox.SetActive(false);
+
             Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.amountOfEffect);
 
         }
@@ -99,8 +118,21 @@ public class ItemButton : MonoBehaviour
             ShopManager.instance.shopItemArmourBox.SetActive(false);
             ShopManager.instance.shopItemDamageBox.SetActive(false);
             ShopManager.instance.shopItemPotionBox.SetActive(false);
-            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemName);
+            ShopManager.instance.shopItemFoodBox.SetActive(false);
+            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.amountOfEffect);
         }
+
+        else if (itemOnButton.itemType == ItemsManager.ItemType.Food)
+        {
+            ShopManager.instance.shopItemArmourBox.SetActive(false);
+            ShopManager.instance.shopItemDamageBox.SetActive(false);
+            ShopManager.instance.shopItemPotionBox.SetActive(false);
+            ShopManager.instance.shopItemFoodBox.SetActive(true);
+            ShopManager.instance.shopItemFood.text = "+" + itemOnButton.amountOfEffect.ToString();
+            Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.amountOfEffect);
+        }
+
+
 
         GameManager.instance.activeItem = itemOnButton;
         MenuManager.instance.activeItem = itemOnButton;
@@ -119,8 +151,6 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.UpdateItemsInventory();
         }
         
-
-        Debug.Log("Item type: " + itemOnButton.itemType + " | " + "Bonus: " + itemOnButton.itemWeaponPower);
 
     }
 

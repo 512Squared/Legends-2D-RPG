@@ -98,7 +98,7 @@ public class MenuManager : MonoBehaviour
 
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemPotion, itemValue;
+    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemPotion, itemFood, itemValue;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public Image itemImage;
@@ -110,7 +110,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Transform itemBoxParent;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject itemBox, itemDamageBox, itemArmourBox, itemPotionBox;
+    public GameObject itemBox, itemDamageBox, itemArmourBox, itemPotionBox, itemFoodBox;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public TextMeshProUGUI effectText;
@@ -232,7 +232,7 @@ public class MenuManager : MonoBehaviour
     public bool controlSwitch;
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool weaponBool, armourBool, itemBool, potionBool, skillBool;
+    public bool weaponBool, armourBool, itemBool, potionBool, spellBool;
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isOverviewOn, isStatsOn, isWeaponryOn;
@@ -507,7 +507,7 @@ public class MenuManager : MonoBehaviour
 
                         //  SORT BY POTIONS
 
-                        if (item.itemType == ItemsManager.ItemType.Potion)
+                        if (item.itemType == ItemsManager.ItemType.Potion || item.itemType == ItemsManager.ItemType.Food)
                         {
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
 
@@ -515,7 +515,7 @@ public class MenuManager : MonoBehaviour
 
                             // EFFECT MODIFIER (on item info)
 
-                            if (item.itemName == "Speed Potion")
+                            if (item.itemName == "Speed Potion") 
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 1;
                                 effectText.text = "x" + item.amountOfEffect.ToString();
@@ -527,7 +527,7 @@ public class MenuManager : MonoBehaviour
                                 effectText.text = "+" + item.amountOfEffect.ToString();
                             }
 
-                            else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion")
+                            else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion" || item.itemType == ItemsManager.ItemType.Food)
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 1;
                                 effectText.text = "+" + item.amountOfEffect.ToString();
@@ -577,9 +577,10 @@ public class MenuManager : MonoBehaviour
 
                 {
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
-           (item.itemType == ItemsManager.ItemType.Armour) ||
-           (item.itemType == ItemsManager.ItemType.Item) ||
-           (item.itemType == ItemsManager.ItemType.Skill))
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Item) ||
+                        (item.itemType == ItemsManager.ItemType.Skill) ||
+                        (item.itemType == ItemsManager.ItemType.Food))
                     {
                         Destroy(itemSlot.gameObject);
                     }
@@ -589,9 +590,10 @@ public class MenuManager : MonoBehaviour
 
                 {
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
-           (item.itemType == ItemsManager.ItemType.Weapon) ||
-           (item.itemType == ItemsManager.ItemType.Item) ||
-           (item.itemType == ItemsManager.ItemType.Skill))
+                        (item.itemType == ItemsManager.ItemType.Weapon) ||
+                        (item.itemType == ItemsManager.ItemType.Item) ||
+                        (item.itemType == ItemsManager.ItemType.Spell) ||
+                        (item.itemType == ItemsManager.ItemType.Food))
                     {
                         Destroy(itemSlot.gameObject);
                     }
@@ -600,20 +602,20 @@ public class MenuManager : MonoBehaviour
 
                 {
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
-           (item.itemType == ItemsManager.ItemType.Armour) ||
-           (item.itemType == ItemsManager.ItemType.Weapon) ||
-           (item.itemType == ItemsManager.ItemType.Skill))
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Weapon) ||
+                        (item.itemType == ItemsManager.ItemType.Spell))
                     {
                         Destroy(itemSlot.gameObject);
                     }
                 }
-                else if (skillBool == true)
+                else if (spellBool == true)
 
                 {
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
-           (item.itemType == ItemsManager.ItemType.Armour) ||
-           (item.itemType == ItemsManager.ItemType.Item) ||
-           (item.itemType == ItemsManager.ItemType.Weapon))
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Item) ||
+                        (item.itemType == ItemsManager.ItemType.Weapon))
                     {
                         Destroy(itemSlot.gameObject);
                     }
@@ -622,9 +624,10 @@ public class MenuManager : MonoBehaviour
 
                 {
                     if ((item.itemType == ItemsManager.ItemType.Weapon) ||
-           (item.itemType == ItemsManager.ItemType.Armour) ||
-           (item.itemType == ItemsManager.ItemType.Item) ||
-           (item.itemType == ItemsManager.ItemType.Skill))
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Item) ||
+                        (item.itemType == ItemsManager.ItemType.Spell) ||
+                        (item.itemType == ItemsManager.ItemType.Food))
                     {
                         Destroy(itemSlot.gameObject);
                     }
@@ -878,7 +881,7 @@ public class MenuManager : MonoBehaviour
     {
         mainEquipInfoPanel.DOAnchorPos(new Vector2(-750, 0), 1f);
 
-        if (activeItem.itemType == ItemsManager.ItemType.Potion)
+        if (activeItem.itemType == ItemsManager.ItemType.Potion || activeItem.itemType == ItemsManager.ItemType.Food)
         {
             characterChoicePanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
@@ -904,7 +907,7 @@ public class MenuManager : MonoBehaviour
 
         Debug.Log("InventoryLeft panel animations engaged");
 
-        if (activeItem.itemName == "Red Healing Potion" || activeItem.itemName == "Green Healing Potion")
+        if (activeItem.itemName == "Red Healing Potion" || activeItem.itemName == "Green Healing Potion" || activeItem.itemType == ItemsManager.ItemType.Food)
         {
             hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
             var sequence = DOTween.Sequence()
@@ -1046,7 +1049,7 @@ public class MenuManager : MonoBehaviour
 
         }
 
-        weaponBool = armourBool = itemBool = potionBool = skillBool = false;
+        weaponBool = armourBool = itemBool = potionBool = spellBool = false;
 
 
         if (boolName == "weapon")
@@ -1087,9 +1090,9 @@ public class MenuManager : MonoBehaviour
             inventTabsItemsFocus.SetActive(false);
             inventTabsPotionsFocus.SetActive(true);
         }
-        else if (boolName == "skill")
+        else if (boolName == "spell")
         {
-            skillBool = true;
+            spellBool = true;
 
         }
         if (boolName != "all")
@@ -1404,6 +1407,7 @@ public class MenuManager : MonoBehaviour
         itemDamageBox.SetActive(false);
         itemArmourBox.SetActive(false);
         itemPotionBox.SetActive(false);
+        itemFoodBox.SetActive(false);
         Debug.Log("Item info panel has been reset");
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class levelManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
 
     private Vector3 bottomLeftEdge;
@@ -18,6 +18,5 @@ public class levelManager : MonoBehaviour
         bottomLeftEdge = tilemap.localBounds.min + new Vector3(1.5f, 1f, 0f);
         PlayerGlobalData.instance.SetLimit(bottomLeftEdge, topRightEdge);
     }
-
 
 }

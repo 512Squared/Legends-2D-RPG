@@ -10,6 +10,9 @@ using Cinemachine;
 public class SecretShopSection : MonoBehaviour
 {
 
+
+    public static SecretShopSection instance;
+    
     [Header("UI Tweening")]
     [GUIColor(1f, 1f, 0.215f)]
     public RectTransform leftShopPanel, rightShopPanel;
@@ -29,9 +32,12 @@ public class SecretShopSection : MonoBehaviour
 
 
 
+
+
     // Start is called before the first frame update
     void Start()
     {
+        instance = this; 
         definedButton = this.gameObject;
         bell.sprite = bellImageOff;
     }
@@ -120,12 +126,9 @@ public class SecretShopSection : MonoBehaviour
     }
     public void ShopOpenArmoury(string shoptype) // called inside shop
     {
-        ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), shoptype);
-        shop = _enum_shopType;
-        ShopManager.instance.shopType = _enum_shopType;
+        SetShopType(shoptype);
         ShopManager.instance.ShopArmouryBool();
-        ShopId(_enum_shopType);
-        Debug.Log("Shop Armoury is now open: " + ShopManager.instance.isShopArmouryOpen + " | Parsed enum is: " + _enum_shopType + " = " + shop);
+
     }
 
     public void ShopId(ItemsManager.Shop parsed_shopType_enum)
@@ -146,6 +149,13 @@ public class SecretShopSection : MonoBehaviour
         }
     }
 
-
+    public void SetShopType(string scene)
+    {
+        ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), scene);
+        shop = _enum_shopType;
+        ShopId(_enum_shopType);
+        ShopManager.instance.shopType = _enum_shopType;
+        Debug.Log("Shop type now set: " + shop);
+    }
 
 }

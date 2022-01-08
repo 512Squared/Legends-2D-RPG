@@ -157,7 +157,7 @@ public class Inventory : MonoBehaviour
                     // implementing EQUIP, GIVE or USE ANIMATIONS
 
 
-                    if (item.itemType == ItemsManager.ItemType.Potion)
+                    if (item.itemType == ItemsManager.ItemType.Potion || item.itemType == ItemsManager.ItemType.Food)
                     {
                         if (item.itemName == "Mana Potion")
                         {
@@ -183,7 +183,7 @@ public class Inventory : MonoBehaviour
 
                         }
 
-                        else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion")
+                        else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion" || item.itemType == ItemsManager.ItemType.Food)
                         {
                             // animations
 
@@ -223,7 +223,7 @@ public class Inventory : MonoBehaviour
             Debug.Log("Item removed");
 
 
-            if (item.itemType == ItemsManager.ItemType.Potion)
+            if (item.itemType == ItemsManager.ItemType.Potion || item.itemType == ItemsManager.ItemType.Food)
             {
 
                 if (item.itemName == "Mana Potion")
@@ -248,7 +248,7 @@ public class Inventory : MonoBehaviour
 
                 }
 
-                else if (item.itemName == "Green Healing Potion" || item.itemName == "Red Healing Potion")
+                else if (item.itemName == "Green Healing Potion" || item.itemName == "Red Healing Potion" || item.itemType == ItemsManager.ItemType.Food)
                 {
                     // animations
 

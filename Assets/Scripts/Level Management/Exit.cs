@@ -14,11 +14,13 @@ public class Exit : MonoBehaviour
 
     bool isLoaded;
     bool unloaded;
+    private string sceneName;
 
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
+        sceneName = sceneToLoad;
 
         if (isLoaded) return;
         Debug.Log("Is Loaded status: " + isLoaded);
@@ -26,6 +28,7 @@ public class Exit : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
+            GameManager.instance.ActivateCharacters(sceneToLoad);
             GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(false);
 
             PlayerGlobalData.instance.arrivedAt = goingTo;
@@ -33,13 +36,27 @@ public class Exit : MonoBehaviour
             StartCoroutine(LoadSceneCoroutine());
 
             Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom);
-            ShopInstantiation(sceneToLoad);
-            Debug.Log("Shop Identification called: " + sceneToLoad);
+
+
+            if (gameObject.GetComponent<SceneHandling>().sceneLoad == SceneHandling.SceneLoad.shop)
+            {
+ 
+                ShopManager.instance.isPlayerInsideShop = true;
+                ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), sceneName);
+                ShopManager.instance.ShopType(_enum_shopType);
+                SecretShopSection.instance.SetShopType(sceneName);
+                ShopManager.instance.UpdateShopItemsInventory();
+                Debug.Log("Scenehandling called - load: " + gameObject.GetComponent<SceneHandling>().sceneLoad + " | Enum used: " + _enum_shopType);
+
+            }
+
+            else if (gameObject.GetComponent<SceneHandling>().sceneUnload == SceneHandling.SceneUnload.shop)
+            {
+                Debug.Log("Scenehandling called - unload: " + gameObject.GetComponent<SceneHandling>().sceneUnload);
+                ShopManager.instance.isShopArmouryOpen = false;
+                ShopManager.instance.isPlayerInsideShop = false;
+            }
         }
-
-        GameManager.instance.ActivateCharacters(sceneToLoad);
-        
-
     }
 
 
@@ -80,18 +97,6 @@ public class Exit : MonoBehaviour
         yield return new WaitForEndOfFrame();
         isLoaded = false;
     }
-
-    public void ShopInstantiation(string scene) // called at first scene change
-    {
-        if (sceneToLoad == "Shop_counter") // shop1
-        {
-            Debug.Log("Scene: " + scene);
-            ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), "shop1");
-            ShopManager.instance.shopType = _enum_shopType;
-            Debug.Log("Shoptype: " + ShopManager.instance.shopType);    
-            ShopManager.instance.ShopArmoury();
-        }
-
-    }
+        
 
 }
