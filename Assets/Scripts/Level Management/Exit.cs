@@ -44,7 +44,7 @@ public class Exit : MonoBehaviour
                 ShopManager.instance.isPlayerInsideShop = true;
                 ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), sceneName);
                 ShopManager.instance.ShopType(_enum_shopType);
-                SecretShopSection.instance.SetShopType(sceneName);
+                SecretShopSection.instance.shop = _enum_shopType;
                 ShopManager.instance.UpdateShopItemsInventory();
                 Debug.Log("Scenehandling called - load: " + gameObject.GetComponent<SceneHandling>().sceneLoad + " | Enum used: " + _enum_shopType);
 

@@ -50,6 +50,8 @@ public class AnyManager : MonoBehaviour
         
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
         
+        // uses buildIndex to set scene objects as active (GameManager - sceneObjects array)
+        
         GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(true);
         
         Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);

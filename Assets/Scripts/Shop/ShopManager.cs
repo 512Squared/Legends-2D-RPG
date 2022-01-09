@@ -234,7 +234,7 @@ public class ShopManager : MonoBehaviour
                         if (item.itemType == ItemsManager.ItemType.Armour)
                         {
                             shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | Shop no: " + item.shop);
                         }
 
                         // EFFECTS - WEAPON
@@ -473,6 +473,7 @@ public class ShopManager : MonoBehaviour
             NotificationFader.instance.CallFadeInOut("You have bought a " + activeItem.itemName + " for <color=#E0A515>" + activeItem.valueInCoins + "</color> gold coins. Item has been added to your inventory.", activeItem.itemsImage, 3f, 1400f);
             UpdateShopItemsInventory();
             ItemSoldAnim();
+            activeItem.GetComponent<SpriteRenderer>().sprite = null;
         }
 
         else if (activeItem.valueInCoins > playerStats.thulGold)

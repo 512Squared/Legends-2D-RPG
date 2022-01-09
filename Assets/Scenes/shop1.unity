@@ -661,7 +661,7 @@ GameObject:
   - component: {fileID: 322041197}
   - component: {fileID: 322041196}
   m_Layer: 0
-  m_Name: ShopKeeper
+  m_Name: ShopKeeper_old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1099,7 +1099,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688751006}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.46, y: 2.51, z: 0}
+  m_LocalPosition: {x: -4.93, y: 2.51, z: 0}
   m_LocalScale: {x: 0.7, y: 0.96, z: 1}
   m_Children: []
   m_Father: {fileID: 1413665308}
@@ -3032,7 +3032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa5ab601d5f2cb44ba58359c4c1e948b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrivalStation: counter
+  arrivalStation: shop1_interior
 --- !u!4 &2228411243697783670
 Transform:
   m_ObjectHideFlags: 0
@@ -3041,7 +3041,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2228411243697783671}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.45, y: -0.25, z: 0}
+  m_LocalPosition: {x: 3.45, y: 0.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2374703473748233512}
@@ -3092,7 +3092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneToLoad: Homestead
-  goingTo: Shop_well
+  goingTo: shop1_entrance
   arrivingFrom: shop1
 --- !u!1 &3794756512882534508
 GameObject:
@@ -3213,7 +3213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 2
+  sceneLoad: 3
   sceneUnload: 1
 --- !u!61 &7423720000493819125
 BoxCollider2D:

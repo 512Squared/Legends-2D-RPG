@@ -155,7 +155,7 @@ public class SecretShopSection : MonoBehaviour
         shop = _enum_shopType;
         ShopId(_enum_shopType);
         ShopManager.instance.shopType = _enum_shopType;
-        Debug.Log("Shop type now set: " + shop);
+        Debug.Log("Shop type now set: " + shop); // don't forget to change onclick string
     }
 
 }
