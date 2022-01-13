@@ -10,6 +10,7 @@ public class Arrival : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         if (arrivalStation == PlayerGlobalData.instance.arrivedAt)
         {
             PlayerGlobalData.instance.transform.position = transform.position;

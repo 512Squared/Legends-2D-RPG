@@ -275,7 +275,7 @@ public class MenuManager : MonoBehaviour
 
     private Tween fadeText;
 
-
+    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
     private void Start()
     {
 
@@ -417,6 +417,11 @@ public class MenuManager : MonoBehaviour
 
         currentNewItems = 0;
 
+        foodItems = 0; // debug stuff
+        potionItems = 0;
+        weaponItems = 0;
+        itemItems = 0;
+        armourItems = 0;
 
         foreach (Transform itemSlot in itemBoxParent)
         {
@@ -449,6 +454,26 @@ public class MenuManager : MonoBehaviour
                 }
 
                 itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
+
+                switch (item.itemType)
+                {
+                    case ItemsManager.ItemType.Food:
+                        foodItems++;
+                        break;
+                    case ItemsManager.ItemType.Potion:
+                        potionItems++;
+                        break;
+                    case ItemsManager.ItemType.Item:
+                        itemItems++;
+                        break;
+                    case ItemsManager.ItemType.Weapon:
+                        weaponItems++;
+                        break;
+                    case ItemsManager.ItemType.Armour:
+                        armourItems++;
+                        break;
+                }
+
 
 
                 // new items - needs to run here to count how many new items
@@ -507,7 +532,7 @@ public class MenuManager : MonoBehaviour
 
                         //  SORT BY POTIONS
 
-                        if (item.itemType == ItemsManager.ItemType.Potion || item.itemType == ItemsManager.ItemType.Food)
+                        if (item.itemType == ItemsManager.ItemType.Potion)
                         {
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
 
@@ -527,7 +552,7 @@ public class MenuManager : MonoBehaviour
                                 effectText.text = "+" + item.amountOfEffect.ToString();
                             }
 
-                            else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion" || item.itemType == ItemsManager.ItemType.Food)
+                            else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion" || item.itemName == "Red Healing Potion Large")
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 1;
                                 effectText.text = "+" + item.amountOfEffect.ToString();
@@ -539,6 +564,16 @@ public class MenuManager : MonoBehaviour
                                 effectBox.GetComponent<CanvasGroup>().alpha = 0;
                                 Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
                             }
+
+                        }
+
+                        // EFFECT - FOOD
+
+                        if (item.itemType == ItemsManager.ItemType.Food)
+                        {
+                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                            effectText.text = "+" + item.amountOfEffect.ToString();
+                            Debug.Log("Food restoration amount Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
 
                         }
 
@@ -647,8 +682,6 @@ public class MenuManager : MonoBehaviour
                 }
 
                 GameManager.instance.currentNewItems = currentNewItems;
-                //Debug.Log("No. of new Items: " + currentNewItems);
-
             }
             
         }

@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour
     public static Inventory instance;
 
     private List<ItemsManager> itemsList;
+    private List<ItemsManager> shopList;
     public PlayerStats[] characterArray;
     [SerializeField] PlayerStats thulgran;
 
@@ -26,6 +27,7 @@ public class Inventory : MonoBehaviour
     {
         instance = this;
         itemsList = new List<ItemsManager>();
+        shopList = new List<ItemsManager>();
         coinsManager = FindObjectOfType<CoinsManager>();
         characterArray = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
     }
@@ -34,7 +36,6 @@ public class Inventory : MonoBehaviour
 
     public void AddItems(ItemsManager item)
     {
-
         if (item.isStackable)
         {
             bool itemAleadyInInventory = false;
@@ -57,7 +58,6 @@ public class Inventory : MonoBehaviour
         {
             itemsList.Add(item);
         }
-
     }
 
     public void SellItem(ItemsManager item, int selectedCharacterSell)
@@ -294,6 +294,8 @@ public class Inventory : MonoBehaviour
         ShopManager.instance.currentThulGold2.text = characterArray[0].thulGold.ToString();
         MenuManager.instance.goldEquipTopBar.text = characterArray[0].thulGold.ToString();
         MenuManager.instance.UpdateStats();
+        itemsList.Add(item);
+        shopList.Remove(item);
         Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
     }
 
@@ -307,6 +309,44 @@ public class Inventory : MonoBehaviour
     {
         return itemsList;
     }
+
+    public List<ItemsManager> GetShopList()
+    {
+        return shopList;
+    }
+
+    public void AddShopItems(ItemsManager item)
+    {
+        if (item.isStackable)
+        {
+            bool itemAleadyInShop = false;
+
+            foreach (ItemsManager itemInShop in shopList)
+            {
+                if (itemInShop.itemName == item.itemName && itemInShop.shop == item.shop)
+                {
+                    itemInShop.amount += item.amount;
+                    itemAleadyInShop = true;
+                }
+            }
+
+            if (!itemAleadyInShop)
+            {
+                shopList.Add(item);
+            }
+        }
+        
+        else
+        {
+            shopList.Add(item);
+        }
+
+    }
+
+
+
+
+
 
 
 }
