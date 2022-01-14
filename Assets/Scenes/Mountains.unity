@@ -10220,6 +10220,7 @@ GameObject:
   - component: {fileID: 9194052748407119427}
   - component: {fileID: 4063698749426321310}
   - component: {fileID: 8545491327079963673}
+  - component: {fileID: 1511420306964854743}
   m_Layer: 0
   m_Name: Exit_east
   m_TagString: Untagged
@@ -10227,6 +10228,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1511420306964854743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511420306964854742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 1
+  sceneUnload: 2
 --- !u!1001 &1620222790761826429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10968,6 +10983,7 @@ GameObject:
   - component: {fileID: 4779858408216053190}
   - component: {fileID: 407445875739204635}
   - component: {fileID: 5428261079046883228}
+  - component: {fileID: 2970974306631216212}
   m_Layer: 0
   m_Name: Exit_north
   m_TagString: Untagged
@@ -10975,6 +10991,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2970974306631216212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2970974306631216211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 1
+  sceneUnload: 2
 --- !u!1 &2970974306654696406
 GameObject:
   m_ObjectHideFlags: 0
@@ -10986,6 +11016,7 @@ GameObject:
   - component: {fileID: 4779858408394594883}
   - component: {fileID: 407445875993199518}
   - component: {fileID: 5428261079166539801}
+  - component: {fileID: 2970974306654696407}
   m_Layer: 0
   m_Name: Exit_west
   m_TagString: Untagged
@@ -10993,6 +11024,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2970974306654696407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2970974306654696406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 1
+  sceneUnload: 2
 --- !u!1 &2970974306704091457
 GameObject:
   m_ObjectHideFlags: 0
@@ -11004,6 +11049,7 @@ GameObject:
   - component: {fileID: 4779858408412659924}
   - component: {fileID: 407445875944200457}
   - component: {fileID: 5428261079116612238}
+  - component: {fileID: 2970974306704091458}
   m_Layer: 0
   m_Name: Exit_mines_west
   m_TagString: Untagged
@@ -11011,6 +11057,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2970974306704091458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2970974306704091457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 3
+  sceneUnload: 2
 --- !u!1 &2970974306894315408
 GameObject:
   m_ObjectHideFlags: 0
@@ -11022,6 +11082,7 @@ GameObject:
   - component: {fileID: 4779858409028474373}
   - component: {fileID: 407445876534775768}
   - component: {fileID: 5428261078230668383}
+  - component: {fileID: 2970974306894315409}
   m_Layer: 0
   m_Name: Exit_south
   m_TagString: Untagged
@@ -11029,6 +11090,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2970974306894315409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2970974306894315408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 1
+  sceneUnload: 2
 --- !u!1 &2970974307006192791
 GameObject:
   m_ObjectHideFlags: 0
@@ -11060,8 +11135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 1
-  sceneUnload: 3
+  sceneLoad: 12
+  sceneUnload: 2
 --- !u!1 &2970974307419867088
 GameObject:
   m_ObjectHideFlags: 0
@@ -11073,6 +11148,7 @@ GameObject:
   - component: {fileID: 4779858407427665477}
   - component: {fileID: 407445877098035096}
   - component: {fileID: 5428261077721361439}
+  - component: {fileID: 2970974307419867089}
   m_Layer: 0
   m_Name: Exit_mines_south
   m_TagString: Untagged
@@ -11080,6 +11156,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2970974307419867089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2970974307419867088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 3
+  sceneUnload: 2
 --- !u!1 &2970974307938844872
 GameObject:
   m_ObjectHideFlags: 0
@@ -11091,6 +11181,7 @@ GameObject:
   - component: {fileID: 4779858407915055453}
   - component: {fileID: 407445877652926592}
   - component: {fileID: 5428261077202381575}
+  - component: {fileID: 2970974307938844873}
   m_Layer: 0
   m_Name: Exit_mines_north
   m_TagString: Untagged
@@ -11098,6 +11189,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2970974307938844873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2970974307938844872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 3
+  sceneUnload: 2
 --- !u!1 &2970974307960294870
 GameObject:
   m_ObjectHideFlags: 0
@@ -11109,6 +11214,7 @@ GameObject:
   - component: {fileID: 4779858407961666627}
   - component: {fileID: 407445877640920478}
   - component: {fileID: 5428261077189322265}
+  - component: {fileID: 2970974307960294871}
   m_Layer: 0
   m_Name: House_south
   m_TagString: Untagged
@@ -11116,6 +11222,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2970974307960294871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2970974307960294870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 8
+  sceneUnload: 2
 --- !u!1 &2970974308015599197
 GameObject:
   m_ObjectHideFlags: 0
@@ -11127,6 +11247,7 @@ GameObject:
   - component: {fileID: 4779858408174372808}
   - component: {fileID: 407445877828230677}
   - component: {fileID: 5428261077243594130}
+  - component: {fileID: 2970974308015599198}
   m_Layer: 0
   m_Name: House_west
   m_TagString: Untagged
@@ -11134,6 +11255,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2970974308015599198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2970974308015599197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoad: 9
+  sceneUnload: 2
 --- !u!4 &3037879341877447925
 Transform:
   m_ObjectHideFlags: 0

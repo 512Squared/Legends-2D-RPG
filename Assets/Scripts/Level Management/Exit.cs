@@ -13,33 +13,28 @@ public class Exit : MonoBehaviour
     [SerializeField] string goingTo;
     [SerializeField] string arrivingFrom;
 
-    bool isLoaded;
+    bool loaded;
     bool unloaded;
-    private string sceneName;
-
-    private Sprite progress;
-
-
+    
     void OnTriggerEnter2D(Collider2D collision)
     {
-        sceneName = sceneToLoad;
-
-        if (isLoaded) return;
-        Debug.Log("Is Loaded status: " + isLoaded);
-        isLoaded = true;
 
         if (collision.CompareTag("Player"))
         {
+            if (!loaded)
+            {
+                GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(false);
 
-            GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(false);
+                PlayerGlobalData.instance.arrivedAt = goingTo;
 
-            PlayerGlobalData.instance.arrivedAt = goingTo;
+                StartCoroutine(LoadSceneCoroutine());
 
-            StartCoroutine(LoadSceneCoroutine());
+                GameManager.instance.ActivateCharacters(sceneToLoad);
 
-            GameManager.instance.ActivateCharacters(sceneToLoad);
+                Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom);
+                loaded = true;
 
-            Debug.Log("Scene load called: " + sceneToLoad + " | Arriving from: " + arrivingFrom);
+            }
         }
     }
 
@@ -51,24 +46,19 @@ public class Exit : MonoBehaviour
 
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
-        asyncLoadLevel.allowSceneActivation = false;
-
-        while (!asyncLoadLevel.isDone)
+        while (true)
         {
-            if (asyncLoadLevel.progress >= 0.9f)
-            {
-                asyncLoadLevel.allowSceneActivation = true;
-            }
-
             if (!unloaded)
             {
                 unloaded = true;
                 AnyManager.anyManager.UnloadScene(arrivingFrom);
-
             }
-            yield return StartCoroutine(SetActiveScene(sceneToLoad));
+            yield return new WaitUntil(() => asyncLoadLevel.isDone);
+            StartCoroutine(SetActiveScene(sceneToLoad));
+            LoadShop(sceneToLoad);
+
         }
-        StartCoroutine(LoadShop());
+
     }
 
     public void ActiveScene()
@@ -78,40 +68,31 @@ public class Exit : MonoBehaviour
 
     IEnumerator SetActiveScene(string scene)
     {
-        yield return new WaitUntil(() => unloaded == true);
-        AnyManager.anyManager.SetActiveScene(scene);
         yield return new WaitForEndOfFrame();
-        isLoaded = false;
+        AnyManager.anyManager.SetActiveScene(scene);
     }
 
-    public void LoadingShop()
+    public void LoadShop(string sceneToLoad)
     {
-        StartCoroutine(LoadShop());
-    }
 
-    IEnumerator LoadShop()
-    {
-        yield return null;
 
-        while (true)
+        if (gameObject.GetComponent<SceneHandling>().sceneLoad == SceneHandling.SceneLoad.shop1 || gameObject.GetComponent<SceneHandling>().sceneLoad == SceneHandling.SceneLoad.shop2 || gameObject.GetComponent<SceneHandling>().sceneLoad == SceneHandling.SceneLoad.shop3)
         {
-            if (gameObject.GetComponent<SceneHandling>().sceneLoad == SceneHandling.SceneLoad.shop)
-            {
-                ShopManager.instance.isPlayerInsideShop = true;
-                ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), sceneName);
-                ShopManager.instance.ShopType(_enum_shopType);
-                Debug.Log("Scenehandling. Loading... " + gameObject.GetComponent<SceneHandling>().sceneLoad + " | Enum used: " + _enum_shopType);
-                SecretShopSection.instance.shop = _enum_shopType;
-                ShopManager.instance.UpdateShopItemsInventory();
-            }
 
-            else if (gameObject.GetComponent<SceneHandling>().sceneUnload == SceneHandling.SceneUnload.shop)
-            {
-                Debug.Log("Scenehandling called - unload: " + gameObject.GetComponent<SceneHandling>().sceneUnload);
-                ShopManager.instance.isShopArmouryOpen = false;
-                ShopManager.instance.isPlayerInsideShop = false;
-                ShopManager.instance.UpdateShopItemsInventory();
-            }
+            ShopManager.instance.isPlayerInsideShop = true;
+            ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), sceneToLoad);
+            ShopManager.instance.ShopType(_enum_shopType);
+            SecretShopSection.instance.shop = _enum_shopType;
+            ShopManager.instance.UpdateShopItemsInventory();
         }
+
+        else if (gameObject.GetComponent<SceneHandling>().sceneUnload == SceneHandling.SceneUnload.shop1 || gameObject.GetComponent<SceneHandling>().sceneUnload == SceneHandling.SceneUnload.shop2 || gameObject.GetComponent<SceneHandling>().sceneUnload == SceneHandling.SceneUnload.shop3)
+        {
+            ShopManager.instance.isShopArmouryOpen = false;
+            ShopManager.instance.isPlayerInsideShop = false;
+            ShopManager.instance.UpdateShopItemsInventory();
+        }
+
     }
 }
+

@@ -940,7 +940,7 @@ public class MenuManager : MonoBehaviour
 
         Debug.Log("InventoryLeft panel animations engaged");
 
-        if (activeItem.itemName == "Red Healing Potion" || activeItem.itemName == "Green Healing Potion" || activeItem.itemType == ItemsManager.ItemType.Food)
+        if (activeItem.itemName == "Red Healing Potion" || activeItem.itemName == "Green Healing Potion" || activeItem.itemName == "Red Healing Potion Large" || activeItem.itemType == ItemsManager.ItemType.Food)
         {
             hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
             var sequence = DOTween.Sequence()

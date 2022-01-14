@@ -183,7 +183,7 @@ public class Inventory : MonoBehaviour
 
                         }
 
-                        else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion" || item.itemType == ItemsManager.ItemType.Food)
+                        else if (item.itemName == "Red Healing Potion" || item.itemName == "Red Healing Potion Large" || item.itemName == "Green Healing Potion" || item.itemType == ItemsManager.ItemType.Food)
                         {
                             // animations
 
@@ -248,7 +248,7 @@ public class Inventory : MonoBehaviour
 
                 }
 
-                else if (item.itemName == "Green Healing Potion" || item.itemName == "Red Healing Potion" || item.itemType == ItemsManager.ItemType.Food)
+                else if (item.itemName == "Green Healing Potion" || item.itemName == "Red Healing Potion" || item.itemName == "Red Healing Potion Large" || item.itemType == ItemsManager.ItemType.Food)
                 {
                     // animations
 
