@@ -12,7 +12,7 @@ public class AnyManager : MonoBehaviour
 
     bool gameStart;
 
-    SceneHandling sceneStart;
+    [SerializeField] SceneHandling sceneStart;
 
     void Awake()
     {
