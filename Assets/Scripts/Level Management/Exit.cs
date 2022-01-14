@@ -42,6 +42,9 @@ public class Exit : MonoBehaviour
 
     IEnumerator LoadSceneCoroutine()
     {
+
+        Debug.Log("Load scene started");
+
         yield return null;
 
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
@@ -54,9 +57,9 @@ public class Exit : MonoBehaviour
                 AnyManager.anyManager.UnloadScene(arrivingFrom);
             }
             yield return new WaitUntil(() => asyncLoadLevel.isDone);
-            StartCoroutine(SetActiveScene(sceneToLoad));
-            LoadShop(sceneToLoad);
-
+            AnyManager.anyManager.SetActiveScene(sceneToLoad);
+            ShopMotherFucker(sceneToLoad);
+            yield return null;
         }
 
     }
@@ -66,21 +69,16 @@ public class Exit : MonoBehaviour
         arrivingFrom = SceneManager.GetActiveScene().name;
     }
 
-    IEnumerator SetActiveScene(string scene)
-    {
-        yield return new WaitForEndOfFrame();
-        AnyManager.anyManager.SetActiveScene(scene);
-    }
-
-    public void LoadShop(string sceneToLoad)
+    public void ShopMotherFucker(string scene)
     {
 
+        Debug.Log("Shop motherfucker started");
 
         if (gameObject.GetComponent<SceneHandling>().sceneLoad == SceneHandling.SceneLoad.shop1 || gameObject.GetComponent<SceneHandling>().sceneLoad == SceneHandling.SceneLoad.shop2 || gameObject.GetComponent<SceneHandling>().sceneLoad == SceneHandling.SceneLoad.shop3)
         {
 
             ShopManager.instance.isPlayerInsideShop = true;
-            ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), sceneToLoad);
+            ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), scene);
             ShopManager.instance.ShopType(_enum_shopType);
             SecretShopSection.instance.shop = _enum_shopType;
             ShopManager.instance.UpdateShopItemsInventory();
@@ -92,7 +90,7 @@ public class Exit : MonoBehaviour
             ShopManager.instance.isPlayerInsideShop = false;
             ShopManager.instance.UpdateShopItemsInventory();
         }
-
     }
+
 }
 
