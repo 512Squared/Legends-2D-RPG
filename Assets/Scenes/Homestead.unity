@@ -1646,15 +1646,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.150171
+      value: -9.130001
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.3208642
+      value: -4.6399994
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805261132712, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_BoundingShape2D
@@ -13616,6 +13616,7 @@ MonoBehaviour:
   sceneToLoad: Mountains
   goingTo: MountainsEast
   arrivingFrom: Homestead
+  GoingToBuildIndex: 2
 --- !u!114 &4136579062068114248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13631,6 +13632,7 @@ MonoBehaviour:
   sceneToLoad: Dungeon
   goingTo: OuterCircle
   arrivingFrom: Homestead
+  GoingToBuildIndex: 3
 --- !u!114 &4136579062149358544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13646,6 +13648,7 @@ MonoBehaviour:
   sceneToLoad: House_h_west
   goingTo: house_west_interior
   arrivingFrom: Homestead
+  GoingToBuildIndex: 9
 --- !u!114 &4136579062236099482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13661,6 +13664,7 @@ MonoBehaviour:
   sceneToLoad: House_h_north
   goingTo: house_north_interior
   arrivingFrom: Homestead
+  GoingToBuildIndex: 7
 --- !u!114 &4136579062269279884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13676,6 +13680,7 @@ MonoBehaviour:
   sceneToLoad: Mountains
   goingTo: MountainsNorth
   arrivingFrom: Homestead
+  GoingToBuildIndex: 2
 --- !u!114 &4136579062600888691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13691,6 +13696,7 @@ MonoBehaviour:
   sceneToLoad: Mountains
   goingTo: MountainsSouth
   arrivingFrom: Homestead
+  GoingToBuildIndex: 2
 --- !u!114 &4136579063222435357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13706,6 +13712,7 @@ MonoBehaviour:
   sceneToLoad: Mountains
   goingTo: MountainsWest
   arrivingFrom: Homestead
+  GoingToBuildIndex: 2
 --- !u!114 &4136579063300194847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13721,6 +13728,7 @@ MonoBehaviour:
   sceneToLoad: Dungeon
   goingTo: Zelda
   arrivingFrom: Homestead
+  GoingToBuildIndex: 3
 --- !u!114 &4136579063765491830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13736,6 +13744,7 @@ MonoBehaviour:
   sceneToLoad: House_h_south
   goingTo: house_south_interior
   arrivingFrom: Homestead
+  GoingToBuildIndex: 8
 --- !u!1001 &4199134516489126696
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14022,6 +14031,7 @@ MonoBehaviour:
   sceneToLoad: shop1
   goingTo: shop1_interior
   arrivingFrom: Homestead
+  GoingToBuildIndex: 4
 --- !u!61 &5780637823156196800
 BoxCollider2D:
   m_ObjectHideFlags: 0

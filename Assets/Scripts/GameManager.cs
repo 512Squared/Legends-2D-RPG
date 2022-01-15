@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
         magicManager = FindObjectsOfType<MagicManager>().OrderBy(m => m.transform.position.z).ToArray();
 
         ActivateCharacters(firstScene);
+        sceneObjects[1].SetActive(true);
 
     }
 

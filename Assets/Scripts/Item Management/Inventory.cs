@@ -32,8 +32,6 @@ public class Inventory : MonoBehaviour
         characterArray = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
     }
 
-
-
     public void AddItems(ItemsManager item)
     {
         if (item.isStackable)
@@ -280,7 +278,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-
     public void BuyItem(ItemsManager item)
     {
 
@@ -324,7 +321,6 @@ public class Inventory : MonoBehaviour
     {
 
     }
-
 
     public List<ItemsManager> GetItemsList()
     {

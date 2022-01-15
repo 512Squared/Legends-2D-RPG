@@ -12,6 +12,7 @@ public class Exit : MonoBehaviour
     [SerializeField] string sceneToLoad;
     [SerializeField] string goingTo;
     [SerializeField] string arrivingFrom;
+    [SerializeField] int GoingToBuildIndex;
 
     bool loaded;
     bool unloaded;
@@ -23,6 +24,7 @@ public class Exit : MonoBehaviour
         {
             if (!loaded)
             {
+                Debug.Log($"Active scene: {SceneManager.GetActiveScene().name} | Scene called: {sceneToLoad} ");
 
                 GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(false);
 
@@ -32,9 +34,11 @@ public class Exit : MonoBehaviour
 
                 LoadSceneCall();
 
-                DoShit(sceneToLoad, sceneHandle);
+                GameManager.instance.sceneObjects[GoingToBuildIndex].SetActive(true);
 
-                Debug.Log($"Load scene called from: {SceneManager.GetActiveScene().name}");
+                GameManager.instance.ActivateCharacters(sceneToLoad);
+
+                ShopMotherFucker(sceneToLoad, sceneHandle);
 
                 loaded = true;
             }
@@ -50,7 +54,7 @@ public class Exit : MonoBehaviour
     public void LoadSceneCall()
     {
         StartCoroutine(LoadSceneCoroutine());
-    }
+    } // coroutine call
 
     IEnumerator LoadSceneCoroutine()
     {
@@ -58,44 +62,50 @@ public class Exit : MonoBehaviour
 
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
-        while (true)
+        while (!asyncLoadLevel.isDone)
         {
+            if (asyncLoadLevel.progress >= 0.9f)
+            {
+                asyncLoadLevel.allowSceneActivation = true;
+            }
+
             if (!unloaded)
             {
                 unloaded = true;
                 AnyManager.anyManager.UnloadScene(arrivingFrom);
             }
-            yield return new WaitUntil(() => asyncLoadLevel.isDone);
-            AnyManager.anyManager.SetActiveScene(sceneToLoad);
+
+            yield return new WaitUntil(() => asyncLoadLevel.allowSceneActivation == true);
+            AnyManager.anyManager.SetSceneActive(GoingToBuildIndex, asyncLoadLevel);
         }
-
     }
-
-    public void DoShit(string scene, SceneHandling sceneHandle)
-    {
-        
-        Debug.Log($"Do shit called: {scene} + {sceneHandle.sceneLoad}");
-        StartCoroutine(DoRestOfShit(scene, sceneHandle));
-    }
-
-    IEnumerator DoRestOfShit(string scene, SceneHandling sceneHandle)
-    {
-        yield return null;
-        Debug.Log("Set up shop");
-        AnyManager.anyManager.ShopMotherFucker(scene, sceneHandle);
-        yield return null; 
-        Debug.Log("Activate characters"); 
-        GameManager.instance.ActivateCharacters(scene);
-
-    }
-
 
     public void ActiveScene()
     {
         arrivingFrom = SceneManager.GetActiveScene().name;
     }
 
+    public void ShopMotherFucker(string scene, SceneHandling sceneHandle)
+    {
 
+        Debug.Log("Shop motherfucker started");
+
+        if (sceneHandle.sceneLoad == SceneHandling.SceneLoad.shop1 || sceneHandle.sceneLoad == SceneHandling.SceneLoad.shop2 || sceneHandle.sceneLoad == SceneHandling.SceneLoad.shop3)
+        {
+            ShopManager.instance.isPlayerInsideShop = true;
+            ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), scene);
+            ShopManager.instance.ShopType(_enum_shopType);
+            SecretShopSection.instance.shop = _enum_shopType;
+            ShopManager.instance.UpdateShopItemsInventory();
+        }
+
+        else if (sceneHandle.sceneUnload == SceneHandling.SceneUnload.shop1 || sceneHandle.sceneUnload == SceneHandling.SceneUnload.shop2 || sceneHandle.sceneUnload == SceneHandling.SceneUnload.shop3)
+        {
+            ShopManager.instance.isShopArmouryOpen = false;
+            ShopManager.instance.isPlayerInsideShop = false;
+            ShopManager.instance.UpdateShopItemsInventory();
+        }
+    }
 
 }
 

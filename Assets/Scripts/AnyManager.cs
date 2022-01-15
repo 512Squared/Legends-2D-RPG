@@ -19,17 +19,34 @@ public class AnyManager : MonoBehaviour
         if (!gameStart)
         {
             anyManager = this;
-
-            SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-            SetActiveScene("Homestead");
             gameStart = true;
-
+            Initialize();
         }
     }
 
     private void Start()
     {
         anyManager = this;
+    }
+
+
+    public void Initialize()
+    {
+        StartCoroutine(InitializeCo());
+    }
+
+    IEnumerator InitializeCo()
+    {
+        AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        while (!asyncLoadLevel.isDone)
+        {
+            if (asyncLoadLevel.progress >= 0.9f)
+            {
+                asyncLoadLevel.allowSceneActivation = true;
+            }
+            yield return new WaitUntil(() => asyncLoadLevel.allowSceneActivation == true);
+            SetSceneActive(1, asyncLoadLevel);
+        }
     }
 
     public void UnloadScene(string scene) // called from Exit script
@@ -45,45 +62,14 @@ public class AnyManager : MonoBehaviour
 
     }
 
-    public void SetActiveScene(string scene)
+    public void SetSceneActive(int buildIndex, AsyncOperation asyncLoadLevel)
     {
-        StartCoroutine(SetActive(scene));
+        StartCoroutine(SetActive(buildIndex,asyncLoadLevel));
     }
 
-    IEnumerator SetActive(string scene)
+    IEnumerator SetActive(int buildIndex, AsyncOperation asyncLoadLevel)
     {
-        yield return new WaitForSeconds(0.2f);
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
-
-        yield return null;
-        GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(true);
-
-        yield return null;
-        Debug.Log("Active scene: " + SceneManager.GetActiveScene().name + " | Build Index: " + SceneManager.GetActiveScene().buildIndex);
-
+        yield return new WaitUntil(() => asyncLoadLevel.allowSceneActivation == true);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(buildIndex));
     }
-
-    public void ShopMotherFucker(string scene, SceneHandling sceneHandle)
-    {
-
-        Debug.Log("Shop motherfucker started");
-
-        if (sceneHandle.sceneLoad == SceneHandling.SceneLoad.shop1 || sceneHandle.sceneLoad == SceneHandling.SceneLoad.shop2 || sceneHandle.sceneLoad == SceneHandling.SceneLoad.shop3)
-        {
-
-            ShopManager.instance.isPlayerInsideShop = true;
-            ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), scene);
-            ShopManager.instance.ShopType(_enum_shopType);
-            SecretShopSection.instance.shop = _enum_shopType;
-            ShopManager.instance.UpdateShopItemsInventory();
-        }
-
-        else if (sceneHandle.sceneUnload == SceneHandling.SceneUnload.shop1 || sceneHandle.sceneUnload == SceneHandling.SceneUnload.shop2 || sceneHandle.sceneUnload == SceneHandling.SceneUnload.shop3)
-        {
-            ShopManager.instance.isShopArmouryOpen = false;
-            ShopManager.instance.isPlayerInsideShop = false;
-            ShopManager.instance.UpdateShopItemsInventory();
-        }
-    }
-
 }
