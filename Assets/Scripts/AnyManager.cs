@@ -57,7 +57,7 @@ public class AnyManager : MonoBehaviour
         yield return null; 
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
 
-        yield return null;
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == scene);
         GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(true);
 
         yield return null;
