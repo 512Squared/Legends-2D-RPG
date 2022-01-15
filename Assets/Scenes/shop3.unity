@@ -4516,7 +4516,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2228411243697783671}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.45, y: -0.25, z: 0}
+  m_LocalPosition: {x: 3.45, y: 0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2374703473748233512}
@@ -4569,7 +4569,8 @@ MonoBehaviour:
   sceneToLoad: Mountains
   goingTo: shop3_entrance
   arrivingFrom: shop3
-  GoingToBuildIndex: 2
+  indexTo: 2
+  indexFrom: 6
 --- !u!1 &3794756512882534508
 GameObject:
   m_ObjectHideFlags: 0
@@ -4689,8 +4690,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 2
-  sceneUnload: 12
+  sceneObjectsLoad: 2
+  sceneObjectsUnload: 12
 --- !u!61 &7423720000493819125
 BoxCollider2D:
   m_ObjectHideFlags: 0

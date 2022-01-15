@@ -1404,7 +1404,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: f680c1dc262b87349a7726864c15b7da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9966,7 +9966,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.25658607, y: -0.041995525}
+  m_Offset: {x: 0.25658607, y: -0.09007311}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -9977,7 +9977,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3053207, y: 0.08774662}
+  m_Size: {x: 1.3053207, y: 0.18390179}
   m_EdgeRadius: 0
 --- !u!61 &407445877098035096
 BoxCollider2D:
@@ -10240,8 +10240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 1
-  sceneUnload: 2
+  sceneObjectsLoad: 1
+  sceneObjectsUnload: 2
 --- !u!1001 &1620222790761826429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11003,8 +11003,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 1
-  sceneUnload: 2
+  sceneObjectsLoad: 1
+  sceneObjectsUnload: 2
 --- !u!1 &2970974306654696406
 GameObject:
   m_ObjectHideFlags: 0
@@ -11036,8 +11036,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 1
-  sceneUnload: 2
+  sceneObjectsLoad: 1
+  sceneObjectsUnload: 2
 --- !u!1 &2970974306704091457
 GameObject:
   m_ObjectHideFlags: 0
@@ -11069,8 +11069,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 3
-  sceneUnload: 2
+  sceneObjectsLoad: 3
+  sceneObjectsUnload: 1
 --- !u!1 &2970974306894315408
 GameObject:
   m_ObjectHideFlags: 0
@@ -11102,8 +11102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 1
-  sceneUnload: 2
+  sceneObjectsLoad: 1
+  sceneObjectsUnload: 2
 --- !u!1 &2970974307006192791
 GameObject:
   m_ObjectHideFlags: 0
@@ -11135,8 +11135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 12
-  sceneUnload: 2
+  sceneObjectsLoad: 12
+  sceneObjectsUnload: 2
 --- !u!1 &2970974307419867088
 GameObject:
   m_ObjectHideFlags: 0
@@ -11168,8 +11168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 3
-  sceneUnload: 2
+  sceneObjectsLoad: 3
+  sceneObjectsUnload: 1
 --- !u!1 &2970974307938844872
 GameObject:
   m_ObjectHideFlags: 0
@@ -11201,8 +11201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 3
-  sceneUnload: 2
+  sceneObjectsLoad: 3
+  sceneObjectsUnload: 1
 --- !u!1 &2970974307960294870
 GameObject:
   m_ObjectHideFlags: 0
@@ -11234,8 +11234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 8
-  sceneUnload: 2
+  sceneObjectsLoad: 8
+  sceneObjectsUnload: 2
 --- !u!1 &2970974308015599197
 GameObject:
   m_ObjectHideFlags: 0
@@ -11267,8 +11267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 9
-  sceneUnload: 2
+  sceneObjectsLoad: 9
+  sceneObjectsUnload: 2
 --- !u!4 &3037879341877447925
 Transform:
   m_ObjectHideFlags: 0
@@ -11622,7 +11622,8 @@ MonoBehaviour:
   sceneToLoad: House_m_south
   goingTo: house_south_interior
   arrivingFrom: Mountains
-  GoingToBuildIndex: 11
+  indexTo: 11
+  indexFrom: 2
 --- !u!114 &5428261077202381575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11638,7 +11639,8 @@ MonoBehaviour:
   sceneToLoad: Dungeon
   goingTo: Inner1_door
   arrivingFrom: Mountains
-  GoingToBuildIndex: 3
+  indexTo: 3
+  indexFrom: 2
 --- !u!114 &5428261077243594130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11654,7 +11656,8 @@ MonoBehaviour:
   sceneToLoad: House_m_west
   goingTo: house_west_interior
   arrivingFrom: Mountains
-  GoingToBuildIndex: 12
+  indexTo: 12
+  indexFrom: 2
 --- !u!114 &5428261077721361439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11670,7 +11673,8 @@ MonoBehaviour:
   sceneToLoad: Dungeon
   goingTo: Maze
   arrivingFrom: Mountains
-  GoingToBuildIndex: 3
+  indexTo: 3
+  indexFrom: 2
 --- !u!114 &5428261078230668383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11686,7 +11690,8 @@ MonoBehaviour:
   sceneToLoad: Homestead
   goingTo: HomesteadNorth
   arrivingFrom: Mountains
-  GoingToBuildIndex: 1
+  indexTo: 1
+  indexFrom: 2
 --- !u!114 &5428261078411867992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11702,7 +11707,8 @@ MonoBehaviour:
   sceneToLoad: shop3
   goingTo: shop3_interior
   arrivingFrom: Mountains
-  GoingToBuildIndex: 6
+  indexTo: 6
+  indexFrom: 2
 --- !u!114 &5428261079046883228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11718,7 +11724,8 @@ MonoBehaviour:
   sceneToLoad: Homestead
   goingTo: HomesteadSouth
   arrivingFrom: Mountains
-  GoingToBuildIndex: 1
+  indexTo: 1
+  indexFrom: 2
 --- !u!114 &5428261079116612238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11734,7 +11741,8 @@ MonoBehaviour:
   sceneToLoad: Dungeon
   goingTo: Boss
   arrivingFrom: Mountains
-  GoingToBuildIndex: 3
+  indexTo: 3
+  indexFrom: 2
 --- !u!114 &5428261079166539801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11750,7 +11758,8 @@ MonoBehaviour:
   sceneToLoad: Homestead
   goingTo: HomesteadEast
   arrivingFrom: Mountains
-  GoingToBuildIndex: 1
+  indexTo: 1
+  indexFrom: 2
 --- !u!1 &5653285050624447530
 GameObject:
   m_ObjectHideFlags: 0
@@ -12165,7 +12174,8 @@ MonoBehaviour:
   sceneToLoad: Homestead
   goingTo: HomesteadWest
   arrivingFrom: Mountains
-  GoingToBuildIndex: 1
+  indexTo: 1
+  indexFrom: 2
 --- !u!4 &9194052748407119427
 Transform:
   m_ObjectHideFlags: 0

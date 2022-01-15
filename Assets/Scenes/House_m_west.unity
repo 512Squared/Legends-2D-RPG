@@ -1078,19 +1078,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.57796
+      value: 8.240691
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -40.337692
+      value: -28.52245
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259517, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: orthographic size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805261132712, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_BoundingShape2D
@@ -3729,8 +3729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoad: 2
-  sceneUnload: 9
+  sceneObjectsLoad: 2
+  sceneObjectsUnload: 9
 --- !u!4 &3477276957293244563
 Transform:
   m_ObjectHideFlags: 0
@@ -5169,7 +5169,8 @@ MonoBehaviour:
   sceneToLoad: Mountains
   goingTo: house_west_entrance
   arrivingFrom: House_m_west
-  GoingToBuildIndex: 2
+  indexTo: 2
+  indexFrom: 12
 --- !u!1001 &5538430761832008904
 PrefabInstance:
   m_ObjectHideFlags: 0

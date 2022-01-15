@@ -599,7 +599,7 @@ public class ShopManager : MonoBehaviour
 
         }
         isShopInstantiated = true; // armoury is instantiated on first shop onload
-        Debug.Log("Shop fully Instantiated");
+        Debug.Log("Shops fully Instantiated");
         ShopManager.instance.UpdateShopItemsInventory();
     }
 

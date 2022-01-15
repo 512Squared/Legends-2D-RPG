@@ -1963,7 +1963,6 @@ GameObject:
   m_Component:
   - component: {fileID: 491126618}
   - component: {fileID: 491126619}
-  - component: {fileID: 491126620}
   m_Layer: 0
   m_Name: anyManager
   m_TagString: Untagged
@@ -1997,20 +1996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361bd8fb5c5d30a47a2be2ca85fb497a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &491126620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 491126617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c857b8514ab578f4e85d5a1430c54b1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoad: 1
-  sceneUnload: 1
 --- !u!1 &501498746
 GameObject:
   m_ObjectHideFlags: 0
@@ -18146,11 +18131,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.57796
+      value: -6.150171
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -40.337692
+      value: -1.3208642
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18166,7 +18151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259517, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: orthographic size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805261132713, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_Follow
