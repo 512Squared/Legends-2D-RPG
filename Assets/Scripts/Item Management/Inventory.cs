@@ -294,7 +294,28 @@ public class Inventory : MonoBehaviour
         ShopManager.instance.currentThulGold2.text = characterArray[0].thulGold.ToString();
         MenuManager.instance.goldEquipTopBar.text = characterArray[0].thulGold.ToString();
         MenuManager.instance.UpdateStats();
-        itemsList.Add(item);
+        if (item.isStackable)
+        {
+            bool itemAleadyInInventory = false;
+
+            foreach (ItemsManager itemInInventory in itemsList)
+            {
+                if (itemInInventory.itemName == item.itemName)
+                {
+                    itemInInventory.amount += item.amount;
+                    itemAleadyInInventory = true;
+                }
+            }
+
+            if (!itemAleadyInInventory)
+            {
+                itemsList.Add(item);
+            }
+        }
+        else
+        {
+            itemsList.Add(item);
+        }
         shopList.Remove(item);
         Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
     }

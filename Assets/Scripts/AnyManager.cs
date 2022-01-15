@@ -12,8 +12,6 @@ public class AnyManager : MonoBehaviour
 
     bool gameStart;
 
-    [SerializeField] SceneHandling sceneStart;
-
     void Awake()
     {
         Debug.Log("First active scene: " + SceneManager.GetActiveScene().name);
@@ -23,7 +21,7 @@ public class AnyManager : MonoBehaviour
             anyManager = this;
 
             SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-            SetActiveScene("Homestead", sceneStart);
+            SetActiveScene("Homestead");
             gameStart = true;
 
         }
@@ -34,7 +32,7 @@ public class AnyManager : MonoBehaviour
         anyManager = this;
     }
 
-    public void UnloadScene(string scene)
+    public void UnloadScene(string scene) // called from Exit script
     {
         StartCoroutine(Unload(scene));
     }
@@ -47,26 +45,23 @@ public class AnyManager : MonoBehaviour
 
     }
 
-    public void SetActiveScene(string scene, SceneHandling sceneHandle)
+    public void SetActiveScene(string scene)
     {
-        StartCoroutine(SetActive(scene, sceneHandle));
+        StartCoroutine(SetActive(scene));
     }
 
-    IEnumerator SetActive(string scene, SceneHandling sceneHandle)
+    IEnumerator SetActive(string scene)
     {
-        yield return null; 
+        yield return new WaitForSeconds(0.2f);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
 
-        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == scene);
+        yield return null;
         GameManager.instance.sceneObjects[SceneManager.GetActiveScene().buildIndex].SetActive(true);
 
         yield return null;
         Debug.Log("Active scene: " + SceneManager.GetActiveScene().name + " | Build Index: " + SceneManager.GetActiveScene().buildIndex);
 
-        yield return null;
-        ShopMotherFucker(scene, sceneHandle);
     }
-
 
     public void ShopMotherFucker(string scene, SceneHandling sceneHandle)
     {
