@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6665795330146752294}
   - component: {fileID: 5206338415792482358}
   - component: {fileID: 8446862612977395146}
+  - component: {fileID: -8214370207578912591}
   m_Layer: 0
   m_Name: hp
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4773161676068196437}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -105,9 +106,31 @@ MonoBehaviour:
   itemSelected: 0
   isNewItem: 1
   shopItem: 1
+  shop: 0
   affectType: 0
   amountOfEffect: 0
   itemWeaponPower: 0
   itemArmourDefence: 0
   isStackable: 1
   amount: 0
+--- !u!114 &-8214370207578912591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4773161676068196437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08efce29b4758534790fbd645e39d7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magicType: 0
+  magicAffect: 0
+  magicName: 
+  magicDescription: 
+  amountOfEffect: 0
+  noOfEnemies: 0
+  manaDrain: 0
+  magicSlots: []
+  Level: 0
