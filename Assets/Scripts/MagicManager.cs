@@ -15,16 +15,16 @@ public class MagicManager : MonoBehaviour
     {
         //_spawn.magicSlots = new GameObject[7];
 
-        Vector3 position = PlayerGlobalData.instance.GetComponent<Transform>().position;
-        _spawn = Instantiate(_unitPrefab, position+(transform.forward*4), transform.rotation);
-        _spawn.GetComponent<SpriteRenderer>().sortingLayerName = "Objects"; 
+        //Vector3 position = PlayerGlobalData.instance.GetComponent<Transform>().position;
+        //_spawn = Instantiate(_unitPrefab, position+(transform.forward*4), transform.rotation);
+        //_spawn.GetComponent<SpriteRenderer>().sortingLayerName = "Objects"; 
 
-        _spawn.Level = 2;
+        //_spawn.Level = 2;
 
-        for (int i = 0; i < 5; i++)
-        {
-            _MagicUnits.Add(Instantiate(_unitPrefab));
-        }
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    _MagicUnits.Add(Instantiate(_unitPrefab));
+        //}
     }
 
     // Update is called once per frame

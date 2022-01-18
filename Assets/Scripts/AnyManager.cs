@@ -20,7 +20,7 @@ public class AnyManager : MonoBehaviour
         {
             anyManager = this;
             gameStart = true;
-            SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         }
     }
 

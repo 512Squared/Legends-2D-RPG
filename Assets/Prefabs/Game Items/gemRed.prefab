@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,12 +104,12 @@ MonoBehaviour:
   itemsImage: {fileID: 21300000, guid: d72ffa11fc5fc487f96ca11c753a0292, type: 3}
   itemSelected: 0
   isNewItem: 1
-  itemSold: 0
+  shopItem: 0
+  shop: 0
   affectType: 0
   amountOfEffect: 0
-  WeaponDexterity: 0
-  armourDefence: 0
-  speedIncrease: 0
+  itemWeaponPower: 0
+  itemArmourDefence: 0
   isStackable: 1
   amount: 1
 --- !u!60 &3111570451388353432

@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,12 +102,14 @@ MonoBehaviour:
   itemDescription: Light steel armour
   valueInCoins: 500
   itemsImage: {fileID: 21300000, guid: 6e5824ed73e2743b7856c446faea1b8c, type: 3}
+  itemSelected: 0
   isNewItem: 1
+  shopItem: 0
+  shop: 0
   affectType: 0
   amountOfEffect: 0
-  WeaponDexterity: 0
-  armourDefence: 6
-  speedIncrease: 0
+  itemWeaponPower: 0
+  itemArmourDefence: 0
   isStackable: 0
   amount: 1
 --- !u!60 &5400088802255020669
