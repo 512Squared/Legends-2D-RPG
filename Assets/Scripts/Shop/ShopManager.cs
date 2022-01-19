@@ -481,7 +481,7 @@ public class ShopManager : MonoBehaviour
         shopCurrentNewItems = 0;
         isShopUIOn = false;
         GameManager.instance.isItemSelected = false;
-        UpdateShopItemsInventory();
+        NofifyOnly();
     }
 
     public void ItemSoldAnim()
@@ -614,6 +614,64 @@ public class ShopManager : MonoBehaviour
     public void ShopArmouryReset()
     {
         secretShop.OpenSecretPanel();
+    }
+
+    public void NofifyOnly()
+    {
+        shopCurrentNewItems = 0;
+        foodItems = 0; // debug stuff
+        potionItems = 0;
+        weaponItems = 0;
+        itemItems = 0;
+        armourItems = 0;
+
+        foreach (Transform itemSlot in shopItemBoxParent)
+        {
+            Destroy(itemSlot.gameObject);
+        }
+
+        foreach (ItemsManager item in Inventory.instance.GetShopList())
+        {
+            if (item.shopItem == true)
+            {
+                if (item.isNewItem == true)
+                {
+                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                    shopCurrentNewItems++;
+                }
+
+
+                if (item.shop != shopType && item.isNewItem == true)
+                {
+                    shopCurrentNewItems--;
+                    shopNewItemsText.text = shopCurrentNewItems.ToString();
+                }
+
+                if (isShopArmouryOpen == false && item.shop == shopType && item.isNewItem == true)
+                {
+                    if (item.itemType == ItemsManager.ItemType.Weapon || item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Spell)
+                    {
+                        shopCurrentNewItems--;
+                    }
+                    shopNewItemsText.text = shopCurrentNewItems.ToString();
+                }
+
+                else if (isShopArmouryOpen == true && item.shop == shopType)
+                {
+                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                    shopNewItemsText.text = shopCurrentNewItems.ToString();
+                }
+
+                if (shopCurrentNewItems == 0)
+                {
+                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+                }
+                if (isPlayerInsideShop == false)
+                {
+                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+                }
+            }
+        }
     }
 
 }
