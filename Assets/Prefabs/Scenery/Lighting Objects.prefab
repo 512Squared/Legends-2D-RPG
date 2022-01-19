@@ -265,6 +265,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1409820895466700887, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2496368543378189649, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.08
@@ -287,7 +291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4062624713775218079, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5578863396801555901, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -328,6 +332,14 @@ PrefabInstance:
     - target: {fileID: 8707610257097205357, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
       propertyPath: m_PointLightOuterAngle
       value: 114.37314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931423065804825745, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.409
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931423065804825745, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 5.29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
@@ -540,6 +552,10 @@ PrefabInstance:
     - target: {fileID: 2496368543378189649, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931423065804825745, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 5.29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a890141d8991514b9b7c164fe7f140c, type: 3}
