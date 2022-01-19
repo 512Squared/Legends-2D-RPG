@@ -170,8 +170,8 @@ MonoBehaviour:
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 0
-  m_ShadowIntensity: 0.75
+  m_ShadowIntensityEnabled: 1
+  m_ShadowIntensity: 1
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_Vertices:
@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 1149327898139673895}
   - component: {fileID: 1149327898139673896}
   - component: {fileID: 5184033492282337347}
+  - component: {fileID: 3774060489591038272}
   m_Layer: 6
   m_Name: lantern_right
   m_TagString: Untagged
@@ -331,6 +332,32 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5560036, y: 0.9159193}
   m_EdgeRadius: 0
+--- !u!114 &3774060489591038272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149327898139673897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c201fa2079d019040cd
+  m_ShapePath:
+  - {x: -0.22, y: -1.4, z: 0}
+  - {x: -0.33, y: 1.69, z: 0}
+  - {x: 0.45, y: 1.72, z: 0}
+  - {x: 0.39, y: -1.38, z: 0}
+  m_ShapePathHash: 2081446030
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -850076
 --- !u!1 &7333837572663211405
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,8 +417,8 @@ MonoBehaviour:
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 0
-  m_ShadowIntensity: 0.75
+  m_ShadowIntensityEnabled: 1
+  m_ShadowIntensity: 1
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_Vertices:

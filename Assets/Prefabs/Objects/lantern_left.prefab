@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1409820895466700884}
   - component: {fileID: 1409820895466700887}
   - component: {fileID: 1030670326621736703}
+  - component: {fileID: 3002751202578830332}
+  - component: {fileID: 295449200169506363}
   m_Layer: 6
   m_Name: lantern_left
   m_TagString: Untagged
@@ -111,6 +113,45 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4555817, y: 0.9968324}
   m_EdgeRadius: 0
+--- !u!114 &3002751202578830332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409820895466700886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38f48a8d66b2adc46887f23a3a88ac01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+--- !u!114 &295449200169506363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409820895466700886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c201fa2079d019040cd
+  m_ShapePath:
+  - {x: -0.14, y: -0.96, z: 0}
+  - {x: -0.29, y: 1.6, z: 0}
+  - {x: 0.46, y: 1.62, z: 0}
+  - {x: 0.34, y: -0.9, z: 0}
+  m_ShapePathHash: 2073322013
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 842886
 --- !u!1 &5345264829137514683
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,13 +176,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5345264829137514683}
-  m_LocalRotation: {x: 0.00021973973, y: 0.0026087505, z: 0.086029604, w: -0.9962892}
+  m_LocalRotation: {x: -0.00022396744, y: -0.00261164, z: -0.08498304, w: 0.99637896}
   m_LocalPosition: {x: -0.12, y: 0.24, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2496368543378189649}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -0.051, y: -0.296, z: -10}
+  m_LocalEulerAnglesHint: {x: -0.051, y: -0.296, z: -9.75}
 --- !u!114 &8707610257097205357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,8 +211,8 @@ MonoBehaviour:
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 0
-  m_ShadowIntensity: 0.75
+  m_ShadowIntensityEnabled: 1
+  m_ShadowIntensity: 1
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_Vertices:
@@ -279,8 +320,8 @@ MonoBehaviour:
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 0
-  m_ShadowIntensity: 0.75
+  m_ShadowIntensityEnabled: 1
+  m_ShadowIntensity: 1
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_Vertices:
