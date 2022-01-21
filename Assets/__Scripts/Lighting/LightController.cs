@@ -1,17 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Light2DE = UnityEngine.Experimental.Rendering.Universal.Light2D;
+using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.Tilemaps;
+
 
 public class LightController : MonoBehaviour
 {
-
-    [SerializeField] Light2DE[] nearbyLights;
-    public bool isShadowWanted = true;
+    [Header ("LIGHT CONTROLS")]
+    [Space]
+    [Space]
+    [SerializeField] Light2D[] nearbyLights;
+    [Space]
     public bool isShadowOn = true;
-    public bool isEastWest;
 
+    enum DoorwayType
+    {
+        EastWest,
+        NorthSouth,
+        WestEast,
+        SouthNorth
+    }
+    [Space]
+    [SerializeField] DoorwayType doorwayType;
     
+    [Space]
+    [SerializeField] Tilemap shadowTileEbony;
+    [SerializeField] Tilemap shadowTileIvory;
+    
+    [Space]
+    public bool isEbonyOn = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +39,6 @@ public class LightController : MonoBehaviour
         {
             nearbyLights[i].shadowsEnabled = true;
         }
-
-        
-
     }
 
     public void EnableShadows()
@@ -43,27 +60,102 @@ public class LightController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && isShadowWanted == false && isShadowOn == true)
-        {
-            DisableShadows();
-            isShadowOn = !isShadowOn;
-            isShadowWanted = !isShadowWanted;
-            this.transform.position = new Vector3(transform.position.x+1.5f, transform.position.y); 
-        }
-
-        else if (collision.tag == "Player" && isShadowWanted == true && isShadowOn == false)
-        {
-            EnableShadows();
-            isShadowOn = !isShadowOn;
-            isShadowWanted = !isShadowWanted;
-            this.transform.position = new Vector3(transform.position.x-1.5f, transform.position.y); 
-
-        }
+        ShadowControls(collision);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void ShadowControls(Collider2D col)
     {
-        
+        if (doorwayType == DoorwayType.EastWest)
+        {
+            if (col.CompareTag("Player") && isShadowOn)
+            {
+                DisableShadows();
+                isShadowOn = !isShadowOn;
+                this.transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y);
+            }
+
+            else if (col.CompareTag("Player") && !isShadowOn)
+            {
+                EnableShadows();
+                isShadowOn = !isShadowOn;
+                this.transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y);
+            }
+        }
+
+        else if (doorwayType == DoorwayType.NorthSouth)
+        {
+            if (col.CompareTag("Player") && isShadowOn)
+            {
+                DisableShadows();
+                isShadowOn = !isShadowOn;
+                this.transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f);
+            }
+
+            else if (col.CompareTag("Player") && !isShadowOn)
+            {
+                EnableShadows();
+                isShadowOn = !isShadowOn;
+                this.transform.position = new Vector3(transform.position.x, transform.position.y - 1.5f);
+            }
+        }
+
+        else if (doorwayType == DoorwayType.WestEast)
+        {
+            if (col.CompareTag("Player") && isShadowOn)
+            {
+                DisableShadows();
+                isShadowOn = !isShadowOn;
+                this.transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y);
+            }
+
+            else if (col.CompareTag("Player") && !isShadowOn)
+            {
+                EnableShadows();
+                isShadowOn = !isShadowOn;
+                this.transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y);
+            }
+        }
+
+        else if (doorwayType == DoorwayType.SouthNorth)
+        {
+            if (col.CompareTag("Player") && isShadowOn)
+            {
+                DisableShadows();
+                isShadowOn = !isShadowOn;
+                this.transform.position = new Vector3(transform.position.x, transform.position.y - 1.5f);
+            }
+
+            else if (col.CompareTag("Player") && !isShadowOn)
+            {
+                EnableShadows();
+                isShadowOn = !isShadowOn;
+                this.transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f);
+            }
+        }
+        ShadowBinary(col);
     }
+
+    public void ShadowBinary(Collider2D col)
+    {
+        if (col.CompareTag("Player"))
+        {
+
+            if (isEbonyOn == false)
+            {
+                shadowTileEbony.GetComponent<TilemapBlack>().gameObject.SetActive(true);
+                
+            }
+
+            if (isEbonyOn == true)
+            {
+                shadowTileIvory.GetComponent<TilemapWhite>().gameObject.SetActive(false);
+                
+            }
+            isEbonyOn = !isEbonyOn;
+        }
+
+
+    }
+
 }

@@ -115,6 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1727878103456728881}
   - component: {fileID: 6338761738766267525}
+  - component: {fileID: 4300309303078024380}
   m_Layer: 0
   m_Name: torch_light
   m_TagString: Untagged
@@ -153,7 +154,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.728
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0
   m_LightVolumeIntensity: 0.45
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c201fa2079d019040cd
@@ -214,6 +215,23 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &4300309303078024380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3919142074109695432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de21f0e123ee75f4782a6b2c6744e3b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxIntensity: 1
+  minIntensity: 0.5
+  maxFlickerFrequency: 1
+  minFlickerFrequency: 0.1
+  strength: 5
 --- !u!1 &5942622942885766178
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6562179692136118171}
   - component: {fileID: 8027403133482373796}
+  - component: {fileID: 2516038764346401428}
   m_Layer: 0
   m_Name: area_lighting
   m_TagString: Untagged
@@ -262,7 +281,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.696
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.15
+  m_Intensity: 0
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c201fa2079d019040cd
@@ -708,3 +727,20 @@ MonoBehaviour:
   - {x: 0.4157348, y: -0.27778515, z: 0}
   - {x: 0.46193978, y: -0.19134171, z: 0}
   - {x: 0.49039266, y: -0.09754512, z: 0}
+--- !u!114 &2516038764346401428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5942622942885766178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de21f0e123ee75f4782a6b2c6744e3b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxIntensity: 1
+  minIntensity: 0.5
+  maxFlickerFrequency: 1
+  minFlickerFrequency: 0.1
+  strength: 5
