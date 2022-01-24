@@ -4,23 +4,23 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
 
-[RequireComponent(typeof(Light2D))]
+
 public class Flicker : MonoBehaviour
 {
     /************************************************************/
     #region Variables
 
-    [Tooltip("maximum possible intensity the light can flicker to")]
+    [Tooltip("Torch is the default setting.Area settings: 0.2, 0, 0.2, 0, 5;")]
     [SerializeField, Min(0)] float maxIntensity = 1f;
 
     [Tooltip("minimum possible intensity the light can flicker to")]
-    [SerializeField, Min(0)] float minIntensity = 0.5f;
+    [SerializeField, Min(0)] float minIntensity = 0.2f;
 
     [Tooltip("maximum frequency of often the light will flicker in seconds")]
-    [SerializeField, Min(0)] float maxFlickerFrequency = 1f;
+    [SerializeField, Min(0)] float maxFlickerFrequency = 0.1f;
 
     [Tooltip("minimum frequency of often the light will flicker in seconds")]
-    [SerializeField, Min(0)] float minFlickerFrequency = 0.1f;
+    [SerializeField, Min(0)] float minFlickerFrequency = 0f;
 
     [Tooltip("how fast the light will flicker to it's next intensity (a very high value will)" +
         "look like a dying lightbulb while a lower value will look more like an organic fire")]

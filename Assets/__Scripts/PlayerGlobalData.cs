@@ -32,7 +32,6 @@ public class PlayerGlobalData : MonoBehaviour
     void Start()
     {
         instance = this;
-
     }
 
 
