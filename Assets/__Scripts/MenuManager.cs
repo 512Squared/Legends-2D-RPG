@@ -47,7 +47,12 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] CanvasGroup teamNofify;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject dayNightCycle;
+
     [SerializeField] TextMeshProUGUI teamMemberCount;
+
 
 
 
@@ -882,6 +887,7 @@ public class MenuManager : MonoBehaviour
             UpdateItemsInventory();
             UpdateStats();
             joystick.DisableJoystick();
+            dayNightCycle.SetActive(false);
             panelTesting.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
             panelTesting.GetComponent<CanvasGroup>().interactable = true;
             panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -896,6 +902,7 @@ public class MenuManager : MonoBehaviour
             keyboardKeyI = false;
             GameManager.instance.keyboardKeyI = false;
             Debug.Log("E Key off");
+            dayNightCycle.SetActive(true);
             panelTesting.GetComponent<UIFader>().FadeOut(); // call a function from another script
             panelTesting.GetComponent<CanvasGroup>().interactable = false;
             panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = false;
