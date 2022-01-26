@@ -12,186 +12,61 @@ using DG.Tweening;
 public class MenuManager : MonoBehaviour
 {
 
-    public static MenuManager instance;
-    public static int select;
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    public ItemsManager activeItem;
-
-    private ShopManager shopManager;
-
-
-
-
-    [TabGroup("Weapon Group", "Add to Party")]
-    [GUIColor(0.307f, 0.321f, 0.027f)]
-    public Button[] addToPartyButton, retireFromPartyButton;
-
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.147f, 0.154f, 0.496f)]
-    public Sprite basicAxe, basicArmour;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject cancelButton, useButton;
-
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Image[] characterMugEquip;
-
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.447f, 0.454f, 0.496f)]
-    public Image[] characterMugWeaponry;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool controlSwitch;
-
-    [ShowInInspector]
-    [Title("INVENTORY")]
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    public int currentNewItems;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject effectBox;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI effectText;
-
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.447f, 0.454f, 0.496f)]
-    public Image[] equippedWeaponImage, equippedArmourImage;
-
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.447f, 0.454f, 0.496f)]
-    public TextMeshProUGUI[] equippedWeaponName, equippedArmourName;
-
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.447f, 0.454f, 0.496f)]
-    public TextMeshProUGUI[] inventoryWeaponPower, inventoryArmourDefence;
-
-    [TabGroup("Weapon Group", "Inventory Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public GameObject inventTabsAllFocus, inventTabsWeaponsFocus, inventTabsArmourFocus, inventTabsItemsFocus, inventTabsPotionsFocus;
-
-    [TabGroup("Weapon Group", "Inventory Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public Button inventTabsAllHolder, inventTabsWeaponsHolder, inventTabsArmourHolder, inventTabsItemsHolder, inventTabsPotionsHolder;
-
-    [TabGroup("Weapon Group", "Inventory Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public TextMeshProUGUI inventTabsAllText;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isInventoryOn = false;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isInventorySlidePanelOn;
-
-    [TabGroup("Weapon Group", "Add to Party")]
-    [GUIColor(0.307f, 0.321f, 0.027f)]
-    public GameObject[] isNewNotification;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isOverviewOn, isStatsOn, isWeaponryOn;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject itemBox, itemDamageBox, itemArmourBox, itemPotionBox, itemFoodBox;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Image itemImage;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemPotion, itemFood, itemValue;
-
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.147f, 0.154f, 0.496f)]
-    public TextMeshProUGUI itemWeaponPower, itemArmourDefence, itemPotionPower;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool keyboardKeyI = false;
-
-    [GUIColor(1f, 1f, 0.215f)]
-    public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
-
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Slider[] manaEquipSlider, hpEquipSlider, defenceEquipSlider;
-
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar;
-
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI[] manaEquipToString, hpEquipToString, defenceEquipToString;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Sprite masking;
-
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Sprite teamBasicAxe, teamBasicArmour;
-
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Image[] teamCharacterMugWeaponry;
-
-    public int teamCount;
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Image[] teamEquippedWeaponImage, teamEquippedArmourImage;
-
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamEquippedWeaponName, teamEquippedArmourName, teamCharacterName;
-
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamInventoryAttackTotal, teamInventoryDefenceTotal;
-
-    // attack power is actually Dexterity in PlayerStats (yeah, I had to same thought... wtf??
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamItemWeaponBonus, teamItemArmourBonus;
-
-    [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.207f, 0.121f, 0.027f)]
-    public TextMeshProUGUI teamPopWeaponryBonus;
-
-    [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.207f, 0.121f, 0.027f)]
-    public Image teamPopWeaponryImage;
-
-    [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.207f, 0.121f, 0.027f)]
-    public TextMeshProUGUI teamPopWeaponryName, teamPopWeaponryDescription, teamPopWeaponryBonusText;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool weaponBool, armourBool, itemBool, potionBool, spellBool;
-
-    // doesn't look like I used these. Done in CoinsManager.
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Button[] weaponPanelButtons, potionPanelButtons;
+    [SerializeField] PlayerStats[] playerStats;
+    [SerializeField] GameObject[] statsButtons;
 
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject mainMenu, inventoryPanel, dayNightCycle;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] CanvasGroup[] menuPanels;
+
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject equipment;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] Image imageToFade;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] private UltimateButton actionButton;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] private UltimateJoystick joystick;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] private UltimateMobileQuickbar quickBar;
 
-    [GUIColor(1f, 0.2f, 0.515f)]
-    [SerializeField] Sprite buttonGrey;
 
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject panelTesting;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject teamTabMenu;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] CanvasGroup teamNofify;
+    [SerializeField] TextMeshProUGUI teamMemberCount;
+
+
+
+    public static MenuManager instance;
+
+
+
+    private int panelStuff;
+    private string whichPanelIsOn = "";
+    public static int select;
+    public int teamCount;
+
+    [TabGroup("Char Stats")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] GameObject[] characterCards, characterParty, characterEquip, characterWeaponry, teamCharacterWeaponry;
@@ -200,114 +75,11 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.670f, 1, 0.560f)]
     [PreviewField, Required]
     [SerializeField] Image[] characterImage, characterMug, characterPlain;
-
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
     [SerializeField] Image characterImageV;
 
-    [TabGroup("Char Stats")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
 
-    [TabGroup("Skills")]
-    [GUIColor(1, 0.819f, 0.760f)]
-    [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
-
-    [Header("UI Tweening")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] private CanvasGroup chooseText;
-
-    [SerializeField] GameObject[] controllers;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject dayNightCycle;
-
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] TMP_Dropdown droppy;
-
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject equipment;
-
-    private Tween fadeText;
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
-
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
-
-    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] Image imageToFade;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    [SerializeField] bool[] isTeamMember;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] Transform itemBoxParent;
-
-    // dropbox for the dropdown object (hence, TMP_Dropdown)
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] private UltimateJoystick joystick;
-
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    public GameObject mainMenu, inventoryPanel;
-
-    [SerializeField] CanvasGroup[] menuPanels;
-    // doesn't look like I used these. Done in CoinsManager.
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    [SerializeField] TextMeshProUGUI newItemsText;
-
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] Image overviewSprite, statsSprite, weaponrySprite;
-
-    [Header("Team UI Sprites")]
-    [Space]
-    [FoldoutGroup("UI Sprites", expanded: false)]
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] Sprite overviewSpriteOn, overviewSpriteOff, statsSpriteOn, statsSpriteOff, weaponrySpriteOn, weaponrySpriteOff;
-
-    private int panelStuff;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject panelTesting;
-
-    [Header("Player Choice")]
-    [GUIColor(1f, 0.2f, 0.515f)]
-    [SerializeField] TextMeshProUGUI[] playerChoice;
-
-    [SerializeField] PlayerStats[] playerStats;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] private UltimateMobileQuickbar quickBar;
-    [SerializeField] TextMeshProUGUI teamMemberCount;
-
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] CanvasGroup teamNofify;
-
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject teamTabMenu;
-    //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI textUseEquipTake;
-
-    [Space]
-    [TabGroup("New Group", "Thulgren")]
-    [GUIColor(1f, 0.780f, 0.984f)]
-    [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
-
-    private string whichPanelIsOn = "";
-    [TabGroup("New Group", "Thulgren")]
-    [GUIColor(1f, 0.780f, 0.984f)]
-    [SerializeField] Slider xpMainS;
 
     [TabGroup("Sliders")]
     [GUIColor(1f, 0.886f, 0.780f)]
@@ -315,6 +87,199 @@ public class MenuManager : MonoBehaviour
     [TabGroup("Sliders")]
     [GUIColor(1f, 0.886f, 0.780f)]
     [SerializeField] Slider xpVS, manaVS, healthVS, dexterityVS, defenceVS, intelligenceVS, perceptionVS;
+
+    [Space]
+    [TabGroup("New Group", "Thulgren")]
+    [GUIColor(1f, 0.780f, 0.984f)]
+    [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
+    [TabGroup("New Group", "Thulgren")]
+    [GUIColor(1f, 0.780f, 0.984f)]
+    [SerializeField] Slider xpMainS;
+
+    [TabGroup("Skills")]
+    [GUIColor(1, 0.819f, 0.760f)]
+    [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemPotion, itemFood, itemValue;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Image itemImage;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Sprite masking;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [SerializeField] Transform itemBoxParent;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject itemBox, itemDamageBox, itemArmourBox, itemPotionBox, itemFoodBox;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI effectText;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject effectBox;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject cancelButton, useButton;
+
+
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI[] manaEquipToString, hpEquipToString, defenceEquipToString;
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Slider[] manaEquipSlider, hpEquipSlider, defenceEquipSlider;
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Image[] characterMugEquip;
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar; // doesn't look like I used these. Done in CoinsManager.
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Button[] weaponPanelButtons, potionPanelButtons; // doesn't look like I used these. Done in CoinsManager.
+
+
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public TextMeshProUGUI[] equippedWeaponName, equippedArmourName;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public Image[] equippedWeaponImage, equippedArmourImage;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public Image[] characterMugWeaponry;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public TextMeshProUGUI[] inventoryWeaponPower, inventoryArmourDefence;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.147f, 0.154f, 0.496f)]
+    public TextMeshProUGUI itemWeaponPower, itemArmourDefence, itemPotionPower;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.147f, 0.154f, 0.496f)]
+    public Sprite basicAxe, basicArmour;
+
+
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI[] teamEquippedWeaponName, teamEquippedArmourName, teamCharacterName;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Image[] teamEquippedWeaponImage, teamEquippedArmourImage;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Image[] teamCharacterMugWeaponry;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI[] teamInventoryAttackTotal, teamInventoryDefenceTotal; // attack power is actually Dexterity in PlayerStats (yeah, I had to same thought... wtf??
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI[] teamItemWeaponBonus, teamItemArmourBonus;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Sprite teamBasicAxe, teamBasicArmour;
+
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
+    public Image teamPopWeaponryImage;
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
+    public TextMeshProUGUI teamPopWeaponryName, teamPopWeaponryDescription, teamPopWeaponryBonusText;
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
+    public TextMeshProUGUI teamPopWeaponryBonus;
+
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public Button inventTabsAllHolder, inventTabsWeaponsHolder, inventTabsArmourHolder, inventTabsItemsHolder, inventTabsPotionsHolder;
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public TextMeshProUGUI inventTabsAllText;
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public GameObject inventTabsAllFocus, inventTabsWeaponsFocus, inventTabsArmourFocus, inventTabsItemsFocus, inventTabsPotionsFocus;
+    [TabGroup("Weapon Group", "Add to Party")]
+    [GUIColor(0.307f, 0.321f, 0.027f)]
+    public Button[] addToPartyButton, retireFromPartyButton;
+    [TabGroup("Weapon Group", "Add to Party")]
+    [GUIColor(0.307f, 0.321f, 0.027f)]
+    public GameObject[] isNewNotification;
+
+
+
+
+
+    [ShowInInspector]
+    [Title("INVENTORY")]
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    public int currentNewItems;
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    [SerializeField] TextMeshProUGUI newItemsText;
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    public ItemsManager activeItem; //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
+
+
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [SerializeField] bool[] isTeamMember;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isInventoryOn = false;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool keyboardKeyI = false;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool controlSwitch;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool weaponBool, armourBool, itemBool, potionBool, spellBool;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isOverviewOn, isStatsOn, isWeaponryOn;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isInventorySlidePanelOn;
+
+
+
+    [Header("UI Tweening")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] private CanvasGroup chooseText;
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TextMeshProUGUI textUseEquipTake;
+    [GUIColor(1f, 1f, 0.215f)]
+    public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
+    [GUIColor(1f, 1f, 0.215f)]
+    public RectTransform leftShopPanel, rightShopPanel;
+
+
+    [Header("Player Choice")]
+    [GUIColor(1f, 0.2f, 0.515f)]
+    [SerializeField] TextMeshProUGUI[] playerChoice;
+    [GUIColor(1f, 0.2f, 0.515f)]
+    [SerializeField] Sprite buttonGrey;
+
+    [Header("Team UI Sprites")]
+    [Space]
+    [FoldoutGroup("UI Sprites", expanded: false)]
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] Sprite overviewSpriteOn, overviewSpriteOff, statsSpriteOn, statsSpriteOff, weaponrySpriteOn, weaponrySpriteOff;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] Image overviewSprite, statsSprite, weaponrySprite;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
+
+
+
+    private Tween fadeText;
+
+    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
     public static void IsInterfaceOn()
     {
         Debug.Log("IsInteraceOn() called from MenuManager");
@@ -375,26 +340,6 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void InventoryBackOrHome(string call)
-    {
-        if (call == "home")
-        {
-            MenuPanelsOff(call);
-            currentNewItems = 0;
-            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-            GameManager.instance.isItemSelected = false;
-            UpdateItemsInventory();
-        }
-
-        else if (call == "back")
-        {
-            MenuPanelsOff(call); 
-            currentNewItems = 0;
-            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-            GameManager.instance.isItemSelected = false;
-            UpdateItemsInventory();
-        }
-    }
 
 
     public void equipCharStats()
@@ -498,6 +443,52 @@ public class MenuManager : MonoBehaviour
 
     }
 
+    public void InventoryBackOrHome(string call)
+    {
+        if (call == "home")
+        {
+            MenuPanelsOff(call);
+            currentNewItems = 0;
+            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+            GameManager.instance.isItemSelected = false;
+            UpdateItemsInventory();
+        }
+
+        else if (call == "back")
+        {
+            MenuPanelsOff(call);
+            currentNewItems = 0;
+            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+            GameManager.instance.isItemSelected = false;
+            UpdateItemsInventory();
+
+        }
+    }
+
+    public void MainMenuPanel(int panel)  // switch a panel on
+    {
+        //    mainMenu 0
+        //    shop 1
+        //    keys 2
+        //    magic 3
+        //    inventory 4
+        //    quests 5
+        //    overview 6
+        //    stats 7
+        //    weaponry 8
+        //    uiButtons 9
+        //    fadebackground 10
+
+
+        menuPanels[panel].blocksRaycasts = true;
+        menuPanels[panel].interactable = true;
+        menuPanels[panel].alpha = 1;
+
+        mainMenu.GetComponent<CanvasGroup>().interactable = false;
+        mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+
+    }
     public void ItemInfoReset()
     {
         itemName.text = "Select an item";
@@ -528,14 +519,14 @@ public class MenuManager : MonoBehaviour
             isInventoryOn = false;
             ShopManager.instance.isShopUIOn = false;
             GameManager.instance.isInterfaceOn = false;
- 
-            dayNightCycle.SetActive(false);
+
+            dayNightCycle.SetActive(true);
             joystick.EnableJoystick();
             quickBar.EnableQuickbar();
             actionButton.EnableButton();
-            
+
             ButtonHandler.instance.SetAllButtonsInteractable();
-            
+
             ShopManager.instance.ShopItemInfoReset();
             ItemInfoReset();
         }
@@ -544,40 +535,78 @@ public class MenuManager : MonoBehaviour
             if (isInventoryOn == true)
             {
                 Debug.Log($"Inventory is open and 'back' has been called");
-                
+
                 ButtonHandler.instance.SetAllButtonsInteractable();
                 ShopManager.instance.ShopItemInfoReset();
                 ItemInfoReset();
-                
+
                 mainMenu.GetComponent<CanvasGroup>().alpha = 1;
                 mainMenu.GetComponent<CanvasGroup>().interactable = true;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-                inventoryPanel.GetComponent<CanvasGroup>().alpha = 0;                
+                inventoryPanel.GetComponent<CanvasGroup>().alpha = 0;
                 inventoryPanel.GetComponent<CanvasGroup>().interactable = false;
                 inventoryPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
-                
-                
+
+
                 isInventoryOn = false;
             }
             else if (ShopManager.instance.isShopUIOn == true)
             {
                 Debug.Log($"Shop is open and 'back' has been called");
-                
+
                 ButtonHandler.instance.SetAllButtonsInteractable();
                 ShopManager.instance.ShopItemInfoReset();
                 ItemInfoReset();
-                
+
                 mainMenu.GetComponent<CanvasGroup>().alpha = 1;
-                mainMenu.GetComponent<CanvasGroup>().interactable = true;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                mainMenu.GetComponent<CanvasGroup>().interactable = true;
                 ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().interactable = false;
                 ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
                 ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().alpha = 0;
-                
+
                 ShopManager.instance.isShopUIOn = false;
             }
-        }
 
+            else if (isOverviewOn == true || isStatsOn == true || isWeaponryOn == true)
+            {
+                mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+                mainMenu.GetComponent<CanvasGroup>().interactable = true;
+                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                Debug.Log($"Team UI back triggered");
+            }
+
+            else if (menuPanels[5].alpha == 1) // quests
+            {
+                mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+                mainMenu.GetComponent<CanvasGroup>().interactable = true;
+                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                menuPanels[5].alpha = 0;
+                menuPanels[5].interactable = false;
+                menuPanels[5].blocksRaycasts = false;
+            }
+
+            else if (menuPanels[2].alpha == 1) // keys
+            {
+                mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+                mainMenu.GetComponent<CanvasGroup>().interactable = true;
+                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                menuPanels[2].alpha = 0;
+                menuPanels[2].interactable = false;
+                menuPanels[2].blocksRaycasts = false;
+            }
+
+            else if (menuPanels[3].alpha == 1) // magic
+            {
+                mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+                mainMenu.GetComponent<CanvasGroup>().interactable = true;
+                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                menuPanels[3].alpha = 0;
+                menuPanels[3].interactable = false;
+                menuPanels[3].blocksRaycasts = false;
+            }
+
+        }
     }
 
     public void onCancelButton()
@@ -610,31 +639,6 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    //    // select is the choice of character in the dropdown menu, i.e. the character array slot. 'select' is used instead of the 'for each' loop and 'isTeamMember'
-    //    if (playerStats[select].isTeamMember == true)
-    //    {
-    //        select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
-    //        characterNameV.text = playerStats[select].playerName;
-    //        descriptionV.text = playerStats[select].playerDesc;
-    //        healthV.text = playerStats[select].npcHP.ToString();
-    //        characterImageV.sprite = playerStats[select].characterImage;
-    //        levelV.text = playerStats[select].npcLevel.ToString();
-    //        xpV.text = playerStats[select].npcXP.ToString();
-    //        manaV.text = playerStats[select].npcMana.ToString();
-    //        dexterityV.text = playerStats[select].npcDexterity.ToString();
-    //        defenceV.text = playerStats[select].npcDefence.ToString();
-    //        intelligenceV.text = playerStats[select].npcIntelligence.ToString();
-    //        perceptionV.text = playerStats[select].npcPerception.ToString();
-    //        intelligenceVS.value = playerStats[select].npcIntelligence;
-    //        xpVS.value = playerStats[select].npcXP;
-    //        manaVS.value = playerStats[select].npcMana;
-    //        healthVS.value = playerStats[select].npcHP;
-    //        dexterityVS.value = playerStats[select].npcDexterity;
-    //        defenceVS.value = playerStats[select].npcDefence;
-    //        intelligenceVS.value = playerStats[select].npcIntelligence;
-    //        perceptionVS.value = playerStats[select].npcPerception;
-    //        characterImageV.sprite = playerStats[select].characterImage;
-    //    }
     public void QuitGame()
     {
         Debug.Log("Game was quit!");
@@ -963,10 +967,12 @@ public class MenuManager : MonoBehaviour
 
             teamTabMenu.GetComponent<CanvasGroup>().interactable = false;
             teamTabMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            teamTabMenu.GetComponent<CanvasGroup>().alpha = 0;
+
 
             WhichPanelIsOn();
 
-            Debug.Log("Exiting. Panel status - Overview Alpha: " + GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha + " | Stats Alpha: " + GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha + " | Weaponry Alpha: " + GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha);
+            Debug.Log($"Exiting. Panel status - Overview: { GameObject.FindGameObjectWithTag("overviewPanel").GetComponent<CanvasGroup>().alpha} | Stats: { GameObject.FindGameObjectWithTag("statsPanel").GetComponent<CanvasGroup>().alpha} | Weaponry: {GameObject.FindGameObjectWithTag("weaponryPanel").GetComponent<CanvasGroup>().alpha} | Tabs: {teamTabMenu.GetComponent<CanvasGroup>().alpha}");
 
         }
 

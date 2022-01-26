@@ -10,82 +10,75 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance;
 
-    public ItemsManager activeItem;
-    
-    public CanvasGroup shopUIPanel;
 
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isShopArmouryOpen = false;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isShopInstantiated = false;
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isShopUIOn = false, isPlayerInsideShop = false;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public CanvasGroup itemSoldMessage;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI shopEffectText, shopItemArmourDefence, shopItemWeaponPower;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject shopItemBox, shopItemDamageBox, shopItemArmourBox, shopItemPotionBox, shopItemFoodBox, shopEffectBox, messageContainer;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Image shopItemImage;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI shopItemName, shopItemDescription, shopItemDamage, shopItemArmour, shopItemPotion, shopItemFood, shopItemValue;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Sprite shopMasking, bagOfGold;
-
-    public Transform[] shops;
-    [TabGroup("Weapon Group", "Shop Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public GameObject shopTabsAllFocus, shopTabsWeaponsFocus, shopTabsArmourFocus, shopTabsItemsFocus, shopTabsPotionsFocus;
-
-    [TabGroup("Weapon Group", "Shop Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public Button shopTabsAllHolder, shopTabsWeaponsHolder, shopTabsArmourHolder, shopTabsItemsHolder, shopTabsPotionsHolder;
-
-    [TabGroup("Weapon Group", "Shop Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public TextMeshProUGUI shopTabsAllText, currentThulGold, currentThulGold2, shopNewItemsText;
-
-    public ItemsManager.Shop shopType;
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool shopWeaponBool, shopArmourBool, shopItemBool, shopSpellBool, shopPotionBool;
-
-    private readonly Tween fadeText;
-    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
     [SerializeField] private PlayerStats playerStats;
     private SecretShopSection secretShop;
 
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] int secretShopItemsCount;
-
-    private int shop1NormalItems, shop1SecretItems, shop2NormalItems, shop2SecretItems;
-
-    private int shopCurrentNewItems = 0;
+    public CanvasGroup shopUIPanel;
 
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] Transform shopItemBoxParent;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [SerializeField] int secretShopItemsCount;
     [SerializeField] int shopItemsCount;
+    public Transform[] shops;
+
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI shopItemName, shopItemDescription, shopItemDamage, shopItemArmour, shopItemPotion, shopItemFood, shopItemValue;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Image shopItemImage;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Sprite shopMasking, bagOfGold;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public CanvasGroup itemSoldMessage;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI shopEffectText, shopItemArmourDefence, shopItemWeaponPower;
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject shopItemBox, shopItemDamageBox, shopItemArmourBox, shopItemPotionBox, shopItemFoodBox, shopEffectBox, messageContainer;
+
+
+    [TabGroup("Weapon Group", "Shop Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public Button shopTabsAllHolder, shopTabsWeaponsHolder, shopTabsArmourHolder, shopTabsItemsHolder, shopTabsPotionsHolder;
+    [TabGroup("Weapon Group", "Shop Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public TextMeshProUGUI shopTabsAllText, currentThulGold, currentThulGold2, shopNewItemsText;
+    [TabGroup("Weapon Group", "Shop Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public GameObject shopTabsAllFocus, shopTabsWeaponsFocus, shopTabsArmourFocus, shopTabsItemsFocus, shopTabsPotionsFocus;
+
+
+    public ItemsManager activeItem;
+    private int shopCurrentNewItems = 0;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isShopUIOn = false, isPlayerInsideShop = false;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool shopWeaponBool, shopArmourBool, shopItemBool, shopSpellBool, shopPotionBool;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isShopArmouryOpen = false;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isShopInstantiated = false;
+
+    private readonly Tween fadeText;
+
+    public ItemsManager.Shop shopType;
+    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
+
+    private int shop1NormalItems, shop1SecretItems, shop2NormalItems, shop2SecretItems;
     public void CallToBuyItem()
     {
         if (activeItem.valueInCoins <= playerStats.thulGold)

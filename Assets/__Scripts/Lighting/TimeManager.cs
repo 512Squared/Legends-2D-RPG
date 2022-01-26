@@ -6,7 +6,7 @@ public class TimeManager : MonoBehaviour
 {
     public const int hoursInDay = 24, minutesInHour = 60;
 
-    public float dayDurationSecs = 30f;
+    public float dayDurationSecs = 60f;
 
     float totalTime = 0;
     float currentTime = 0;
@@ -21,6 +21,21 @@ public class TimeManager : MonoBehaviour
         totalTime += Time.deltaTime;
         currentTime = totalTime % dayDurationSecs;
     }
+
+    void Start()
+    {
+        StartCoroutine(CurrentTime());
+    }
+
+    IEnumerator CurrentTime()
+    {
+        for (;;)
+        {
+            Debug.Log("Current time: " + currentTime);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
 
     public float GetHour()
     {

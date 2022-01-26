@@ -18,7 +18,8 @@ public class DayNightClock : MonoBehaviour
         nightHoursToDegrees = 180 / (TimeManager.hoursInDay * tm.nightDuration);
         dayHoursToDegrees = 180 / (TimeManager.hoursInDay * (1 - tm.nightDuration));
 
-        skyDome.rotation = Quaternion.Euler(0,0,90+tm.sunriseHour*nightHoursToDegrees);
+        skyDome.rotation = Quaternion.Euler(0,0,0);
+        //rotation: 90+tm.sunriseHour*nightHoursToDegrees
     }
 
     // Update is called once per frame

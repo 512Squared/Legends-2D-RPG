@@ -24,8 +24,6 @@ public class ButtonHandler : MonoBehaviour
     {
         interfaceOn = !interfaceOn;
         GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
-        Debug.Log($"isInterfaceOn() called from ButtonHandler: {interfaceOn}");
-
     }
 
     public void UseButtonIsOn()
