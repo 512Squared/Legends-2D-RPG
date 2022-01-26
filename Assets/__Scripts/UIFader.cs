@@ -9,6 +9,8 @@ public class UIFader : MonoBehaviour
        
     public CanvasGroup uiElement;
 
+    [SerializeField] float fadeTime = 0.3f;
+
     void Start()
     {
         instance = this;        
@@ -22,16 +24,16 @@ public class UIFader : MonoBehaviour
 
     public void FadeIn()
     {
-        StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 1));
+        StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 1, fadeTime));
     }
 
     public void FadeOut()
     {
-        StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 0));
+        StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 0, fadeTime));
     }
 
 
-    public IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float lerpTime = 0.3f)
+    public IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float lerpTime)
     {
 
         float _timeStartedLerping = Time.time;

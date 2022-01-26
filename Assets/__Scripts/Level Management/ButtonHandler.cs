@@ -10,18 +10,21 @@ public class ButtonHandler : MonoBehaviour
     private GameObject useButton, sellButton;
 
 
-    public bool interfaceOn;
+    public static bool interfaceOn;
 
     void Awake()
     {
+        instance = this;
         useButton = GameObject.FindGameObjectWithTag("buttonUse");
         sellButton = GameObject.FindGameObjectWithTag("button_sell");
+        interfaceOn = false;
     }
 
     public void IsinterfaceOn()
     {
-        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
         interfaceOn = !interfaceOn;
+        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
+        Debug.Log($"isInterfaceOn() called from ButtonHandler: {interfaceOn}");
 
     }
 

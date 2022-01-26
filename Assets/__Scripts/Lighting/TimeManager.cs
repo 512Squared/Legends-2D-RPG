@@ -6,7 +6,7 @@ public class TimeManager : MonoBehaviour
 {
     public const int hoursInDay = 24, minutesInHour = 60;
 
-    public float dayDuration = 30f;
+    public float dayDurationSecs = 30f;
 
     float totalTime = 0;
     float currentTime = 0;
@@ -19,17 +19,17 @@ public class TimeManager : MonoBehaviour
     void Update()
     {
         totalTime += Time.deltaTime;
-        currentTime = totalTime % dayDuration;
+        currentTime = totalTime % dayDurationSecs;
     }
 
     public float GetHour()
     {
-        return currentTime * hoursInDay / dayDuration;
+        return currentTime * hoursInDay / dayDurationSecs;
     }
 
     public float GetMinutes()
     {
-        return (currentTime * hoursInDay * minutesInHour / dayDuration)%minutesInHour;
+        return (currentTime * hoursInDay * minutesInHour / dayDurationSecs)%minutesInHour;
     }
 
     public string Clock24Hour()

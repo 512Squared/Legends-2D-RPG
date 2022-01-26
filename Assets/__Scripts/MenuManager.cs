@@ -12,62 +12,186 @@ using DG.Tweening;
 public class MenuManager : MonoBehaviour
 {
 
-    [SerializeField] PlayerStats[] playerStats;
-    [SerializeField] GameObject[] statsButtons;
+    public static MenuManager instance;
+    public static int select;
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    public ItemsManager activeItem;
 
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject mainMenu;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject equipment;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] Image imageToFade;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
+    private ShopManager shopManager;
+
+
+
+
+    [TabGroup("Weapon Group", "Add to Party")]
+    [GUIColor(0.307f, 0.321f, 0.027f)]
+    public Button[] addToPartyButton, retireFromPartyButton;
+
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.147f, 0.154f, 0.496f)]
+    public Sprite basicAxe, basicArmour;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject cancelButton, useButton;
+
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Image[] characterMugEquip;
+
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public Image[] characterMugWeaponry;
+
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool controlSwitch;
+
+    [ShowInInspector]
+    [Title("INVENTORY")]
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    public int currentNewItems;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject effectBox;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI effectText;
+
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public Image[] equippedWeaponImage, equippedArmourImage;
+
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public TextMeshProUGUI[] equippedWeaponName, equippedArmourName;
+
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.454f, 0.496f)]
+    public TextMeshProUGUI[] inventoryWeaponPower, inventoryArmourDefence;
+
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public GameObject inventTabsAllFocus, inventTabsWeaponsFocus, inventTabsArmourFocus, inventTabsItemsFocus, inventTabsPotionsFocus;
+
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public Button inventTabsAllHolder, inventTabsWeaponsHolder, inventTabsArmourHolder, inventTabsItemsHolder, inventTabsPotionsHolder;
+
+    [TabGroup("Weapon Group", "Inventory Tabs")]
+    [GUIColor(0.207f, 0.921f, 0.027f)]
+    public TextMeshProUGUI inventTabsAllText;
+
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isInventoryOn = false;
+
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isInventorySlidePanelOn;
+
+    [TabGroup("Weapon Group", "Add to Party")]
+    [GUIColor(0.307f, 0.321f, 0.027f)]
+    public GameObject[] isNewNotification;
+
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isOverviewOn, isStatsOn, isWeaponryOn;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public GameObject itemBox, itemDamageBox, itemArmourBox, itemPotionBox, itemFoodBox;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Image itemImage;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemPotion, itemFood, itemValue;
+
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.147f, 0.154f, 0.496f)]
+    public TextMeshProUGUI itemWeaponPower, itemArmourDefence, itemPotionPower;
+
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool keyboardKeyI = false;
+
+    [GUIColor(1f, 1f, 0.215f)]
+    public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
+
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Slider[] manaEquipSlider, hpEquipSlider, defenceEquipSlider;
+
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar;
+
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public TextMeshProUGUI[] manaEquipToString, hpEquipToString, defenceEquipToString;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Sprite masking;
+
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Sprite teamBasicAxe, teamBasicArmour;
+
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Image[] teamCharacterMugWeaponry;
+
+    public int teamCount;
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public Image[] teamEquippedWeaponImage, teamEquippedArmourImage;
+
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI[] teamEquippedWeaponName, teamEquippedArmourName, teamCharacterName;
+
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI[] teamInventoryAttackTotal, teamInventoryDefenceTotal;
+
+    // attack power is actually Dexterity in PlayerStats (yeah, I had to same thought... wtf??
+    [TabGroup("Weapon Group", "Team Weaponry")]
+    [GUIColor(0.047f, 0.254f, 0.296f)]
+    public TextMeshProUGUI[] teamItemWeaponBonus, teamItemArmourBonus;
+
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
+    public TextMeshProUGUI teamPopWeaponryBonus;
+
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
+    public Image teamPopWeaponryImage;
+
+    [TabGroup("Weapon Group", "Team Popup")]
+    [GUIColor(0.207f, 0.121f, 0.027f)]
+    public TextMeshProUGUI teamPopWeaponryName, teamPopWeaponryDescription, teamPopWeaponryBonusText;
+
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool weaponBool, armourBool, itemBool, potionBool, spellBool;
+
+    // doesn't look like I used these. Done in CoinsManager.
+    [TabGroup("New Group", "Equip")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Button[] weaponPanelButtons, potionPanelButtons;
+
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] private UltimateButton actionButton;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] private UltimateJoystick joystick;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] private UltimateMobileQuickbar quickBar;
 
+    [GUIColor(1f, 0.2f, 0.515f)]
+    [SerializeField] Sprite buttonGrey;
 
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject panelTesting;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject teamTabMenu;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] CanvasGroup teamNofify;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] GameObject dayNightCycle;
-
-    [SerializeField] TextMeshProUGUI teamMemberCount;
-
-
-
-
-    public static MenuManager instance;
-
-
-
-    private int panelStuff;
-    private string whichPanelIsOn = "";
-    public static int select;
-    public int teamCount;
-
-    [TabGroup("Char Stats")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] GameObject[] characterCards, characterParty, characterEquip, characterWeaponry, teamCharacterWeaponry;
@@ -76,11 +200,114 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.670f, 1, 0.560f)]
     [PreviewField, Required]
     [SerializeField] Image[] characterImage, characterMug, characterPlain;
+
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
     [SerializeField] Image characterImageV;
 
+    [TabGroup("Char Stats")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, thulGold, thulMana, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
 
+    [TabGroup("Skills")]
+    [GUIColor(1, 0.819f, 0.760f)]
+    [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
+
+    [Header("UI Tweening")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] private CanvasGroup chooseText;
+
+    [SerializeField] GameObject[] controllers;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject dayNightCycle;
+
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] TMP_Dropdown droppy;
+
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject equipment;
+
+    private Tween fadeText;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
+
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
+
+    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] Image imageToFade;
+
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [SerializeField] bool[] isTeamMember;
+
+    [TabGroup("New Group", "Items")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [SerializeField] Transform itemBoxParent;
+
+    // dropbox for the dropdown object (hence, TMP_Dropdown)
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] private UltimateJoystick joystick;
+
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    public GameObject mainMenu, inventoryPanel;
+
+    [SerializeField] CanvasGroup[] menuPanels;
+    // doesn't look like I used these. Done in CoinsManager.
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    [SerializeField] TextMeshProUGUI newItemsText;
+
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] Image overviewSprite, statsSprite, weaponrySprite;
+
+    [Header("Team UI Sprites")]
+    [Space]
+    [FoldoutGroup("UI Sprites", expanded: false)]
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] Sprite overviewSpriteOn, overviewSpriteOff, statsSpriteOn, statsSpriteOff, weaponrySpriteOn, weaponrySpriteOff;
+
+    private int panelStuff;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject panelTesting;
+
+    [Header("Player Choice")]
+    [GUIColor(1f, 0.2f, 0.515f)]
+    [SerializeField] TextMeshProUGUI[] playerChoice;
+
+    [SerializeField] PlayerStats[] playerStats;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] private UltimateMobileQuickbar quickBar;
+    [SerializeField] TextMeshProUGUI teamMemberCount;
+
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] CanvasGroup teamNofify;
+
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] GameObject teamTabMenu;
+    //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
+    [GUIColor(1f, 1f, 0.215f)]
+    [SerializeField] TextMeshProUGUI textUseEquipTake;
+
+    [Space]
+    [TabGroup("New Group", "Thulgren")]
+    [GUIColor(1f, 0.780f, 0.984f)]
+    [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
+
+    private string whichPanelIsOn = "";
+    [TabGroup("New Group", "Thulgren")]
+    [GUIColor(1f, 0.780f, 0.984f)]
+    [SerializeField] Slider xpMainS;
 
     [TabGroup("Sliders")]
     [GUIColor(1f, 0.886f, 0.780f)]
@@ -88,328 +315,33 @@ public class MenuManager : MonoBehaviour
     [TabGroup("Sliders")]
     [GUIColor(1f, 0.886f, 0.780f)]
     [SerializeField] Slider xpVS, manaVS, healthVS, dexterityVS, defenceVS, intelligenceVS, perceptionVS;
-
-    [Space]
-    [TabGroup("New Group", "Thulgren")]
-    [GUIColor(1f, 0.780f, 0.984f)]
-    [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain, goldMain;
-    [TabGroup("New Group", "Thulgren")]
-    [GUIColor(1f, 0.780f, 0.984f)]
-    [SerializeField] Slider xpMainS;
-
-    [TabGroup("Skills")]
-    [GUIColor(1, 0.819f, 0.760f)]
-    [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
-
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI itemName, itemDescription, itemDamage, itemArmour, itemPotion, itemFood, itemValue;
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Image itemImage;
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Sprite masking;
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] Transform itemBoxParent;
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject itemBox, itemDamageBox, itemArmourBox, itemPotionBox, itemFoodBox;
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI effectText;
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject effectBox;
-    [TabGroup("New Group", "Items")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject cancelButton, useButton;
-
-
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI[] manaEquipToString, hpEquipToString, defenceEquipToString;
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Slider[] manaEquipSlider, hpEquipSlider, defenceEquipSlider;
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Image[] characterMugEquip;
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI manaEquipTopBar, hpEquipTopBar, goldEquipTopBar; // doesn't look like I used these. Done in CoinsManager.
-    [TabGroup("New Group", "Equip")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Button[] weaponPanelButtons, potionPanelButtons; // doesn't look like I used these. Done in CoinsManager.
-
-
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.447f, 0.454f, 0.496f)]
-    public TextMeshProUGUI[] equippedWeaponName, equippedArmourName;
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.447f, 0.454f, 0.496f)]
-    public Image[] equippedWeaponImage, equippedArmourImage;
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.447f, 0.454f, 0.496f)]
-    public Image[] characterMugWeaponry;
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.447f, 0.454f, 0.496f)]
-    public TextMeshProUGUI[] inventoryWeaponPower, inventoryArmourDefence;
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.147f, 0.154f, 0.496f)]
-    public TextMeshProUGUI itemWeaponPower, itemArmourDefence, itemPotionPower;
-    [TabGroup("New Group", "Weaponry")]
-    [GUIColor(0.147f, 0.154f, 0.496f)]
-    public Sprite basicAxe, basicArmour;
-
-
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamEquippedWeaponName, teamEquippedArmourName, teamCharacterName;
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Image[] teamEquippedWeaponImage, teamEquippedArmourImage;
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Image[] teamCharacterMugWeaponry;
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamInventoryAttackTotal, teamInventoryDefenceTotal; // attack power is actually Dexterity in PlayerStats (yeah, I had to same thought... wtf??
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamItemWeaponBonus, teamItemArmourBonus;
-    [TabGroup("Weapon Group", "Team Weaponry")]
-    [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Sprite teamBasicAxe, teamBasicArmour;
-
-    [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.207f, 0.121f, 0.027f)]
-    public Image teamPopWeaponryImage;
-    [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.207f, 0.121f, 0.027f)]
-    public TextMeshProUGUI teamPopWeaponryName, teamPopWeaponryDescription, teamPopWeaponryBonusText;
-    [TabGroup("Weapon Group", "Team Popup")]
-    [GUIColor(0.207f, 0.121f, 0.027f)]
-    public TextMeshProUGUI teamPopWeaponryBonus;
-
-    [TabGroup("Weapon Group", "Inventory Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public Button inventTabsAllHolder, inventTabsWeaponsHolder, inventTabsArmourHolder, inventTabsItemsHolder, inventTabsPotionsHolder;
-    [TabGroup("Weapon Group", "Inventory Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public TextMeshProUGUI inventTabsAllText;
-    [TabGroup("Weapon Group", "Inventory Tabs")]
-    [GUIColor(0.207f, 0.921f, 0.027f)]
-    public GameObject inventTabsAllFocus, inventTabsWeaponsFocus, inventTabsArmourFocus, inventTabsItemsFocus, inventTabsPotionsFocus;
-    [TabGroup("Weapon Group", "Add to Party")]
-    [GUIColor(0.307f, 0.321f, 0.027f)]
-    public Button[] addToPartyButton, retireFromPartyButton;
-    [TabGroup("Weapon Group", "Add to Party")]
-    [GUIColor(0.307f, 0.321f, 0.027f)]
-    public GameObject[] isNewNotification;
-
-
-
-
-
-    [ShowInInspector]
-    [Title("INVENTORY")]
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    public int currentNewItems;
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    [SerializeField] TextMeshProUGUI newItemsText;
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    public ItemsManager activeItem; //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
-
-
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    [SerializeField] bool[] isTeamMember;
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isEquipOn = false;
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool keyboardKeyI = false;
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool controlSwitch;
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool weaponBool, armourBool, itemBool, potionBool, spellBool;
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isOverviewOn, isStatsOn, isWeaponryOn;
-    [FoldoutGroup("UI Bools", expanded: false)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isInventorySlidePanelOn;
-
-
-
-    [Header("UI Tweening")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] private CanvasGroup chooseText;
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI textUseEquipTake;
-    [GUIColor(1f, 1f, 0.215f)]
-    public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
-    [GUIColor(1f, 1f, 0.215f)]
-    public RectTransform leftShopPanel, rightShopPanel;
-
-
-    [Header("Player Choice")]
-    [GUIColor(1f, 0.2f, 0.515f)]
-    [SerializeField] TextMeshProUGUI[] playerChoice;
-    [GUIColor(1f, 0.2f, 0.515f)]
-    [SerializeField] Sprite buttonGrey;
-
-    [Header("Team UI Sprites")]
-    [Space]
-    [FoldoutGroup("UI Sprites", expanded: false)]
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] Sprite overviewSpriteOn, overviewSpriteOff, statsSpriteOn, statsSpriteOff, weaponrySpriteOn, weaponrySpriteOff;
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] Image overviewSprite, statsSprite, weaponrySprite;
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
-
-
-
-    private Tween fadeText;
-
-    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
-    private void Start()
+    public static void IsInterfaceOn()
     {
-
-        instance = this;
-
-        mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
-
+        Debug.Log("IsInteraceOn() called from MenuManager");
+        ButtonHandler.interfaceOn = !ButtonHandler.interfaceOn;
+        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
     }
 
-    private void Update()
+    public void AddCharacterToParty(int character)
     {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-
-            GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
-
-            if (mainMenu.GetComponent<CanvasGroup>().alpha == 0)
-            {
-                mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
-                mainMenu.GetComponent<CanvasGroup>().interactable = true;
-                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-                joystick.DisableJoystick();
-            }
-            else
-            {
-                mainMenu.GetComponent<UIFader>().FadeOut(); // call a function from another script
-                mainMenu.GetComponent<CanvasGroup>().interactable = false;
-                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
-                joystick.EnableJoystick();
-            }
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            PanelTestingKeyboardControl();
-        }
-    }
-
-    public void UpdateStats()
-    {
-
-        TeamMembersCount();
-        
         playerStats = GameManager.instance.GetPlayerStats();
-
 
         for (int i = 0; i < playerStats.Length; i++)
         {
-
-            // set to false first, to account for changes in character party updating
-
-            if (playerStats[i].isAvailable == true) // on 'add to party screen'
+            if (i == character)
             {
-                //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
-
-                characterParty[i].SetActive(true);
-
-                if (playerStats[i].isTeamMember == true)
-                {
-                    // on screens where isTeamMember is necessary
-
-                    characterCards[i].SetActive(true);
-
-                    characterName[i].text = playerStats[i].playerName;
-                    description[i].text = playerStats[i].playerDesc;
-                    health[i].text = playerStats[i].npcHP.ToString();
-                    characterImage[i].sprite = playerStats[i].characterImage;
-                    level[i].text = playerStats[i].npcLevel.ToString();
-                    xp[i].text = playerStats[i].npcXP.ToString();
-                    mana[i].text = playerStats[i].npcMana.ToString();
-                    dexterity[i].text = playerStats[i].npcDexterity.ToString();
-                    defence[i].text = playerStats[i].npcDefence.ToString();
-                    intelligence[i].text = playerStats[i].npcIntelligence.ToString();
-                    perception[i].text = playerStats[i].npcPerception.ToString();
-                    intelligenceS[i].value = playerStats[i].npcIntelligence;
-                    xpS[i].value = playerStats[i].npcXP;
-                    manaS[i].value = playerStats[i].npcMana;
-                    healthS[i].value = playerStats[i].npcHP;
-                    dexterityS[i].value = playerStats[i].npcDexterity;
-                    defenceS[i].value = playerStats[i].npcDefence;
-                    intelligenceS[i].value = playerStats[i].npcIntelligence;
-                    perceptionS[i].value = playerStats[i].npcPerception;
-
-                    // Some team equipped stuff
-
-                    teamCharacterWeaponry[i].SetActive(true);
-                    if (playerStats[i].characterArmourDefence > 5)
-                    {
-                        teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
-                    }
-                    else if (playerStats[i].characterArmourDefence == 5)
-                    {
-                        teamEquippedArmourImage[i].sprite = teamBasicArmour;
-                    }
-
-                    if (playerStats[i].characterWeaponPower > 5)
-                    {
-                        teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
-                    }
-                    else if (playerStats[i].characterWeaponPower == 5)
-                    {
-                        teamEquippedWeaponImage[i].sprite = teamBasicAxe;
-                    }
-
-                    teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
-                    teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
-                    teamInventoryAttackTotal[i].text = (playerStats[i].npcDexterity - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
-                    teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
-                    teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
-                    teamCharacterName[i].text = playerStats[i].playerName;
-
-
-                }
-
-                // these are the references for the Team Overview (add to party)
-
-                characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
-                levelP[i].text = playerStats[i].npcLevel.ToString();
-                characterMug[i].sprite = playerStats[i].characterMug;
-                thulGold[i].text = playerStats[0].thulGold.ToString();
-                thulPotions.text = playerStats[0].thulPotions.ToString();
-                thulSpells.text = playerStats[0].thulSpells.ToString();
-
-
+                playerStats[character].isTeamMember = true;
+                playerStats[character].isNew = false;
+                teamCount--;
+                addToPartyButton[character].gameObject.SetActive(false);
+                isNewNotification[character].SetActive(false);
+                retireFromPartyButton[character].gameObject.SetActive(true);
+                UpdateStats();
+                equipCharStats();
+                Debug.Log(playerStats[character].playerName + " added to party");
             }
+
         }
-
-
     }
 
     public void AndroidControls()
@@ -417,338 +349,53 @@ public class MenuManager : MonoBehaviour
         controlSwitch = !controlSwitch;
     }
 
-    public void UpdateItemsInventory()     // create  UI Equip table and side panel. Item sorting at the bottom
+    public void CallToSellItem(int selectedCharacter)
     {
-
-        currentNewItems = 0;
-
-        foodItems = 0; // debug stuff
-        potionItems = 0;
-        weaponItems = 0;
-        itemItems = 0;
-        armourItems = 0;
-
-        foreach (Transform itemSlot in itemBoxParent)
-        {
-            Destroy(itemSlot.gameObject);
-        }
-
-
-        foreach (ItemsManager item in Inventory.instance.GetItemsList())
-        {
-
-            if (item.shopItem == false)
-            {
-
-                RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
-
-
-                // show item image
-
-                Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
-                itemImage.sprite = item.itemsImage;
-
-                TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
-                if (item.amount > 1)
-                {
-                    itemsAmountText.text = item.amount.ToString();
-                }
-                else
-                {
-                    itemsAmountText.text = "";
-                }
-
-                itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
-
-                switch (item.itemType)
-                {
-                    case ItemsManager.ItemType.Food:
-                        foodItems++;
-                        break;
-                    case ItemsManager.ItemType.Potion:
-                        potionItems++;
-                        break;
-                    case ItemsManager.ItemType.Item:
-                        itemItems++;
-                        break;
-                    case ItemsManager.ItemType.Weapon:
-                        weaponItems++;
-                        break;
-                    case ItemsManager.ItemType.Armour:
-                        armourItems++;
-                        break;
-                }
-
-
-
-                // new items - needs to run here to count how many new items
-
-                if (item.isNewItem == true)
-                {
-                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                    currentNewItems++;
-                }
-
-
-                // Stuff to activate ONLY when inside inventory
-
-                if (isEquipOn == true)
-                {
-
-                    // Removing focus from previously selected items 
-
-                    if (item.itemSelected == false)
-                    {
-                        itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
-                        GameManager.instance.isItemSelected = false;
-
-                        if (item.isNewItem == true)
-                        {
-                            itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
-                        }
-                        // new items - set red marker; count item
-
-                        if (item.isNewItem == false)
-                        {
-                            itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
-                        }
-                    }
-
-                    // ITEM SORTING FOR SELECTED ITEM
-
-                    else if (item.itemSelected == true) // if item has been selected
-                    {
-                        item.itemSelected = false;
-                        itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
-
-                        // ITEM SELECTED animation
-
-                        itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-
-                        // NEW ITEM tagging
-
-                        item.isNewItem = false; // switch off new item tag after selection
-                        itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
-
-                        // SORTING BY ITEM TYPE
-
-                        effectBox.GetComponent<CanvasGroup>().alpha = 0; // necessary reset
-
-
-                        //  SORT BY POTIONS
-
-                        if (item.itemType == ItemsManager.ItemType.Potion)
-                        {
-                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-
-                            textUseEquipTake.text = "Give";
-
-                            // EFFECT MODIFIER (on item info)
-
-                            if (item.itemName == "Speed Potion") 
-                            {
-                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                                effectText.text = "x" + item.amountOfEffect.ToString();
-                            }
-
-                            else if (item.itemName == "Mana Potion")
-                            {
-                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                                effectText.text = "+" + item.amountOfEffect.ToString();
-                            }
-
-                            else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion" || item.itemName == "Red Healing Potion Large")
-                            {
-                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                                effectText.text = "+" + item.amountOfEffect.ToString();
-                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
-                            }
-
-                            else
-                            {
-                                effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
-                            }
-
-                        }
-
-                        // EFFECT - FOOD
-
-                        if (item.itemType == ItemsManager.ItemType.Food)
-                        {
-                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            effectText.text = "+" + item.amountOfEffect.ToString();
-                            Debug.Log("Food restoration amount Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
-
-                        }
-
-                        // SORT BY ARMOUR
-
-                        if (item.itemType == ItemsManager.ItemType.Armour)
-                        {
-                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-                            textUseEquipTake.text = "Equip";
-                        }
-
-                        // SORT BY WEAPON
-
-                        if (item.itemType == ItemsManager.ItemType.Weapon)
-                        {
-                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-                            textUseEquipTake.text = "Equip";
-                        }
-
-                        // SORT BY NORMAL ITEMS
-
-                        if (item.itemType == ItemsManager.ItemType.Item)
-                        {
-                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
-                            textUseEquipTake.text = "Use";
-                        }
-                    }
-                }
-
-                // sorting strategy - destroy everything else but the chosen type
-
-                if (weaponBool == true)
-
-                {
-                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
-                        (item.itemType == ItemsManager.ItemType.Armour) ||
-                        (item.itemType == ItemsManager.ItemType.Item) ||
-                        (item.itemType == ItemsManager.ItemType.Skill) ||
-                        (item.itemType == ItemsManager.ItemType.Food))
-                    {
-                        Destroy(itemSlot.gameObject);
-                    }
-
-                }
-                else if (armourBool == true)
-
-                {
-                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
-                        (item.itemType == ItemsManager.ItemType.Weapon) ||
-                        (item.itemType == ItemsManager.ItemType.Item) ||
-                        (item.itemType == ItemsManager.ItemType.Spell) ||
-                        (item.itemType == ItemsManager.ItemType.Food))
-                    {
-                        Destroy(itemSlot.gameObject);
-                    }
-                }
-                else if (itemBool == true)
-
-                {
-                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
-                        (item.itemType == ItemsManager.ItemType.Armour) ||
-                        (item.itemType == ItemsManager.ItemType.Weapon) ||
-                        (item.itemType == ItemsManager.ItemType.Spell))
-                    {
-                        Destroy(itemSlot.gameObject);
-                    }
-                }
-                else if (spellBool == true)
-
-                {
-                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
-                        (item.itemType == ItemsManager.ItemType.Armour) ||
-                        (item.itemType == ItemsManager.ItemType.Item) ||
-                        (item.itemType == ItemsManager.ItemType.Weapon))
-                    {
-                        Destroy(itemSlot.gameObject);
-                    }
-                }
-                else if (potionBool == true)
-
-                {
-                    if ((item.itemType == ItemsManager.ItemType.Weapon) ||
-                        (item.itemType == ItemsManager.ItemType.Armour) ||
-                        (item.itemType == ItemsManager.ItemType.Item) ||
-                        (item.itemType == ItemsManager.ItemType.Spell) ||
-                        (item.itemType == ItemsManager.ItemType.Food))
-                    {
-                        Destroy(itemSlot.gameObject);
-                    }
-                }
-
-                // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
-
-                if (currentNewItems == 0)
-                {
-                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-                }
-
-                else if (currentNewItems > 0)
-                {
-                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                    newItemsText.text = currentNewItems.ToString();
-                }
-
-                GameManager.instance.currentNewItems = currentNewItems;
-            }
-            
-        }
+        Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
+        isInventorySlidePanelOn = true;
+        Inventory.instance.SellItem(activeItem, selectedCharacter);
+        UpdateItemsInventory();
+        textUseEquipTake.text = "Select";
     }
 
-    public void StatsMenu()
+    public void CallToUseItem(int selectedCharacter)
     {
 
-        playerStats = GameManager.instance.GetPlayerStats();
+        // debug info
+        Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
 
-        for (int i = 0; i < playerStats.Length; i++)
-        {
-            statsButtons[i].SetActive(true);
-        }
-    }
+        activeItem.UseItem(selectedCharacter);
 
-    public void HomeScreenStats()
-    {
-        playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
+        // pass player image position for CoinsManager animations
+        Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
 
-        levelMain.text = playerStats[0].npcLevel.ToString();
-        xpMain.text = playerStats[0].npcXP.ToString() + "/" + playerStats[0].xpLevelUp[playerStats[0].npcLevel];
-        xpMainS.value = playerStats[0].npcXP;
-        xpMainS.maxValue = playerStats[0].xpLevelUp[playerStats[0].npcLevel];
-        manaMain.text = playerStats[0].npcMana.ToString() + "/" + playerStats[0].maxMana;
-        hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
-        goldMain.text = playerStats[0].thulGold.ToString();
-
+        // panelStuff is used in the tween animations on OnPlayerButton() (i.e. give stuff to character)
+        panelStuff = selectedCharacter;
+        UpdateItemsInventory();
 
     }
 
-    //public void InventoryStats() // this is rather the skills panel
-    //{
+    public void InventoryBackOrHome(string call)
+    {
+        if (call == "home")
+        {
+            MenuPanelsOff(call);
+            currentNewItems = 0;
+            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+            GameManager.instance.isItemSelected = false;
+            UpdateItemsInventory();
+        }
 
-    //    // select is the choice of character in the dropdown menu, i.e. the character array slot. 'select' is used instead of the 'for each' loop and 'isTeamMember'
-    //    if (playerStats[select].isTeamMember == true)
-    //    {
-    //        select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
-    //        characterNameV.text = playerStats[select].playerName;
-    //        descriptionV.text = playerStats[select].playerDesc;
-    //        healthV.text = playerStats[select].npcHP.ToString();
-    //        characterImageV.sprite = playerStats[select].characterImage;
-    //        levelV.text = playerStats[select].npcLevel.ToString();
-    //        xpV.text = playerStats[select].npcXP.ToString();
-    //        manaV.text = playerStats[select].npcMana.ToString();
-    //        dexterityV.text = playerStats[select].npcDexterity.ToString();
-    //        defenceV.text = playerStats[select].npcDefence.ToString();
-    //        intelligenceV.text = playerStats[select].npcIntelligence.ToString();
-    //        perceptionV.text = playerStats[select].npcPerception.ToString();
-    //        intelligenceVS.value = playerStats[select].npcIntelligence;
-    //        xpVS.value = playerStats[select].npcXP;
-    //        manaVS.value = playerStats[select].npcMana;
-    //        healthVS.value = playerStats[select].npcHP;
-    //        dexterityVS.value = playerStats[select].npcDexterity;
-    //        defenceVS.value = playerStats[select].npcDefence;
-    //        intelligenceVS.value = playerStats[select].npcIntelligence;
-    //        perceptionVS.value = playerStats[select].npcPerception;
-    //        characterImageV.sprite = playerStats[select].characterImage;
-    //    }
+        else if (call == "back")
+        {
+            MenuPanelsOff(call); 
+            currentNewItems = 0;
+            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+            GameManager.instance.isItemSelected = false;
+            UpdateItemsInventory();
+        }
+    }
 
-
-    //}
 
     public void equipCharStats()
     {
@@ -812,110 +459,138 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    //}
     public void FadeImage()
     {
         imageToFade.GetComponent<Animator>().SetTrigger("Start Fade");
     }
 
-    public void QuitGame()
+    public void FadeInText(float duration)
     {
-        Debug.Log("Game was quit!");
-        Application.Quit();
-    }
-
-    public void CallToSellItem(int selectedCharacter)
-    {
-        Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
-        isInventorySlidePanelOn = true;
-        Inventory.instance.SellItem(activeItem, selectedCharacter);
-        UpdateItemsInventory();
-        textUseEquipTake.text = "Select";
-    }
-
-    public void CallToUseItem(int selectedCharacter)
-    {
-
-        // debug info
-        Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
-
-        activeItem.UseItem(selectedCharacter);
-
-        // pass player image position for CoinsManager animations
-        Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
-
-        // panelStuff is used in the tween animations on OnPlayerButton() (i.e. give stuff to character)
-        panelStuff = selectedCharacter;
-        UpdateItemsInventory();
-
-    }
-
-    public void turnEquipOn()
-    {
-        isEquipOn = !isEquipOn;
-        GameManager.instance.isEquipOn = !GameManager.instance.isEquipOn;
-        Debug.Log("IsEquipOn status: " + isEquipOn);
-    }
-
-    public void equipBackAndHome() // tidying for back and home buttons
-    {
-
-        turnEquipOn();
-        currentNewItems = 0;
-        if (keyboardKeyI == true)
+        Fade(1f, duration, () =>
         {
-            PanelTestingKeyboardControl();
-            mainMenu.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
-            mainMenu.GetComponent<CanvasGroup>().interactable = true;
-            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-        }
-        GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-        GameManager.instance.isItemSelected = false;
-        UpdateItemsInventory();
+            chooseText.interactable = true;
+            chooseText.blocksRaycasts = true;
+        });
+    }
+
+    public void FadeOutText(float duration)
+    {
+        Fade(0f, duration, () =>
+        {
+            chooseText.interactable = false;
+            chooseText.blocksRaycasts = false;
+        });
+    }
+
+    public void HomeScreenStats()
+    {
+        playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
+
+        levelMain.text = playerStats[0].npcLevel.ToString();
+        xpMain.text = playerStats[0].npcXP.ToString() + "/" + playerStats[0].xpLevelUp[playerStats[0].npcLevel];
+        xpMainS.value = playerStats[0].npcXP;
+        xpMainS.maxValue = playerStats[0].xpLevelUp[playerStats[0].npcLevel];
+        manaMain.text = playerStats[0].npcMana.ToString() + "/" + playerStats[0].maxMana;
+        hpMain.text = playerStats[0].npcHP.ToString() + "/" + playerStats[0].maxHP;
+        goldMain.text = playerStats[0].thulGold.ToString();
+
 
     }
 
-    public void PanelTestingKeyboardControl()
+    public void ItemInfoReset()
     {
-        IsInterfaceOn();
+        itemName.text = "Select an item";
+        itemDescription.text = "";
+        itemImage.sprite = masking;
+        instance.itemValue.text = "";
+        effectText.text = "0";
+        itemDamage.text = "";
+        itemDamageBox.SetActive(false);
+        itemArmourBox.SetActive(false);
+        itemPotionBox.SetActive(false);
+        itemFoodBox.SetActive(false);
+        Debug.Log("Item info panel has been reset");
+    }
 
-        if (panelTesting.GetComponent<CanvasGroup>().alpha == 0)
+    public void MenuPanelsOff(string call)
+    {
+        if (call == "home")
         {
-            isEquipOn = true;
-            GameManager.instance.isEquipOn = true;
-            keyboardKeyI = true;
-            GameManager.instance.keyboardKeyI = true;
-            UpdateItemsInventory();
-            UpdateStats();
-            joystick.DisableJoystick();
+            Debug.Log($"'Home' has been called");
+            for (int i = 0; i < menuPanels.Length; i++)
+            {
+                menuPanels[i].alpha = 0;
+                menuPanels[i].interactable = false;
+                menuPanels[i].blocksRaycasts = false;
+            }
+            ButtonHandler.interfaceOn = false;
+            isInventoryOn = false;
+            ShopManager.instance.isShopUIOn = false;
+            GameManager.instance.isInterfaceOn = false;
+ 
             dayNightCycle.SetActive(false);
-            panelTesting.GetComponent<UIFader>().FadeIn(); // this is calling the fade-in
-            panelTesting.GetComponent<CanvasGroup>().interactable = true;
-            panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = true;
-            Debug.Log("E Key on");
-
-        }
-        else if (panelTesting.GetComponent<CanvasGroup>().alpha == 1)
-        {
-            isEquipOn = false;
-            GameManager.instance.isEquipOn = false;
-            UpdateItemsInventory();
-            keyboardKeyI = false;
-            GameManager.instance.keyboardKeyI = false;
-            Debug.Log("E Key off");
-            dayNightCycle.SetActive(true);
-            panelTesting.GetComponent<UIFader>().FadeOut(); // call a function from another script
-            panelTesting.GetComponent<CanvasGroup>().interactable = false;
-            panelTesting.GetComponent<CanvasGroup>().blocksRaycasts = false;
             joystick.EnableJoystick();
-
+            quickBar.EnableQuickbar();
+            actionButton.EnableButton();
+            
+            ButtonHandler.instance.SetAllButtonsInteractable();
+            
+            ShopManager.instance.ShopItemInfoReset();
+            ItemInfoReset();
         }
-
+        else if (call == "back")
+        {
+            if (isInventoryOn == true)
+            {
+                Debug.Log($"Inventory is open and 'back' has been called");
+                
+                ButtonHandler.instance.SetAllButtonsInteractable();
+                ShopManager.instance.ShopItemInfoReset();
+                ItemInfoReset();
+                
+                mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+                mainMenu.GetComponent<CanvasGroup>().interactable = true;
+                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                inventoryPanel.GetComponent<CanvasGroup>().alpha = 0;                
+                inventoryPanel.GetComponent<CanvasGroup>().interactable = false;
+                inventoryPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+                
+                
+                isInventoryOn = false;
+            }
+            else if (ShopManager.instance.isShopUIOn == true)
+            {
+                Debug.Log($"Shop is open and 'back' has been called");
+                
+                ButtonHandler.instance.SetAllButtonsInteractable();
+                ShopManager.instance.ShopItemInfoReset();
+                ItemInfoReset();
+                
+                mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+                mainMenu.GetComponent<CanvasGroup>().interactable = true;
+                mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().interactable = false;
+                ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+                ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().alpha = 0;
+                
+                ShopManager.instance.isShopUIOn = false;
+            }
+        }
 
     }
 
+    public void onCancelButton()
+    {
+        StartCoroutine(PanelCancelCoR());
+    }
 
+    public void OnPlayerButton() // CALLS PANEL TWEEN
+    {
 
-    // UI Tweeing on Equipment left panel, animations
+        StartCoroutine(DelayPanelReturn());
+
+    }
 
     public void OnUseButton()
     {
@@ -935,125 +610,88 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void OnPlayerButton() // CALLS PANEL TWEEN
+    //    // select is the choice of character in the dropdown menu, i.e. the character array slot. 'select' is used instead of the 'for each' loop and 'isTeamMember'
+    //    if (playerStats[select].isTeamMember == true)
+    //    {
+    //        select = droppy.GetComponent<TMP_Dropdown>().value;  // getting a value from droppy (the object dropbox)
+    //        characterNameV.text = playerStats[select].playerName;
+    //        descriptionV.text = playerStats[select].playerDesc;
+    //        healthV.text = playerStats[select].npcHP.ToString();
+    //        characterImageV.sprite = playerStats[select].characterImage;
+    //        levelV.text = playerStats[select].npcLevel.ToString();
+    //        xpV.text = playerStats[select].npcXP.ToString();
+    //        manaV.text = playerStats[select].npcMana.ToString();
+    //        dexterityV.text = playerStats[select].npcDexterity.ToString();
+    //        defenceV.text = playerStats[select].npcDefence.ToString();
+    //        intelligenceV.text = playerStats[select].npcIntelligence.ToString();
+    //        perceptionV.text = playerStats[select].npcPerception.ToString();
+    //        intelligenceVS.value = playerStats[select].npcIntelligence;
+    //        xpVS.value = playerStats[select].npcXP;
+    //        manaVS.value = playerStats[select].npcMana;
+    //        healthVS.value = playerStats[select].npcHP;
+    //        dexterityVS.value = playerStats[select].npcDexterity;
+    //        defenceVS.value = playerStats[select].npcDefence;
+    //        intelligenceVS.value = playerStats[select].npcIntelligence;
+    //        perceptionVS.value = playerStats[select].npcPerception;
+    //        characterImageV.sprite = playerStats[select].characterImage;
+    //    }
+    public void QuitGame()
     {
-
-        StartCoroutine(DelayPanelReturn());
-
+        Debug.Log("Game was quit!");
+        Application.Quit();
     }
 
-    IEnumerator DelayPanelReturn()
+    public void RemoveCharacterFromParty(int character)
     {
+        playerStats = GameManager.instance.GetPlayerStats();
 
-        Debug.Log("InventoryLeft panel animations engaged");
-
-        if (activeItem.itemName == "Red Healing Potion" || activeItem.itemName == "Green Healing Potion" || activeItem.itemName == "Red Healing Potion Large" || activeItem.itemType == ItemsManager.ItemType.Food)
+        for (int i = 0; i < playerStats.Length; i++)
         {
-            hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
-            var sequence = DOTween.Sequence()
-                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
-            sequence.SetLoops(1, LoopType.Yoyo);
-
-
-            yield return new WaitForSecondsRealtime(1.8f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-
-            Debug.Log("Slider HP fill scale enacted");
-        }
-
-        else if (activeItem.itemName == "Mana Potion")
-        {
-            manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
-            var sequence = DOTween.Sequence()
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
-            sequence.SetLoops(1, LoopType.Yoyo);
-
-            Debug.Log("Slider Mana fill expand and slide");
-
-
-            yield return new WaitForSecondsRealtime(1.8f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-
-        }
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
-        {
-
-            if (activeItem.itemType == ItemsManager.ItemType.Armour)
+            if (i == character)
             {
+                playerStats[character].isTeamMember = false;
+
+                characterCards[character].SetActive(false);
+                teamCharacterWeaponry[character].SetActive(false);
+                characterEquip[character].SetActive(false);
+                characterWeaponry[character].SetActive(false);
+
+                addToPartyButton[character].gameObject.SetActive(true);
+                retireFromPartyButton[character].gameObject.SetActive(false);
+
+                UpdateStats();
                 equipCharStats();
-                var sequence = DOTween.Sequence()
-                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
-                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.4f));
-                sequence.SetLoops(1, LoopType.Yoyo);
-            }
-            if (activeItem.itemType == ItemsManager.ItemType.Weapon)
-            {
-                equipCharStats();
-                var sequence = DOTween.Sequence()
-                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
-                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1f, 0.4f));
-                sequence.SetLoops(1, LoopType.Yoyo);
+
+                Debug.Log(playerStats[character].playerName + " removed from party");
             }
 
-            yield return new WaitForSecondsRealtime(1f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        }
+    }
 
+    public void SetAllButtonsInteractable()
+    {
+        foreach (Button button in potionPanelButtons)
+        {
+            button.interactable = true;
         }
 
-        yield return new WaitForSecondsRealtime(0.3f);
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-        SetAllButtonsInteractable();
-        isInventorySlidePanelOn = false;
-
-    }
-
-    public void onCancelButton()
-    {
-        StartCoroutine(PanelCancelCoR());
-    }
-
-    IEnumerator PanelCancelCoR()
-    {
-        yield return new WaitForSecondsRealtime(0.1f);
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-    }
-
-    public void FadeOutText(float duration)
-    {
-        Fade(0f, duration, () =>
+        foreach (Button button in weaponPanelButtons)
         {
-            chooseText.interactable = false;
-            chooseText.blocksRaycasts = false;
-        });
+            button.interactable = true;
+        }
     }
 
-    public void FadeInText(float duration)
+    public void SetAllButtonsUninteractable()
     {
-        Fade(1f, duration, () =>
+        foreach (Button button in potionPanelButtons)
         {
-            chooseText.interactable = true;
-            chooseText.blocksRaycasts = true;
-        });
-    }
-
-    private void Fade(float endValue, float duration, TweenCallback onEnd)
-    {
-        if (fadeText != null)
-        {
-            fadeText.Kill(false);
+            button.interactable = false;
         }
 
-        fadeText = chooseText.DOFade(endValue, duration);
+        foreach (Button button in weaponPanelButtons)
+        {
+            button.interactable = false;
+        }
     }
 
     public void SetUpCharacterChoice()
@@ -1151,6 +789,31 @@ public class MenuManager : MonoBehaviour
         }
         UpdateItemsInventory();
         Debug.Log("Sort by item initiated: " + boolName);
+    }
+
+    public void TeamMembersCount()
+    {
+        teamCount = 0;
+
+        playerStats = GameManager.instance.GetPlayerStats();
+
+        for (int i = 0; i < playerStats.Length; i++)
+        {
+
+
+            if (playerStats[i].isAvailable == true && playerStats[i].isNew == true) teamCount++;
+
+            if (teamCount > 0)
+            {
+                teamNofify.alpha = 1;
+                teamMemberCount.text = teamCount.ToString();
+            }
+            else if (teamCount == 0)
+            {
+                teamNofify.alpha = 0;
+            }
+
+        }
     }
 
     public void TeamUISettings(string teamPanelTrigger)
@@ -1309,6 +972,403 @@ public class MenuManager : MonoBehaviour
 
     }
 
+    public void TeamWeaponryPopup(int selectedCharacter, string itemType)
+    {
+        if (itemType == "armour")
+        {
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].equippedArmourImage;
+            teamPopWeaponryName.text = playerStats[selectedCharacter].equippedArmourName;
+            teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedArmourDescription;
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmourDefence.ToString();
+            teamPopWeaponryBonusText.text = "Armour Defence:";
+        }
+
+        else if (itemType == "weapon")
+        {
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].equippedWeaponImage;
+            teamPopWeaponryName.text = playerStats[selectedCharacter].equippedWeaponName;
+            teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedWeaponDescription;
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeaponPower.ToString();
+            teamPopWeaponryBonusText.text = "Weapon Power:";
+        }
+    }
+
+    //public void InventoryStats() // this is rather the skills panel
+    //{
+    public void turnEquipOn()
+    {
+        isInventoryOn = !isInventoryOn;
+        GameManager.instance.isEquipOn = !GameManager.instance.isEquipOn;
+        Debug.Log("IsEquipOn status: " + isInventoryOn);
+    }
+
+    public void UpdateItemsInventory()     // create  UI Equip table and side panel. Item sorting at the bottom
+    {
+
+        currentNewItems = 0;
+
+        foodItems = 0; // debug stuff
+        potionItems = 0;
+        weaponItems = 0;
+        itemItems = 0;
+        armourItems = 0;
+
+        foreach (Transform itemSlot in itemBoxParent)
+        {
+            Destroy(itemSlot.gameObject);
+        }
+
+
+        foreach (ItemsManager item in Inventory.instance.GetItemsList())
+        {
+
+            if (item.shopItem == false)
+            {
+
+                RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
+
+
+                // show item image
+
+                Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
+                itemImage.sprite = item.itemsImage;
+
+                TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
+                if (item.amount > 1)
+                {
+                    itemsAmountText.text = item.amount.ToString();
+                }
+                else
+                {
+                    itemsAmountText.text = "";
+                }
+
+                itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
+
+                switch (item.itemType)
+                {
+                    case ItemsManager.ItemType.Food:
+                        foodItems++;
+                        break;
+                    case ItemsManager.ItemType.Potion:
+                        potionItems++;
+                        break;
+                    case ItemsManager.ItemType.Item:
+                        itemItems++;
+                        break;
+                    case ItemsManager.ItemType.Weapon:
+                        weaponItems++;
+                        break;
+                    case ItemsManager.ItemType.Armour:
+                        armourItems++;
+                        break;
+                }
+
+
+
+                // new items - needs to run here to count how many new items
+
+                if (item.isNewItem == true)
+                {
+                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                    currentNewItems++;
+                }
+
+
+                // Stuff to activate ONLY when inside inventory
+
+                if (isInventoryOn == true)
+                {
+
+                    // Removing focus from previously selected items 
+
+                    if (item.itemSelected == false)
+                    {
+                        itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
+                        GameManager.instance.isItemSelected = false;
+
+                        if (item.isNewItem == true)
+                        {
+                            itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
+                        }
+                        // new items - set red marker; count item
+
+                        if (item.isNewItem == false)
+                        {
+                            itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+                        }
+                    }
+
+                    // ITEM SORTING FOR SELECTED ITEM
+
+                    else if (item.itemSelected == true) // if item has been selected
+                    {
+                        item.itemSelected = false;
+                        itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
+
+                        // ITEM SELECTED animation
+
+                        itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
+
+                        // NEW ITEM tagging
+
+                        item.isNewItem = false; // switch off new item tag after selection
+                        itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+
+                        // SORTING BY ITEM TYPE
+
+                        effectBox.GetComponent<CanvasGroup>().alpha = 0; // necessary reset
+
+
+                        //  SORT BY POTIONS
+
+                        if (item.itemType == ItemsManager.ItemType.Potion)
+                        {
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+
+                            textUseEquipTake.text = "Give";
+
+                            // EFFECT MODIFIER (on item info)
+
+                            if (item.itemName == "Speed Potion")
+                            {
+                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                effectText.text = "x" + item.amountOfEffect.ToString();
+                            }
+
+                            else if (item.itemName == "Mana Potion")
+                            {
+                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                effectText.text = "+" + item.amountOfEffect.ToString();
+                            }
+
+                            else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion" || item.itemName == "Red Healing Potion Large")
+                            {
+                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                effectText.text = "+" + item.amountOfEffect.ToString();
+                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
+                            }
+
+                            else
+                            {
+                                effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
+                            }
+
+                        }
+
+                        // EFFECT - FOOD
+
+                        if (item.itemType == ItemsManager.ItemType.Food)
+                        {
+                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                            effectText.text = "+" + item.amountOfEffect.ToString();
+                            Debug.Log("Food restoration amount Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
+
+                        }
+
+                        // SORT BY ARMOUR
+
+                        if (item.itemType == ItemsManager.ItemType.Armour)
+                        {
+                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                            textUseEquipTake.text = "Equip";
+                        }
+
+                        // SORT BY WEAPON
+
+                        if (item.itemType == ItemsManager.ItemType.Weapon)
+                        {
+                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                            textUseEquipTake.text = "Equip";
+                        }
+
+                        // SORT BY NORMAL ITEMS
+
+                        if (item.itemType == ItemsManager.ItemType.Item)
+                        {
+                            effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                            textUseEquipTake.text = "Use";
+                        }
+                    }
+                }
+
+                // sorting strategy - destroy everything else but the chosen type
+
+                if (weaponBool == true)
+
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Item) ||
+                        (item.itemType == ItemsManager.ItemType.Skill) ||
+                        (item.itemType == ItemsManager.ItemType.Food))
+                    {
+                        Destroy(itemSlot.gameObject);
+                    }
+
+                }
+                else if (armourBool == true)
+
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+                        (item.itemType == ItemsManager.ItemType.Weapon) ||
+                        (item.itemType == ItemsManager.ItemType.Item) ||
+                        (item.itemType == ItemsManager.ItemType.Spell) ||
+                        (item.itemType == ItemsManager.ItemType.Food))
+                    {
+                        Destroy(itemSlot.gameObject);
+                    }
+                }
+                else if (itemBool == true)
+
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Weapon) ||
+                        (item.itemType == ItemsManager.ItemType.Spell))
+                    {
+                        Destroy(itemSlot.gameObject);
+                    }
+                }
+                else if (spellBool == true)
+
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Item) ||
+                        (item.itemType == ItemsManager.ItemType.Weapon))
+                    {
+                        Destroy(itemSlot.gameObject);
+                    }
+                }
+                else if (potionBool == true)
+
+                {
+                    if ((item.itemType == ItemsManager.ItemType.Weapon) ||
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Item) ||
+                        (item.itemType == ItemsManager.ItemType.Spell) ||
+                        (item.itemType == ItemsManager.ItemType.Food))
+                    {
+                        Destroy(itemSlot.gameObject);
+                    }
+                }
+
+                // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
+
+                if (currentNewItems == 0)
+                {
+                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+                }
+
+                else if (currentNewItems > 0)
+                {
+                    GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                    newItemsText.text = currentNewItems.ToString();
+                }
+
+                GameManager.instance.currentNewItems = currentNewItems;
+            }
+
+        }
+    }
+
+    public void UpdateStats()
+    {
+
+        TeamMembersCount();
+
+        playerStats = GameManager.instance.GetPlayerStats();
+
+
+        for (int i = 0; i < playerStats.Length; i++)
+        {
+
+            // set to false first, to account for changes in character party updating
+
+            if (playerStats[i].isAvailable == true) // on 'add to party screen'
+            {
+                //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
+
+                characterParty[i].SetActive(true);
+
+                if (playerStats[i].isTeamMember == true)
+                {
+                    // on screens where isTeamMember is necessary
+
+                    characterCards[i].SetActive(true);
+
+                    characterName[i].text = playerStats[i].playerName;
+                    description[i].text = playerStats[i].playerDesc;
+                    health[i].text = playerStats[i].npcHP.ToString();
+                    characterImage[i].sprite = playerStats[i].characterImage;
+                    level[i].text = playerStats[i].npcLevel.ToString();
+                    xp[i].text = playerStats[i].npcXP.ToString();
+                    mana[i].text = playerStats[i].npcMana.ToString();
+                    dexterity[i].text = playerStats[i].npcDexterity.ToString();
+                    defence[i].text = playerStats[i].npcDefence.ToString();
+                    intelligence[i].text = playerStats[i].npcIntelligence.ToString();
+                    perception[i].text = playerStats[i].npcPerception.ToString();
+                    intelligenceS[i].value = playerStats[i].npcIntelligence;
+                    xpS[i].value = playerStats[i].npcXP;
+                    manaS[i].value = playerStats[i].npcMana;
+                    healthS[i].value = playerStats[i].npcHP;
+                    dexterityS[i].value = playerStats[i].npcDexterity;
+                    defenceS[i].value = playerStats[i].npcDefence;
+                    intelligenceS[i].value = playerStats[i].npcIntelligence;
+                    perceptionS[i].value = playerStats[i].npcPerception;
+
+                    // Some team equipped stuff
+
+                    teamCharacterWeaponry[i].SetActive(true);
+                    if (playerStats[i].characterArmourDefence > 5)
+                    {
+                        teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
+                    }
+                    else if (playerStats[i].characterArmourDefence == 5)
+                    {
+                        teamEquippedArmourImage[i].sprite = teamBasicArmour;
+                    }
+
+                    if (playerStats[i].characterWeaponPower > 5)
+                    {
+                        teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
+                    }
+                    else if (playerStats[i].characterWeaponPower == 5)
+                    {
+                        teamEquippedWeaponImage[i].sprite = teamBasicAxe;
+                    }
+
+                    teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
+                    teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
+                    teamInventoryAttackTotal[i].text = (playerStats[i].npcDexterity - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
+                    teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
+                    teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
+                    teamCharacterName[i].text = playerStats[i].playerName;
+
+
+                }
+
+                // these are the references for the Team Overview (add to party)
+
+                characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
+                levelP[i].text = playerStats[i].npcLevel.ToString();
+                characterMug[i].sprite = playerStats[i].characterMug;
+                thulGold[i].text = playerStats[0].thulGold.ToString();
+                thulPotions.text = playerStats[0].thulPotions.ToString();
+                thulSpells.text = playerStats[0].thulSpells.ToString();
+
+
+            }
+        }
+
+
+    }
+
     public void WhichPanelIsOn()
     {
 
@@ -1337,146 +1397,109 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void TeamWeaponryPopup(int selectedCharacter, string itemType)
+    // UI Tweeing on Equipment left panel, animations
+    IEnumerator DelayPanelReturn()
     {
-        if (itemType == "armour")
+
+        Debug.Log("InventoryLeft panel animations engaged");
+
+        if (activeItem.itemName == "Red Healing Potion" || activeItem.itemName == "Green Healing Potion" || activeItem.itemName == "Red Healing Potion Large" || activeItem.itemType == ItemsManager.ItemType.Food)
         {
-            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].equippedArmourImage;
-            teamPopWeaponryName.text = playerStats[selectedCharacter].equippedArmourName;
-            teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedArmourDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmourDefence.ToString();
-            teamPopWeaponryBonusText.text = "Armour Defence:";
+            hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
+            var sequence = DOTween.Sequence()
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
+            sequence.SetLoops(1, LoopType.Yoyo);
+
+
+            yield return new WaitForSecondsRealtime(1.8f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
+            Debug.Log("Slider HP fill scale enacted");
         }
 
-        else if (itemType == "weapon")
+        else if (activeItem.itemName == "Mana Potion")
         {
-            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].equippedWeaponImage;
-            teamPopWeaponryName.text = playerStats[selectedCharacter].equippedWeaponName;
-            teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedWeaponDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeaponPower.ToString();
-            teamPopWeaponryBonusText.text = "Weapon Power:";
+            manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
+            var sequence = DOTween.Sequence()
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
+            sequence.SetLoops(1, LoopType.Yoyo);
+
+            Debug.Log("Slider Mana fill expand and slide");
+
+
+            yield return new WaitForSecondsRealtime(1.8f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
         }
-    }
-
-    public void SetAllButtonsInteractable()
-    {
-        foreach (Button button in potionPanelButtons)
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
         {
-            button.interactable = true;
-        }
 
-        foreach (Button button in weaponPanelButtons)
-        {
-            button.interactable = true;
-        }
-    }
-    public void SetAllButtonsUninteractable()
-    {
-        foreach (Button button in potionPanelButtons)
-        {
-            button.interactable = false;
-        }
-
-        foreach (Button button in weaponPanelButtons)
-        {
-            button.interactable = false;
-        }
-    }
-
-    public static void IsInterfaceOn()
-    {
-        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
-    }
-
-    public void AddCharacterToParty(int character)
-    {
-        playerStats = GameManager.instance.GetPlayerStats();
-
-        for (int i = 0; i < playerStats.Length; i++)
-        {
-            if (i == character)
+            if (activeItem.itemType == ItemsManager.ItemType.Armour)
             {
-                playerStats[character].isTeamMember = true;
-                playerStats[character].isNew = false;
-                teamCount--;
-                addToPartyButton[character].gameObject.SetActive(false);
-                isNewNotification[character].SetActive(false);
-                retireFromPartyButton[character].gameObject.SetActive(true);
-                UpdateStats();
                 equipCharStats();
-                Debug.Log(playerStats[character].playerName + " added to party");
+                var sequence = DOTween.Sequence()
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.4f));
+                sequence.SetLoops(1, LoopType.Yoyo);
             }
-
-        }
-    }
-    public void RemoveCharacterFromParty(int character)
-    {
-        playerStats = GameManager.instance.GetPlayerStats();
-
-        for (int i = 0; i < playerStats.Length; i++)
-        {
-            if (i == character)
+            if (activeItem.itemType == ItemsManager.ItemType.Weapon)
             {
-                playerStats[character].isTeamMember = false;
-
-                characterCards[character].SetActive(false);
-                teamCharacterWeaponry[character].SetActive(false);
-                characterEquip[character].SetActive(false);
-                characterWeaponry[character].SetActive(false);
-
-                addToPartyButton[character].gameObject.SetActive(true);
-                retireFromPartyButton[character].gameObject.SetActive(false);
-
-                UpdateStats();
                 equipCharStats();
-
-                Debug.Log(playerStats[character].playerName + " removed from party");
+                var sequence = DOTween.Sequence()
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1f, 0.4f));
+                sequence.SetLoops(1, LoopType.Yoyo);
             }
 
+            yield return new WaitForSecondsRealtime(1f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
         }
+
+        yield return new WaitForSecondsRealtime(0.3f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        SetAllButtonsInteractable();
+        isInventorySlidePanelOn = false;
+
     }
 
-    public void ItemInfoReset()
+    private void Fade(float endValue, float duration, TweenCallback onEnd)
     {
-        itemName.text = "Select an item";
-        itemDescription.text = "";
-        itemImage.sprite = masking;
-        instance.itemValue.text = "";
-        effectText.text = "0";
-        itemDamage.text = "";
-        itemDamageBox.SetActive(false);
-        itemArmourBox.SetActive(false);
-        itemPotionBox.SetActive(false);
-        itemFoodBox.SetActive(false);
-        Debug.Log("Item info panel has been reset");
-    }
-
-    public void TeamMembersCount()
-    {
-        teamCount = 0;
-
-        playerStats = GameManager.instance.GetPlayerStats();
-
-        for (int i = 0; i < playerStats.Length; i++)
+        if (fadeText != null)
         {
-            
-            
-            if (playerStats[i].isAvailable == true && playerStats[i].isNew == true) teamCount++;
-
-            if (teamCount > 0)
-            {
-                teamNofify.alpha = 1;
-                teamMemberCount.text = teamCount.ToString();
-            }
-            else if (teamCount == 0)
-            {
-                teamNofify.alpha = 0;
-            }
-
+            fadeText.Kill(false);
         }
+
+        fadeText = chooseText.DOFade(endValue, duration);
     }
 
+    IEnumerator PanelCancelCoR()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+    }
 
+    private void Start()
+    {
+
+        instance = this;
+        mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+
+    }
+
+    private void Update()
+    {
+    }
 }
 
 

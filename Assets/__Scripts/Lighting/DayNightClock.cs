@@ -27,11 +27,11 @@ public class DayNightClock : MonoBehaviour
         if(((tm.GetHour()<tm.sunriseHour || tm.GetHour() > tm.GetSunsetHour())&&tm.sunriseHour<tm.GetSunsetHour()) ||
            ((tm.GetHour() < tm.sunriseHour && tm.GetHour() > tm.GetSunsetHour()) && tm.sunriseHour > tm.GetSunsetHour()))
         {
-            skyDome.Rotate(0,0,-Time.deltaTime *TimeManager.hoursInDay * nightHoursToDegrees/tm.dayDuration);
+            skyDome.Rotate(0,0,-Time.deltaTime *TimeManager.hoursInDay * nightHoursToDegrees/tm.dayDurationSecs);
         }
         else
         {
-            skyDome.Rotate(0, 0, -Time.deltaTime * TimeManager.hoursInDay * dayHoursToDegrees / tm.dayDuration);
+            skyDome.Rotate(0, 0, -Time.deltaTime * TimeManager.hoursInDay * dayHoursToDegrees / tm.dayDurationSecs);
         }
     }
 }
