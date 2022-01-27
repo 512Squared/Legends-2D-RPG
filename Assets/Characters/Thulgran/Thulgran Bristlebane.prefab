@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1742322469595772402}
   - component: {fileID: 807171266}
   - component: {fileID: 1677143442}
+  - component: {fileID: 920412572}
   m_Layer: 3
   m_Name: Thulgran Bristlebane
   m_TagString: Player
@@ -33,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 4283112051484239550}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.12, y: -3.68, z: 0}
-  m_LocalScale: {x: 1.4, y: 1.4, z: 0}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -46,8 +47,8 @@ SpriteRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4283112051484239550}
   m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 6d5c1cd1576f2ca4eb60091e967cf8c3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,7 +107,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a542bd928fffe4f479fd45fd7db9d672, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -145,7 +146,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 4283112051484239539}
   moveSpeed: 4
   playerAnimator: {fileID: 4283112051484239536}
-  arrivedAt: 
+  arrivingAt: 
   deactivedMovement: 0
   controllerSwitch: 0
 --- !u!114 &7658590310300458551
@@ -218,8 +219,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0, y: 0.67}
-  m_Size: {x: 1, y: 1.38}
+  m_Offset: {x: 0, y: 0.70703995}
+  m_Size: {x: 1.12, y: 1.38}
   m_Direction: 0
 --- !u!114 &807171266
 MonoBehaviour:
@@ -269,3 +270,51 @@ MonoBehaviour:
       modify: 0
       stats: 0
       states: 0
+--- !u!114 &920412572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4283112051484239550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c20
+  m_ShapePath:
+  - {x: -0.2876425, y: 0.25999984, z: 0}
+  - {x: -0.41, y: 0.56, z: 0}
+  - {x: -0.37484786, y: 0.6888212, z: 0}
+  - {x: -0.30602664, y: 0.7888211, z: 0}
+  - {x: -0.22683488, y: 0.93757594, z: 0}
+  - {x: -0.17080855, y: 0.9924236, z: 0}
+  - {x: -0.111987285, y: 1.0172049, z: 0}
+  - {x: -0.021986991, y: 1.1372048, z: 0}
+  - {x: -0.051986862, y: 1.1172048, z: 0}
+  - {x: 0.018012835, y: 1.147205, z: 0}
+  - {x: 0.07801258, y: 1.1072046, z: 0}
+  - {x: 0.048012704, y: 1.1372048, z: 0}
+  - {x: 0.118013084, y: 1.0272053, z: 0}
+  - {x: 0.18801278, y: 0.9872046, z: 0}
+  - {x: 0.24043694, y: 0.9560268, z: 0}
+  - {x: 0.32683438, y: 0.850875, z: 0}
+  - {x: 0.3796291, y: 0.77286136, z: 0}
+  - {x: 0.45242444, y: 0.56596005, z: 0}
+  - {x: 0.30043736, y: 0.22037058, z: 0}
+  - {x: 0.21, y: 0.06999999, z: 0}
+  - {x: 0.15, y: 0.06999999, z: 0}
+  - {x: 0.14, y: 0.21, z: 0}
+  - {x: 0, y: 0.13, z: 0}
+  - {x: -0.14, y: 0.21, z: 0}
+  - {x: -0.15, y: 0.06999999, z: 0}
+  - {x: -0.21, y: 0.06999999, z: 0}
+  m_ShapePathHash: 1230505302
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 23502

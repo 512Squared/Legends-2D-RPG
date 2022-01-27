@@ -38,7 +38,7 @@ public class Exit : MonoBehaviour
 
             GameManager.instance.ActivateCharacters(sceneToLoad);
 
-            ShopMotherFucker(sceneToLoad, sceneHandle);
+            ShopMotherFucker(sceneToLoad, sceneHandle.sceneObjectsLoad, sceneHandle.sceneObjectsUnload);
 
         }
     }
@@ -69,9 +69,9 @@ public class Exit : MonoBehaviour
         arrivingFrom = SceneManager.GetActiveScene().name;
     }
 
-    public void ShopMotherFucker(string scene, SceneHandling sceneHandle)
+    public void ShopMotherFucker(string scene, SceneObjectsLoad sceneObjectsLoad, SceneObjectsUnload sceneObjectsUnload)
     {
-        if (sceneHandle.sceneObjectsLoad == SceneHandling.SceneObjectsLoad.shop1 || sceneHandle.sceneObjectsLoad == SceneHandling.SceneObjectsLoad.shop2 || sceneHandle.sceneObjectsLoad == SceneHandling.SceneObjectsLoad.shop3)
+        if (sceneObjectsLoad == SceneObjectsLoad.shop1 || sceneObjectsLoad == SceneObjectsLoad.shop2 || sceneObjectsLoad == SceneObjectsLoad.shop3)
         {
             ShopManager.instance.isPlayerInsideShop = true;
             ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), scene);
@@ -80,12 +80,22 @@ public class Exit : MonoBehaviour
             ShopManager.instance.UpdateShopItemsInventory();
         }
 
-        else if (sceneHandle.sceneObjectsUnload == SceneHandling.SceneObjectsUnload.shop1 || sceneHandle.sceneObjectsUnload == SceneHandling.SceneObjectsUnload.shop2 || sceneHandle.sceneObjectsUnload == SceneHandling.SceneObjectsUnload.shop3)
+        else if (sceneObjectsUnload == SceneObjectsUnload.shop1 || sceneObjectsUnload == SceneObjectsUnload.shop2 || sceneObjectsUnload == SceneObjectsUnload.shop3)
         {
             ShopManager.instance.isShopArmouryOpen = false;
             ShopManager.instance.isPlayerInsideShop = false;
             ShopManager.instance.UpdateShopItemsInventory();
         }
+
+        else if (scene == "Dungeon")
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size = new Vector2(1.12f, 1.57f);
+            Debug.Log($"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
+        }
+
+        else if (scene != "Dungeon")
+            GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size = new Vector2(1.12f, 1.38f);
+            Debug.Log($"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
     }
 
 }

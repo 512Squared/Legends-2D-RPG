@@ -1,9 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class TimeManager : MonoBehaviour
-{
+public class TimeManager : SingletonMonoBehaviour<TimeManager>
+{ 
+    private int gameYear = 1;
+    private Seasons.Season gameSeason = Seasons.Season.Spring;
+    private int gameDay = 1;
+    private int gameHour = 6;
+
+
+    /// <summary>
+    /// //////////////////
+    /// </summary>
+
     public const int hoursInDay = 24, minutesInHour = 60;
 
     public float dayDurationSecs = 60f;
@@ -24,7 +35,7 @@ public class TimeManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(CurrentTime());
+        //StartCoroutine(CurrentTime());
     }
 
     IEnumerator CurrentTime()

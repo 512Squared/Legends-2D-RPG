@@ -9,8 +9,14 @@ using DG.Tweening;
 
 
 
+
+
+
 public class MenuManager : MonoBehaviour
 {
+
+
+
 
     [SerializeField] PlayerStats[] playerStats;
     [SerializeField] GameObject[] statsButtons;
@@ -488,6 +494,7 @@ public class MenuManager : MonoBehaviour
         mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
 
+
     }
     public void ItemInfoReset()
     {
@@ -534,7 +541,7 @@ public class MenuManager : MonoBehaviour
         {
             if (isInventoryOn == true)
             {
-                Debug.Log($"Inventory is open and 'back' has been called");
+                Debug.Log($"Inventory is open and 'back' has been called"); 
 
                 ButtonHandler.instance.SetAllButtonsInteractable();
                 ShopManager.instance.ShopItemInfoReset();
@@ -573,7 +580,8 @@ public class MenuManager : MonoBehaviour
                 mainMenu.GetComponent<CanvasGroup>().alpha = 1;
                 mainMenu.GetComponent<CanvasGroup>().interactable = true;
                 mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-                Debug.Log($"Team UI back triggered");
+                Debug.Log($"Team UI back triggered"); 
+
             }
 
             else if (menuPanels[5].alpha == 1) // quests
