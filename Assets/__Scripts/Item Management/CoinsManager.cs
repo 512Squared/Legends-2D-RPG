@@ -6,6 +6,7 @@ using DG.Tweening;
 using TMPro;
 using Sirenix.OdinInspector;
 using System.Linq;
+using System;
 
 
 // handles coins, mana and HP animations in Equipment panel.
@@ -101,20 +102,21 @@ public class CoinsManager : MonoBehaviour
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] float spread;
 
+    private void OnEnable()
+    {
+        Actions.OnSellItem += SellItem; // sub 
+        Actions.OnUseItem += UseItem; // sub
+    }
 
-
-    // STRATEGIES
-
-    // Could use the RemoveItems code to add in a variable for which animation trigger to use.  MenuManager.instance.animTrigger = item.GetComponent<Animator>().SetTrigger("ItemSold");
-
-    // MenuManager is the only script that currently successful activates a trigger, with                 itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
-
-    // As ever, the choice is between where to put the script and where to call the data that is thereby missing to make the script work
-
+    private void OnDisable()
+    {
+        Actions.OnUseItem -= UseItem; // sub
+    }
 
     public int _c;
     public int chosenCharacter;
-
+    private int _hp;
+    private int _mana;
 
     public int Coins
     {
@@ -124,23 +126,15 @@ public class CoinsManager : MonoBehaviour
             _c = value;
 
             //update UI Text whenever "Coins variable is changed
-
-
             coinUIText.text = Coins.ToString();
-
-
         }
     }
-
-    private int _hp;
 
     public int Hp
     {
         get { return _hp; }
         set
         {
-
-
             //update UI Text whenever HP variable is changed
             if (chosenCharacter == 0 && Hp < chosenCharacters[0].maxHP + 1)
 
@@ -151,15 +145,11 @@ public class CoinsManager : MonoBehaviour
         }
     }
 
-    private int _mana;
-
     public int Mana
     {
         get { return _mana; }
         set
         {
-
-
             //update UI Text whenever Mana variable is changed
 
             if (chosenCharacter == 0 && Mana < chosenCharacters[0].maxMana + 1)
@@ -168,15 +158,6 @@ public class CoinsManager : MonoBehaviour
                 manaUIText.text = Mana.ToString() + "/" + chosenCharacters[0].maxMana;
             }
         }
-    }
-
-
-
-    void Awake()
-    {
-
-
-
     }
 
 
@@ -207,7 +188,6 @@ public class CoinsManager : MonoBehaviour
             coin.transform.SetParent(sourceTransformCoin, false);
             coin.SetActive(false);
             coinsQueue.Enqueue(coin);
-
         }
     }
 
@@ -220,7 +200,6 @@ public class CoinsManager : MonoBehaviour
             hp.transform.SetParent(sourceTransformHP, false);
             hp.SetActive(false);
             hpQueue.Enqueue(hp);
-
         }
     }
 
@@ -233,15 +212,10 @@ public class CoinsManager : MonoBehaviour
             mana.transform.SetParent(sourceTransformMana, false);
             mana.SetActive(false);
             manaQueue.Enqueue(mana);
-
         }
     }
 
-
-
-
-
-    public void Animate(Vector2 source, int valueInCoins) //previously 'collectedCoinPosition'
+    public void AnimateCoins(Vector2 source, int valueInCoins) 
     {
 
         Debug.Log("Animate coins called");
@@ -254,11 +228,11 @@ public class CoinsManager : MonoBehaviour
                 coin.SetActive(true);
 
                 // move coin to the collected coin position
-                coin.transform.position = source + new Vector2(Random.Range(-spread, spread), 0f);
+                coin.transform.position = source + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
 
 
                 // animate coin to target position
-                float duration = Random.Range(minAnimDuration, maxAnimDuration);
+                float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
                 coin.transform.DOMove(targetPositionCoins, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
@@ -268,20 +242,16 @@ public class CoinsManager : MonoBehaviour
                         coinsQueue.Enqueue(coin);
                         Coins++;
                     });
-
             }
         }
-
-
     }
 
-    public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget) //previously 'collectedCoinPosition' // amountOfEffect is called in Inventory.cs
+    public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget) 
     {
 
         // trying to assign a target position to player image
 
         targetPositionHP = receivedTarget;
-
 
         Debug.Log("Animate HP called");
         for (int i = 0; i < amountOfEffect; i++)
@@ -293,11 +263,11 @@ public class CoinsManager : MonoBehaviour
                 hp.SetActive(true);
 
                 // move hearts to the collected heart position
-                hp.transform.position = sourceHP + new Vector2(Random.Range(-spread, spread), 0f);
+                hp.transform.position = sourceHP + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
 
 
                 // animate hearts to target position
-                float duration = Random.Range(minAnimDuration, maxAnimDuration);
+                float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
                 hp.transform.DOMove(targetPositionHP, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
@@ -307,14 +277,11 @@ public class CoinsManager : MonoBehaviour
                         coinsQueue.Enqueue(hp);
                         Hp++;
                     });
-
             }
         }
-
-
     }
 
-    public void AnimateMana(Vector2 sourceMana, int amountOfEffect, Vector2 receivedTarget) //previously 'collectedCoinPosition' // amountOfEffect is called in Inventory.cs
+    public void AnimateMana(Vector2 sourceMana, int amountOfEffect, Vector2 receivedTarget) 
     {
         // assigning target position to polayer image
 
@@ -330,11 +297,11 @@ public class CoinsManager : MonoBehaviour
                 mana.SetActive(true);
 
                 // move coin to the collected coin position
-                mana.transform.position = sourceMana + new Vector2(Random.Range(-spread, spread), 0f);
+                mana.transform.position = sourceMana + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
 
 
                 // animate coin to target position
-                float duration = Random.Range(minAnimDuration, maxAnimDuration);
+                float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
                 mana.transform.DOMove(targetPositionMana, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
@@ -344,59 +311,50 @@ public class CoinsManager : MonoBehaviour
                         manaQueue.Enqueue(mana);
                         Mana++;
                     });
-
             }
         }
-
-
     }
 
 
-
-    public void UIAddCoins(int valueInCoins, int selectedCharacter) //previously 'collectedCoinPosition'
+    public void UseItem(ItemsManager item, int selectedCharacter, Vector2 target)
     {
-        Debug.Log("UIAddCoins called from CoinsManager");
+        if (item.affectType == ItemsManager.AffectType.HP)
+        {
+            UpdateHP();
+            chosenCharacter = selectedCharacter;
+            AnimateHP(sourceHP, item.amountOfEffect, target);
+            Debug.Log("UIAddHP called from CoinsManager");
+        }
 
-        Animate(sourceCoins, valueInCoins);
-
+        if (item.affectType == ItemsManager.AffectType.Mana)
+        {
+            UpdateMana();
+            chosenCharacter = selectedCharacter;
+            AnimateMana(sourceMana, item.amountOfEffect, target);
+            Debug.Log("UIAddMana called from CoinsManager");
+        }
     }
 
-    public void UIAddHp(int amountOfEffect, Vector2 target, int selectedCharacter) //previously 'collectedCoinPosition'
+    public void SellItem(ItemsManager item)
     {
-        chosenCharacter = selectedCharacter;
-
-        AnimateHP(sourceHP, amountOfEffect, target);
-
-        Debug.Log("UIAddHP called from CoinsManager");
-
-
+            UpdateCoins();
+            AnimateCoins(sourceCoins, item.valueInCoins);
+            Debug.Log("UIAddCoins called from CoinsManager");
     }
 
-    public void UIAddMana(int amountOfEffect, Vector2 target, int selectedCharacter) //previously 'collectedCoinPosition'
-    {
-        chosenCharacter = selectedCharacter;
-
-        AnimateMana(sourceMana, amountOfEffect, target);
-
-        Debug.Log("UIAddMana called from CoinsManager");
-
-
-    }
-
-
-    public void updateCoins()
+    public void UpdateCoins()
     {
         targetPositionCoins = targetCoin.position;
         sourceCoins = sourceTransformCoin.position;
     }
 
-    public void updateHP()
+    public void UpdateHP()
     {
         targetPositionHP = targetHP.position;
         sourceHP = sourceTransformHP.position;
     }
 
-    public void updateMana()
+    public void UpdateMana()
     {
         targetPositionMana = targetMana.position;
         sourceMana = sourceTransformMana.position;

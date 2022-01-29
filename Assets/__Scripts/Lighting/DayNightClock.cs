@@ -18,21 +18,23 @@ public class DayNightClock : MonoBehaviour
         nightHoursToDegrees = 180 / (TimeManager.hoursInDay * tm.nightDuration);
         dayHoursToDegrees = 180 / (TimeManager.hoursInDay * (1 - tm.nightDuration));
 
-        skyDome.rotation = Quaternion.Euler(0,0,0);
+        skyDome.rotation = Quaternion.Euler(0, 0, 0);
         //rotation: 90+tm.sunriseHour*nightHoursToDegrees
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(((tm.GetHour()<tm.sunriseHour || tm.GetHour() > tm.GetSunsetHour())&&tm.sunriseHour<tm.GetSunsetHour()) ||
+        if (((tm.GetHour() < tm.sunriseHour || tm.GetHour() > tm.GetSunsetHour()) && tm.sunriseHour < tm.GetSunsetHour()) ||
            ((tm.GetHour() < tm.sunriseHour && tm.GetHour() > tm.GetSunsetHour()) && tm.sunriseHour > tm.GetSunsetHour()))
         {
-            skyDome.Rotate(0,0,-Time.deltaTime *TimeManager.hoursInDay * nightHoursToDegrees/tm.dayDurationSecs);
+            skyDome.Rotate(0, 0, -Time.deltaTime * TimeManager.hoursInDay * nightHoursToDegrees / tm.dayDurationSecs);
         }
+
         else
         {
             skyDome.Rotate(0, 0, -Time.deltaTime * TimeManager.hoursInDay * dayHoursToDegrees / tm.dayDurationSecs);
         }
+        
     }
 }

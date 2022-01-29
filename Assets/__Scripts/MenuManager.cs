@@ -320,11 +320,10 @@ public class MenuManager : MonoBehaviour
         controlSwitch = !controlSwitch;
     }
 
-    public void CallToSellItem(int selectedCharacter)
+    public void CallToSellItem()
     {
-        Debug.Log("Sell item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
-        isInventorySlidePanelOn = true;
-        Inventory.instance.SellItem(activeItem, selectedCharacter);
+        isInventorySlidePanelOn = true; // not sure why this is here
+        Inventory.instance.SellItem(activeItem);
         UpdateItemsInventory();
         textUseEquipTake.text = "Select";
     }
@@ -1138,7 +1137,7 @@ public class MenuManager : MonoBehaviour
 
                         if (item.itemType == ItemsManager.ItemType.Potion)
                         {
-                            Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect}");
 
                             textUseEquipTake.text = "Give";
 

@@ -6,14 +6,14 @@ using System;
 [CreateAssetMenu(fileName = "lightingSchedule", menuName = "Scriptable Objects/LightingSchedule")]
 public class LightingSchedule : ScriptableObject
 {
-    public LightingBrightness[] lightingBrightnessArray;
+    public LightingBrightness[] lightingBrightnessArray = null;
 }
 
 [System.Serializable]
 
 public struct LightingBrightness
 {
-    public Seasons season;
+    public Season season;
     public int hour;
     public float lightIntensity;
 }

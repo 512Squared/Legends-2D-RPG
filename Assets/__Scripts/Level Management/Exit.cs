@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-
+// cant
 public class Exit : MonoBehaviour
 {
 

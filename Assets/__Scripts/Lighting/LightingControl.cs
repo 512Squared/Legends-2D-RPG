@@ -18,7 +18,7 @@ public class LightingControl : MonoBehaviour
     private float currentLightIntensity;
     private float lightFlickerTimer = 0f;
     private Coroutine fadeInLightRoutine;
-    Debug.Log($"{}");
+
     private void Awake()
     {
         // Get 2D light
@@ -30,13 +30,14 @@ public class LightingControl : MonoBehaviour
             enabled = false;
 
         // populate lighting brightness dictionary
-        foreach (LightingBrightness lightingBrightness in lightingSchedule.lightingBrightnessArray)
+        foreach (LightingBrightness lightingBrightness in lightingSchedule?.lightingBrightnessArray)
         {
             string key = lightingBrightness.season.ToString() + lightingBrightness.hour.ToString();
 
             if (!lightBrightnessDictionary.ContainsKey(key))
             {
                 lightBrightnessDictionary.Add(key, lightingBrightness.lightIntensity);
+                Debug.Log($"Lighting Schedule Dictionary has had the {key} key added");
             }
         }
 

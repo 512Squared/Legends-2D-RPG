@@ -30,8 +30,6 @@ public class ButtonHandler : MonoBehaviour
     {
         useButton.GetComponent<Button>().interactable = true;
         sellButton.GetComponent<Button>().interactable = true;
-        Debug.Log("UseButton: " + useButton.GetComponent<Button>().interactable);
-        Debug.Log("SellButton: " + sellButton.GetComponent<Button>().interactable);
     }
 
     

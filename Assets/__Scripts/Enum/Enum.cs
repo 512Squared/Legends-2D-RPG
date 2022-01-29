@@ -34,3 +34,14 @@ public enum SceneObjectsUnload
     town
 }
 
+public enum Season
+{
+    Spring,
+    Summer,
+    Autumn,
+    Winter, 
+    none,
+    count
+
+}
+
