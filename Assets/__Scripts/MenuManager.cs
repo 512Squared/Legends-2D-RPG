@@ -14,10 +14,17 @@ using DG.Tweening;
 public class MenuManager : MonoBehaviour
 {
 
+    public static MenuManager instance;
+
+    private int panelStuff;
+    private string whichPanelIsOn = "";
+    public int teamNofifyCount;
+    private Tween fadeText;
+    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
+
 
     [SerializeField] PlayerStats[] playerStats;
-    [SerializeField] GameObject[] statsButtons;
-
+   
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject mainMenu, inventoryPanel, dayNightCycle;
@@ -57,16 +64,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI teamMemberCount;
 
 
-
-    public static MenuManager instance;
-
-
-
-    private int panelStuff;
-    private string whichPanelIsOn = "";
-    public static int select;
-    public int teamNofifyCount;
-
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
@@ -81,7 +78,6 @@ public class MenuManager : MonoBehaviour
     [TabGroup("Images")]
     [GUIColor(0.670f, 1, 0.560f)]
     [SerializeField] Image characterImageV;
-
 
 
     [TabGroup("Sliders")]
@@ -211,10 +207,6 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.307f, 0.321f, 0.027f)]
     public GameObject[] isNewNotification;
 
-
-
-
-
     [ShowInInspector]
     [Title("INVENTORY")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
@@ -277,13 +269,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
-
-
-
-    private Tween fadeText;
-
-    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
-
+    
 
     private void OnEnable()
     {

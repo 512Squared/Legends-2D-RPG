@@ -8,8 +8,6 @@ public class PlayerStats : MonoBehaviour
 {
 
     public static PlayerStats instance;
-    
-    public PlayerStats thulgran;
 
     public Sprite characterImage;
     public Sprite characterMug;

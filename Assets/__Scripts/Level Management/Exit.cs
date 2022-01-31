@@ -89,7 +89,7 @@ public class Exit : MonoBehaviour
 
         else if (scene == "Dungeon")
         {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size = new Vector2(1.12f, 1.57f);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size = new Vector2(1.12f, 1.8f);
             Debug.Log($"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
         }
 

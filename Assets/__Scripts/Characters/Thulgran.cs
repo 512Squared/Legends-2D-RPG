@@ -40,6 +40,7 @@ public class Thulgran : MonoBehaviour
         Actions.OnSellItem += SellItem;
         Actions.OnBuyItem += BuyItem;
         Actions.OnUseItem += UseItem;
+        Actions.OnCoinAdd += AddCoin;
     }
 
     private void OnDisable()
@@ -47,11 +48,12 @@ public class Thulgran : MonoBehaviour
         Actions.OnSellItem -= SellItem;
         Actions.OnBuyItem -= BuyItem;
         Actions.OnUseItem -= UseItem;
+        Actions.OnCoinAdd -= AddCoin;
     }
 
     public void SellItem(ItemsManager item)
     {
-        AddGold(item);
+        //AddGold(item);
         Debug.Log($"Thulgran's purse: {thulgranGold}");
     }
 
@@ -187,6 +189,17 @@ public class Thulgran : MonoBehaviour
         {
             if (i != 0) manaSliders[i].value = thulgranMana;
         }
+    }
+
+    public void AddCoin(int coin)
+    {
+        thulgranGold += coin;
+        for (int i = 0; i < goldStats.Length; i++)
+        {
+            if (i != 0)
+                goldStats[i].text = thulgranGold.ToString();
+        }
+        Debug.Log($"Coin added to Thulgran gold: {thulgranGold}");
     }
 
 }

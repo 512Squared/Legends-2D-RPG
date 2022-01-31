@@ -104,7 +104,7 @@ public class Inventory : MonoBehaviour
 
         Actions.OnSellItem?.Invoke(item);// Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
 
-        Debug.Log($"Gold amount updated: {FindObjectOfType<PlayerStats>().thulGold} | InvocationList: {Actions.OnBuyItem.GetInvocationList().Length}");
+        Debug.Log($"Gold before sale: {Thulgran.thulgranGold} | InvocationList: {Actions.OnSellItem.GetInvocationList().Length} | Info: {Actions.OnSellItem.Method}");
     }
 
     public void UseAndRemoveItem(ItemsManager item, int selectedCharacterUse, Vector2 target)
@@ -172,6 +172,7 @@ public class Inventory : MonoBehaviour
         Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
 
         Actions.OnBuyItem?.Invoke(item); // Broadcast | subscribers: Thulgran, MenuManager, 
+        Debug.Log($"Gold amount updated: {Thulgran.thulgranGold} | InvocationList: {Actions.OnBuyItem.GetInvocationList().Length} | Info: {Actions.OnBuyItem.Method}");
     }
 
     public List<ItemsManager> GetItemsList()

@@ -106,17 +106,17 @@ public class CoinsManager : MonoBehaviour
     {
         Actions.OnSellItem += SellItem; // subscriber 
         Actions.OnUseItem += UseItem; // subscriber
-        Actions._cUpdate += Update_c; // subscriber
+        Actions.OnBuyItem += CoinUpdate; // subscriber
     }
 
     private void OnDisable()
     {
         Actions.OnSellItem -= SellItem; // subscriber 
         Actions.OnUseItem -= UseItem; // subscriber
-        Actions._cUpdate -= Update_c; // subscriber
+        Actions.OnBuyItem -= CoinUpdate; // subscriber
     }
 
-    public int _c;
+    public int _c; // Inventory has it's own Gold count, which is in Coin. 
     public int chosenCharacter;
     private int _hp;
     private int _mana;
@@ -259,9 +259,12 @@ public class CoinsManager : MonoBehaviour
                         coin.SetActive(false);
                         coinsQueue.Enqueue(coin);
                         Coins++;
+                        Actions.OnCoinAdd?.Invoke(1);
                     });
             }
         }
+
+        Debug.Log($"Coins total: {_c}");
     }
 
     public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget) 
@@ -378,7 +381,7 @@ public class CoinsManager : MonoBehaviour
         sourceMana = sourceTransformMana.position;
     }
 
-    public void Update_c(ItemsManager item)
+    public void CoinUpdate(ItemsManager item)
     {
         _c -= item.valueInCoins;
     }
