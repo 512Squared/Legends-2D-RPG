@@ -104,19 +104,54 @@ public class CoinsManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Actions.OnSellItem += SellItem; // sub 
-        Actions.OnUseItem += UseItem; // sub
+        Actions.OnSellItem += SellItem; // subscriber 
+        Actions.OnUseItem += UseItem; // subscriber
+        Actions._cUpdate += Update_c; // subscriber
     }
 
     private void OnDisable()
     {
-        Actions.OnUseItem -= UseItem; // sub
+        Actions.OnSellItem -= SellItem; // subscriber 
+        Actions.OnUseItem -= UseItem; // subscriber
+        Actions._cUpdate -= Update_c; // subscriber
     }
 
     public int _c;
     public int chosenCharacter;
     private int _hp;
     private int _mana;
+
+    int thulGold;
+    int thulHP;
+    int thulMana;
+
+    private void Start()
+    {
+        instance = this;        chosenCharacters = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
+
+        thulGold = Thulgran.thulgranGold;
+        thulHP = Thulgran.thulgranHP;
+        thulMana = Thulgran.thulgranMana;
+
+
+        PrepareCoins();
+        PrepareHP();
+        PrepareMana();
+
+        _c += thulGold;
+        _hp += thulHP;
+        _mana += thulMana;
+        coinUIText.text = _c.ToString();
+        hpUIText.text = _hp.ToString() + " / " + Thulgran.maxThulgranHP;
+        manaUIText.text = _mana.ToString() + " / " + Thulgran.maxThulgranMana;
+
+    }
+
+    private void Update()
+    {
+
+    }
+
 
     public int Coins
     {
@@ -136,11 +171,11 @@ public class CoinsManager : MonoBehaviour
         set
         {
             //update UI Text whenever HP variable is changed
-            if (chosenCharacter == 0 && Hp < chosenCharacters[0].maxHP + 1)
+            if (chosenCharacter == 0 && Hp < Thulgran.maxThulgranHP)
 
             {
                 _hp = value;
-                hpUIText.text = Hp.ToString() + "/" + chosenCharacters[0].maxHP;
+                hpUIText.text = Hp.ToString() + "/" + Thulgran.maxThulgranHP;
             }
         }
     }
@@ -152,32 +187,15 @@ public class CoinsManager : MonoBehaviour
         {
             //update UI Text whenever Mana variable is changed
 
-            if (chosenCharacter == 0 && Mana < chosenCharacters[0].maxMana + 1)
+            if (chosenCharacter == 0 && Mana < Thulgran.maxThulgranMana)
             {
                 _mana = value;
-                manaUIText.text = Mana.ToString() + "/" + chosenCharacters[0].maxMana;
+                manaUIText.text = Mana.ToString() + "/" + Thulgran.maxThulgranMana;
             }
         }
     }
 
 
-    private void Start()
-    {
-        instance = this;
-        chosenCharacters = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
-
-        PrepareCoins();
-        PrepareHP();
-        PrepareMana();
-
-        _c += chosenCharacters[0].thulGold;
-        _hp += chosenCharacters[0].npcHP;
-        _mana += chosenCharacters[0].npcMana;
-        coinUIText.text = _c.ToString();
-        hpUIText.text = _hp.ToString() + "/" + chosenCharacters[0].maxHP;
-        manaUIText.text = _mana.ToString() + "/" + chosenCharacters[0].maxMana;
-
-    }
 
     void PrepareCoins()
     {
@@ -358,5 +376,10 @@ public class CoinsManager : MonoBehaviour
     {
         targetPositionMana = targetMana.position;
         sourceMana = sourceTransformMana.position;
+    }
+
+    public void Update_c(ItemsManager item)
+    {
+        _c -= item.valueInCoins;
     }
 }

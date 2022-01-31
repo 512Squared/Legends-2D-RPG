@@ -19,7 +19,7 @@ public class ItemsManager : MonoBehaviour
     public Shop shop; // inventory, shop1, shop2, shop3
 
 
-    public enum AffectType { HP, Mana, Defence, Attack, Perception }
+    public enum AffectType { HP, Mana, Defence, Attack, Perception, Speed }
     public AffectType affectType;
     public int amountOfEffect;
 
@@ -35,7 +35,6 @@ public class ItemsManager : MonoBehaviour
     {
         instance = this;
     }
-
 
     public void UseItem(int characterToUseOn)
     {
@@ -75,8 +74,6 @@ public class ItemsManager : MonoBehaviour
             }
             selectedCharacter.AddArmourDefence(itemArmourDefence);
             selectedCharacter.EquipArmour(this);
-            MenuManager.instance.UpdateStats();
-            
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
@@ -95,13 +92,11 @@ public class ItemsManager : MonoBehaviour
 
             selectedCharacter.AddWeaponPower(itemWeaponPower);
             selectedCharacter.EquipWeapon(this);
-            MenuManager.instance.UpdateStats();
 
             Debug.Log(selectedCharacter.playerName + " equipped with " + this.itemName);
         }
 
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -113,9 +108,6 @@ public class ItemsManager : MonoBehaviour
 
         }
     }
-
-
-
 
     public void SelfDestroy()
     {

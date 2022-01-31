@@ -8,6 +8,7 @@ public class PlayerStats : MonoBehaviour
 {
 
     public static PlayerStats instance;
+    
     public PlayerStats thulgran;
 
     public Sprite characterImage;
@@ -66,15 +67,11 @@ public class PlayerStats : MonoBehaviour
 
     public ItemsManager equippedWeapon, equippedArmour = null;
 
+    
 
-
-
-// Start is called before the first frame update
+    // Start is called before the first frame update
     void Start()
     {
-
-     
-        
         xpLevelUp = new int[maxLevel];
         xpLevelUp[1] = baseLevelXP;
 
@@ -89,14 +86,10 @@ public class PlayerStats : MonoBehaviour
     void Update()
     {
 
-        // assign XP is currently assigned to a key L
-
         if (Input.GetKeyDown(KeyCode.L))
         {
             AddXP(100);
             Debug.Log("XP was added");
-
-
         }
     }
 
@@ -138,21 +131,27 @@ public class PlayerStats : MonoBehaviour
 
     public void AddHP(int amountOfHPToAdd)
     {
-        npcHP += amountOfHPToAdd;
-        
-        if (npcHP > maxHP)
+        if (playerName != "Thulgran")
         {
-            npcHP = maxHP;
+            npcHP += amountOfHPToAdd;
+
+            if (npcHP > maxHP)
+            {
+                npcHP = maxHP;
+            }
         }
 
     }
 
     public void AddMana(int amountOfManaToAdd)
     {
-        npcMana += amountOfManaToAdd;
-        if (npcMana > maxMana)
+        if (playerName != "Thulgran")
         {
-            npcMana = maxMana;
+            npcMana += amountOfManaToAdd;
+            if (npcMana > maxMana)
+            {
+                npcMana = maxMana;
+            }
         }
     }
 
@@ -185,11 +184,6 @@ public class PlayerStats : MonoBehaviour
         equippedArmourDescription = equippedArmour.itemDescription;
     }
 
-    public void PayUpTheGold(int itemValue)
-    {
-        thulGold -= itemValue;
-        CoinsManager.instance._c -= itemValue;
-    }
 
 }
 

@@ -8,21 +8,14 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory instance; // GameManager
 
-    private List<ItemsManager> itemsList;
+    private List<ItemsManager> inventoryList;
     private List<ItemsManager> shopList;
-
-    public PlayerStats[] characterArray;
-    [SerializeField] PlayerStats thulgran;
-
-
-    // Start is called before the first frame update
 
     void Start()
     {
         instance = this;
-        itemsList = new List<ItemsManager>();
+        inventoryList = new List<ItemsManager>();
         shopList = new List<ItemsManager>();
-        characterArray = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
     }
 
     public void AddItems(ItemsManager item)
@@ -31,7 +24,7 @@ public class Inventory : MonoBehaviour
         {
             bool itemAleadyInInventory = false;
 
-            foreach (ItemsManager itemInInventory in itemsList)
+            foreach (ItemsManager itemInInventory in inventoryList)
             {
                 if (itemInInventory.itemName == item.itemName)
                 {
@@ -42,142 +35,13 @@ public class Inventory : MonoBehaviour
 
             if (!itemAleadyInInventory)
             {
-                itemsList.Add(item);
+                inventoryList.Add(item);
             }
         }
         else
         {
-            itemsList.Add(item);
+            inventoryList.Add(item);
         }
-    }
-
-    public void SellItem(ItemsManager item)
-    {
-        Actions.OnSellItem?.Invoke(item);
-        Debug.Log($"OnSellItem invoked for {item.itemName}");
-
-
-        if (item.isStackable)
-        {
-            ItemsManager inventoryItem = null;
-
-            foreach (ItemsManager itemInInventory in itemsList)
-
-            {
-                if (itemInInventory.itemName == item.itemName)
-                {
-                    itemInInventory.amount--;
-                    inventoryItem = itemInInventory;
-                    thulgran.thulGold += item.valueInCoins;
-                    Debug.Log($"stacked {item.itemName} sold. {thulgran.playerName} has received the dosh");
-                }
-            }
-
-            if (inventoryItem != null && inventoryItem.amount <= 0)
-            {
-
-                itemsList.Remove(inventoryItem);
-                Debug.Log($"stacked {item.itemName} sold and now empty");
-            }
-        }
-
-        else
-        {
-            thulgran.thulGold += item.valueInCoins;
-            itemsList.Remove(item);
-            Debug.Log($"{item.itemName} sold");
-        }
-
-        MenuManager.instance.UpdateStats();
-    }
-
-    public void UseAndRemoveItem(ItemsManager item, int selectedCharacterUse, Vector2 target)
-    {
-        Debug.Log("UseItem being discarded");
-
-        Actions.OnUseItem?.Invoke(item, selectedCharacterUse, target);
-
-        if (item.isStackable)
-        {
-            ItemsManager inventoryItem = null;
-            foreach (ItemsManager itemInInventory in itemsList)
-            {
-                if (itemInInventory.itemName == item.itemName)
-                {
-                    itemInInventory.amount--;
-                    Debug.Log("Inventory stack subtraction");
-                    inventoryItem = itemInInventory;
-                }
-            }
-
-            if (inventoryItem != null && inventoryItem.amount <= 0)
-            {
-                itemsList.Remove(inventoryItem);
-                Debug.Log("Item stack empty - item removed");
-            }
-        }
-
-        else // same code as above but for non-stackable items
-        {
-            itemsList.Remove(item);
-            Debug.Log("Item removed");
-        }
-
-        MenuManager.instance.UpdateStats();
-    }
-
-    public void BuyItem(ItemsManager item)
-    {
-
-
-        item.shopItem = false;
-
-        // implementing the sell
-
-        thulgran.PayUpTheGold(item.valueInCoins);
-        ShopManager.instance.currentThulGold.text = characterArray[0].thulGold.ToString();
-        ShopManager.instance.currentThulGold2.text = characterArray[0].thulGold.ToString();
-        MenuManager.instance.goldEquipTopBar.text = characterArray[0].thulGold.ToString();
-        MenuManager.instance.UpdateStats();
-        if (item.isStackable)
-        {
-            bool itemAleadyInInventory = false;
-
-            foreach (ItemsManager itemInInventory in itemsList)
-            {
-                if (itemInInventory.itemName == item.itemName)
-                {
-                    itemInInventory.amount += item.amount;
-                    itemAleadyInInventory = true;
-                }
-            }
-
-            if (!itemAleadyInInventory)
-            {
-                itemsList.Add(item);
-            }
-        }
-        else
-        {
-            itemsList.Add(item);
-        }
-        shopList.Remove(item);
-        Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
-    }
-
-    public void AddMagic(MagicManager selectedCharacter)
-    {
-
-    }
-
-    public List<ItemsManager> GetItemsList()
-    {
-        return itemsList;
-    }
-
-    public List<ItemsManager> GetShopList()
-    {
-        return shopList;
     }
 
     public void AddShopItems(ItemsManager item)
@@ -205,6 +69,124 @@ public class Inventory : MonoBehaviour
         {
             shopList.Add(item);
         }
+    }
+    
+    public void SellItem(ItemsManager item)
+    {
+        Debug.Log($"OnSellItem invoked for {item.itemName}");
+
+        if (item.isStackable)
+        {
+            ItemsManager inventoryItem = null;
+
+            foreach (ItemsManager itemInInventory in inventoryList)
+
+            {
+                if (itemInInventory.itemName == item.itemName)
+                {
+                    itemInInventory.amount--;
+                    inventoryItem = itemInInventory;
+                }
+            }
+
+            if (inventoryItem != null && inventoryItem.amount <= 0)
+            {
+                inventoryList.Remove(inventoryItem);
+                Debug.Log($"stacked {item.itemName} sold and now empty");
+            }
+        }
+
+        else
+        {
+            inventoryList.Remove(item);
+            Debug.Log($"{item.itemName} sold");
+        }
+
+        Actions.OnSellItem?.Invoke(item);// Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
+
+        Debug.Log($"Gold amount updated: {FindObjectOfType<PlayerStats>().thulGold} | InvocationList: {Actions.OnBuyItem.GetInvocationList().Length}");
+    }
+
+    public void UseAndRemoveItem(ItemsManager item, int selectedCharacterUse, Vector2 target)
+    {
+        Debug.Log("UseItem being discarded");
+
+        if (item.isStackable)
+        {
+            ItemsManager inventoryItem = null;
+            foreach (ItemsManager itemInInventory in inventoryList)
+            {
+                if (itemInInventory.itemName == item.itemName)
+                {
+                    itemInInventory.amount--;
+                    Debug.Log("Inventory stack subtraction");
+                    inventoryItem = itemInInventory;
+                }
+            }
+
+            if (inventoryItem != null && inventoryItem.amount <= 0)
+            {
+                inventoryList.Remove(inventoryItem);
+                Debug.Log("Item stack empty - item removed");
+            }
+        }
+
+        else // same code as above but for non-stackable items
+        {
+            inventoryList.Remove(item);
+            Debug.Log("Item removed");
+        }
+
+        Actions.OnUseItem?.Invoke(item, selectedCharacterUse, target); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
+        Debug.Log($"OnUseItem has broadcasted for: {item.itemName}");
+    }
+
+    public void BuyItem(ItemsManager item)
+    {
+        if (item.isStackable)
+        {
+            bool itemAleadyInInventory = false;
+
+            foreach (ItemsManager itemInInventory in inventoryList)
+            {
+                if (itemInInventory.itemName == item.itemName)
+                {
+                    itemInInventory.amount += item.amount;
+                    itemAleadyInInventory = true;
+                }
+            }
+
+            if (!itemAleadyInInventory)
+            {
+                inventoryList.Add(item);
+            }
+        }
+
+        else
+        {
+            inventoryList.Add(item);
+        }
+
+        shopList.Remove(item);
+        item.shopItem = false;
+        Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
+
+        Actions.OnBuyItem?.Invoke(item); // Broadcast | subscribers: Thulgran, MenuManager, 
+    }
+
+    public List<ItemsManager> GetItemsList()
+    {
+        return inventoryList;
+    }
+
+    public List<ItemsManager> GetShopList()
+    {
+        return shopList;
+    }
+
+    public void AddMagic(MagicManager selectedCharacter)
+    {
+
     }
 }
 

@@ -25,7 +25,7 @@ public class PlayerGlobalData : MonoBehaviour
     float horizontalMovement;
     float verticalMovement;
 
-    
+
     // Start is called before the first frame update
 
 
@@ -33,9 +33,6 @@ public class PlayerGlobalData : MonoBehaviour
     {
         instance = this;
     }
-
-
-
     public void AndroidController()
     {
 
@@ -52,7 +49,6 @@ public class PlayerGlobalData : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -93,8 +89,6 @@ public class PlayerGlobalData : MonoBehaviour
 
     }
 
-
-
     public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
     {
         bottomLeftEdge = bottomEdgeToSet;
@@ -117,9 +111,6 @@ public class PlayerGlobalData : MonoBehaviour
             }
         }
     }
-
-
-
 
 }
 

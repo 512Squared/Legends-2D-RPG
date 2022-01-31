@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using System.Data;
 
 public class ShopManager : MonoBehaviour
 {
@@ -52,7 +53,7 @@ public class ShopManager : MonoBehaviour
     public Button shopTabsAllHolder, shopTabsWeaponsHolder, shopTabsArmourHolder, shopTabsItemsHolder, shopTabsPotionsHolder;
     [TabGroup("Weapon Group", "Shop Tabs")]
     [GUIColor(0.207f, 0.921f, 0.027f)]
-    public TextMeshProUGUI shopTabsAllText, currentThulGold, currentThulGold2, shopNewItemsText;
+    public TextMeshProUGUI shopTabsAllText, shopNewItemsText;
     [TabGroup("Weapon Group", "Shop Tabs")]
     [GUIColor(0.207f, 0.921f, 0.027f)]
     public GameObject shopTabsAllFocus, shopTabsWeaponsFocus, shopTabsArmourFocus, shopTabsItemsFocus, shopTabsPotionsFocus;
@@ -79,9 +80,12 @@ public class ShopManager : MonoBehaviour
     private int foodItems, weaponItems, potionItems, itemItems, armourItems;
 
     private int shop1NormalItems, shop1SecretItems, shop2NormalItems, shop2SecretItems;
+
+    // METHODS
+
     public void CallToBuyItem()
     {
-        if (activeItem.valueInCoins <= playerStats.thulGold)
+        if (activeItem.valueInCoins <= Thulgran.thulgranGold)
         {
             Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
             Inventory.instance.BuyItem(activeItem);
@@ -91,9 +95,9 @@ public class ShopManager : MonoBehaviour
             activeItem.GetComponent<SpriteRenderer>().sprite = null;
         }
 
-        else if (activeItem.valueInCoins > playerStats.thulGold)
+        else if (activeItem.valueInCoins > Thulgran.thulgranGold)
         {
-            NotificationFader.instance.CallFadeInOut("<color=#C60B0B>You're too poor!</color> The item costs <color=#E0A515>" + activeItem.valueInCoins + " </color>and you have <color=#E0A515>" + playerStats.thulGold + "</color> gold coins.", activeItem.itemsImage, 3f, 1400f);
+            NotificationFader.instance.CallFadeInOut("<color=#C60B0B>You're too poor!</color> The item costs <color=#E0A515>" + activeItem.valueInCoins + " </color>and you have <color=#E0A515>" + Thulgran.thulgranGold + "</color> gold coins.", activeItem.itemsImage, 3f, 1400f);
             ItemNotSoldAnim();
 
         }
@@ -169,8 +173,6 @@ public class ShopManager : MonoBehaviour
 
     public void OpenShop()
     {
-        currentThulGold.text = playerStats.thulGold.ToString();
-        currentThulGold2.text = playerStats.thulGold.ToString();
         isShopUIOn = true;
         UpdateShopItemsInventory();
     }
