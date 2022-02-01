@@ -161,7 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thulgran: {fileID: 7658590310300458551}
   characterImage: {fileID: 21300000, guid: 41dd776a2bccc344eafb45a3dc58ef12, type: 3}
   characterMug: {fileID: 21300000, guid: 9e42d1329b457d244a4c1801f623c403, type: 3}
   characterPlain: {fileID: 21300000, guid: 40c1501ed8955a74b941601138ebd9a3, type: 3}
@@ -185,8 +184,8 @@ MonoBehaviour:
   playerMoniker: Dwarf Lord - PARTY LEADER
   npcLevel: 1
   npcXP: 75
-  npcMana: 45
-  npcHP: 150
+  npcMana: 0
+  npcHP: 0
   npcDexterity: 67
   npcDefence: 81
   npcIntelligence: 80
@@ -219,8 +218,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.70703995}
-  m_Size: {x: 1.12, y: 1.38}
+  m_Offset: {x: 0, y: 0.67379695}
+  m_Size: {x: 1.12, y: 1.31}
   m_Direction: 0
 --- !u!114 &807171266
 MonoBehaviour:
@@ -317,4 +316,4 @@ MonoBehaviour:
   - {x: -0.21, y: 0.06999999, z: 0}
   m_ShapePathHash: 1230505302
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1548
+  m_InstanceId: -1574

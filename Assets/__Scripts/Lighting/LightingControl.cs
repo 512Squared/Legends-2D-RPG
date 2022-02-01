@@ -30,16 +30,16 @@ public class LightingControl : MonoBehaviour
             enabled = false;
 
         // populate lighting brightness dictionary
-        foreach (LightingBrightness lightingBrightness in lightingSchedule?.lightingBrightnessArray)
-        {
-            string key = lightingBrightness.season.ToString() + lightingBrightness.hour.ToString();
+        //foreach (LightingBrightness lightingBrightness in lightingSchedule?.lightingBrightnessArray)
+        //{
+        //    string key = lightingBrightness.season.ToString() + lightingBrightness.hour.ToString();
 
-            if (!lightBrightnessDictionary.ContainsKey(key))
-            {
-                lightBrightnessDictionary.Add(key, lightingBrightness.lightIntensity);
-                Debug.Log($"Lighting Schedule Dictionary has had the {key} key added");
-            }
-        }
+        //    if (!lightBrightnessDictionary.ContainsKey(key))
+        //    {
+        //        lightBrightnessDictionary.Add(key, lightingBrightness.lightIntensity);
+        //        Debug.Log($"Lighting Schedule Dictionary has had the {key} key added");
+        //    }
+        //}
 
     }
 

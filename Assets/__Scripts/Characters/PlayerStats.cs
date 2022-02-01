@@ -141,8 +141,9 @@ public class PlayerStats : MonoBehaviour
                 1400);
                 Debug.Log($"Yo");
             }
+        Debug.Log($"Not thulgran: {playerName}");
         }
-
+        Debug.Log($"AddHP called");
     }
 
     public void AddMana(int amountOfManaToAdd)

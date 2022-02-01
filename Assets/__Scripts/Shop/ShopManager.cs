@@ -85,7 +85,7 @@ public class ShopManager : MonoBehaviour
 
     public void CallToBuyItem()
     {
-        if (activeItem.valueInCoins <= Thulgran.thulgranGold)
+        if (activeItem.valueInCoins <= Thulgran.ThulgranGold)
         {
             Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
             Inventory.instance.BuyItem(activeItem);
@@ -95,9 +95,9 @@ public class ShopManager : MonoBehaviour
             activeItem.GetComponent<SpriteRenderer>().sprite = null;
         }
 
-        else if (activeItem.valueInCoins > Thulgran.thulgranGold)
+        else if (activeItem.valueInCoins > Thulgran.ThulgranGold)
         {
-            NotificationFader.instance.CallFadeInOut("<color=#C60B0B>You're too poor!</color> The item costs <color=#E0A515>" + activeItem.valueInCoins + " </color>and you have <color=#E0A515>" + Thulgran.thulgranGold + "</color> gold coins.", activeItem.itemsImage, 3f, 1400f);
+            NotificationFader.instance.CallFadeInOut("<color=#C60B0B>You're too poor!</color> The item costs <color=#E0A515>" + activeItem.valueInCoins + " </color>and you have <color=#E0A515>" + Thulgran.ThulgranGold + "</color> gold coins.", activeItem.itemsImage, 3f, 1400f);
             ItemNotSoldAnim();
 
         }

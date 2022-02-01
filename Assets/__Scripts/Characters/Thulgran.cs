@@ -9,21 +9,49 @@ public class Thulgran : MonoBehaviour
 {
 
     public static Thulgran instance;
+
+    #region Core stats
+
+    private static int s_thulgranGold = 0;
     [ShowInInspector]
-    public static int thulgranGold { get; private set; } = 11;
+    public static int ThulgranGold
+    {
+        get { return s_thulgranGold; }
+        set
+        {
+            s_thulgranGold = value;
+            UI.instance.UpdateGoldUI(s_thulgranGold);
+        }
+    }
+
+    private static int s_thulgranHP = 0;
     [ShowInInspector]
-    public static int thulgranMana { get; private set; } = 22;
+    public static int ThulgranHP
+    {
+        get { return s_thulgranHP; }
+        set
+        {
+            s_thulgranHP = value;
+            UI.instance.UpdateGoldUI(s_thulgranHP);
+        }
+    }
+
+    private static int s_thulgranMana = 0;
     [ShowInInspector]
-    public static int thulgranHP { get; private set; } = 33;
+    public static int ThulgranMana
+    {
+        get { return s_thulgranMana; }
+        set
+        {
+            s_thulgranMana = value;
+            UI.instance.UpdateGoldUI(s_thulgranMana);
+        }
+    }
+
 
     public static int maxThulgranHP { get; private set; } = 300;
     public static int maxThulgranMana { get; private set; } = 200;
-
-    [SerializeField] TextMeshProUGUI[] goldStats, manaStats, hpStats;
-
-    [SerializeField] Slider[] hpSliders;
-    [SerializeField] Slider[] manaSliders;
-
+    #endregion
 
     void Start()
     {
@@ -32,35 +60,25 @@ public class Thulgran : MonoBehaviour
 
     private void Awake()
     {
-        UpdateAll();
-        Debug.Log($"Thulgran's stats: Gold {thulgranGold} | Mana {thulgranMana} | HP {thulgranHP}");
+        Debug.Log($"Thulgran's stats: Gold {ThulgranGold} | Mana {s_thulgranMana} | HP {s_thulgranHP}");
     }
 
     private void OnEnable()
     {
         Actions.OnSellItem += SellItem;
-        Actions.OnBuyItem += BuyItem;
         Actions.OnUseItem += UseItem;
-        Actions.OnCoinAdd += AddCoin;
     }
 
     private void OnDisable()
     {
         Actions.OnSellItem -= SellItem;
-        Actions.OnBuyItem -= BuyItem;
         Actions.OnUseItem -= UseItem;
-        Actions.OnCoinAdd -= AddCoin;
     }
 
     public void SellItem(ItemsManager item)
     {
         //AddGold(item);
-        Debug.Log($"Thulgran's purse: {thulgranGold}");
-    }
-
-    public void BuyItem(ItemsManager item)
-    {
-        RemoveGold(item);
+        Debug.Log($"Thulgran's purse: {ThulgranGold}");
     }
 
     public void UseItem(ItemsManager item, int character, Vector2 target)
@@ -69,154 +87,59 @@ public class Thulgran : MonoBehaviour
         if (character == 0)
         {
             Debug.Log($"Use item called | Item: {item.itemName} | CharacterSlot: {character}");
-            if (item.affectType == ItemsManager.AffectType.HP) AddHp(item);
-            else if (item.affectType == ItemsManager.AffectType.Mana) AddMana(item);
-        }
-        UpdateAfterUseItem();
-    }
-
-    public void RemoveGold(ItemsManager item)
-    {
-        thulgranGold -= item.valueInCoins;
-        UpdateAll();
-        //Actions._cUpdate?.Invoke(item); // broadcast | subscribers: coinsManager
-        Debug.Log($"Remove Gold | Value: {item.valueInCoins}");
-    }
-
-    public void AddGold(ItemsManager item)
-    {
-        thulgranGold += item.valueInCoins;
-
-        for (int i = 0; i < goldStats.Length; i++)
-        {
-            if (i != 0)
-                goldStats[i].text = thulgranGold.ToString();
-        }
-        Debug.Log($"Add Gold | Value: {item.valueInCoins}");
-    }
-
-    public void AddHp(ItemsManager item)
-    {
-        thulgranHP += item.amountOfEffect;
-        if (thulgranHP > maxThulgranHP)
-        {
-            thulgranHP = maxThulgranHP;
-            NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
-                2f,
-                1400);
-        }
-        Debug.Log($"Added HP | Amount: {item.amountOfEffect}");
-    }
-
-    public void AddMana(ItemsManager item)
-    {
-        thulgranMana += item.amountOfEffect;
-        if (thulgranMana > maxThulgranMana)
-        {
-            thulgranMana = maxThulgranMana;
-            NotificationFader.instance.CallFadeInOut("Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
-                2f,
-                1400);
-        }
-        Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
-    }
-
-    public void UpdateAll()
-    {
-        for (int i = 0; i < manaStats.Length; i++)
-        {
-            if (i == 0 || i == 1) // front screen format
+            if (item.affectType == ItemsManager.AffectType.HP)
             {
-                manaStats[i].text = thulgranMana.ToString() + " / " + maxThulgranMana;
+                AddHp(item);
+                UI.instance.UpdateHPUI(0);
+            }
+            else if (item.affectType == ItemsManager.AffectType.Mana)
+            {
+                AddMana(item);
+                UI.instance.UpdateManaUI(0);
             }
 
-            else
-            {
-                manaStats[i].text = thulgranMana.ToString();
-            }
-        }
-
-        for (int i = 0; i < hpStats.Length; i++)
-        {
-
-            if (i == 0 || i == 1) // front screen format
-            {
-                hpStats[i].text = thulgranHP.ToString() + " / " + maxThulgranHP;
-            }
-
-            else
-            {
-                hpStats[i].text = thulgranHP.ToString();
-            }
-        }
-
-        for (int i = 0; i < goldStats.Length; i++)
-        {
-            goldStats[i].text = thulgranGold.ToString();
-        }
-
-        for (int i = 0; i < hpSliders.Length; i++)
-        {
-            hpSliders[i].value = thulgranMana;
-        }
-
-        for (int i = 0; i < manaSliders.Length; i++)
-        {
-            manaSliders[i].value = thulgranMana;
         }
     }
 
-    public void UpdateAfterUseItem()
-    {
-        for (int i = 0; i < manaStats.Length; i++)
+        public void AddGold(ItemsManager item)
         {
-            if (i == 1) // front screen format
-            {
-                manaStats[i].text = thulgranMana.ToString() + " / " + maxThulgranMana;
-            }
+            ThulgranGold += item.valueInCoins;
 
-            else if (i != 0 && i != 1)
+            for (int i = 0; i < UI.instance.goldStats.Length; i++)
             {
-                manaStats[i].text = thulgranMana.ToString();
+                if (i != 0)
+                    UI.instance.goldStats[i].text = ThulgranGold.ToString();
             }
+            Debug.Log($"Add Gold | Value: {item.valueInCoins}");
         }
 
-        for (int i = 0; i < hpStats.Length; i++)
+        public void AddHp(ItemsManager item)
         {
-
-            if (i == 1) // front screen format
+            ThulgranHP += item.amountOfEffect;
+            if (ThulgranHP > maxThulgranHP)
             {
-                hpStats[i].text = thulgranHP.ToString() + " / " + maxThulgranHP;
+                ThulgranHP = maxThulgranHP;
+                NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
+                    2f,
+                    1400);
             }
+            Debug.Log($"Added HP | Amount: {item.amountOfEffect}");
+        }
 
-            else if (i != 0 && i != 1)
+        public void AddMana(ItemsManager item)
+        {
+            ThulgranMana += item.amountOfEffect;
+            if (ThulgranMana > maxThulgranMana)
             {
-                hpStats[i].text = thulgranHP.ToString();
+                ThulgranMana = maxThulgranMana;
+                NotificationFader.instance.CallFadeInOut("Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
+                    2f,
+                    1400);
             }
+            Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
         }
 
-        for (int i = 0; i < hpSliders.Length; i++)
-        {
-            if (i != 0) hpSliders[i].value = thulgranHP;
-        }
 
-        for (int i = 0; i < manaSliders.Length; i++)
-        {
-            if (i != 0) manaSliders[i].value = thulgranMana;
-        }
     }
-
-    public void AddCoin(int coin)
-    {
-        thulgranGold += coin;
-        for (int i = 0; i < goldStats.Length; i++)
-        {
-            if (i != 0)
-                goldStats[i].text = thulgranGold.ToString();
-        }
-        Debug.Log($"Coin added to Thulgran gold: {thulgranGold}");
-    }
-
-}
 
 

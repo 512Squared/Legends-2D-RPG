@@ -9,13 +9,12 @@ using System.Linq;
 using System;
 
 
-// handles coins, mana and HP animations in Equipment panel.
-// interacts with MenuManager for displaying sell and use items UpdateInventoryItems()
-// interacts with Inventory for updating and interacting with UI display functions on MenuManager. Inventory functions and SellItem(), UseAndRemoveItem().
-// item button controls 
-
 public class CoinsManager : MonoBehaviour
 {
+
+    #region Serialisation
+
+
 
     public static CoinsManager instance;
     
@@ -100,6 +99,8 @@ public class CoinsManager : MonoBehaviour
     [GUIColor(0.447f, 0.654f, 0.996f)]
     [SerializeField] float spread;
 
+    #endregion
+
     private void OnEnable()
     {
         Actions.OnSellItem += SellItem; // subscriber 
@@ -114,8 +115,9 @@ public class CoinsManager : MonoBehaviour
         Actions.OnBuyItem -= CoinUpdate; // subscriber
     }
 
-    public int _c; // Inventory has it's own Gold count, which is in Coin. 
     public int chosenCharacter;
+
+    private int _c;  
     private int _hp;
     private int _mana;
 
@@ -127,73 +129,15 @@ public class CoinsManager : MonoBehaviour
     {
         instance = this;        
 
-        thulGold = Thulgran.thulgranGold;
-        thulHP = Thulgran.thulgranHP;
-        thulMana = Thulgran.thulgranMana;
-
-
         PrepareCoins();
         PrepareHP();
         PrepareMana();
-
-        _c += thulGold;
-        _hp += thulHP;
-        _mana += thulMana;
-        coinUIText.text = _c.ToString();
-        hpUIText.text = _hp.ToString() + " / " + Thulgran.maxThulgranHP;
-        manaUIText.text = _mana.ToString() + " / " + Thulgran.maxThulgranMana;
-
     }
 
     private void Update()
     {
 
     }
-
-
-    public int Coins
-    {
-        get { return _c; }
-        set
-        {
-            _c = value;
-
-            //update UI Text whenever "Coins variable is changed
-            coinUIText.text = Coins.ToString();
-        }
-    }
-
-    public int Hp
-    {
-        get { return _hp; }
-        set
-        {
-            //update UI Text whenever HP variable is changed
-            if (chosenCharacter == 0 && Hp < Thulgran.maxThulgranHP)
-
-            {
-                _hp = value;
-                hpUIText.text = Hp.ToString() + "/" + Thulgran.maxThulgranHP;
-            }
-        }
-    }
-
-    public int Mana
-    {
-        get { return _mana; }
-        set
-        {
-            //update UI Text whenever Mana variable is changed
-
-            if (chosenCharacter == 0 && Mana < Thulgran.maxThulgranMana)
-            {
-                _mana = value;
-                manaUIText.text = Mana.ToString() + "/" + Thulgran.maxThulgranMana;
-            }
-        }
-    }
-
-
 
     void PrepareCoins()
     {
@@ -256,8 +200,7 @@ public class CoinsManager : MonoBehaviour
                         // executes whenever coin reach target position;
                         coin.SetActive(false);
                         coinsQueue.Enqueue(coin);
-                        Coins++;
-                        Actions.OnCoinAdd?.Invoke(1);
+                        Thulgran.ThulgranGold++;                        
                     });
             }
         }
@@ -279,23 +222,22 @@ public class CoinsManager : MonoBehaviour
             // check if there's hearts in the pool
             if (hpQueue.Count > 0)
             {
-                GameObject hp = hpQueue.Dequeue();
-                hp.SetActive(true);
+                GameObject heart = hpQueue.Dequeue();
+                heart.SetActive(true);
 
                 // move hearts to the collected heart position
-                hp.transform.position = sourceHP + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
+                heart.transform.position = sourceHP + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
 
 
                 // animate hearts to target position
                 float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
-                hp.transform.DOMove(targetPositionHP, duration)
+                heart.transform.DOMove(targetPositionHP, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
                     {
                         // executes whenever heart reaches target position;
-                        hp.SetActive(false);
-                        coinsQueue.Enqueue(hp);
-                        Hp++;
+                        heart.SetActive(false);
+                        coinsQueue.Enqueue(heart);
                     });
             }
         }
@@ -313,23 +255,22 @@ public class CoinsManager : MonoBehaviour
             // check if there's coins in the pool
             if (manaQueue.Count > 0)
             {
-                GameObject mana = manaQueue.Dequeue();
-                mana.SetActive(true);
+                GameObject rune = manaQueue.Dequeue();
+                rune.SetActive(true);
 
                 // move coin to the collected coin position
-                mana.transform.position = sourceMana + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
+                rune.transform.position = sourceMana + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
 
 
                 // animate coin to target position
                 float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
-                mana.transform.DOMove(targetPositionMana, duration)
+                rune.transform.DOMove(targetPositionMana, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
                     {
                         // executes whenever mana runes reach target position;
-                        mana.SetActive(false);
-                        manaQueue.Enqueue(mana);
-                        Mana++;
+                        rune.SetActive(false);
+                        manaQueue.Enqueue(rune);
                     });
             }
         }
@@ -382,6 +323,6 @@ public class CoinsManager : MonoBehaviour
 
     public void CoinUpdate(ItemsManager item)
     {
-        _c -= item.valueInCoins;
+        Thulgran.ThulgranGold -= item.valueInCoins;
     }
 }

@@ -70,7 +70,7 @@ public class Inventory : MonoBehaviour
             shopList.Add(item);
         }
     }
-    
+
     public void SellItem(ItemsManager item)
     {
         Debug.Log($"OnSellItem invoked for {item.itemName}");
@@ -104,12 +104,12 @@ public class Inventory : MonoBehaviour
 
         Actions.OnSellItem?.Invoke(item);// Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
 
-        Debug.Log($"Gold before sale: {Thulgran.thulgranGold} | InvocationList: {Actions.OnSellItem.GetInvocationList().Length} | Info: {Actions.OnSellItem.Method}");
+        Debug.Log($"Gold before sale: {Thulgran.ThulgranGold} | InvocationList: {Actions.OnSellItem.GetInvocationList().Length} | Info: {Actions.OnSellItem.Method}");
     }
 
     public void UseAndRemoveItem(ItemsManager item, int selectedCharacterUse, Vector2 target)
     {
-        Debug.Log("UseItem being discarded");
+        Debug.Log("Use & Remove initiated");
 
         if (item.isStackable)
         {
@@ -169,10 +169,9 @@ public class Inventory : MonoBehaviour
 
         shopList.Remove(item);
         item.shopItem = false;
+        Thulgran.ThulgranGold -= item.valueInCoins;
         Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
 
-        Actions.OnBuyItem?.Invoke(item); // Broadcast | subscribers: Thulgran, MenuManager, 
-        Debug.Log($"Gold amount updated: {Thulgran.thulgranGold} | InvocationList: {Actions.OnBuyItem.GetInvocationList().Length} | Info: {Actions.OnBuyItem.Method}");
     }
 
     public List<ItemsManager> GetItemsList()

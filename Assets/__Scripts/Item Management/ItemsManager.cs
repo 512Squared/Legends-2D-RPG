@@ -46,7 +46,7 @@ public class ItemsManager : MonoBehaviour
         if (affectType == AffectType.HP)
         {
             selectedCharacter.AddHP(amountOfEffect);
-            Debug.Log(amountOfEffect + " HP given to " + selectedCharacter.playerName);
+            if (characterToUseOn != 0) Debug.Log(amountOfEffect + " HP given to " + selectedCharacter.playerName);
         }
 
         else if (affectType == AffectType.Mana)

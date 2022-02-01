@@ -9,8 +9,6 @@ using DG.Tweening;
 
 
 
-
-
 public class MenuManager : MonoBehaviour
 {
 
@@ -24,7 +22,7 @@ public class MenuManager : MonoBehaviour
 
     #region Serialized Fields
 
-   
+
 
     [SerializeField] PlayerStats[] playerStats;
 
@@ -336,10 +334,10 @@ public class MenuManager : MonoBehaviour
 
                 else if (i == 0)
                 {
-                    hpEquipToString[i].text = Thulgran.thulgranHP.ToString(); // characterChoice Panel
-                    manaEquipToString[i].text = Thulgran.thulgranMana.ToString();
-                    hpEquipSlider[i].value = Thulgran.thulgranHP;
-                    manaEquipSlider[i].value = Thulgran.thulgranMana;
+                    hpEquipToString[i].text = Thulgran.ThulgranHP.ToString(); // characterChoice Panel
+                    manaEquipToString[i].text = Thulgran.ThulgranMana.ToString();
+                    hpEquipSlider[i].value = Thulgran.ThulgranHP;
+                    manaEquipSlider[i].value = Thulgran.ThulgranMana;
                 }
 
 
@@ -431,10 +429,10 @@ public class MenuManager : MonoBehaviour
 
                     if (i == 0) // Thulgran
                     {
-                        health[i].text = Thulgran.thulgranHP.ToString();
-                        mana[i].text = Thulgran.thulgranMana.ToString();
-                        healthS[i].value = Thulgran.thulgranHP;
-                        manaS[i].value = Thulgran.thulgranMana;
+                        health[i].text = Thulgran.ThulgranHP.ToString();
+                        mana[i].text = Thulgran.ThulgranMana.ToString();
+                        healthS[i].value = Thulgran.ThulgranHP;
+                        manaS[i].value = Thulgran.ThulgranMana;
                         characterName[i].text = playerStats[i].playerName;
                         description[i].text = playerStats[i].playerDesc;
                         characterImage[i].sprite = playerStats[i].characterImage;
@@ -553,27 +551,27 @@ public class MenuManager : MonoBehaviour
                     cancelButton.SetActive(false);
                     useButton.GetComponent<Button>().interactable = false;
                     FadeOutText(1);
-                    useButton.GetComponent<Image>().sprite = buttonGreen; 
+                    useButton.GetComponent<Image>().sprite = buttonGreen;
                     SetAllButtonsUninteractable();
                     activeItem.UseItem(selectedCharacter);
                     Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
                     UpdateItemsInventory();
                     OnPlayerButton();
                     ItemInfoReset();
-                    
+
                     Debug.Log(activeItem.amountOfEffect + " HP given to " + playerStats[selectedCharacter].playerName);
                 }
             }
 
             else if (selectedCharacter == 0)
             {
-                if (Thulgran.thulgranHP == Thulgran.maxThulgranHP)
+                if (Thulgran.ThulgranHP == Thulgran.maxThulgranHP)
                 {
                     NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400);
                     Debug.Log($"Yo");
                 }
 
-                else if (Thulgran.thulgranHP < Thulgran.maxThulgranHP)
+                else if (Thulgran.ThulgranHP < Thulgran.maxThulgranHP)
                 {
                     cancelButton.SetActive(false);
                     useButton.GetComponent<Button>().interactable = false;
@@ -585,7 +583,7 @@ public class MenuManager : MonoBehaviour
                     UpdateItemsInventory();
                     OnPlayerButton();
                     ItemInfoReset();
-                    Debug.Log(activeItem.amountOfEffect + " HP given to " + playerStats[selectedCharacter].playerName);
+                    Debug.Log($"CallToUseItem completed | {activeItem.amountOfEffect} HP should have been given to " + playerStats[selectedCharacter].playerName);
                 }
             }
         }
@@ -619,12 +617,12 @@ public class MenuManager : MonoBehaviour
 
             else if (selectedCharacter == 0)
             {
-                if (Thulgran.thulgranMana == Thulgran.maxThulgranMana)
+                if (Thulgran.ThulgranMana == Thulgran.maxThulgranMana)
                 {
                     NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.manaSprite, 1.5f, 1400);
                 }
 
-                else if (Thulgran.thulgranMana < Thulgran.maxThulgranMana)
+                else if (Thulgran.ThulgranMana < Thulgran.maxThulgranMana)
                 {
                     cancelButton.SetActive(false);
                     useButton.GetComponent<Button>().interactable = false;
@@ -640,6 +638,20 @@ public class MenuManager : MonoBehaviour
                     Debug.Log(activeItem.amountOfEffect + " mana given to " + playerStats[selectedCharacter].playerName);
                 }
             }
+        }
+
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
+        {
+            cancelButton.SetActive(false);
+            useButton.GetComponent<Button>().interactable = false;
+            FadeOutText(1);
+            useButton.GetComponent<Image>().sprite = buttonGreen;
+            SetAllButtonsUninteractable();
+            activeItem.UseItem(selectedCharacter);
+            Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+            UpdateItemsInventory();
+            OnPlayerButton();
+            ItemInfoReset();
         }
     }
 
@@ -1387,7 +1399,7 @@ public class MenuManager : MonoBehaviour
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 1;
                             effectText.text = "+" + item.amountOfEffect.ToString();
-                            Debug.Log("Food restoration amount Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
+                            Debug.Log("Food: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
 
                         }
 
@@ -1538,13 +1550,15 @@ public class MenuManager : MonoBehaviour
 
         if (activeItem.affectType == ItemsManager.AffectType.HP)
         {
+            playerStats[0].npcHP = Thulgran.ThulgranHP;
+
             if (panelStuff != 0)
             {
                 hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
             }
             else if (panelStuff == 0) // Thulgran is controlled by Thulgran.cs
             {
-                hpEquipToString[panelStuff].text = Thulgran.thulgranHP.ToString();
+                hpEquipToString[panelStuff].text = Thulgran.ThulgranHP.ToString();
             }
             var sequence = DOTween.Sequence()
                 .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
@@ -1562,10 +1576,12 @@ public class MenuManager : MonoBehaviour
 
         else if (activeItem.affectType == ItemsManager.AffectType.Mana)
         {
+            playerStats[0].npcMana = Thulgran.ThulgranMana;
+
             if (panelStuff != 0)
                 manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
             else if (panelStuff == 0)
-                manaEquipToString[panelStuff].text = Thulgran.thulgranMana.ToString();
+                manaEquipToString[panelStuff].text = Thulgran.ThulgranMana.ToString();
             var sequence = DOTween.Sequence()
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
@@ -1637,7 +1653,6 @@ public class MenuManager : MonoBehaviour
 
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
-
     }
 
     private void Update()
