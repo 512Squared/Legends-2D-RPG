@@ -20,6 +20,7 @@ public class Thulgran : MonoBehaviour
     public static int maxThulgranMana { get; private set; } = 200;
 
     [SerializeField] TextMeshProUGUI[] goldStats, manaStats, hpStats;
+
     [SerializeField] Slider[] hpSliders;
     [SerializeField] Slider[] manaSliders;
 
@@ -97,13 +98,27 @@ public class Thulgran : MonoBehaviour
     public void AddHp(ItemsManager item)
     {
         thulgranHP += item.amountOfEffect;
-        Debug.Log($"Add HP | Amount: {item.amountOfEffect}");
+        if (thulgranHP > maxThulgranHP)
+        {
+            thulgranHP = maxThulgranHP;
+            NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
+                2f,
+                1400);
+        }
+        Debug.Log($"Added HP | Amount: {item.amountOfEffect}");
     }
 
     public void AddMana(ItemsManager item)
     {
         thulgranMana += item.amountOfEffect;
-        Debug.Log($"Add Mana: | Amount: {item.amountOfEffect}");
+        if (thulgranMana > maxThulgranMana)
+        {
+            thulgranMana = maxThulgranMana;
+            NotificationFader.instance.CallFadeInOut("Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
+                2f,
+                1400);
+        }
+        Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
     }
 
     public void UpdateAll()

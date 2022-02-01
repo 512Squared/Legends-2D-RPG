@@ -34,7 +34,7 @@ public class PlayerStats : MonoBehaviour
     public string playerName;
     public string playerDesc;
     public string playerMoniker;
-    
+
 
     public int npcLevel;
     public int npcXP;
@@ -47,12 +47,12 @@ public class PlayerStats : MonoBehaviour
 
     public int jumpAbility;
     public int speed;
-    
-    
+
+
     public string equippedWeaponName = null;
     public int characterWeaponPower = 0;
     public Sprite equippedWeaponImage = null;
-    
+
     public string equippedArmourName = null;
     public int characterArmourDefence = 0;
     public Sprite equippedArmourImage = null;
@@ -65,7 +65,7 @@ public class PlayerStats : MonoBehaviour
 
     public ItemsManager equippedWeapon, equippedArmour = null;
 
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -94,7 +94,7 @@ public class PlayerStats : MonoBehaviour
     public void AddXP(int amountOfXp)
     {
         npcXP += amountOfXp;
-        if(npcXP > xpLevelUp[npcLevel])
+        if (npcXP > xpLevelUp[npcLevel])
         {
             npcXP -= xpLevelUp[npcLevel];
             npcLevel++;
@@ -104,16 +104,16 @@ public class PlayerStats : MonoBehaviour
             npcHP = maxHP;
             npcMana = maxMana;
 
-            if(npcLevel % 2 == 0)
+            if (npcLevel % 2 == 0)
             {
-               npcDexterity++;
+                npcDexterity++;
             }
             else
             {
-               npcDefence++;
+                npcDefence++;
             }
 
-            if(npcLevel % 3 == 0)
+            if (npcLevel % 3 == 0)
             {
                 npcIntelligence++;
             }
@@ -136,6 +136,10 @@ public class PlayerStats : MonoBehaviour
             if (npcHP > maxHP)
             {
                 npcHP = maxHP;
+                NotificationFader.instance.CallFadeInOut($"{playerName}'s HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
+                3f,
+                1400);
+                Debug.Log($"Yo");
             }
         }
 
@@ -149,6 +153,8 @@ public class PlayerStats : MonoBehaviour
             if (npcMana > maxMana)
             {
                 npcMana = maxMana;
+                NotificationFader.instance.CallFadeInOut($"{playerName}'s Mana is <color=#E0A515>full</color> - well done!", Sprites.instance.manaSprite, 3f, 1400);
+                Debug.Log($"Yo");
             }
         }
     }
@@ -157,7 +163,7 @@ public class PlayerStats : MonoBehaviour
     {
         npcDefence += amountOfArmourDefenceToAdd;
     }
-    
+
     public void AddWeaponPower(int amountOfWeaponPowerToAdd)
     {
         npcDexterity += amountOfWeaponPowerToAdd;
@@ -172,7 +178,7 @@ public class PlayerStats : MonoBehaviour
         equippedWeaponDescription = equippedWeapon.itemDescription;
 
     }
-    
+
     public void EquipArmour(ItemsManager armourToEquip)
     {
         equippedArmour = armourToEquip;

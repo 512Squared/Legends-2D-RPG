@@ -19,7 +19,7 @@ public static class Actions
 
     public static Action<Thulgran, ItemsManager> OnThulgran; //
 
-    public static Action<ItemsManager> _cUpdate;
+    //public static Action<ItemsManager> _cUpdate;
 
     public static Action<int> OnCoinAdd;
 

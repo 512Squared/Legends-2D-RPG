@@ -22,9 +22,12 @@ public class MenuManager : MonoBehaviour
     private Tween fadeText;
     private int foodItems, weaponItems, potionItems, itemItems, armourItems;
 
+    #region Serialized Fields
+
+   
 
     [SerializeField] PlayerStats[] playerStats;
-   
+
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] GameObject mainMenu, inventoryPanel, dayNightCycle;
@@ -255,8 +258,9 @@ public class MenuManager : MonoBehaviour
     [Header("Player Choice")]
     [GUIColor(1f, 0.2f, 0.515f)]
     [SerializeField] TextMeshProUGUI[] playerChoice;
+    [FoldoutGroup("Button Images", expanded: false)]
     [GUIColor(1f, 0.2f, 0.515f)]
-    [SerializeField] Sprite buttonGrey;
+    [SerializeField] Sprite buttonGrey, buttonGreen;
 
     [Header("Team UI Sprites")]
     [Space]
@@ -269,7 +273,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
-    
+    #endregion
 
     private void OnEnable()
     {
@@ -530,20 +534,113 @@ public class MenuManager : MonoBehaviour
 
     public void CallToUseItem(int selectedCharacter)
     {
-
-        // debug info
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " + "Item: " + activeItem.itemName);
 
-        activeItem.UseItem(selectedCharacter);
-
-        // pass character Vector2 position to CoinsManager
-        Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
-
-        // panelStuff is used in the tween animations on OnPlayerButton() (i.e. give stuff to character)
-
         panelStuff = selectedCharacter;
-        UpdateItemsInventory();
 
+        if (activeItem.affectType == ItemsManager.AffectType.HP)
+        {
+            if (selectedCharacter != 0)
+            {
+                if (playerStats[selectedCharacter].npcHP == playerStats[selectedCharacter].maxHP)
+                {
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400);
+                    Debug.Log($"Yo");
+                }
+
+                else
+                {
+                    cancelButton.SetActive(false);
+                    useButton.GetComponent<Button>().interactable = false;
+                    FadeOutText(1);
+                    useButton.GetComponent<Image>().sprite = buttonGreen; 
+                    SetAllButtonsUninteractable();
+                    activeItem.UseItem(selectedCharacter);
+                    Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+                    UpdateItemsInventory();
+                    OnPlayerButton();
+                    ItemInfoReset();
+                    
+                    Debug.Log(activeItem.amountOfEffect + " HP given to " + playerStats[selectedCharacter].playerName);
+                }
+            }
+
+            else if (selectedCharacter == 0)
+            {
+                if (Thulgran.thulgranHP == Thulgran.maxThulgranHP)
+                {
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400);
+                    Debug.Log($"Yo");
+                }
+
+                else if (Thulgran.thulgranHP < Thulgran.maxThulgranHP)
+                {
+                    cancelButton.SetActive(false);
+                    useButton.GetComponent<Button>().interactable = false;
+                    FadeOutText(1);
+                    useButton.GetComponent<Image>().sprite = buttonGreen;
+                    SetAllButtonsUninteractable();
+                    activeItem.UseItem(selectedCharacter);
+                    Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+                    UpdateItemsInventory();
+                    OnPlayerButton();
+                    ItemInfoReset();
+                    Debug.Log(activeItem.amountOfEffect + " HP given to " + playerStats[selectedCharacter].playerName);
+                }
+            }
+        }
+
+        else if (activeItem.affectType == ItemsManager.AffectType.Mana)
+        {
+
+            if (selectedCharacter != 0)
+            {
+                if (playerStats[selectedCharacter].npcMana == playerStats[selectedCharacter].maxMana)
+                {
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color> \n Try someone else?", Sprites.instance.manaSprite, 1.5f, 1400);
+                }
+
+                else if (playerStats[selectedCharacter].npcMana < playerStats[selectedCharacter].maxMana)
+                {
+                    cancelButton.SetActive(false);
+                    useButton.GetComponent<Button>().interactable = false;
+                    FadeOutText(1);
+                    useButton.GetComponent<Image>().sprite = buttonGreen;
+                    SetAllButtonsUninteractable();
+                    activeItem.UseItem(selectedCharacter);
+                    Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+                    UpdateItemsInventory();
+                    OnPlayerButton();
+                    ItemInfoReset();
+                    Debug.Log(activeItem.amountOfEffect + " mana given to " + playerStats[selectedCharacter].playerName);
+                }
+
+            }
+
+            else if (selectedCharacter == 0)
+            {
+                if (Thulgran.thulgranMana == Thulgran.maxThulgranMana)
+                {
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.manaSprite, 1.5f, 1400);
+                }
+
+                else if (Thulgran.thulgranMana < Thulgran.maxThulgranMana)
+                {
+                    cancelButton.SetActive(false);
+                    useButton.GetComponent<Button>().interactable = false;
+                    FadeOutText(1);
+                    useButton.GetComponent<Image>().sprite = buttonGreen;
+                    SetAllButtonsUninteractable();
+                    activeItem.UseItem(selectedCharacter);
+                    Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+                    UpdateItemsInventory();
+                    OnPlayerButton();
+                    ItemInfoReset();
+
+                    Debug.Log(activeItem.amountOfEffect + " mana given to " + playerStats[selectedCharacter].playerName);
+                }
+            }
+        }
     }
 
     public void FadeImage()
@@ -1250,21 +1347,16 @@ public class MenuManager : MonoBehaviour
 
                         //  SORT BY POTIONS
 
-                        if (item.itemType == ItemsManager.ItemType.Potion)
+                        if (item.affectType == ItemsManager.AffectType.HP)
                         {
                             Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect}");
 
                             textUseEquipTake.text = "Give";
 
+
                             // EFFECT MODIFIER (on item info)
 
-                            if (item.itemName == "Speed Potion")
-                            {
-                                effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                                effectText.text = "x" + item.amountOfEffect.ToString();
-                            }
-
-                            else if (item.itemName == "Mana Potion")
+                            if (item.itemName == "Mana Potion")
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 1;
                                 effectText.text = "+" + item.amountOfEffect.ToString();
@@ -1274,15 +1366,19 @@ public class MenuManager : MonoBehaviour
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 1;
                                 effectText.text = "+" + item.amountOfEffect.ToString();
-                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
                             }
 
                             else
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect + " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
                             }
+                        }
 
+                        if (item.affectType == ItemsManager.AffectType.Speed)
+                        {
+                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect}");
+                            effectBox.GetComponent<CanvasGroup>().alpha = 1;
+                            effectText.text = "x" + item.amountOfEffect.ToString();
                         }
 
                         // EFFECT - FOOD
@@ -1467,9 +1563,9 @@ public class MenuManager : MonoBehaviour
         else if (activeItem.affectType == ItemsManager.AffectType.Mana)
         {
             if (panelStuff != 0)
-            manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
+                manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
             else if (panelStuff == 0)
-            manaEquipToString[panelStuff].text = Thulgran.thulgranMana.ToString();
+                manaEquipToString[panelStuff].text = Thulgran.thulgranMana.ToString();
             var sequence = DOTween.Sequence()
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))

@@ -42,29 +42,26 @@ public class ItemsManager : MonoBehaviour
         PlayerStats selectedCharacter = GameManager.instance.GetPlayerStats()[characterToUseOn];
 
 
-
         Debug.Log("UseItem called from ItemsManager");
-        if (itemType == ItemType.Potion || itemType == ItemType.Food)
+        if (affectType == AffectType.HP)
         {
-            if (affectType == AffectType.HP)
-            {
-                selectedCharacter.AddHP(amountOfEffect);
-                Debug.Log(amountOfEffect + " HP given to " + selectedCharacter.playerName);
-
-            }
-
-            else if (affectType == AffectType.Mana)
-            {
-                selectedCharacter.AddMana(amountOfEffect);
-                Debug.Log(amountOfEffect + " Mana given to " + selectedCharacter.playerName);
-            }
+            selectedCharacter.AddHP(amountOfEffect);
+            Debug.Log(amountOfEffect + " HP given to " + selectedCharacter.playerName);
         }
+
+        else if (affectType == AffectType.Mana)
+        {
+            selectedCharacter.AddMana(amountOfEffect);
+            Debug.Log(amountOfEffect + $"Mana given to{selectedCharacter.playerName}");
+
+        }
+
 
         else if (itemType == ItemType.Armour)
         {
 
             selectedCharacter.npcDefence -= selectedCharacter.characterArmourDefence;
-            
+
             if (selectedCharacter.equippedArmourName != "")
             {
                 Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.equippedArmour.itemName + " has been added back into the Inventory");
@@ -81,12 +78,12 @@ public class ItemsManager : MonoBehaviour
         {
 
             selectedCharacter.npcDexterity -= selectedCharacter.characterWeaponPower;
-            
+
             if (selectedCharacter.equippedWeaponName != "")
             {
                 Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.equippedWeapon.itemName + " has been added back into the Inventory");
                 Inventory.instance.AddItems(selectedCharacter.equippedWeapon);
-                
+
                 MenuManager.instance.UpdateItemsInventory();
             }
 

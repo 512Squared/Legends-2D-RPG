@@ -63,8 +63,6 @@ public class CoinsManager : MonoBehaviour
     private Vector2 sourceHP;
     private Vector2 sourceMana;
 
-    public PlayerStats[] chosenCharacters;
-
     Vector2 targetPositionCoins;
     Vector2 targetPositionHP;
     Vector2 targetPositionMana;
@@ -127,7 +125,7 @@ public class CoinsManager : MonoBehaviour
 
     private void Start()
     {
-        instance = this;        chosenCharacters = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
+        instance = this;        
 
         thulGold = Thulgran.thulgranGold;
         thulHP = Thulgran.thulgranHP;
@@ -235,14 +233,14 @@ public class CoinsManager : MonoBehaviour
 
     public void AnimateCoins(Vector2 source, int valueInCoins) 
     {
-
         Debug.Log("Animate coins called");
         for (int i = 0; i < valueInCoins; i++)
         {
             // check if there's coins in the pool
             if (coinsQueue.Count > 0)
             {
-                GameObject coin = coinsQueue.Dequeue();
+                GameObject coin;
+                coin = coinsQueue.Dequeue();
                 coin.SetActive(true);
 
                 // move coin to the collected coin position
@@ -263,8 +261,9 @@ public class CoinsManager : MonoBehaviour
                     });
             }
         }
-
         Debug.Log($"Coins total: {_c}");
+
+
     }
 
     public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget) 
@@ -341,7 +340,7 @@ public class CoinsManager : MonoBehaviour
     {
         if (item.affectType == ItemsManager.AffectType.HP)
         {
-            UpdateHP();
+            UpdateHPTarget();
             chosenCharacter = selectedCharacter;
             AnimateHP(sourceHP, item.amountOfEffect, target);
             Debug.Log("UIAddHP called from CoinsManager");
@@ -349,7 +348,7 @@ public class CoinsManager : MonoBehaviour
 
         if (item.affectType == ItemsManager.AffectType.Mana)
         {
-            UpdateMana();
+            UpdateManaTarget();
             chosenCharacter = selectedCharacter;
             AnimateMana(sourceMana, item.amountOfEffect, target);
             Debug.Log("UIAddMana called from CoinsManager");
@@ -369,13 +368,13 @@ public class CoinsManager : MonoBehaviour
         sourceCoins = sourceTransformCoin.position;
     }
 
-    public void UpdateHP()
+    public void UpdateHPTarget()
     {
         targetPositionHP = targetHP.position;
         sourceHP = sourceTransformHP.position;
     }
 
-    public void UpdateMana()
+    public void UpdateManaTarget()
     {
         targetPositionMana = targetMana.position;
         sourceMana = sourceTransformMana.position;
