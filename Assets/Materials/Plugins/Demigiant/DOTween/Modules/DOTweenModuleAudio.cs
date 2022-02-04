@@ -48,7 +48,7 @@ namespace DG.Tweening
 
         /// <summary>Tweens an AudioMixer's exposed float to the given value.
         /// Also stores the AudioMixer as the tween's target so it can be used for filtered operations.
-        /// Note that you need to manually expose a float in an AudioMixerGroup in order to be able to tween it from an AudioMixer.</summary>
+        /// You need to manually expose a float in an AudioMixerGroup in order to be able to tween it from an AudioMixer.</summary>
         /// <param name="floatName">Name given to the exposed float to set</param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         public static TweenerCore<float, float, FloatOptions> DOSetFloat(this AudioMixer target, string floatName, float endValue, float duration)

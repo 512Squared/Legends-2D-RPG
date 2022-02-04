@@ -32,6 +32,9 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] CanvasGroup[] menuPanels;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] RectTransform clockPanel, clockFrame;
 
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
@@ -239,6 +242,9 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isInventorySlidePanelOn;
+    [FoldoutGroup("UI Bools", expanded: false)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isClockPopOutVisible;
 
 
 
@@ -1584,8 +1590,7 @@ public class MenuManager : MonoBehaviour
                 manaEquipToString[panelStuff].text = Thulgran.ThulgranMana.ToString();
             var sequence = DOTween.Sequence()
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f));
             sequence.SetLoops(1, LoopType.Yoyo);
 
             Debug.Log("Slider Mana fill expand and slide");
@@ -1657,6 +1662,42 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
+    }
+
+    public void OpenClock()
+    {
+        isClockPopOutVisible = !isClockPopOutVisible;
+
+        if (isClockPopOutVisible)
+        {
+            clockFrame.GetComponent<Image>().raycastTarget = false;
+            clockFrame.GetComponent<Button>().interactable = false;
+            clockPanel.DOKill();
+            StartCoroutine(ButtonDelay());
+            var sequence = DOTween.Sequence()
+            .Append(clockPanel.DOScale(0.7f, 0.5f))
+            .Join(clockPanel.DOAnchorPosY(-220f, 1f));
+            sequence.SetLoops(1, LoopType.Yoyo);
+        }
+
+        else if (!isClockPopOutVisible)
+        {
+            clockFrame.GetComponent<Image>().raycastTarget = false;
+            clockFrame.GetComponent<Button>().interactable = false;
+            clockPanel.DOKill();
+            StartCoroutine(ButtonDelay());
+            var seq = DOTween.Sequence()
+            .Append(clockPanel.DOAnchorPosY(-20, 1f))
+            .Join(clockPanel.DOScale(0f, 2f));
+            seq.SetLoops(1, LoopType.Yoyo);
+        }
+    }
+
+    IEnumerator ButtonDelay()
+    {
+        yield return new WaitForSeconds(1.2f);
+        clockFrame.GetComponent<Image>().raycastTarget = true;
+        clockFrame.GetComponent<Button>().interactable = true;
     }
 }
 

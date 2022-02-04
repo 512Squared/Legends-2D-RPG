@@ -11,7 +11,7 @@ using System.Collections.Generic;
 [AddComponentMenu( "UI/Ultimate Mobile Quickbar" )]
 public class UltimateMobileQuickbar : MonoBehaviour
 {
-	/* TODO LIST // √
+	/* // √
 	 * Support additional images for each button
 		 * This means that we will need to be able to have a list of additional image components and allow them to be reorganized and placed where the user wants
 		 * This also might make the sorting of children a little more complicated and unreliable. This may need to be a thing that we check the sort order multiple times if need be

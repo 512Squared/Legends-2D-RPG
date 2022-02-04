@@ -536,7 +536,7 @@ namespace DG.Tweening
         /// <summary>
         /// Returns the tweens (if generated and not killed) created by all DOTweenAnimations on this gameObject,
         /// in the same order as they appear in the Inspector (top to bottom).<para/>
-        /// Note that a tween is generated inside the Awake call (except RectTransform tweens which are generated inside Start),
+        /// A tween is generated inside the Awake call (except RectTransform tweens which are generated inside Start),
         /// so this method won't return them before that
         /// </summary>
         public List<Tween> GetTweens()

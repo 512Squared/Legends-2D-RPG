@@ -195,10 +195,6 @@ public class TimeManager : SingletonMonoBehaviour<TimeManager>
     }
 
 
-    //TODO:Remove
-    /// <summary>
-    /// Advance 1 game minute
-    /// </summary>
     public void TestAdvanceGameMinute()
     {
         for (int i = 0; i < 60; i++)
@@ -207,10 +203,6 @@ public class TimeManager : SingletonMonoBehaviour<TimeManager>
         }
     }
 
-    //TODO:Remove
-    /// <summary>
-    /// Advance 1 day
-    /// </summary>
     public void TestAdvanceGameDay()
     {
         for (int i = 0; i < 86400; i++)

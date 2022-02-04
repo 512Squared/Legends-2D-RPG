@@ -4,14 +4,24 @@ using UnityEngine;
 
 public class Sprites : MonoBehaviour 
 {
+    #region TODO List
+    // TODO Complete DayNight cycle
+
+    #endregion
+
+    #region SINGLETON
 
     public static Sprites instance;
 
+    #endregion
+
+    # region SpriteStuff
     public Sprite manaSprite, hpSprite;
 
-    private void Start()
+    void Start()
     {
         instance = this;
     }
+    #endregion
 
 }
