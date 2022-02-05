@@ -40,8 +40,6 @@ public enum Season
     Summer,
     Autumn,
     Winter, 
-    none,
-    count
 
 }
 

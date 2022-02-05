@@ -1,40 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class DayNightClock : MonoBehaviour
-{
-    TimeManager tm;
+//public class DayNightClock : MonoBehaviour
+//{
+//    TimeManager tm;
 
-    public RectTransform skyDome;
+//    public RectTransform skyDome;
 
-    float nightHoursToDegrees, dayHoursToDegrees;
+//    float nightHoursToDegrees, dayHoursToDegrees;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        tm = FindObjectOfType<TimeManager>();
+//    // Start is called before the first frame update
+//    void Start()
+//    {
+//        tm = FindObjectOfType<TimeManager>();
 
-        nightHoursToDegrees = 180 / (TimeManager.hoursInDay * tm.nightDuration);
-        dayHoursToDegrees = 180 / (TimeManager.hoursInDay * (1 - tm.nightDuration));
+//        nightHoursToDegrees = 180 / (TimeManager.hoursInDay * tm.nightDuration);
+//        dayHoursToDegrees = 180 / (TimeManager.hoursInDay * (1 - tm.nightDuration));
 
-        skyDome.rotation = Quaternion.Euler(0, 0, 0);
-        //rotation: 90+tm.sunriseHour*nightHoursToDegrees
-    }
+//        skyDome.rotation = Quaternion.Euler(0, 0, 0);
+//        //rotation: 90+tm.sunriseHour*nightHoursToDegrees
+//    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (((tm.GetHour() < tm.sunriseHour || tm.GetHour() > tm.GetSunsetHour()) && tm.sunriseHour < tm.GetSunsetHour()) ||
-           ((tm.GetHour() < tm.sunriseHour && tm.GetHour() > tm.GetSunsetHour()) && tm.sunriseHour > tm.GetSunsetHour()))
-        {
-            skyDome.Rotate(0, 0, -Time.deltaTime * TimeManager.hoursInDay * nightHoursToDegrees / tm.dayDurationSecs);
-        }
+//    // Update is called once per frame
+//    void Update()
+//    {
+//        if (((tm.GetHour() < tm.sunriseHour || tm.GetHour() > tm.GetSunsetHour()) && tm.sunriseHour < tm.GetSunsetHour()) ||
+//           ((tm.GetHour() < tm.sunriseHour && tm.GetHour() > tm.GetSunsetHour()) && tm.sunriseHour > tm.GetSunsetHour()))
+//        {
+//            skyDome.Rotate(0, 0, -Time.deltaTime * TimeManager.hoursInDay * nightHoursToDegrees / tm.dayDurationSecs);
+//        }
 
-        else
-        {
-            skyDome.Rotate(0, 0, -Time.deltaTime * TimeManager.hoursInDay * dayHoursToDegrees / tm.dayDurationSecs);
-        }
+//        else
+//        {
+//            skyDome.Rotate(0, 0, -Time.deltaTime * TimeManager.hoursInDay * dayHoursToDegrees / tm.dayDurationSecs);
+//        }
         
-    }
-}
+//    }
+//}

@@ -10,6 +10,7 @@ public class GameClock : MonoBehaviour
     [SerializeField] private TextMeshProUGUI yearText = null;
 
 
+
     private void OnEnable()
     {
         EventHandler.AdvanceGameMinuteEvent += UpdateGameTime;
@@ -26,18 +27,18 @@ public class GameClock : MonoBehaviour
 
         gameMinute = gameMinute - (gameMinute % 10);
 
-        string ampm = "";
+        //string ampm = "";
         string minute;
 
 
-        if (gameHour >= 12)
-        {
-            ampm = " pm";
-        }
-        else
-        {
-            ampm = " am";
-        }
+        //if (gameHour >= 12)
+        //{
+        //    ampm = " pm";
+        //}
+        //else
+        //{
+        //    ampm = " am";
+        //}
 
         if (gameHour >= 13)
         {
