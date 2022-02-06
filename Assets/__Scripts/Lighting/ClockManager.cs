@@ -13,7 +13,7 @@ public class ClockManager : MonoBehaviour
     public Image weatherSprite;
     public Sprite[] weatherSprites;
 
-    private float startingRotation = 180;
+    private float startingRotation;
 
     public Light2D sunlight;
     public float nightIntensity;
@@ -23,7 +23,7 @@ public class ClockManager : MonoBehaviour
 
     private void Awake()
     {
-        startingRotation = ClockFace.localEulerAngles.z;
+        startingRotation = ClockFace.localEulerAngles.z -90;
     }
 
     private void OnEnable()
@@ -36,17 +36,18 @@ public class ClockManager : MonoBehaviour
         TimeManager.OnDateTimeChanged -= UpdateDateTime;
     }
 
-    private void UpdateDateTime(_DateTime dateTime)
+    private void UpdateDateTime(_DateTime dateTime, Continental continental)
     {
         Date.text = dateTime.DateToString();
-        if (dateTime.railwayTime) Time.text = dateTime.TimeToString24();
-        else if (!dateTime.railwayTime) Time.text = dateTime.TimeToString12();
+        if (continental.RailwayTime) Time.text = dateTime.TimeToString24();
+        else if (!continental.RailwayTime) Time.text = dateTime.TimeToString12();
+
         Season.text = dateTime.Season.ToString();
         Year.text = dateTime.YearToString();
 
         float t = (float)dateTime.Hour / 24f;
 
-        float newRotation = Mathf.Lerp(0, 360, t);
+        float newRotation = Mathf.Lerp(360, 0, t);
         ClockFace.localEulerAngles = new Vector3(0, 0, newRotation + startingRotation);
 
         float dayNightT = dayNightCurve.Evaluate(t);

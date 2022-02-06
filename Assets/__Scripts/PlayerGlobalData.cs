@@ -25,6 +25,10 @@ public class PlayerGlobalData : MonoBehaviour
     float horizontalMovement;
     float verticalMovement;
 
+    private _DateTime date;
+    private Continental cont;
+
+
 
     // Start is called before the first frame update
 
@@ -68,10 +72,10 @@ public class PlayerGlobalData : MonoBehaviour
         playerAnimator.SetFloat("movementX", playerRigidBody.velocity.x);
         playerAnimator.SetFloat("movementY", playerRigidBody.velocity.y);
 
-        if(horizontalMovement == 1 || horizontalMovement == -1 || verticalMovement == 1 || verticalMovement == -1)
+        if (horizontalMovement == 1 || horizontalMovement == -1 || verticalMovement == 1 || verticalMovement == -1)
         {
-            
-            if(!deactivedMovement)
+
+            if (!deactivedMovement)
             {
                 playerAnimator.SetFloat("lastX", horizontalMovement);
                 playerAnimator.SetFloat("lastY", verticalMovement);
@@ -81,11 +85,13 @@ public class PlayerGlobalData : MonoBehaviour
 
         transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, bottomLeftEdge.x, topRightEdge.x),
-            Mathf.Clamp(transform.position.y, bottomLeftEdge.y, topRightEdge.y),            
-            Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)         
+            Mathf.Clamp(transform.position.y, bottomLeftEdge.y, topRightEdge.y),
+            Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)
         );
 
         MenuManager.instance.HomeScreenStats();
+
+        PlayerTestInput(date, cont);
 
     }
 
@@ -112,6 +118,21 @@ public class PlayerGlobalData : MonoBehaviour
         }
     }
 
+    private void PlayerTestInput(_DateTime dateTime, Continental railwayTime)
+    {
+
+        // Trigger Advance Time
+        if (Input.GetKey(KeyCode.T))
+        {
+            dateTime.AdvanceHourKey();
+        }
+
+        // Trigger Advance Day
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            dateTime.AdvanceDayKey();
+        }
+    }
 
 
 }
