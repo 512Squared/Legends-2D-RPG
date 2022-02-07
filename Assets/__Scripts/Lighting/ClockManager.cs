@@ -8,10 +8,11 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class ClockManager : MonoBehaviour
 {
     public RectTransform ClockFace;
-    public TextMeshProUGUI Date, Time, Season, Year;
+    public TextMeshProUGUI Date, Time, Seasons, Year;
 
-    public Image weatherSprite;
-    public Sprite[] weatherSprites;
+    public Image seasonSprite;
+    public Sprite[] seasonSprites = new Sprite[3];
+    private _DateTime _time;
 
     private float startingRotation;
 
@@ -23,7 +24,8 @@ public class ClockManager : MonoBehaviour
 
     private void Awake()
     {
-        startingRotation = ClockFace.localEulerAngles.z -90;
+        startingRotation = ClockFace.localEulerAngles.z - 90;
+
     }
 
     private void OnEnable()
@@ -42,7 +44,9 @@ public class ClockManager : MonoBehaviour
         if (continental.RailwayTime) Time.text = dateTime.TimeToString24();
         else if (!continental.RailwayTime) Time.text = dateTime.TimeToString12();
 
-        Season.text = dateTime.Season.ToString();
+        seasonSprite.sprite = seasonSprites[(int)dateTime.Season];
+
+        Seasons.text = dateTime.Season.ToString();
         Year.text = dateTime.YearToString();
 
         float t = (float)dateTime.Hour / 24f;
@@ -53,5 +57,14 @@ public class ClockManager : MonoBehaviour
         float dayNightT = dayNightCurve.Evaluate(t);
 
         sunlight.intensity = Mathf.Lerp(dayIntensity, nightIntensity, dayNightT);
+        _time = dateTime;
+    }
+
+    void FixedUpdate()
+    {
+        //Debug.Log($"Season: {_time.Season} | Season int: {(int)_time.Season}");
     }
 }
+
+
+

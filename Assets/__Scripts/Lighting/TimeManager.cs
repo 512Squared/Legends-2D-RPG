@@ -8,7 +8,7 @@ public class TimeManager : MonoBehaviour
     [Header("Date & Time Settings")]
     [Range(1, 28)]
     public int dateInMonth;
-    [Range(1, 4)]
+    [Range(0, 3)]
     public int season;
     [Range(1, 99)]
     public int year;

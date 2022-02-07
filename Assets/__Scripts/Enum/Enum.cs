@@ -36,10 +36,10 @@ public enum SceneObjectsUnload
 
 public enum Season
 {
-    Spring,
-    Summer,
-    Autumn,
-    Winter, 
+    Spring = 0,
+    Summer = 1,
+    Autumn = 2,
+    Winter = 3, 
 
 }
 
