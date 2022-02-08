@@ -46,6 +46,7 @@ public class TeamWeaponryPopup : MonoBehaviour
         fadeImage2.LeanAlpha(1f, 0.5f);
         fadeImage.blocksRaycasts = false;
         fadeImage.interactable = false;
+        ButtonHandler.interfaceOn = false;
     }
     
     public void Change()

@@ -495,13 +495,6 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public static void IsInterfaceOn()
-    {
-        Debug.Log("IsInteraceOn() called from MenuManager");
-        ButtonHandler.interfaceOn = !ButtonHandler.interfaceOn;
-        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
-    }
-
     public void AddCharacterToParty(int character)
     {
         playerStats = GameManager.instance.GetPlayerStats();
@@ -705,6 +698,13 @@ public class MenuManager : MonoBehaviour
 
         }
     }
+    
+    public static void IsInterfaceOn()
+    {
+        ButtonHandler.interfaceOn = !ButtonHandler.interfaceOn;
+        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
+        Debug.Log($"IsInteraceOn() called from MenuManager: {ButtonHandler.interfaceOn}");
+    }
 
     public void MainMenuPanel(int panel)  // switch a panel on
     {
@@ -761,8 +761,7 @@ public class MenuManager : MonoBehaviour
             ButtonHandler.interfaceOn = false;
             isInventoryOn = false;
             ShopManager.instance.isShopUIOn = false;
-            GameManager.instance.isInterfaceOn = false;
-
+            IsInterfaceOn();
             dayNightCycle.SetActive(true);
             joystick.EnableJoystick();
             quickBar.EnableQuickbar();
@@ -862,6 +861,31 @@ public class MenuManager : MonoBehaviour
     {
 
         StartCoroutine(DelayPanelReturn());
+    }
+
+    public void OnMainMenuBtnPress()
+    {
+        IsInterfaceOn();
+        StartCoroutine(MainMenuScale());
+    }
+
+    public IEnumerator MainMenuScale()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        ButtonHandler.interfaceOn = true;
+
+        if (ButtonHandler.interfaceOn)
+        {
+            mainMenu.GetComponent<RectTransform>().DOScale(1f, 0.6f).SetEase(Ease.OutBack);
+  
+        }
+        else if (!ButtonHandler.interfaceOn)
+        {
+            mainMenu.GetComponent<RectTransform>().DOScale(0f, 0.6f).SetEase(Ease.InBack);
+        }
+
+        Debug.Log($"Menu completed | Interface on: {ButtonHandler.interfaceOn}");
 
     }
 
@@ -1245,7 +1269,7 @@ public class MenuManager : MonoBehaviour
         Debug.Log("IsEquipOn status: " + isInventoryOn);
     }
 
-    public void UpdateItemsInventory()     // create  UI Equip table and side panel. Item sorting at the bottom
+    public void UpdateItemsInventory()     
     {
 
         currentNewItems = 0;
@@ -1307,8 +1331,6 @@ public class MenuManager : MonoBehaviour
                         break;
                 }
 
-
-
                 // new items - needs to run here to count how many new items
 
                 if (item.isNewItem == true)
@@ -1316,7 +1338,6 @@ public class MenuManager : MonoBehaviour
                     GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
                     currentNewItems++;
                 }
-
 
                 // Stuff to activate ONLY when inside inventory
 
@@ -1515,7 +1536,6 @@ public class MenuManager : MonoBehaviour
 
                 GameManager.instance.currentNewItems = currentNewItems;
             }
-
         }
     }
 
@@ -1548,8 +1568,7 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    // UI Tweeing on Equipment left panel, animations
-    IEnumerator DelayPanelReturn()
+    IEnumerator DelayPanelReturn() // also USE item tweens
     {
 
         Debug.Log("InventoryLeft panel animations engaged");
@@ -1585,21 +1604,24 @@ public class MenuManager : MonoBehaviour
             playerStats[0].npcMana = Thulgran.ThulgranMana;
 
             if (panelStuff != 0)
+            {
                 manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
+            }
             else if (panelStuff == 0)
+            {
                 manaEquipToString[panelStuff].text = Thulgran.ThulgranMana.ToString();
+            }
             var sequence = DOTween.Sequence()
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f));
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
-
-            Debug.Log("Slider Mana fill expand and slide");
-
 
             yield return new WaitForSecondsRealtime(1.8f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
             characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
 
+            Debug.Log("Slider Mana fill expand and slide");
         }
         else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
         {
@@ -1667,7 +1689,7 @@ public class MenuManager : MonoBehaviour
     public void OpenClock()
     {
         isClockPopOutVisible = !isClockPopOutVisible;
-
+        Debug.Log($"Clock popout now visible: {isClockPopOutVisible}");
         if (isClockPopOutVisible)
         {
             clockFrame.GetComponent<Image>().raycastTarget = false;
