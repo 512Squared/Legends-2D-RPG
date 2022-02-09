@@ -6,8 +6,6 @@ public class UIPopup : MonoBehaviour
 {
 
     public CanvasGroup fadeImage;
-    private ButtonHandler bh;
-
 
 
     // Start is called before the first frame update
@@ -22,7 +20,7 @@ public class UIPopup : MonoBehaviour
 
     }
 
-    public void Open()
+    public void OpenFadedBackground()
     {
         fadeImage.alpha = 0;
         fadeImage.LeanAlpha(1, 0.3f);
@@ -31,23 +29,18 @@ public class UIPopup : MonoBehaviour
         transform.LeanScale(Vector3.one, 0.6f).setEaseOutBack();
     }
 
-    public void Close()
+    public void CloseFadedBackground()
     {
+        MenuManager.instance.OnMainMenuBtnPress();
         MenuManager.instance.InventoryBackOrHome("home");
-        ButtonHandler.IsInterfaceOn();
+        ButtonHandler.IsInterfaceOn(); //both the above have IsInterfaceOn, so needs an extra switch here
         fadeImage.LeanAlpha(0, 0.5f);
         fadeImage.blocksRaycasts = false;
         fadeImage.interactable = false;
         Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
     }    
     
-    public void CloseBackground()
-    {
-        fadeImage.LeanAlpha(0, 0.5f);
-        fadeImage.blocksRaycasts = false;
-        fadeImage.interactable = false;
-        Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
-    }
+
 
 
 

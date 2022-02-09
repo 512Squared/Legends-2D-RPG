@@ -35,6 +35,9 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] RectTransform clockPanel, clockFrame;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [GUIColor(1f, 0.8f, 0.315f)]
+    [SerializeField] ParticleSystem sunshine;
 
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
@@ -744,21 +747,26 @@ public class MenuManager : MonoBehaviour
     {
         if (call == "home")
         {
-            Debug.Log($"'Home' has been called");
+            StartCoroutine(Controls());
+            
             for (int i = 0; i < menuPanels.Length; i++)
             {
                 menuPanels[i].alpha = 0;
                 menuPanels[i].interactable = false;
                 menuPanels[i].blocksRaycasts = false;
             }
-            ButtonHandler.interfaceOn = false;
+            mainMenu.GetComponent<CanvasGroup>().alpha = 1; // have to add these back in, easier here
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+
+            sunshine.gameObject.SetActive(false);
+            
             isInventoryOn = false;
             ShopManager.instance.isShopUIOn = false;
             ButtonHandler.IsInterfaceOn();
+            
             dayNightCycle.SetActive(true);
-            joystick.EnableJoystick();
-            quickBar.EnableQuickbar();
-            actionButton.EnableButton();
+
 
             ButtonHandler.instance.SetAllButtonsInteractable();
 
@@ -845,6 +853,14 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    public IEnumerator Controls()
+    {
+        yield return new WaitForSeconds(0.5f);
+        joystick.EnableJoystick();
+        quickBar.EnableQuickbar();
+        actionButton.EnableButton();
+    }
+
     public void OnCancelButton()
     {
         StartCoroutine(PanelCancelCoR());
@@ -865,14 +881,18 @@ public class MenuManager : MonoBehaviour
     {
         yield return null;
 
-        if (ButtonHandler.interfaceOn)
+        ButtonHandler.IsInterfaceOn(); // switches interfaceOn
+
+        if (ButtonHandler.interfaceOn) // and if it's on
         {
-            mainMenu.GetComponent<RectTransform>().DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+            mainMenu.GetComponent<RectTransform>().localScale = new Vector3(0.4f,0.4f,0.4f);    
+            mainMenu.GetComponent<RectTransform>().DOScale(1f, 0.6f).SetEase(Ease.OutBack);
+            sunshine.gameObject.SetActive(true);
   
         }
-        else if (!ButtonHandler.interfaceOn)
+        else if (!ButtonHandler.interfaceOn) // and if it's then switched off
         {
-            mainMenu.GetComponent<RectTransform>().DOScale(0f, 0.4f).SetEase(Ease.InBack);
+            mainMenu.GetComponent<RectTransform>().DOScale(0f, 0.6f).SetEase(Ease.InBack);
         }
 
         Debug.Log($"Menu completed | Interface on: {ButtonHandler.interfaceOn}");
