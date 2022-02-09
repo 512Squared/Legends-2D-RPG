@@ -699,13 +699,6 @@ public class MenuManager : MonoBehaviour
         }
     }
     
-    public static void IsInterfaceOn()
-    {
-        ButtonHandler.interfaceOn = !ButtonHandler.interfaceOn;
-        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
-        Debug.Log($"IsInteraceOn() called from MenuManager: {ButtonHandler.interfaceOn}");
-    }
-
     public void MainMenuPanel(int panel)  // switch a panel on
     {
         //    mainMenu 0
@@ -761,7 +754,7 @@ public class MenuManager : MonoBehaviour
             ButtonHandler.interfaceOn = false;
             isInventoryOn = false;
             ShopManager.instance.isShopUIOn = false;
-            IsInterfaceOn();
+            ButtonHandler.IsInterfaceOn();
             dayNightCycle.SetActive(true);
             joystick.EnableJoystick();
             quickBar.EnableQuickbar();
@@ -865,24 +858,21 @@ public class MenuManager : MonoBehaviour
 
     public void OnMainMenuBtnPress()
     {
-        IsInterfaceOn();
         StartCoroutine(MainMenuScale());
     }
 
     public IEnumerator MainMenuScale()
     {
-        yield return new WaitForSeconds(0.1f);
-
-        ButtonHandler.interfaceOn = true;
+        yield return null;
 
         if (ButtonHandler.interfaceOn)
         {
-            mainMenu.GetComponent<RectTransform>().DOScale(1f, 0.6f).SetEase(Ease.OutBack);
+            mainMenu.GetComponent<RectTransform>().DOScale(1f, 0.4f).SetEase(Ease.OutBack);
   
         }
         else if (!ButtonHandler.interfaceOn)
         {
-            mainMenu.GetComponent<RectTransform>().DOScale(0f, 0.6f).SetEase(Ease.InBack);
+            mainMenu.GetComponent<RectTransform>().DOScale(0f, 0.4f).SetEase(Ease.InBack);
         }
 
         Debug.Log($"Menu completed | Interface on: {ButtonHandler.interfaceOn}");

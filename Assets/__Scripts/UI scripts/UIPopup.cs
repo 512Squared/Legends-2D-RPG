@@ -34,11 +34,21 @@ public class UIPopup : MonoBehaviour
     public void Close()
     {
         MenuManager.instance.InventoryBackOrHome("home");
-        transform.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
+        ButtonHandler.IsInterfaceOn();
         fadeImage.LeanAlpha(0, 0.5f);
         fadeImage.blocksRaycasts = false;
         fadeImage.interactable = false;
-        Debug.Log($"UPPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
+        Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
+    }    
+    
+    public void CloseBackground()
+    {
+        fadeImage.LeanAlpha(0, 0.5f);
+        fadeImage.blocksRaycasts = false;
+        fadeImage.interactable = false;
+        Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
     }
+
+
 
 }

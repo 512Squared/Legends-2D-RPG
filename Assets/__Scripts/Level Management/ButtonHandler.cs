@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
 
 public class ButtonHandler : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class ButtonHandler : MonoBehaviour
     public static ButtonHandler instance;
     private GameObject useButton, sellButton;
 
-
+    [ShowInInspector]
     public static bool interfaceOn;
 
     void Awake()
@@ -20,7 +21,7 @@ public class ButtonHandler : MonoBehaviour
         interfaceOn = false;
     }
 
-    public void IsInterfaceOn()
+    public static void IsInterfaceOn()
     {
         interfaceOn = !interfaceOn;
         GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
