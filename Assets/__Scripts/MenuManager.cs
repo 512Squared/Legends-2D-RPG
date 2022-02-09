@@ -260,6 +260,9 @@ public class MenuManager : MonoBehaviour
     public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
     [GUIColor(1f, 1f, 0.215f)]
     public RectTransform leftShopPanel, rightShopPanel;
+    [GUIColor(1f, 1f, 0.215f)]
+    public TextMeshProUGUI[] textMesh;
+
 
 
     [Header("Player Choice")]
@@ -879,20 +882,28 @@ public class MenuManager : MonoBehaviour
 
     public IEnumerator MainMenuScale()
     {
-        yield return null;
+        yield return new WaitForSeconds(0.2f);
 
         ButtonHandler.IsInterfaceOn(); // switches interfaceOn
 
         if (ButtonHandler.interfaceOn) // and if it's on
         {
-            mainMenu.GetComponent<RectTransform>().localScale = new Vector3(0.4f,0.4f,0.4f);    
             mainMenu.GetComponent<RectTransform>().DOScale(1f, 0.6f).SetEase(Ease.OutBack);
+            for (int i = 0; i < textMesh.Length; i++)
+            {
+                textMesh[i].DOFade(1f, 1f);
+            }
             sunshine.gameObject.SetActive(true);
   
         }
         else if (!ButtonHandler.interfaceOn) // and if it's then switched off
         {
             mainMenu.GetComponent<RectTransform>().DOScale(0f, 0.6f).SetEase(Ease.InBack);
+            yield return new WaitForSeconds(1f);
+            for (int i = 0; i < textMesh.Length; i++)
+            {
+                textMesh[i].DOFade(0f, 0.6f);
+            }
         }
 
         Debug.Log($"Menu completed | Interface on: {ButtonHandler.interfaceOn}");
@@ -1686,10 +1697,15 @@ public class MenuManager : MonoBehaviour
     }
 
     private void Start()
-    {
-
+    {   
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+        for (int i = 0; i < textMesh.Length; i++)
+        {
+            textMesh[i].DOFade(0f, 0f);
+        }
+        
+        
     }
 
     private void Update()
