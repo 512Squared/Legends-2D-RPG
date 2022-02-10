@@ -1719,6 +1719,7 @@ public class MenuManager : MonoBehaviour
     {
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);        
     }
 
     private void Awake()
