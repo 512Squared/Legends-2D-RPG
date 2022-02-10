@@ -73,7 +73,7 @@ public class MenuManager : MonoBehaviour
 
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, dexterity, defence, intelligence, perception;
+    [SerializeField] TextMeshProUGUI[] characterName, characterNameP, description, level, levelP, xp, mana, health, attack, defence, intelligence, perception;
     [TabGroup("Char Stats")]
     [GUIColor(1f, 1f, 0.215f)]
     [SerializeField] GameObject[] characterCards, characterParty, characterEquip, characterWeaponry, teamCharacterWeaponry;
@@ -89,10 +89,10 @@ public class MenuManager : MonoBehaviour
 
     [TabGroup("Sliders")]
     [GUIColor(1f, 0.886f, 0.780f)]
-    [SerializeField] Slider[] xpS, manaS, healthS, dexterityS, defenceS, intelligenceS, perceptionS;
+    [SerializeField] Slider[] xpS, manaS, healthS, attackS, defenceS, intelligenceS, perceptionS;
     [TabGroup("Sliders")]
     [GUIColor(1f, 0.886f, 0.780f)]
-    [SerializeField] Slider xpVS, manaVS, healthVS, dexterityVS, defenceVS, intelligenceVS, perceptionVS;
+    [SerializeField] Slider xpVS, manaVS, healthVS, attackVS, defenceVS, intelligenceVS, perceptionVS;
 
     [Space]
     [TabGroup("New Group", "Thulgren")]
@@ -104,7 +104,7 @@ public class MenuManager : MonoBehaviour
 
     [TabGroup("Skills")]
     [GUIColor(1, 0.819f, 0.760f)]
-    [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, dexterityV, defenceV, intelligenceV, perceptionV;
+    [SerializeField] TextMeshProUGUI characterNameV, descriptionV, levelV, xpV, manaV, healthV, attackV, defenceV, intelligenceV, perceptionV;
 
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
@@ -424,7 +424,7 @@ public class MenuManager : MonoBehaviour
                         level[i].text = playerStats[i].npcLevel.ToString();
                         xp[i].text = playerStats[i].npcXP.ToString();
                         mana[i].text = playerStats[i].npcMana.ToString();
-                        dexterity[i].text = playerStats[i].npcDexterity.ToString();
+                        attack[i].text = playerStats[i].npcAttack.ToString();
                         defence[i].text = playerStats[i].npcDefence.ToString();
                         intelligence[i].text = playerStats[i].npcIntelligence.ToString();
                         perception[i].text = playerStats[i].npcPerception.ToString();
@@ -432,7 +432,7 @@ public class MenuManager : MonoBehaviour
                         xpS[i].value = playerStats[i].npcXP;
                         manaS[i].value = playerStats[i].npcMana;
                         healthS[i].value = playerStats[i].npcHP;
-                        dexterityS[i].value = playerStats[i].npcDexterity;
+                        attackS[i].value = playerStats[i].npcAttack;
                         defenceS[i].value = playerStats[i].npcDefence;
                         intelligenceS[i].value = playerStats[i].npcIntelligence;
                         perceptionS[i].value = playerStats[i].npcPerception;
@@ -449,13 +449,13 @@ public class MenuManager : MonoBehaviour
                         characterImage[i].sprite = playerStats[i].characterImage;
                         level[i].text = playerStats[i].npcLevel.ToString();
                         xp[i].text = playerStats[i].npcXP.ToString();
-                        dexterity[i].text = playerStats[i].npcDexterity.ToString();
+                        attack[i].text = playerStats[i].npcAttack.ToString();
                         defence[i].text = playerStats[i].npcDefence.ToString();
                         intelligence[i].text = playerStats[i].npcIntelligence.ToString();
                         perception[i].text = playerStats[i].npcPerception.ToString();
                         intelligenceS[i].value = playerStats[i].npcIntelligence;
                         xpS[i].value = playerStats[i].npcXP;
-                        dexterityS[i].value = playerStats[i].npcDexterity;
+                        attackS[i].value = playerStats[i].npcAttack;
                         defenceS[i].value = playerStats[i].npcDefence;
                         intelligenceS[i].value = playerStats[i].npcIntelligence;
                         perceptionS[i].value = playerStats[i].npcPerception;
@@ -485,7 +485,7 @@ public class MenuManager : MonoBehaviour
 
                     teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
                     teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
-                    teamInventoryAttackTotal[i].text = (playerStats[i].npcDexterity - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
+                    teamInventoryAttackTotal[i].text = (playerStats[i].npcAttack - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
                     teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
                     teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
                     teamCharacterName[i].text = playerStats[i].playerName;
@@ -691,6 +691,26 @@ public class MenuManager : MonoBehaviour
             GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
             GameManager.instance.isItemSelected = false;
             UpdateItemsInventory();
+
+            if (ButtonHandler.interfaceOn == true)
+            {
+                ButtonHandler.IsInterfaceOn();
+            }
+
+            Debug.Log($"Joystick GameObject status: {joystick.gameObject.activeInHierarchy}");
+            joystick.EnableJoystick();
+            actionButton.EnableButton();
+            quickBar.EnableQuickbar();
+            joystick.GetComponent<CanvasGroup>().alpha = 1;
+            joystick.GetComponent<CanvasGroup>().interactable = true;
+            joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            actionButton.GetComponent<CanvasGroup>().alpha = 1;
+            actionButton.GetComponent<CanvasGroup>().interactable = true;
+            actionButton.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            quickBar.GetComponent<CanvasGroup>().alpha = 1;
+            quickBar.GetComponent<CanvasGroup>().interactable = true;
+            quickBar.GetComponent<CanvasGroup>().blocksRaycasts = true;
+
         }
 
         else if (call == "back")
@@ -755,12 +775,11 @@ public class MenuManager : MonoBehaviour
                 menuPanels[i].interactable = false;
                 menuPanels[i].blocksRaycasts = false;
             }
+
             isInventoryOn = false;
             ShopManager.instance.isShopUIOn = false;
-            ButtonHandler.IsInterfaceOn();
 
             dayNightCycle.SetActive(true);
-
 
             ButtonHandler.instance.SetAllButtonsInteractable();
 
@@ -879,28 +898,6 @@ public class MenuManager : MonoBehaviour
             StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, 0.4f));
             StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, 0.4f));
             mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
-
-            IEnumerator DelayedStuff()
-            {
-                yield return new WaitForSeconds(0.7f);
-                joystick.DisableJoystick();
-                actionButton.DisableButton();
-            }
-
-            IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
-            {
-                float startingAlpha = canvasGroup.alpha;
-
-                for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
-                {
-                    canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
-
-                    yield return new WaitForFixedUpdate();
-                }
-                canvasGroup.alpha = targetAlpha;
-
-            }
-
         }
         else if (!ButtonHandler.interfaceOn) // and if it's then switched off
         {
@@ -911,22 +908,30 @@ public class MenuManager : MonoBehaviour
             StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, 1f));
             StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, 1f));
             mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 0).SetEase(Ease.InBack);
-
-            IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
-            {
-                float startingAlpha = canvasGroup.alpha;
-
-                for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
-                {
-                    canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
-
-                    yield return new WaitForFixedUpdate();
-                }
-                canvasGroup.alpha = targetAlpha;
-
-            }
         }
     }
+
+    private IEnumerator DelayedStuff()
+    {
+        yield return new WaitForSeconds(0.7f);
+        joystick.DisableJoystick();
+        actionButton.DisableButton();
+    }
+
+    private static IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
+    {
+        float startingAlpha = canvasGroup.alpha;
+
+        for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
+        {
+            canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
+
+            yield return new WaitForFixedUpdate();
+        }
+        canvasGroup.alpha = targetAlpha;
+    }
+
+
 
 
     public void OnUseButton()
@@ -1719,12 +1724,12 @@ public class MenuManager : MonoBehaviour
     {
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
-        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);        
+        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
     }
 
     private void Awake()
     {
-        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);        
+        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
     }
 
     private void Update()

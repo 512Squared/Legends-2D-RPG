@@ -49,15 +49,21 @@ public class UIPopup : MonoBehaviour
     {
         yield return new WaitForSeconds(0.6f);
         MenuManager.instance.InventoryBackOrHome("home");
-        ButtonHandler.IsInterfaceOn(); //both the above have IsInterfaceOn, so needs an extra switch here
 
     }
     public void ShopCloseFadedBackground()
     {
         MenuManager.instance.OnMainMenuBtnPress();
         ShopManager.instance.ShopBackOrHome("home");
-        ButtonHandler.IsInterfaceOn(); //both the above have IsInterfaceOn, so needs an extra switch here
         fadeImage.LeanAlpha(0, 0.3f);
+        fadeImage.blocksRaycasts = false;
+        fadeImage.interactable = false;
+        Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
+    }
+
+    public void ClosePopBackground()
+    {
+        fadeImage.LeanAlpha(0, 0.6f);
         fadeImage.blocksRaycasts = false;
         fadeImage.interactable = false;
         Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");

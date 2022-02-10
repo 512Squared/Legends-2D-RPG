@@ -61,7 +61,7 @@ public enum Stats
     CurrentMana,
     MaxMana,
     Defence, 
-    Dexterity,
+    Attack,
     Speed,
     Jump
 }

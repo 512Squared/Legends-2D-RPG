@@ -634,13 +634,15 @@ GameObject:
   - component: {fileID: 4174957483549420977}
   - component: {fileID: 4174957483328302138}
   - component: {fileID: 1595904777}
+  - component: {fileID: 1407744281}
+  - component: {fileID: 1407744282}
   m_Layer: 7
   m_Name: Haefra
   m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4178945547780268541
 Transform:
   m_ObjectHideFlags: 0
@@ -666,12 +668,12 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.36919254}
+  m_Offset: {x: -0.08337055, y: 0.50022465}
   serializedVersion: 2
-  m_Radius: 0.807662
+  m_Radius: 4.3926044
 --- !u!114 &4174957483328302138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,12 +686,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thulgran: {fileID: 0}
   characterImage: {fileID: 21300000, guid: e48e4e07f3d40aa4182c8e66ef53f364, type: 3}
   characterMug: {fileID: 21300000, guid: 3110faa53f20e644ba5603d0a74229a7, type: 3}
   characterPlain: {fileID: 21300000, guid: fcc9986aaf623814ba00e57a0892000a, type: 3}
   skills: []
-  homeScene: Mountains
+  homeScene: Homestead
   skillBonus: 
   thulGold: 0
   thulSpells: 0
@@ -710,7 +711,7 @@ MonoBehaviour:
   npcXP: 154
   npcMana: 140
   npcHP: 120
-  npcDexterity: 60
+  npcAttack: 24
   npcDefence: 20
   npcIntelligence: 65
   npcPerception: 60
@@ -739,12 +740,98 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.16570875, y: 0.70802623}
-  m_Size: {x: 2.0365708, y: 3.9827526}
+  m_Size: {x: 2.5, y: 4}
   m_Direction: 0
+--- !u!50 &1407744281
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176026521350302131}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 4
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: a542bd928fffe4f479fd45fd7db9d672, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &1407744282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176026521350302131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c20
+  m_ShapePath:
+  - {x: -0.56624806, y: -1.0470568, z: 0}
+  - {x: -0.46995217, y: -0.92480934, z: 0}
+  - {x: -0.75876355, y: -0.8652135, z: 0}
+  - {x: -0.7495947, y: -0.6451668, z: 0}
+  - {x: -0.8229438, y: -0.52139074, z: 0}
+  - {x: -0.7266731, y: -0.2784228, z: 0}
+  - {x: -0.85044986, y: -0.20965846, z: 0}
+  - {x: -0.9604725, y: -0.11797221, z: 0}
+  - {x: -0.99256295, y: 0.08373707, z: 0}
+  - {x: -0.92838275, y: 0.18459153, z: 0}
+  - {x: -1.0521587, y: 0.17083886, z: 0}
+  - {x: -1.1117545, y: 0.24877177, z: 0}
+  - {x: -0.9696414, y: 0.33587357, z: 0}
+  - {x: -0.8183594, y: 0.33587357, z: 0}
+  - {x: -0.6579091, y: 0.25335622, z: 0}
+  - {x: -0.5891444, y: 0.34504214, z: 0}
+  - {x: -0.76334804, y: 0.6934493, z: 0}
+  - {x: -0.74501026, y: 0.8263939, z: 0}
+  - {x: -0.8366965, y: 0.9960131, z: 0}
+  - {x: -0.9508206, y: 1.194564, z: 0}
+  - {x: -0.9329767, y: 1.4443729, z: 0}
+  - {x: -0.98055965, y: 1.5990165, z: 0}
+  - {x: -0.95307, y: 1.8949027, z: 0}
+  - {x: -0.75454223, y: 2.217591, z: 0}
+  - {x: -0.39617455, y: 2.412903, z: 0}
+  - {x: -0.05269784, y: 2.396026, z: 0}
+  - {x: 0.31090754, y: 2.1698768, z: -0.0000009536743}
+  - {x: 0.4866554, y: 1.6020755, z: -0.0000009536743}
+  - {x: 0.39202163, y: 1.1289076, z: -0.0000009536743}
+  - {x: 0.64888424, y: 0.5881446, z: -0.0000009536743}
+  - {x: 0.6532017, y: 0.30378345, z: 0}
+  - {x: 0.8274053, y: 0.16625442, z: 0}
+  - {x: 1.028354, y: -0.3758267, z: -0.0000009536743}
+  - {x: 0.7968932, y: -0.6010665, z: -0.0000009536743}
+  - {x: 0.5936052, y: -0.70017844, z: 0}
+  - {x: 0.4043724, y: -0.7021553, z: -0.0000009536743}
+  - {x: 0.46982917, y: -0.9018878, z: 0}
+  - {x: 0.31854782, y: -0.9431464, z: 0}
+  - {x: 0.29810035, y: -1.0935906, z: 0}
+  - {x: -0.061949845, y: -1.0852599, z: 0}
+  - {x: -0.01610672, y: -0.9431464, z: 0}
+  - {x: -0.14905097, y: -0.9844051, z: 0}
+  - {x: -0.19031033, y: -1.099013, z: 0}
+  m_ShapePathHash: 126570333
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 952678
 --- !u!1 &4176033344609320883
 GameObject:
   m_ObjectHideFlags: 0

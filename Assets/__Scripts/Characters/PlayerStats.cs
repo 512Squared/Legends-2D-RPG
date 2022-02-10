@@ -40,7 +40,7 @@ public class PlayerStats : MonoBehaviour
     public int npcXP;
     public int npcMana;
     public int npcHP;
-    public int npcDexterity;
+    public int npcAttack;
     public int npcDefence;
     public int npcIntelligence;
     public int npcPerception;
@@ -106,7 +106,7 @@ public class PlayerStats : MonoBehaviour
 
             if (npcLevel % 2 == 0)
             {
-                npcDexterity++;
+                npcAttack++;
             }
             else
             {
@@ -167,7 +167,7 @@ public class PlayerStats : MonoBehaviour
 
     public void AddWeaponPower(int amountOfWeaponPowerToAdd)
     {
-        npcDexterity += amountOfWeaponPowerToAdd;
+        npcAttack += amountOfWeaponPowerToAdd;
     }
 
     public void EquipWeapon(ItemsManager weaponToEquip)

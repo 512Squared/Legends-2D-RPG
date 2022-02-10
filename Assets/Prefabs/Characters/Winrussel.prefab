@@ -3495,13 +3495,15 @@ GameObject:
   - component: {fileID: 5078653622048747231}
   - component: {fileID: 5078653621843993223}
   - component: {fileID: 977431801}
+  - component: {fileID: 1673023404}
+  - component: {fileID: 1673023405}
   m_Layer: 7
   m_Name: Winrussel
   m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5074042028986373111
 Transform:
   m_ObjectHideFlags: 0
@@ -3529,7 +3531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thulgran: {fileID: 0}
   characterImage: {fileID: 21300000, guid: 7a13821c9e742f4438d7772e8ceeca28, type: 3}
   characterMug: {fileID: 21300000, guid: b4a52da71b67a064285582596c0dd038, type: 3}
   characterPlain: {fileID: 21300000, guid: 7aaeaa62cc3ccb247b9a8a332e5e9ccc, type: 3}
@@ -3555,7 +3556,7 @@ MonoBehaviour:
   npcXP: 420
   npcMana: 140
   npcHP: 160
-  npcDexterity: 89
+  npcAttack: 65
   npcDefence: 74
   npcIntelligence: 68
   npcPerception: 69
@@ -3585,9 +3586,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.08012635, y: -0.5793796}
+  m_Offset: {x: -0.47243392, y: 0}
   serializedVersion: 2
-  m_Radius: 0.58012897
+  m_Radius: 4.220652
 --- !u!70 &977431801
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -3602,8 +3603,79 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.3183147, y: 0.5274923}
-  m_Size: {x: 2.5554004, y: 3.6556544}
+  m_Size: {x: 2.5, y: 4}
   m_Direction: 0
+--- !u!50 &1673023404
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079910466958522675}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 4
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: a542bd928fffe4f479fd45fd7db9d672, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &1673023405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079910466958522675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c20
+  m_ShapePath:
+  - {x: 0.34285894, y: -1.1194401, z: -0.00000023841858}
+  - {x: 0.4097769, y: -0.07650699, z: -0.00000023841858}
+  - {x: 0.7052211, y: 0.20205465, z: -0.00000023841858}
+  - {x: 0.7896336, y: 0.6663239, z: -0.00000023841858}
+  - {x: 0.60392594, y: 0.9702092, z: -0.00000023841858}
+  - {x: 0.28315824, y: 1.1390344, z: -0.00000023841858}
+  - {x: 0.40202695, y: 1.6856586, z: -0.00000023841858}
+  - {x: -0.054492198, y: 2.0084841, z: -0.00000023841858}
+  - {x: -0.14734602, y: 2.168868, z: -0.00000023841858}
+  - {x: -0.4426581, y: 2.226396, z: -0.00000023841858}
+  - {x: -0.69602823, y: 1.9156303, z: -0.00000023841858}
+  - {x: -0.9640264, y: 1.8691761, z: -0.0000016008105}
+  - {x: -1.0758849, y: 1.4682436, z: -0.00000023841858}
+  - {x: -0.95770764, y: 1.3669485, z: -0.00000023841858}
+  - {x: -0.95770764, y: 1.029298, z: -0.00000023841858}
+  - {x: -0.8395297, y: 0.8604728, z: -0.00000023841858}
+  - {x: -0.8310883, y: 0.6916475, z: -0.00000023841858}
+  - {x: -0.69602823, y: 0.5397051, z: -0.00000023841858}
+  - {x: -0.6369393, y: 0.34555608, z: -0.00000023841858}
+  - {x: -0.6116158, y: -0.14403701, z: -0.00000023841858}
+  - {x: -0.49343783, y: -0.27065593, z: -0.00000023841858}
+  - {x: -0.400584, y: -0.84466153, z: -0.00000023841858}
+  - {x: -0.34149435, y: -1.1279337, z: -0.00000023841858}
+  - {x: -0.14734602, y: -1.1316644, z: -0.00000023841858}
+  - {x: -0.122022554, y: -0.5998651, z: -0.00000023841858}
+  - {x: -0.029168736, y: -0.33818603, z: -0.00000023841858}
+  - {x: 0.055243704, y: -0.58298254, z: -0.00000023841858}
+  - {x: 0.13121544, y: -1.1147819, z: -0.00000023841858}
+  m_ShapePathHash: 1255621576
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 955070
 --- !u!1 &5079949131664370661
 GameObject:
   m_ObjectHideFlags: 0

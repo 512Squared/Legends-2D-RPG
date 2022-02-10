@@ -249,10 +249,11 @@ public class ShopManager : MonoBehaviour
 
     public void ShopBackOrHome(string call) // tidying for back and home buttons
     {
-        MenuManager.instance.MenuPanelsOff(call);
+        MenuManager.instance.InventoryBackOrHome(call);
         shopCurrentNewItems = 0;
         GameManager.instance.isItemSelected = false;
         NofifyOnly();
+
     }
 
     public void ShopItemInfoReset()

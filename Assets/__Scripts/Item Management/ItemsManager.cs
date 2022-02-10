@@ -77,7 +77,7 @@ public class ItemsManager : MonoBehaviour
         else if (itemType == ItemType.Weapon)
         {
 
-            selectedCharacter.npcDexterity -= selectedCharacter.characterWeaponPower;
+            selectedCharacter.npcAttack -= selectedCharacter.characterWeaponPower;
 
             if (selectedCharacter.equippedWeaponName != "")
             {

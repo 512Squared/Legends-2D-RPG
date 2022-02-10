@@ -72,7 +72,6 @@ public class UI : MonoBehaviour
         {
             goldStats[i].text = Thulgran.ThulgranGold.ToString();
         }
-        Debug.Log($"Coin UI updated: {Thulgran.ThulgranGold}");
     }
 
     public void UpdateHPUI(int heart)
@@ -91,7 +90,6 @@ public class UI : MonoBehaviour
                 hpStats[i].text = Thulgran.ThulgranHP.ToString();
             }
         }
-        Debug.Log($"HP UI updated: {Thulgran.ThulgranHP}");
     }
 
     public void UpdateManaUI(int rune)
@@ -109,7 +107,6 @@ public class UI : MonoBehaviour
                 manaStats[i].text = Thulgran.ThulgranMana.ToString();
             }
         }
-        Debug.Log($"Mana UI updated: {Thulgran.ThulgranMana}");
     }
 
     public void UpdateAll(int empty)
