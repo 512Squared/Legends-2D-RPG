@@ -30,7 +30,7 @@ public class UIPopup : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        fadeImage.LeanAlpha(1, 1f);
+        fadeImage.LeanAlpha(0.6f, 0.2f);
         fadeImage.blocksRaycasts = true;
         fadeImage.interactable = true;
     }
@@ -38,24 +38,32 @@ public class UIPopup : MonoBehaviour
     public void CloseFadedBackground()
     {
         MenuManager.instance.OnMainMenuBtnPress();
-        MenuManager.instance.InventoryBackOrHome("home");
-        ButtonHandler.IsInterfaceOn(); //both the above have IsInterfaceOn, so needs an extra switch here
-        fadeImage.LeanAlpha(0, 0.5f);
+        StartCoroutine(DelayedStuff());
+        fadeImage.LeanAlpha(0, 0.6f);
         fadeImage.blocksRaycasts = false;
         fadeImage.interactable = false;
         Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
     }
 
+    public IEnumerator DelayedStuff()
+    {
+        yield return new WaitForSeconds(0.6f);
+        MenuManager.instance.InventoryBackOrHome("home");
+        ButtonHandler.IsInterfaceOn(); //both the above have IsInterfaceOn, so needs an extra switch here
+
+    }
     public void ShopCloseFadedBackground()
     {
         MenuManager.instance.OnMainMenuBtnPress();
         ShopManager.instance.ShopBackOrHome("home");
         ButtonHandler.IsInterfaceOn(); //both the above have IsInterfaceOn, so needs an extra switch here
-        fadeImage.LeanAlpha(0, 0.5f);
+        fadeImage.LeanAlpha(0, 0.3f);
         fadeImage.blocksRaycasts = false;
         fadeImage.interactable = false;
         Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
     }
+
+
 
 
 

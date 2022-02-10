@@ -260,8 +260,7 @@ public class MenuManager : MonoBehaviour
     public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
     [GUIColor(1f, 1f, 0.215f)]
     public RectTransform leftShopPanel, rightShopPanel;
-    [GUIColor(1f, 1f, 0.215f)]
-    public TextMeshProUGUI[] textMesh;
+
 
 
 
@@ -704,7 +703,7 @@ public class MenuManager : MonoBehaviour
 
         }
     }
-    
+
     public void MainMenuPanel(int panel)  // switch a panel on
     {
         //    mainMenu 0
@@ -750,24 +749,16 @@ public class MenuManager : MonoBehaviour
     {
         if (call == "home")
         {
-            StartCoroutine(Controls());
-            
             for (int i = 0; i < menuPanels.Length; i++)
             {
                 menuPanels[i].alpha = 0;
                 menuPanels[i].interactable = false;
                 menuPanels[i].blocksRaycasts = false;
             }
-            mainMenu.GetComponent<CanvasGroup>().alpha = 1; // have to add these back in, easier here
-            mainMenu.GetComponent<CanvasGroup>().interactable = true;
-            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-
-            sunshine.gameObject.SetActive(false);
-            
             isInventoryOn = false;
             ShopManager.instance.isShopUIOn = false;
             ButtonHandler.IsInterfaceOn();
-            
+
             dayNightCycle.SetActive(true);
 
 
@@ -856,13 +847,6 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public IEnumerator Controls()
-    {
-        yield return new WaitForSeconds(0.5f);
-        joystick.EnableJoystick();
-        quickBar.EnableQuickbar();
-        actionButton.EnableButton();
-    }
 
     public void OnCancelButton()
     {
@@ -888,27 +872,43 @@ public class MenuManager : MonoBehaviour
 
         if (ButtonHandler.interfaceOn) // and if it's on
         {
-            mainMenu.GetComponent<RectTransform>().DOScale(1f, 0.6f).SetEase(Ease.OutBack);
-            for (int i = 0; i < textMesh.Length; i++)
-            {
-                textMesh[i].DOFade(1f, 1f);
-            }
-            sunshine.gameObject.SetActive(true);
-  
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 1f).SetEase(Ease.OutBack);
+            joystick.GetComponent<CanvasGroup>().alpha = 0;
+            quickBar.GetComponent<CanvasGroup>().alpha = 0;
+            actionButton.GetComponent<CanvasGroup>().alpha = 0; 
+
         }
         else if (!ButtonHandler.interfaceOn) // and if it's then switched off
         {
-            mainMenu.GetComponent<RectTransform>().DOScale(0f, 0.6f).SetEase(Ease.InBack);
-            yield return new WaitForSeconds(1f);
-            for (int i = 0; i < textMesh.Length; i++)
+            StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.3f));
+            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 1f).SetEase(Ease.InBack);
+            joystick.EnableJoystick();
+            quickBar.EnableQuickbar();
+            actionButton.EnableButton();
+            StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 1f, 0.4f));
+            StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, 0.4f));
+            StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, 0.3f));
+            
+            
+            IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
             {
-                textMesh[i].DOFade(0f, 0.6f);
+                float startingAlpha = canvasGroup.alpha;
+
+                for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
+                {
+                    canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
+
+                    yield return new WaitForFixedUpdate();
+                }
+                canvasGroup.alpha = targetAlpha;
+
             }
         }
-
-        Debug.Log($"Menu completed | Interface on: {ButtonHandler.interfaceOn}");
-
     }
+
 
     public void OnUseButton()
     {
@@ -1290,7 +1290,7 @@ public class MenuManager : MonoBehaviour
         Debug.Log("IsEquipOn status: " + isInventoryOn);
     }
 
-    public void UpdateItemsInventory()     
+    public void UpdateItemsInventory()
     {
 
         currentNewItems = 0;
@@ -1697,15 +1697,9 @@ public class MenuManager : MonoBehaviour
     }
 
     private void Start()
-    {   
+    {
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
-        for (int i = 0; i < textMesh.Length; i++)
-        {
-            textMesh[i].DOFade(0f, 0f);
-        }
-        
-        
     }
 
     private void Update()
