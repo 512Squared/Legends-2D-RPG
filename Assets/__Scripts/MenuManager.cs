@@ -878,7 +878,7 @@ public class MenuManager : MonoBehaviour
             StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 0f, 0.4f));
             StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, 0.4f));
             StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, 0.4f));
-            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.3f, 0, 1f).SetEase(Ease.OutBack);
+            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
 
             IEnumerator DelayedStuff()
             {
@@ -910,7 +910,7 @@ public class MenuManager : MonoBehaviour
             StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 1f, 1f));
             StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, 1f));
             StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, 1f));
-            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 1f).SetEase(Ease.InBack);
+            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 0).SetEase(Ease.InBack);
 
             IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
             {
@@ -1719,6 +1719,11 @@ public class MenuManager : MonoBehaviour
     {
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+    }
+
+    private void Awake()
+    {
+        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);        
     }
 
     private void Update()
