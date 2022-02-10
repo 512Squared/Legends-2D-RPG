@@ -28,7 +28,7 @@ public class UIPopup : MonoBehaviour
 
     IEnumerator FadeIn()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return null;
 
         fadeImage.LeanAlpha(0.6f, 0.2f);
         fadeImage.blocksRaycasts = true;

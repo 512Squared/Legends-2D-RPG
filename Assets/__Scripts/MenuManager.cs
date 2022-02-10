@@ -866,8 +866,7 @@ public class MenuManager : MonoBehaviour
 
     public IEnumerator MainMenuScale()
     {
-        yield return new WaitForSeconds(0.2f);
-
+        yield return null;
         ButtonHandler.IsInterfaceOn(); // switches interfaceOn
 
         if (ButtonHandler.interfaceOn) // and if it's on
@@ -875,24 +874,44 @@ public class MenuManager : MonoBehaviour
             mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
             mainMenu.GetComponent<CanvasGroup>().interactable = true;
             mainMenu.GetComponent<CanvasGroup>().alpha = 1;
-            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 1f).SetEase(Ease.OutBack);
-            joystick.GetComponent<CanvasGroup>().alpha = 0;
-            quickBar.GetComponent<CanvasGroup>().alpha = 0;
-            actionButton.GetComponent<CanvasGroup>().alpha = 0; 
+            StartCoroutine(DelayedStuff());
+            StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 0f, 0.4f));
+            StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, 0.4f));
+            StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, 0.4f));
+            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.3f, 0, 1f).SetEase(Ease.OutBack);
+
+            IEnumerator DelayedStuff()
+            {
+                yield return new WaitForSeconds(0.7f);
+                joystick.DisableJoystick();
+                actionButton.DisableButton();
+            }
+
+            IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
+            {
+                float startingAlpha = canvasGroup.alpha;
+
+                for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
+                {
+                    canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
+
+                    yield return new WaitForFixedUpdate();
+                }
+                canvasGroup.alpha = targetAlpha;
+
+            }
 
         }
         else if (!ButtonHandler.interfaceOn) // and if it's then switched off
         {
-            StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.3f));
-            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 1f).SetEase(Ease.InBack);
             joystick.EnableJoystick();
-            quickBar.EnableQuickbar();
             actionButton.EnableButton();
-            StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 1f, 0.4f));
-            StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, 0.4f));
-            StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, 0.3f));
-            
-            
+            StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.5f));
+            StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 1f, 1f));
+            StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, 1f));
+            StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, 1f));
+            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 1f).SetEase(Ease.InBack);
+
             IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
             {
                 float startingAlpha = canvasGroup.alpha;
