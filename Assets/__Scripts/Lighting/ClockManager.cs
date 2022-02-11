@@ -60,10 +60,6 @@ public class ClockManager : MonoBehaviour
         _time = dateTime;
     }
 
-    void FixedUpdate()
-    {
-        //Debug.Log($"Season: {_time.Season} | Season int: {(int)_time.Season}");
-    }
 }
 
 

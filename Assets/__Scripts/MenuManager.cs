@@ -330,7 +330,7 @@ public class MenuManager : MonoBehaviour
     {
         #region Graphics
 
-        StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.5f));
+        StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.3f));
         DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.4f);
         ControllersFadeIn(0.5f);
         StartCoroutine(EnableJoystickDelay(0.7f));
@@ -407,8 +407,8 @@ public class MenuManager : MonoBehaviour
     private void MainMenuButton()
     {
         MainMenuCGOn(); // no fade in, just DOPunch
-        ControllersFadeOut();
-        DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.2f);
+        ControllersFadeOut(0.3f);
+        DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.1f);
         UpdateStats();
         UpdateItemsInventory();
     }
@@ -420,12 +420,12 @@ public class MenuManager : MonoBehaviour
         mainMenu.GetComponent<CanvasGroup>().alpha = 1;
     }
     
-    private void ControllersFadeOut()
+    private void ControllersFadeOut(float fadeTime)
     {
         StartCoroutine(DisableJoystickDelay());
-        StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 0f, 0.4f));
-        StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, 0.4f));
-        StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, 0.4f));
+        StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 0f, fadeTime));
+        StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, fadeTime));
+        StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, fadeTime));
     }
     
     private void ControllersFadeIn(float fadeTime)
@@ -1067,32 +1067,6 @@ public class MenuManager : MonoBehaviour
         StartCoroutine(DelayPanelReturn());
     }
 
-    public void OnMainMenuBtnPress()
-    {
-        StartCoroutine(MainMenuScale());
-    }
-
-    public IEnumerator MainMenuScale()
-    {
-        yield return null;
-
-        if (ButtonHandler.interfaceOn) // and if it's on
-        {
-            MainMenuCGOn();
-            StartCoroutine(DisableJoystickDelay());
-            ControllersFadeOut();
-            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
-        }
-        else if (!ButtonHandler.interfaceOn) // and if it's then switched off
-        {
-            StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.5f));
-            ControllersFadeIn(0.5f);
-            mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 0).SetEase(Ease.InBack);
-        }
-
-    }
-
-
 
     private static IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
     {
@@ -1102,7 +1076,7 @@ public class MenuManager : MonoBehaviour
         {
             canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
 
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
         canvasGroup.alpha = targetAlpha;
     }
