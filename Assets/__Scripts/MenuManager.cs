@@ -439,7 +439,6 @@ public class MenuManager : MonoBehaviour
 
     private void ControllersOn()
     {
-        Debug.Log($"Joystick GameObject status: {joystick.gameObject.activeInHierarchy}");
         joystick.EnableJoystick();
         actionButton.EnableButton();
         quickBar.EnableQuickbar();
@@ -959,8 +958,7 @@ public class MenuManager : MonoBehaviour
         itemDamageBox.SetActive(false);
         itemArmourBox.SetActive(false);
         itemPotionBox.SetActive(false);
-        itemFoodBox.SetActive(false);
-        Debug.Log("Item info panel has been reset");
+        itemFoodBox.SetActive(false);        
     }
 
     public void MenuPanelsOff(string call)

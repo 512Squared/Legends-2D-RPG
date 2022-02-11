@@ -13,11 +13,13 @@ public class TimeManager : MonoBehaviour
     [Range(1, 99)]
     public int year;
     [Range(0, 24)]
-    public float hour;
+    public int hour;
     [Range(0, 6)]
     public float minutes;
     [Space]
     public bool railwayTime;
+
+
 
 
     private _DateTime dateTime;
@@ -27,6 +29,10 @@ public class TimeManager : MonoBehaviour
     public float MinsAddedPerTick = 10;
     public float TickInSecs = 1;
     private float currentTimeBetweenTicks = 0;
+
+    [Space]
+    [Header("Lighting Controls")]
+
 
     public static UnityAction<_DateTime, Continental> OnDateTimeChanged;
 
@@ -75,7 +81,7 @@ public struct _DateTime
     private int date;
     private int year;
 
-    private float hour;
+    private int hour;
     private float minutes;
 
     private Season season;
@@ -100,7 +106,7 @@ public struct _DateTime
 
     #region Constructors
 
-    public _DateTime(int date, int season, int year, float hour, float minutes)
+    public _DateTime(int date, int season, int year, int hour, float minutes)
     {
         this.day = (Days)(date % 7);
         if (day == 0) day = (Days)7;
@@ -144,6 +150,9 @@ public struct _DateTime
         else
         {
             hour++;
+            if (IsMorning()) Actions.OnDawn?.Invoke();
+            else if (IsAfternoon()) Actions.OnDawn?.Invoke();
+            else if (IsNight()) Actions.OnDusk?.Invoke();
         }
     }
 
@@ -205,7 +214,7 @@ public struct _DateTime
 
     public bool IsMorning()
     {
-        return hour >= 6 && hour <= 12;
+        return hour >= 8 && hour <= 12;
     }
 
     public bool IsAfternoon()

@@ -25,7 +25,6 @@ public class ClockManager : MonoBehaviour
     private void Awake()
     {
         startingRotation = ClockFace.localEulerAngles.z - 90;
-
     }
 
     private void OnEnable()
@@ -38,7 +37,7 @@ public class ClockManager : MonoBehaviour
         TimeManager.OnDateTimeChanged -= UpdateDateTime;
     }
 
-    private void UpdateDateTime(_DateTime dateTime, Continental continental)
+    private void UpdateDateTime(_DateTime dateTime, Continental continental) // UI update
     {
         Date.text = dateTime.DateToString();
         if (continental.RailwayTime) Time.text = dateTime.TimeToString24();
@@ -58,6 +57,7 @@ public class ClockManager : MonoBehaviour
 
         sunlight.intensity = Mathf.Lerp(dayIntensity, nightIntensity, dayNightT);
         _time = dateTime;
+ 
     }
 
 }

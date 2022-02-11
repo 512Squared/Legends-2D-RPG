@@ -103,7 +103,7 @@ public class ShopManager : MonoBehaviour
         //Actions.OnBuyItem -= UpdateStats_2;
         //Actions.OnSellItem -= UpdateStats_2;
         //Actions.OnBackButton -= BackButton;
-        //Actions.OnHomeButton -= HomeButton;
+        Actions.OnHomeButton -= HomeButton;
         //Actions.OnMainMenuButton -= MainMenuButton;
         //Actions.OnResumeButton -= ResumeButton;
     }

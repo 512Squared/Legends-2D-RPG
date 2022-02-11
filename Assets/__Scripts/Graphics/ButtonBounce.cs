@@ -18,9 +18,6 @@ public class ButtonBounce : MonoBehaviour
 
     public void ButtonBouncing()
     {
-        
-        Debug.Log($"ButtonBounce activated on: {gameObject.name}");
-
         for (int i = 0; i < buttonToBounce.Length; i++)
         {
             var sequence = DOTween.Sequence()

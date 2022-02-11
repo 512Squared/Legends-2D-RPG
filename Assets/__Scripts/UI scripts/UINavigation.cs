@@ -18,12 +18,10 @@ namespace Assets.__Scripts.UI_scripts
         public void MainMenuOpened()
         {
             Actions.OnMainMenuButton?.Invoke();
-            Debug.Log($"Main menu invoked");
         }
         public void ResumeButtonPressed() // on fade mask too
         {
             Actions.OnResumeButton?.Invoke();
-            Debug.Log($"Main menu invoked");
         }
 
 

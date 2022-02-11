@@ -10,13 +10,9 @@ public class GameManager : MonoBehaviour
 {
 
 
-    //myObject.GetComponent<MyScript>().MyFunction();rob
-
-
-    // game manager is holding the player stats and preserving them. It's public, which allows it to be called. 
-
     public static GameManager instance;
 
+    #region Serialized Fields
 
     [Title("Management")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
@@ -57,11 +53,12 @@ public class GameManager : MonoBehaviour
     [GUIColor(1f, 1f, 0.215f)]
     public bool keyboardKeyI = false;
 
-    
+    [Title("Messaging")]
+    [Space]
     public TextMeshProUGUI playerMessages;
     private string firstScene;
 
-
+    #endregion
 
 
     // Start is called before the first frame update

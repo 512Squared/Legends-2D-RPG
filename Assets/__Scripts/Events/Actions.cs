@@ -30,4 +30,7 @@ public static class Actions
     public static Action OnMainMenuButton;
     public static Action OnResumeButton;
 
+    public static Action OnDusk;
+    public static Action OnDawn;
+
 }

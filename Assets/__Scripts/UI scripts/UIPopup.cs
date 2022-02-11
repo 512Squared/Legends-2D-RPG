@@ -8,64 +8,39 @@ public class UIPopup : MonoBehaviour
     public CanvasGroup fadeImage;
 
 
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
-        transform.localScale = Vector3.one;
-        fadeImage.alpha = 0;
+        if(fadeImage != null) fadeImage.alpha = 0f;   
     }
 
     private void OnEnable()
     {
-        Actions.OnMainMenuButton += OpenFadedBackground;
-        Actions.OnBackButton += CloseFadedBackground;
+        Actions.OnMainMenuButton += FadeIn;
         Actions.OnResumeButton += ClosePopBackground;
         Actions.OnHomeButton += ClosePopBackground;
     }
 
     private void OnDisable()
     {
-        Actions.OnMainMenuButton -= OpenFadedBackground;
-        Actions.OnBackButton -= CloseFadedBackground;
+        Actions.OnMainMenuButton -= FadeIn;
         Actions.OnResumeButton -= ClosePopBackground;
         Actions.OnHomeButton -= ClosePopBackground;
     }
 
-    public void OpenFadedBackground()
-    {
-        StartCoroutine(FadeIn());
-    }
 
-    IEnumerator FadeIn() // for UI dark mask on background
+    private void FadeIn() // for UI dark mask on background
     {
-        yield return null;
-        fadeImage.LeanAlpha(0.6f, 0.2f);
+        fadeImage.LeanAlpha(1f, 0.1f);
         fadeImage.blocksRaycasts = true;
         fadeImage.interactable = true;
     }
 
-    public void CloseFadedBackground()
-    {
-        fadeImage.LeanAlpha(0, 0.6f);
-        fadeImage.blocksRaycasts = false;
-        fadeImage.interactable = false;
-        Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
-    }
-
-    public void ShopCloseFadedBackground()
-    {
-        fadeImage.LeanAlpha(0, 0.3f);
-        fadeImage.blocksRaycasts = false;
-        fadeImage.interactable = false;
-        Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
-    }
 
     public void ClosePopBackground()
     {
-        fadeImage.LeanAlpha(0, 0.6f);
+        fadeImage.LeanAlpha(0, 0.5f);
         fadeImage.blocksRaycasts = false;
         fadeImage.interactable = false;
-        Debug.Log($"UIPopup Close called. | Interface on: {ButtonHandler.interfaceOn}");
     }
 
 
