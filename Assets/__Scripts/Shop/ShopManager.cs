@@ -81,6 +81,36 @@ public class ShopManager : MonoBehaviour
 
     private int shop1NormalItems, shop1SecretItems, shop2NormalItems, shop2SecretItems;
 
+
+    // SUBSCRIBERS
+
+
+    private void OnEnable()
+    {
+        //Actions.OnUseItem += UpdateStats_1;
+        //Actions.OnBuyItem += UpdateStats_2; //hook into Action with minimal Args
+        //Actions.OnSellItem += UpdateStats_2;
+        //Actions.OnBackButton += BackButton;
+        Actions.OnHomeButton += HomeButton;        
+        //Actions.OnMainMenuButton += MainMenuButton;
+        //Actions.OnResumeButton += ResumeButton;
+    }
+
+
+    private void OnDisable()
+    {
+        //Actions.OnUseItem -= UpdateStats_1;
+        //Actions.OnBuyItem -= UpdateStats_2;
+        //Actions.OnSellItem -= UpdateStats_2;
+        //Actions.OnBackButton -= BackButton;
+        //Actions.OnHomeButton -= HomeButton;
+        //Actions.OnMainMenuButton -= MainMenuButton;
+        //Actions.OnResumeButton -= ResumeButton;
+    }
+
+
+
+
     // METHODS
 
     public void CallToBuyItem()
@@ -247,13 +277,10 @@ public class ShopManager : MonoBehaviour
         secretShop.OpenSecretPanel();
     }
 
-    public void ShopBackOrHome(string call) // tidying for back and home buttons
+    public void HomeButton() // tidying for back and home buttons
     {
-        MenuManager.instance.InventoryBackOrHome(call);
         shopCurrentNewItems = 0;
-        GameManager.instance.isItemSelected = false;
         NofifyOnly();
-
     }
 
     public void ShopItemInfoReset()

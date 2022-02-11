@@ -6,6 +6,8 @@ using TMPro;
 using System.Linq;
 using Sirenix.OdinInspector;
 using DG.Tweening;
+using UnityEngine.EventSystems;
+using System;
 
 
 
@@ -35,9 +37,6 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] RectTransform clockPanel, clockFrame;
-    [FoldoutGroup("Miscellaneous", expanded: false)]
-    [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] ParticleSystem sunshine;
 
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
@@ -284,33 +283,276 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
     #endregion
 
+
+    // SUBSCRIBERS
+
+
     private void OnEnable()
     {
-        Actions.OnBuyItem += CallStats2; // subscriber
-        Actions.OnSellItem += CallStats2;
-        Actions.OnUseItem += CallStats1;
+        Actions.OnUseItem += UpdateStats_1;
+        Actions.OnBuyItem += UpdateStats_2; //hook into Action with minimal Args
+        Actions.OnSellItem += UpdateStats_2;
+        Actions.OnBackButton += BackButton;
+        Actions.OnHomeButton += HomeButton;
+        Actions.OnMainMenuButton += MainMenuButton;
+        Actions.OnResumeButton += ResumeButton;
     }
+
 
     private void OnDisable()
     {
-        Actions.OnBuyItem -= CallStats2; // subscriber
-        Actions.OnSellItem -= CallStats2; // subscriber
-        Actions.OnUseItem -= CallStats1;
+        Actions.OnUseItem -= UpdateStats_1;
+        Actions.OnBuyItem -= UpdateStats_2;
+        Actions.OnSellItem -= UpdateStats_2;
+        Actions.OnBackButton -= BackButton;
+        Actions.OnHomeButton -= HomeButton;
+        Actions.OnMainMenuButton -= MainMenuButton;
+        Actions.OnResumeButton -= ResumeButton;
     }
+
 
 
     // ACTION METHOD CALLS
 
-    public void CallStats1(ItemsManager item, int character, Vector2 position)
+    public void UpdateStats_1(ItemsManager item, int character, Vector2 position)
     {
         UpdateStats();
+        UpdateItemsInventory();
     }
 
-    public void CallStats2(ItemsManager item)
+    public void UpdateStats_2(ItemsManager item)
     {
-        UpdateStats();
+        UpdateStats(); //hook into Actions without all the Args
+        UpdateItemsInventory();
     }
 
+    private void ResumeButton()
+    {
+        #region Graphics
+
+        StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.5f));
+        DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.4f);
+        ControllersFadeIn(0.5f);
+        StartCoroutine(EnableJoystickDelay(0.7f));
+        GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+
+        #endregion
+
+        #region Data
+
+        currentNewItems = 0;
+        ButtonHandler.instance.SetAllButtonsInteractable();
+        ShopManager.instance.ShopItemInfoReset();
+        ItemInfoReset();
+
+        UpdateItemsInventory();
+        UpdateStats();
+
+        #endregion
+
+        #region Bools
+
+        GameManager.instance.isItemSelected = false;
+        isInventoryOn = false;
+        ShopManager.instance.isShopUIOn = false;
+        dayNightCycle.SetActive(true);
+
+        #endregion
+    }
+
+    public void BackButton()
+    {
+        PanelController();
+
+        currentNewItems = 0;
+        GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+        GameManager.instance.isItemSelected = false;
+        UpdateItemsInventory();
+
+    }
+
+    private void HomeButton()
+    {
+        #region Graphics
+
+        ControllersFadeIn(0.5f);
+        StartCoroutine(EnableJoystickDelay(0.7f));
+        GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+        MenuPanelsOff("home");
+
+        #endregion
+
+        #region Data
+
+        currentNewItems = 0;
+        ButtonHandler.instance.SetAllButtonsInteractable();
+        ShopManager.instance.ShopItemInfoReset();
+        ItemInfoReset();
+
+        UpdateItemsInventory();
+        UpdateStats();
+
+        #endregion
+
+        #region Bools
+
+        GameManager.instance.isItemSelected = false;
+        isInventoryOn = false;
+        ShopManager.instance.isShopUIOn = false;
+        dayNightCycle.SetActive(true);
+
+        #endregion             
+    }
+
+    private void MainMenuButton()
+    {
+        MainMenuCGOn(); // no fade in, just DOPunch
+        ControllersFadeOut();
+        DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.2f);
+        UpdateStats();
+        UpdateItemsInventory();
+    }
+
+    private void MainMenuCGOn()
+    {
+        mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        mainMenu.GetComponent<CanvasGroup>().interactable = true;
+        mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+    }
+    
+    private void ControllersFadeOut()
+    {
+        StartCoroutine(DisableJoystickDelay());
+        StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 0f, 0.4f));
+        StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, 0.4f));
+        StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, 0.4f));
+    }
+    
+    private void ControllersFadeIn(float fadeTime)
+    {
+        joystick.EnableJoystick();
+        actionButton.EnableButton();
+        StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 1f, fadeTime));
+        StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, fadeTime));
+        StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, fadeTime));
+    }
+
+    private void ControllersOn()
+    {
+        Debug.Log($"Joystick GameObject status: {joystick.gameObject.activeInHierarchy}");
+        joystick.EnableJoystick();
+        actionButton.EnableButton();
+        quickBar.EnableQuickbar();
+        joystick.GetComponent<CanvasGroup>().alpha = 1;
+        joystick.GetComponent<CanvasGroup>().interactable = true;
+        joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        actionButton.GetComponent<CanvasGroup>().alpha = 1;
+        actionButton.GetComponent<CanvasGroup>().interactable = true;
+        actionButton.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        quickBar.GetComponent<CanvasGroup>().alpha = 1;
+        quickBar.GetComponent<CanvasGroup>().interactable = true;
+        quickBar.GetComponent<CanvasGroup>().blocksRaycasts = true;
+    }
+
+    private void PanelController()
+    {
+        if (isInventoryOn == true)
+        {
+            Debug.Log($"Inventory is open and 'back' has been called");
+
+            ButtonHandler.instance.SetAllButtonsInteractable();
+            ShopManager.instance.ShopItemInfoReset();
+            ItemInfoReset();
+
+            mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            inventoryPanel.GetComponent<CanvasGroup>().alpha = 0;
+            inventoryPanel.GetComponent<CanvasGroup>().interactable = false;
+            inventoryPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+            isInventoryOn = false;
+        }
+        else if (ShopManager.instance.isShopUIOn == true)
+        {
+            Debug.Log($"Shop is open and 'back' has been called");
+
+            ButtonHandler.instance.SetAllButtonsInteractable();
+            ShopManager.instance.ShopItemInfoReset();
+            ItemInfoReset();
+
+            mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().interactable = false;
+            ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().alpha = 0;
+
+            ShopManager.instance.isShopUIOn = false;
+        }
+
+        else if (isOverviewOn == true || isStatsOn == true || isWeaponryOn == true)
+        {
+            mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            Debug.Log($"Team UI back triggered");
+
+        }
+
+        else if (menuPanels[5].alpha == 1) // quests
+        {
+            mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            menuPanels[5].alpha = 0;
+            menuPanels[5].interactable = false;
+            menuPanels[5].blocksRaycasts = false;
+        }
+
+        else if (menuPanels[2].alpha == 1) // keys
+        {
+            mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            menuPanels[2].alpha = 0;
+            menuPanels[2].interactable = false;
+            menuPanels[2].blocksRaycasts = false;
+        }
+
+        else if (menuPanels[3].alpha == 1) // magic
+        {
+            mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+            mainMenu.GetComponent<CanvasGroup>().interactable = true;
+            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            menuPanels[3].alpha = 0;
+            menuPanels[3].interactable = false;
+            menuPanels[3].blocksRaycasts = false;
+        }
+    }
+
+
+
+
+
+
+    // CO-ROUTINES
+
+    private IEnumerator DisableJoystickDelay()
+    {
+        yield return new WaitForSeconds(0.7f);
+        joystick.DisableJoystick();
+        actionButton.DisableButton();
+    }
+    private IEnumerator EnableJoystickDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        ControllersOn();
+    }
+    private void DoPunch(GameObject gameObject, Vector3 scale, float time)
+    {
+        gameObject.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
+    }
 
 
     // METHODS
@@ -682,48 +924,6 @@ public class MenuManager : MonoBehaviour
         });
     }
 
-    public void InventoryBackOrHome(string call)
-    {
-        if (call == "home")
-        {
-            MenuPanelsOff(call);
-            currentNewItems = 0;
-            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-            GameManager.instance.isItemSelected = false;
-            UpdateItemsInventory();
-
-            if (ButtonHandler.interfaceOn == true)
-            {
-                ButtonHandler.IsInterfaceOn();
-            }
-
-            Debug.Log($"Joystick GameObject status: {joystick.gameObject.activeInHierarchy}");
-            joystick.EnableJoystick();
-            actionButton.EnableButton();
-            quickBar.EnableQuickbar();
-            joystick.GetComponent<CanvasGroup>().alpha = 1;
-            joystick.GetComponent<CanvasGroup>().interactable = true;
-            joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
-            actionButton.GetComponent<CanvasGroup>().alpha = 1;
-            actionButton.GetComponent<CanvasGroup>().interactable = true;
-            actionButton.GetComponent<CanvasGroup>().blocksRaycasts = true;
-            quickBar.GetComponent<CanvasGroup>().alpha = 1;
-            quickBar.GetComponent<CanvasGroup>().interactable = true;
-            quickBar.GetComponent<CanvasGroup>().blocksRaycasts = true;
-
-        }
-
-        else if (call == "back")
-        {
-            MenuPanelsOff(call);
-            currentNewItems = 0;
-            GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-            GameManager.instance.isItemSelected = false;
-            UpdateItemsInventory();
-
-        }
-    }
-
     public void MainMenuPanel(int panel)  // switch a panel on
     {
         //    mainMenu 0
@@ -745,8 +945,6 @@ public class MenuManager : MonoBehaviour
 
         mainMenu.GetComponent<CanvasGroup>().interactable = false;
         mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
-
-
 
     }
 
@@ -775,17 +973,8 @@ public class MenuManager : MonoBehaviour
                 menuPanels[i].interactable = false;
                 menuPanels[i].blocksRaycasts = false;
             }
-
-            isInventoryOn = false;
-            ShopManager.instance.isShopUIOn = false;
-
-            dayNightCycle.SetActive(true);
-
-            ButtonHandler.instance.SetAllButtonsInteractable();
-
-            ShopManager.instance.ShopItemInfoReset();
-            ItemInfoReset();
         }
+
         else if (call == "back")
         {
             if (isInventoryOn == true)
@@ -886,37 +1075,24 @@ public class MenuManager : MonoBehaviour
     public IEnumerator MainMenuScale()
     {
         yield return null;
-        ButtonHandler.IsInterfaceOn(); // switches interfaceOn
 
         if (ButtonHandler.interfaceOn) // and if it's on
         {
-            mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
-            mainMenu.GetComponent<CanvasGroup>().interactable = true;
-            mainMenu.GetComponent<CanvasGroup>().alpha = 1;
-            StartCoroutine(DelayedStuff());
-            StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 0f, 0.4f));
-            StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, 0.4f));
-            StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, 0.4f));
+            MainMenuCGOn();
+            StartCoroutine(DisableJoystickDelay());
+            ControllersFadeOut();
             mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
         }
         else if (!ButtonHandler.interfaceOn) // and if it's then switched off
         {
-            joystick.EnableJoystick();
-            actionButton.EnableButton();
             StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.5f));
-            StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 1f, 1f));
-            StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, 1f));
-            StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, 1f));
+            ControllersFadeIn(0.5f);
             mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.6f, 0, 0).SetEase(Ease.InBack);
         }
+
     }
 
-    private IEnumerator DelayedStuff()
-    {
-        yield return new WaitForSeconds(0.7f);
-        joystick.DisableJoystick();
-        actionButton.DisableButton();
-    }
+
 
     private static IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
     {
@@ -930,9 +1106,6 @@ public class MenuManager : MonoBehaviour
         }
         canvasGroup.alpha = targetAlpha;
     }
-
-
-
 
     public void OnUseButton()
     {

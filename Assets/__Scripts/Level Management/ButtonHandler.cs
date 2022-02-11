@@ -13,6 +13,15 @@ public class ButtonHandler : MonoBehaviour
     [ShowInInspector]
     public static bool interfaceOn;
 
+    private void OnEnable()
+    {
+        Actions.OnHomeButton += IsInterfaceOn;
+        Actions.OnMainMenuButton += IsInterfaceOn;
+        Actions.OnResumeButton += IsInterfaceOn;
+
+    }
+
+
     void Awake()
     {
         instance = this;
