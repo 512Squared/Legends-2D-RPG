@@ -181,6 +181,7 @@ GameObject:
   - component: {fileID: 2950060829562999145}
   - component: {fileID: -2273809868125113421}
   - component: {fileID: 6646614661158716276}
+  - component: {fileID: 8647004524911529489}
   m_Layer: 5
   m_Name: Items Button
   m_TagString: Untagged
@@ -294,7 +295,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 8647004524911529489}
         m_TargetAssemblyTypeName: ButtonHandler, Assembly-CSharp
         m_MethodName: UseButtonIsOn
         m_Mode: 1
@@ -350,6 +351,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8647004524911529489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6733940417252993636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330bd7bbedffd2847ab259a5965b62fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interfaceOn: 0
+  buttons: []
 --- !u!1 &7000873543981128172
 GameObject:
   m_ObjectHideFlags: 0

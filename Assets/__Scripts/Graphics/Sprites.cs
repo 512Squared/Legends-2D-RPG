@@ -5,7 +5,7 @@ using UnityEngine;
 public class Sprites : MonoBehaviour 
 {
     #region TODO List
-    
+    // TODO Complete DayNight cycle
 
     #endregion
 

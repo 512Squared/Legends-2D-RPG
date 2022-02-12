@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     public bool isInterfaceOn = false, dialogueBoxOpened = false;
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
-    public bool isInventoryOn, isPlayerInShop;
+    public bool isEquipOn, isPlayerInShop;
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
     public bool isItemSelected;
