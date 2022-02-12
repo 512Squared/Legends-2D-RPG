@@ -34,6 +34,7 @@ public class ItemsManager : MonoBehaviour
     private void Start()
     {
         instance = this;
+        valueInCoins += (amountOfEffect + itemWeaponPower + itemArmourDefence) * 2;
     }
 
     public void UseItem(int characterToUseOn)

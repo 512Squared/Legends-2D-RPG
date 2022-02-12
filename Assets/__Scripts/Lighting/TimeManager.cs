@@ -209,17 +209,17 @@ public struct _DateTime
     #region Bool Checks
     public bool IsNight()
     {
-        return hour > 18 || hour < 6;
+        return hour > 17 || hour < 6;
     }
 
     public bool IsMorning()
     {
-        return hour >= 8 && hour <= 12;
+        return hour >= 7 && hour <= 12;
     }
 
     public bool IsAfternoon()
     {
-        return hour > 12 && hour < 18;
+        return hour > 12 && hour < 17;
     }
 
     public bool IsWeekend()

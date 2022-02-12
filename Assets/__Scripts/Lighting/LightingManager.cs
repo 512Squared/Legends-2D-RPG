@@ -18,14 +18,24 @@ public class LightingManager : MonoBehaviour
 
     private void OnEnable()
     {
+        Actions.OnSceneChangeTimeCheck += SceneChangeTimeCheck;
         Actions.OnDusk += LightsOn;
         Actions.OnDawn += LightsOff;
     }
 
     private void OnDisable()
     {
+        Actions.OnSceneChangeTimeCheck -= SceneChangeTimeCheck;
         Actions.OnDusk -= LightsOn;
         Actions.OnDawn -= LightsOff;
+
+    }
+
+    private void SceneChangeTimeCheck(bool isDayTime, _DateTime _time)
+    {
+        if (isDayTime) LightsOff();
+        else if (!isDayTime) LightsOn();
+        Debug.Log($"Time: {_time.Hour}:{_time.Minutes} | Afternoon: {_time.IsAfternoon()} | Night: {_time.IsNight()} | Morning: {_time.IsMorning()}");
     }
 
     private void LightsOn()
@@ -48,4 +58,9 @@ public class LightingManager : MonoBehaviour
         }
     }
 
+
+    private void Start()
+    {
+        
+    }
 }

@@ -10,33 +10,15 @@ public class ButtonHandler : MonoBehaviour
     public static ButtonHandler instance;
     private GameObject useButton, sellButton;
 
-    [ShowInInspector]
-    public static bool interfaceOn;
-
-    private void OnEnable()
-    {
-        Actions.OnHomeButton += IsInterfaceOn;
-        Actions.OnMainMenuButton += IsInterfaceOn;
-        Actions.OnResumeButton += IsInterfaceOn;
-
-    }
-
 
     void Awake()
     {
         instance = this;
         useButton = GameObject.FindGameObjectWithTag("buttonUse");
         sellButton = GameObject.FindGameObjectWithTag("button_sell");
-        interfaceOn = false;
     }
 
-    public static void IsInterfaceOn()
-    {
-        interfaceOn = !interfaceOn;
-        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
-    }
-
-    public void UseButtonIsOn()
+     public void UseButtonIsOn()
     {
         useButton.GetComponent<Button>().interactable = true;
         sellButton.GetComponent<Button>().interactable = true;

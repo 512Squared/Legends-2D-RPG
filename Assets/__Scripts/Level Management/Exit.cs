@@ -29,21 +29,19 @@ public class Exit : MonoBehaviour
 
             SceneHandling sceneHandle = gameObject.GetComponent<SceneHandling>();
 
-            StartCoroutine(LoadSceneCoroutine());
+            StartCoroutine(LoadSceneCoroutine(sceneHandle));
 
             PlayerGlobalData.instance.arrivingAt = goingTo;
 
             GameManager.instance.sceneObjects[indexTo].SetActive(true);
             GameManager.instance.sceneObjects[indexFrom].SetActive(false);
 
-            GameManager.instance.ActivateCharacters(sceneToLoad);
-
             ShopMotherFucker(sceneToLoad, sceneHandle.sceneObjectsLoad, sceneHandle.sceneObjectsUnload);
 
         }
     }
 
-    IEnumerator LoadSceneCoroutine()
+    IEnumerator LoadSceneCoroutine(SceneHandling scene)
     {
         yield return null;
 
@@ -57,6 +55,8 @@ public class Exit : MonoBehaviour
             {
                 unloaded = true;
                 AnyManager.anyManager.UnloadScene(arrivingFrom);
+                Actions.OnSceneChange?.Invoke(scene.sceneObjectsLoad);
+                GameManager.instance.ActivateCharacters(sceneToLoad);
             }
 
         }
@@ -91,11 +91,16 @@ public class Exit : MonoBehaviour
         {
             GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size = new Vector2(1.12f, 1.8f);
             Debug.Log($"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
+            Actions.OnUnderground?.Invoke();
+
         }
 
         else if (scene != "Dungeon")
+        {
             GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size = new Vector2(1.12f, 1.31f);
             Debug.Log($"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
+            Actions.OnOverground?.Invoke();
+        }
     }
 
 }

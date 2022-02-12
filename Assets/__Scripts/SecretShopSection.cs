@@ -110,9 +110,10 @@ public class SecretShopSection : MonoBehaviour
     }
     IEnumerator OpenPanels()
     {
+        yield return null;
+        
         if (!isSecretPanelOpen)
         {
-            yield return null;
             leftShopPanel.DOAnchorPos(new Vector2(-18.45f, -1.84f), 1.5f);
             rightShopPanel.DOAnchorPos(new Vector2(5.72f, -1.84f), 1.5f);
             isSecretPanelOpen = true;

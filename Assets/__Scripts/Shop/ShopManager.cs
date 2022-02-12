@@ -63,7 +63,7 @@ public class ShopManager : MonoBehaviour
     private int shopCurrentNewItems = 0;
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isShopUIOn = false, isPlayerInsideShop = false;
+    public bool isPlayerInsideShop = false;
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool shopWeaponBool, shopArmourBool, shopItemBool, shopSpellBool, shopPotionBool;
@@ -92,7 +92,7 @@ public class ShopManager : MonoBehaviour
         //Actions.OnSellItem += UpdateStats_2;
         //Actions.OnBackButton += BackButton;
         Actions.OnHomeButton += HomeButton;        
-        //Actions.OnMainMenuButton += MainMenuButton;
+        Actions.OnMainMenuButton += MainMenuButton;
         //Actions.OnResumeButton += ResumeButton;
     }
 
@@ -104,11 +104,14 @@ public class ShopManager : MonoBehaviour
         //Actions.OnSellItem -= UpdateStats_2;
         //Actions.OnBackButton -= BackButton;
         Actions.OnHomeButton -= HomeButton;
-        //Actions.OnMainMenuButton -= MainMenuButton;
+        Actions.OnMainMenuButton -= MainMenuButton;
         //Actions.OnResumeButton -= ResumeButton;
     }
 
-
+    private void MainMenuButton()
+    {
+        NofifyOnly();
+    }
 
 
     // METHODS
@@ -203,7 +206,7 @@ public class ShopManager : MonoBehaviour
 
     public void OpenShop()
     {
-        isShopUIOn = true;
+        GameManager.instance.isShopUIOn = true;
         UpdateShopItemsInventory();
     }
 
@@ -438,7 +441,7 @@ public class ShopManager : MonoBehaviour
 
                 // Stuff to activate ONLY when inside a shop
 
-                if (isShopUIOn == true)
+                if (GameManager.instance.isShopUIOn == true)
                 {
 
                     // Removing focus from previously selected items 

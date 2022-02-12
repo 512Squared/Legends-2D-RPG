@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public static class Actions
 {
@@ -32,5 +33,9 @@ public static class Actions
 
     public static Action OnDusk;
     public static Action OnDawn;
+    public static Action OnUnderground;
+    public static Action OnOverground;
+    public static Action<SceneObjectsLoad> OnSceneChange;
+    public static Action<bool, _DateTime> OnSceneChangeTimeCheck;
 
 }

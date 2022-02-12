@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     public bool isInterfaceOn = false, dialogueBoxOpened = false;
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
-    public bool isEquipOn, isPlayerInShop;
+    public bool isInventoryOn, isPlayerInShop, isShopUIOn;
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
     public bool isItemSelected;
@@ -59,6 +59,38 @@ public class GameManager : MonoBehaviour
     private string firstScene;
 
     #endregion
+
+
+    private void OnEnable()
+    {
+        Actions.OnHomeButton += HomeButton;
+        Actions.OnMainMenuButton += MainMenuButton;
+        Actions.OnResumeButton += ResumeButton;
+    }
+
+
+    private void OnDisable()
+    {
+        Actions.OnHomeButton -= HomeButton;
+        Actions.OnMainMenuButton -= MainMenuButton;
+        Actions.OnResumeButton -= ResumeButton;
+    }
+
+    private void ResumeButton()
+    {
+        IsInterfaceOn();
+    }
+    private void HomeButton()
+    {
+        IsInterfaceOn();
+    }
+    private void MainMenuButton()
+    {
+        IsInterfaceOn();
+    }
+
+
+
 
 
     // Start is called before the first frame update
@@ -90,7 +122,7 @@ public class GameManager : MonoBehaviour
             PlayerGlobalData.instance.deactivedMovement = false;
         }
 
-
+        
     }
 
     public PlayerStats[] GetPlayerStats()
@@ -120,6 +152,11 @@ public class GameManager : MonoBehaviour
         }
 
         playerStats[0].gameObject.SetActive(true);
+    }
+
+    public void IsInterfaceOn()
+    {
+        isInterfaceOn = !isInterfaceOn;        
     }
 
 

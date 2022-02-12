@@ -354,7 +354,9 @@ public class MenuManager : MonoBehaviour
 
         GameManager.instance.isItemSelected = false;
         isInventoryOn = false;
-        ShopManager.instance.isShopUIOn = false;
+        GameManager.instance.isInventoryOn = false;
+        GameManager.instance.isShopUIOn = false;
+
         dayNightCycle.SetActive(true);
 
         #endregion
@@ -368,7 +370,9 @@ public class MenuManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         GameManager.instance.isItemSelected = false;
         UpdateItemsInventory();
-
+        isInventoryOn = false;
+        GameManager.instance.isInventoryOn = false;
+        Debug.Log($"isInventoryOn: {isInventoryOn}");
     }
 
     private void HomeButton()
@@ -397,10 +401,12 @@ public class MenuManager : MonoBehaviour
         #region Bools
 
         GameManager.instance.isItemSelected = false;
-        isInventoryOn = false;
-        ShopManager.instance.isShopUIOn = false;
-        dayNightCycle.SetActive(true);
+        GameManager.instance.isShopUIOn = false;
 
+        dayNightCycle.SetActive(true);
+        isInventoryOn = false;
+        GameManager.instance.isInventoryOn = false;
+        Debug.Log($"isInventoryOn: {isInventoryOn}");
         #endregion             
     }
 
@@ -471,8 +477,9 @@ public class MenuManager : MonoBehaviour
             inventoryPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
             isInventoryOn = false;
+            GameManager.instance.isInventoryOn = false;
         }
-        else if (ShopManager.instance.isShopUIOn == true)
+        else if (GameManager.instance.isShopUIOn == true)
         {
             Debug.Log($"Shop is open and 'back' has been called");
 
@@ -486,8 +493,8 @@ public class MenuManager : MonoBehaviour
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().interactable = false;
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().alpha = 0;
-
-            ShopManager.instance.isShopUIOn = false;
+                        
+            GameManager.instance.isShopUIOn = false;
         }
 
         else if (isOverviewOn == true || isStatsOn == true || isWeaponryOn == true)
@@ -992,8 +999,9 @@ public class MenuManager : MonoBehaviour
 
 
                 isInventoryOn = false;
+                GameManager.instance.isInventoryOn = false;
             }
-            else if (ShopManager.instance.isShopUIOn == true)
+            else if (GameManager.instance.isShopUIOn == true)
             {
                 Debug.Log($"Shop is open and 'back' has been called");
 
@@ -1008,7 +1016,8 @@ public class MenuManager : MonoBehaviour
                 ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
                 ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().alpha = 0;
 
-                ShopManager.instance.isShopUIOn = false;
+                GameManager.instance.isShopUIOn = false;
+
             }
 
             else if (isOverviewOn == true || isStatsOn == true || isWeaponryOn == true)
@@ -1452,11 +1461,11 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void turnEquipOn()
+    public void turnInventoryOn()
     {
         isInventoryOn = !isInventoryOn;
-        GameManager.instance.isEquipOn = !GameManager.instance.isEquipOn;
-        Debug.Log("IsEquipOn status: " + isInventoryOn);
+        GameManager.instance.isInventoryOn = !GameManager.instance.isInventoryOn;
+        Debug.Log("IsInventoryOn status: " + isInventoryOn);
     }
 
     public void UpdateItemsInventory()
