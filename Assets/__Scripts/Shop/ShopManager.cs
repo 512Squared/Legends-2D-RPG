@@ -11,6 +11,7 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance;
 
+    #region Serialized Fields
 
     [SerializeField] private PlayerStats playerStats;
     private SecretShopSection secretShop;
@@ -74,6 +75,9 @@ public class ShopManager : MonoBehaviour
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isShopInstantiated = false;
 
+    #endregion
+
+
     private readonly Tween fadeText;
 
     public ItemsManager.Shop shopType;
@@ -90,7 +94,7 @@ public class ShopManager : MonoBehaviour
         //Actions.OnUseItem += UpdateStats_1;
         //Actions.OnBuyItem += UpdateStats_2; //hook into Action with minimal Args
         //Actions.OnSellItem += UpdateStats_2;
-        //Actions.OnBackButton += BackButton;
+        Actions.OnBackButton += BackButton;
         Actions.OnHomeButton += HomeButton;        
         //Actions.OnMainMenuButton += MainMenuButton;
         //Actions.OnResumeButton += ResumeButton;
@@ -102,7 +106,7 @@ public class ShopManager : MonoBehaviour
         //Actions.OnUseItem -= UpdateStats_1;
         //Actions.OnBuyItem -= UpdateStats_2;
         //Actions.OnSellItem -= UpdateStats_2;
-        //Actions.OnBackButton -= BackButton;
+        Actions.OnBackButton -= BackButton;
         Actions.OnHomeButton -= HomeButton;
         //Actions.OnMainMenuButton -= MainMenuButton;
         //Actions.OnResumeButton -= ResumeButton;
@@ -278,6 +282,12 @@ public class ShopManager : MonoBehaviour
     }
 
     public void HomeButton() // tidying for back and home buttons
+    {
+        shopCurrentNewItems = 0;
+        NofifyOnly();
+    }
+
+    public void BackButton()
     {
         shopCurrentNewItems = 0;
         NofifyOnly();

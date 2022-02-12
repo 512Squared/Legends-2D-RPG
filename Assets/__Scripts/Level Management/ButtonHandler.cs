@@ -33,7 +33,7 @@ public class ButtonHandler : MonoBehaviour
     public static void IsInterfaceOn()
     {
         interfaceOn = !interfaceOn;
-        GameManager.instance.isInterfaceOn = !GameManager.instance.isInterfaceOn;
+        GameManager.instance.isInterfaceOn = interfaceOn;
     }
 
     public void UseButtonIsOn()

@@ -1,19 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Sirenix.OdinInspector;
 using DG.Tweening;
-using UnityEngine.EventSystems;
-using System;
-
 
 
 public class MenuManager : MonoBehaviour
 {
-
+    #region VARIABLES
     public static MenuManager instance;
 
     private int panelStuff;
@@ -21,8 +17,9 @@ public class MenuManager : MonoBehaviour
     public int teamNofifyCount;
     private Tween fadeText;
     private int foodItems, weaponItems, potionItems, itemItems, armourItems;
+    #endregion
 
-    #region Serialized Fields
+    #region SERIALIZED FIELDS
 
 
 
@@ -283,9 +280,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
     #endregion
 
-
-    // SUBSCRIBERS
-
+    #region SUBSCRIBERS
 
     private void OnEnable()
     {
@@ -296,8 +291,9 @@ public class MenuManager : MonoBehaviour
         Actions.OnHomeButton += HomeButton;
         Actions.OnMainMenuButton += MainMenuButton;
         Actions.OnResumeButton += ResumeButton;
+        Actions.OnBackButton += turnInventoryOn;
+        Actions.OnHomeButton += turnInventoryOn;
     }
-
 
     private void OnDisable()
     {
@@ -310,9 +306,9 @@ public class MenuManager : MonoBehaviour
         Actions.OnResumeButton -= ResumeButton;
     }
 
+    #endregion
 
-
-    // ACTION METHOD CALLS
+    #region ACTION METHODS
 
     public void UpdateStats_1(ItemsManager item, int character, Vector2 position)
     {
@@ -333,7 +329,7 @@ public class MenuManager : MonoBehaviour
         StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.3f));
         DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.4f);
         ControllersFadeIn(0.5f);
-        StartCoroutine(EnableJoystickDelay(0.7f));
+        StartCoroutine(EnableJoystickDelay(0.6f));
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
 
         #endregion
@@ -368,7 +364,6 @@ public class MenuManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         GameManager.instance.isItemSelected = false;
         UpdateItemsInventory();
-
     }
 
     private void HomeButton()
@@ -376,7 +371,7 @@ public class MenuManager : MonoBehaviour
         #region Graphics
 
         ControllersFadeIn(0.5f);
-        StartCoroutine(EnableJoystickDelay(0.7f));
+        StartCoroutine(EnableJoystickDelay(0.6f));
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         MenuPanelsOff("home");
 
@@ -439,9 +434,7 @@ public class MenuManager : MonoBehaviour
 
     private void ControllersOn()
     {
-        joystick.EnableJoystick();
-        actionButton.EnableButton();
-        quickBar.EnableQuickbar();
+        quickBar.EnableQuickbar(); // JOY & BUTT on already via FadeIn
         joystick.GetComponent<CanvasGroup>().alpha = 1;
         joystick.GetComponent<CanvasGroup>().interactable = true;
         joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -470,7 +463,6 @@ public class MenuManager : MonoBehaviour
             inventoryPanel.GetComponent<CanvasGroup>().interactable = false;
             inventoryPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
-            isInventoryOn = false;
         }
         else if (ShopManager.instance.isShopUIOn == true)
         {
@@ -487,7 +479,6 @@ public class MenuManager : MonoBehaviour
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().alpha = 0;
 
-            ShopManager.instance.isShopUIOn = false;
         }
 
         else if (isOverviewOn == true || isStatsOn == true || isWeaponryOn == true)
@@ -530,12 +521,14 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    private void DoPunch(GameObject gameObject, Vector3 scale, float time)
+    {
+        gameObject.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
+    }
 
+    #endregion
 
-
-
-
-    // CO-ROUTINES
+    #region CO-ROUTINES
 
     private IEnumerator DisableJoystickDelay()
     {
@@ -543,18 +536,133 @@ public class MenuManager : MonoBehaviour
         joystick.DisableJoystick();
         actionButton.DisableButton();
     }
+
     private IEnumerator EnableJoystickDelay(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
         ControllersOn();
     }
-    private void DoPunch(GameObject gameObject, Vector3 scale, float time)
+
+    IEnumerator ButtonDelay()
     {
-        gameObject.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
+        yield return new WaitForSeconds(1.2f);
+        clockFrame.GetComponent<Image>().raycastTarget = true;
+        clockFrame.GetComponent<Button>().interactable = true;
     }
 
+    private static IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
+    {
+        float startingAlpha = canvasGroup.alpha;
 
-    // METHODS
+        for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
+        {
+            canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
+
+            yield return null;
+        }
+        canvasGroup.alpha = targetAlpha;
+    }
+
+    IEnumerator PanelCancelCoR()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+    }
+
+    IEnumerator DelayPanelReturn() // also USE item tweens
+    {
+
+        Debug.Log("InventoryLeft panel animations engaged");
+
+        if (activeItem.affectType == ItemsManager.AffectType.HP)
+        {
+            playerStats[0].npcHP = Thulgran.ThulgranHP;
+
+            if (panelStuff != 0)
+            {
+                hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
+            }
+            else if (panelStuff == 0) // Thulgran is controlled by Thulgran.cs
+            {
+                hpEquipToString[panelStuff].text = Thulgran.ThulgranHP.ToString();
+            }
+            var sequence = DOTween.Sequence()
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
+            sequence.SetLoops(1, LoopType.Yoyo);
+
+
+            yield return new WaitForSecondsRealtime(1.8f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
+            Debug.Log("Slider HP fill scale enacted");
+        }
+
+        else if (activeItem.affectType == ItemsManager.AffectType.Mana)
+        {
+            playerStats[0].npcMana = Thulgran.ThulgranMana;
+
+            if (panelStuff != 0)
+            {
+                manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
+            }
+            else if (panelStuff == 0)
+            {
+                manaEquipToString[panelStuff].text = Thulgran.ThulgranMana.ToString();
+            }
+            var sequence = DOTween.Sequence()
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
+            sequence.SetLoops(1, LoopType.Yoyo);
+
+            yield return new WaitForSecondsRealtime(1.8f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
+            Debug.Log("Slider Mana fill expand and slide");
+        }
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
+        {
+
+            if (activeItem.itemType == ItemsManager.ItemType.Armour)
+            {
+                InventoryStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.4f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+            if (activeItem.itemType == ItemsManager.ItemType.Weapon)
+            {
+                InventoryStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1f, 0.4f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+
+            yield return new WaitForSecondsRealtime(1f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
+        }
+
+        yield return new WaitForSecondsRealtime(0.3f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        SetAllButtonsInteractable();
+        isInventorySlidePanelOn = false;
+
+    }
+
+    #endregion
+
+    #region METHODS
     public void HomeScreenStats()
     {
         playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
@@ -958,7 +1066,7 @@ public class MenuManager : MonoBehaviour
         itemDamageBox.SetActive(false);
         itemArmourBox.SetActive(false);
         itemPotionBox.SetActive(false);
-        itemFoodBox.SetActive(false);        
+        itemFoodBox.SetActive(false);
     }
 
     public void MenuPanelsOff(string call)
@@ -1063,20 +1171,6 @@ public class MenuManager : MonoBehaviour
     {
 
         StartCoroutine(DelayPanelReturn());
-    }
-
-
-    private static IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
-    {
-        float startingAlpha = canvasGroup.alpha;
-
-        for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
-        {
-            canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
-
-            yield return null;
-        }
-        canvasGroup.alpha = targetAlpha;
     }
 
     public void OnUseButton()
@@ -1452,12 +1546,13 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void turnEquipOn()
+    public void turnInventoryOn()
     {
-        isInventoryOn = !isInventoryOn;
-        GameManager.instance.isEquipOn = !GameManager.instance.isEquipOn;
-        Debug.Log("IsEquipOn status: " + isInventoryOn);
+        if (isInventoryOn == true) isInventoryOn = false;
+        GameManager.instance.isInventoryOn = isInventoryOn;
+        Debug.Log($"IsInventoryOn status: {isInventoryOn} | {GameManager.instance.isInventoryOn}");
     }
+
 
     public void UpdateItemsInventory()
     {
@@ -1758,95 +1853,6 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    IEnumerator DelayPanelReturn() // also USE item tweens
-    {
-
-        Debug.Log("InventoryLeft panel animations engaged");
-
-        if (activeItem.affectType == ItemsManager.AffectType.HP)
-        {
-            playerStats[0].npcHP = Thulgran.ThulgranHP;
-
-            if (panelStuff != 0)
-            {
-                hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
-            }
-            else if (panelStuff == 0) // Thulgran is controlled by Thulgran.cs
-            {
-                hpEquipToString[panelStuff].text = Thulgran.ThulgranHP.ToString();
-            }
-            var sequence = DOTween.Sequence()
-                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
-            sequence.SetLoops(1, LoopType.Yoyo);
-
-
-            yield return new WaitForSecondsRealtime(1.8f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-
-            Debug.Log("Slider HP fill scale enacted");
-        }
-
-        else if (activeItem.affectType == ItemsManager.AffectType.Mana)
-        {
-            playerStats[0].npcMana = Thulgran.ThulgranMana;
-
-            if (panelStuff != 0)
-            {
-                manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
-            }
-            else if (panelStuff == 0)
-            {
-                manaEquipToString[panelStuff].text = Thulgran.ThulgranMana.ToString();
-            }
-            var sequence = DOTween.Sequence()
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
-            sequence.SetLoops(1, LoopType.Yoyo);
-
-            yield return new WaitForSecondsRealtime(1.8f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-
-            Debug.Log("Slider Mana fill expand and slide");
-        }
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
-        {
-
-            if (activeItem.itemType == ItemsManager.ItemType.Armour)
-            {
-                InventoryStats();
-                var sequence = DOTween.Sequence()
-                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
-                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.4f));
-                sequence.SetLoops(1, LoopType.Yoyo);
-            }
-            if (activeItem.itemType == ItemsManager.ItemType.Weapon)
-            {
-                InventoryStats();
-                var sequence = DOTween.Sequence()
-                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
-                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1f, 0.4f));
-                sequence.SetLoops(1, LoopType.Yoyo);
-            }
-
-            yield return new WaitForSecondsRealtime(1f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-
-        }
-
-        yield return new WaitForSecondsRealtime(0.3f);
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-        SetAllButtonsInteractable();
-        isInventorySlidePanelOn = false;
-
-    }
-
     private void Fade(float endValue, float duration, TweenCallback onEnd)
     {
         if (fadeText != null)
@@ -1857,13 +1863,10 @@ public class MenuManager : MonoBehaviour
         fadeText = chooseText.DOFade(endValue, duration);
     }
 
-    IEnumerator PanelCancelCoR()
-    {
-        yield return new WaitForSecondsRealtime(0.1f);
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-    }
+    #endregion
+
+    #region CALLBACKS
+
 
     private void Start()
     {
@@ -1909,13 +1912,7 @@ public class MenuManager : MonoBehaviour
             seq.SetLoops(1, LoopType.Yoyo);
         }
     }
-
-    IEnumerator ButtonDelay()
-    {
-        yield return new WaitForSeconds(1.2f);
-        clockFrame.GetComponent<Image>().raycastTarget = true;
-        clockFrame.GetComponent<Button>().interactable = true;
-    }
+    #endregion
 }
 
 
