@@ -17,8 +17,6 @@ public class Exit : MonoBehaviour
     bool isLoaded;
     bool unloaded;
 
-
-
     void OnTriggerEnter2D(Collider2D collision)
     {
 
@@ -26,6 +24,7 @@ public class Exit : MonoBehaviour
         {
             if (isLoaded) return;
             isLoaded = true;
+
 
             SceneHandling sceneHandle = gameObject.GetComponent<SceneHandling>();
 
@@ -55,8 +54,8 @@ public class Exit : MonoBehaviour
             {
                 unloaded = true;
                 AnyManager.anyManager.UnloadScene(arrivingFrom);
-                Actions.OnSceneChange?.Invoke(scene.sceneObjectsLoad);
                 GameManager.instance.ActivateCharacters(sceneToLoad);
+                Actions.OnSceneChange?.Invoke(sceneToLoad);
             }
 
         }
@@ -91,15 +90,12 @@ public class Exit : MonoBehaviour
         {
             GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size = new Vector2(1.12f, 1.8f);
             Debug.Log($"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
-            Actions.OnUnderground?.Invoke();
-
         }
 
         else if (scene != "Dungeon")
         {
             GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size = new Vector2(1.12f, 1.31f);
             Debug.Log($"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
-            Actions.OnOverground?.Invoke();
         }
     }
 

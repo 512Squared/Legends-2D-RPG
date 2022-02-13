@@ -23,8 +23,9 @@ public class ClockManager : MonoBehaviour
     public float lightScaler;
 
     public AnimationCurve dayNightCurve;
-
+    [Space]
     public bool isDaylightOn;
+    public string scene;
 
     private void Awake()
     {
@@ -35,60 +36,29 @@ public class ClockManager : MonoBehaviour
     private void OnEnable()
     {
         TimeManager.OnDateTimeChanged += UpdateDateTime;
-        Actions.OnUnderground += GlobalLightSwitch;
-        Actions.OnOverground += GlobalLightSwitch;
         Actions.OnSceneChange += SceneChange;
     }
 
     private void OnDisable()
     {
         TimeManager.OnDateTimeChanged -= UpdateDateTime;
-        Actions.OnUnderground -= GlobalLightSwitch;
-        Actions.OnOverground -= GlobalLightSwitch;
+        Actions.OnSceneChange -= SceneChange;
     }
 
-    private void SceneChange(SceneObjectsLoad scene)  // change daylight by scene type
+    private void SceneChange(string scene)  // change daylight by scene type
     {
-
-        if (scene == SceneObjectsLoad.shop1 || scene == SceneObjectsLoad.shop2 || scene == SceneObjectsLoad.shop3) lightScaler = 1.2f;
+        this.scene = scene;
+        
+        if (scene == "shop1" || scene == "shop2" || scene == "shop3") lightScaler = 1.2f;
         else lightScaler = 0f;  
-        
-        StartCoroutine(FrameDelay());
-        
-        Debug.Log($"Is globalLight on: {isDaylightOn}");
+
     }
 
-    public IEnumerator FrameDelay() // subscriber = LightingManager streetlamps
-    {
-        yield return null;
-        if (_time.IsAfternoon())
-        {
-            Actions.OnSceneChangeTimeCheck?.Invoke(true, _time);
-            isDaylightOn = true;
-        }
-
-        else if (_time.IsMorning())
-        {
-            Actions.OnSceneChangeTimeCheck?.Invoke(true, _time);
-            isDaylightOn = true;
-        }
-
-        else if (_time.IsNight())
-        {
-            Actions.OnSceneChangeTimeCheck?.Invoke(false, _time);
-            isDaylightOn = false;
-        }
-    }
-
-    private void GlobalLightSwitch() // global ligth
-    {
-        if (_time.IsAfternoon()) isDaylightOn = false;
-        else if (_time.IsMorning()) isDaylightOn = false;
-        else if (_time.IsNight()) isDaylightOn = true;
-    }
 
     private void UpdateDateTime(_DateTime dateTime, Continental continental) // UI update
     {
+        _time = dateTime;
+        
         Date.text = dateTime.DateToString();
         if (continental.RailwayTime) Time.text = dateTime.TimeToString24();
         else if (!continental.RailwayTime) Time.text = dateTime.TimeToString12();
@@ -105,14 +75,15 @@ public class ClockManager : MonoBehaviour
 
         float dayNightT = dayNightCurve.Evaluate(t);
 
-        if (isDaylightOn == true)
-            sunlight.intensity = Mathf.Lerp((dayIntensity-lightScaler), nightIntensity, dayNightT);
+        if (_time.Hour > _time.StreetLightsOnAt || _time.Hour < _time.StreetLightsOffAt) sunlight.intensity = 0.2f;
 
-        else if(isDaylightOn == false)
-            sunlight.intensity = 0.1f;
+        else sunlight.intensity = Mathf.Lerp((dayIntensity-lightScaler), nightIntensity, dayNightT);
 
-        _time = dateTime;
-
+        if (scene == "Dungeon")
+        {
+            lightScaler = 0;
+            sunlight.intensity = 0.2f;
+        }
 
     }
 
