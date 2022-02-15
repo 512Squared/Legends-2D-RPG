@@ -3292,47 +3292,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterImage: {fileID: 0}
-  characterMug: {fileID: 0}
-  characterPlain: {fileID: 0}
-  skills: []
   homeScene: 
-  skillBonus: 
-  thulGold: 0
-  thulSpells: 0
-  thulPotions: 0
-  xpLevelUp: 
-  maxLevel: 5
-  baseLevelXP: 0
-  maxMana: 0
-  maxHP: 0
-  isTeamMember: 0
-  isAvailable: 0
-  isNew: 1
   playerName: 
   playerDesc: 
   playerMoniker: 
-  npcLevel: 0
-  npcXP: 0
-  npcMana: 0
-  npcHP: 0
-  npcAttack: 0
-  npcDefence: 0
-  npcIntelligence: 0
-  npcPerception: 0
-  jumpAbility: 0
-  speed: 0
-  equippedWeaponName: 
-  characterWeaponPower: 0
-  equippedWeaponImage: {fileID: 0}
-  equippedArmourName: 
-  characterArmourDefence: 0
-  equippedArmourImage: {fileID: 0}
-  equippedArmourDescription: 
-  equippedWeaponDescription: 
+  thulGold: 0
+  thulSpells: 0
+  thulPotions: 0
+  characterImage: {fileID: 0}
+  characterMug: {fileID: 0}
+  characterPlain: {fileID: 0}
+  maxLevel: 5
+  baseLevelXP: 0
+  characterXP: 0
+  maxMana: 0
+  maxHP: 0
+  characterLevel: 0
+  characterMana: 0
+  characterHP: 0
+  characterIntelligence: 0
+  characterPerception: 0
+  characterBaseAttack: 0
+  characterBaseDefence: 0
+  characterSpeed: 0
+  characterJumpAbility: 0
+  isTeamMember: 0
+  isAvailable: 0
+  isNew: 1
+  characterWeapon: {fileID: 0}
+  characterArmour: {fileID: 0}
+  characterHelmet: {fileID: 0}
+  characterShield: {fileID: 0}
+  characterWeaponName: 
+  characterArmourName: 
+  characterHelmetName: 
+  characterShieldName: 
+  characterWeaponDescription: 
+  characterArmourDescription: 
+  characterHelmetDescription: 
+  characterShieldDescription: 
+  characterAttackTotal: 0
+  characterDefenceTotal: 0
+  characterWeaponImage: {fileID: 0}
+  characterArmourImage: {fileID: 0}
+  characterHelmetImage: {fileID: 0}
+  characterShieldImage: {fileID: 0}
+  skills: []
+  xpLevelUp: 
+  skillBonus: 
   magicSlots: []
-  equippedWeapon: {fileID: 0}
-  equippedArmour: {fileID: 0}
 --- !u!1 &3748982130003843049
 GameObject:
   m_ObjectHideFlags: 0
@@ -3750,49 +3758,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterImage: {fileID: 21300000, guid: bd43d3b8f5cbfb84491d399ef9f61389, type: 3}
-  characterMug: {fileID: 21300000, guid: 926387e612b745048b4b66fdc6e86c56, type: 3}
-  characterPlain: {fileID: 21300000, guid: 2996f77028f4f4141ae70cbce5a149c4, type: 3}
-  skills: []
   homeScene: Homestead
-  skillBonus: 
-  thulGold: 0
-  thulSpells: 0
-  thulPotions: 0
-  xpLevelUp: 
-  maxLevel: 5
-  baseLevelXP: 0
-  maxMana: 200
-  maxHP: 300
-  isTeamMember: 0
-  isAvailable: 0
-  isNew: 1
   playerName: Briarfoot
   playerDesc: Briarfoot is a fierce blacksmith known for cracking skulls and marrying
     together young lovers. He worships Venus.
   playerMoniker: Bringer of the Frost
-  npcLevel: 2
-  npcXP: 200
-  npcMana: 90
-  npcHP: 140
-  npcAttack: 54
-  npcDefence: 75
-  npcIntelligence: 15
-  npcPerception: 20
-  jumpAbility: 0
-  speed: 0
-  equippedWeaponName: Long Woodman's Axe
-  characterWeaponPower: 5
-  equippedWeaponImage: {fileID: 21300000, guid: d69b3d2126ca599449d43b95df828fb2, type: 3}
-  equippedArmourName: Basic leather armour
-  characterArmourDefence: 15
-  equippedArmourImage: {fileID: 21300000, guid: 54643ca97702907488d4dc3235192a09, type: 3}
-  equippedArmourDescription: Smart leather armour that Briarfoot keeps for hiking
-    in the forest.
-  equippedWeaponDescription: A long axe that Briarfoot keeps in the back of his forge.
+  thulGold: 0
+  thulSpells: 0
+  thulPotions: 0
+  characterImage: {fileID: 21300000, guid: bd43d3b8f5cbfb84491d399ef9f61389, type: 3}
+  characterMug: {fileID: 21300000, guid: 926387e612b745048b4b66fdc6e86c56, type: 3}
+  characterPlain: {fileID: 21300000, guid: 2996f77028f4f4141ae70cbce5a149c4, type: 3}
+  maxLevel: 5
+  baseLevelXP: 0
+  characterXP: 10
+  maxMana: 200
+  maxHP: 300
+  characterLevel: 3
+  characterMana: 63
+  characterHP: 72
+  characterIntelligence: 46
+  characterPerception: 35
+  characterBaseAttack: 7
+  characterBaseDefence: 5
+  characterSpeed: 5
+  characterJumpAbility: 3
+  isTeamMember: 0
+  isAvailable: 0
+  isNew: 1
+  characterWeapon: {fileID: 4839942417948302789, guid: 32d69d14d50e2444e9b6f8232c0f20b5, type: 3}
+  characterArmour: {fileID: 5419324439845498617, guid: 7e1b663f82d24434390bfdf4fc878328, type: 3}
+  characterHelmet: {fileID: 8858589205418067986, guid: 162ab05eb0ce98f4c84eba01710d95c1, type: 3}
+  characterShield: {fileID: 1886274307985849950, guid: 52d9083b7fb47e941b500045514f8e31, type: 3}
+  characterWeaponName: Long axe
+  characterArmourName: Leather armour
+  characterHelmetName: Leather helmet
+  characterShieldName: Wooden shield
+  characterWeaponDescription: Basic axe for chopping wood and maybe people if push
+    comes to shove
+  characterArmourDescription: Basic leather armour, but makes you sweaty
+  characterHelmetDescription: Basic leather helmet. Not a fashion statement, but
+    might keep an axe from splitting your head open. Won't stop the headache though
+  characterShieldDescription: Basic wooden shield, the kind that is annoying to carry,
+    but which you can sledge with during winter. Might wedge a light axe if you're
+    lucky.
+  characterAttackTotal: 0
+  characterDefenceTotal: 0
+  characterWeaponImage: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
+  characterArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
+  characterHelmetImage: {fileID: 21300000, guid: 6d91d533c905b47459cf4c3f1a3f618e, type: 3}
+  characterShieldImage: {fileID: 21300000, guid: c67f6060700f79d4f842b3632c073ff9, type: 3}
+  skills: []
+  xpLevelUp: 
+  skillBonus: 
   magicSlots: []
-  equippedWeapon: {fileID: 0}
-  equippedArmour: {fileID: 0}
 --- !u!58 &3748298633651295931
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3910,7 +3929,7 @@ MonoBehaviour:
   - {x: -0.15077694, y: -1.196809, z: 0}
   m_ShapePathHash: -336596798
   m_Mesh: {fileID: 0}
-  m_InstanceId: 954812
+  m_InstanceId: -122438
 --- !u!1 &3749051481228473193
 GameObject:
   m_ObjectHideFlags: 0

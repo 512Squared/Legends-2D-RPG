@@ -12,7 +12,7 @@ public class Thulgran : MonoBehaviour
 
     #region Core stats
 
-    private static int s_thulgranGold = 0;
+    private static int s_thulgranGold = 10;
     [ShowInInspector]
     public static int ThulgranGold
     {
@@ -24,7 +24,7 @@ public class Thulgran : MonoBehaviour
         }
     }
 
-    private static int s_thulgranHP = 0;
+    private static int s_thulgranHP = 10;
     [ShowInInspector]
     public static int ThulgranHP
     {
@@ -36,7 +36,7 @@ public class Thulgran : MonoBehaviour
         }
     }
 
-    private static int s_thulgranMana = 0;
+    private static int s_thulgranMana = 10;
     [ShowInInspector]
     public static int ThulgranMana
     {

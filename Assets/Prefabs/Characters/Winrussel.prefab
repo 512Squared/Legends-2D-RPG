@@ -3531,48 +3531,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterImage: {fileID: 21300000, guid: 7a13821c9e742f4438d7772e8ceeca28, type: 3}
-  characterMug: {fileID: 21300000, guid: b4a52da71b67a064285582596c0dd038, type: 3}
-  characterPlain: {fileID: 21300000, guid: 7aaeaa62cc3ccb247b9a8a332e5e9ccc, type: 3}
-  skills: []
   homeScene: Homestead
-  skillBonus: 
-  thulGold: 0
-  thulSpells: 0
-  thulPotions: 0
-  xpLevelUp: 
-  maxLevel: 5
-  baseLevelXP: 0
-  maxMana: 200
-  maxHP: 300
-  isTeamMember: 0
-  isAvailable: 0
-  isNew: 1
   playerName: Winrussel
   playerDesc: Winrussel can move as swift as the wind, while his cane is as sharp
     and venomous as a snake.
   playerMoniker: Warrior of the Wind
-  npcLevel: 4
-  npcXP: 420
-  npcMana: 140
-  npcHP: 160
-  npcAttack: 65
-  npcDefence: 74
-  npcIntelligence: 68
-  npcPerception: 69
-  jumpAbility: 0
-  speed: 0
-  equippedWeaponName: Basic short axe
-  characterWeaponPower: 5
-  equippedWeaponImage: {fileID: 21300000, guid: d69b3d2126ca599449d43b95df828fb2, type: 3}
-  equippedArmourName: Leather Chest Armour
-  characterArmourDefence: 5
-  equippedArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
-  equippedArmourDescription: 'Basic leather chest armour that can be bought at Biltema. '
-  equippedWeaponDescription: A short axe that Winrussel keeps for making lean-toos
+  thulGold: 0
+  thulSpells: 0
+  thulPotions: 0
+  characterImage: {fileID: 21300000, guid: 7a13821c9e742f4438d7772e8ceeca28, type: 3}
+  characterMug: {fileID: 21300000, guid: b4a52da71b67a064285582596c0dd038, type: 3}
+  characterPlain: {fileID: 21300000, guid: 7aaeaa62cc3ccb247b9a8a332e5e9ccc, type: 3}
+  maxLevel: 5
+  baseLevelXP: 0
+  characterXP: 10
+  maxMana: 200
+  maxHP: 300
+  characterLevel: 4
+  characterMana: 80
+  characterHP: 125
+  characterIntelligence: 69
+  characterPerception: 52
+  characterBaseAttack: 13
+  characterBaseDefence: 8
+  characterSpeed: 13
+  characterJumpAbility: 10
+  isTeamMember: 0
+  isAvailable: 0
+  isNew: 1
+  characterWeapon: {fileID: 4839942417948302789, guid: 32d69d14d50e2444e9b6f8232c0f20b5, type: 3}
+  characterArmour: {fileID: 5419324439845498617, guid: 7e1b663f82d24434390bfdf4fc878328, type: 3}
+  characterHelmet: {fileID: 8858589205418067986, guid: 162ab05eb0ce98f4c84eba01710d95c1, type: 3}
+  characterShield: {fileID: 1886274307985849950, guid: 52d9083b7fb47e941b500045514f8e31, type: 3}
+  characterWeaponName: Long axe
+  characterArmourName: Leather armour
+  characterHelmetName: Leather helmet
+  characterShieldName: Wooden shield
+  characterWeaponDescription: Basic axe for chopping wood and maybe people if push
+    comes to shove
+  characterArmourDescription: Basic leather armour, but makes you sweaty
+  characterHelmetDescription: Basic leather helmet. Not a fashion statement, but
+    might keep an axe from splitting your head open. Won't stop the headache though
+  characterShieldDescription: Basic wooden shield, the kind that is annoying to carry,
+    but which you can sledge with during winter. Might wedge a light axe if you're
+    lucky.
+  characterAttackTotal: 0
+  characterDefenceTotal: 0
+  characterWeaponImage: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
+  characterArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
+  characterHelmetImage: {fileID: 21300000, guid: 6d91d533c905b47459cf4c3f1a3f618e, type: 3}
+  characterShieldImage: {fileID: 21300000, guid: c67f6060700f79d4f842b3632c073ff9, type: 3}
+  skills: []
+  xpLevelUp: 
+  skillBonus: 
   magicSlots: []
-  equippedWeapon: {fileID: 0}
-  equippedArmour: {fileID: 0}
 --- !u!58 &5078653621843993223
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3675,7 +3687,7 @@ MonoBehaviour:
   - {x: 0.13121544, y: -1.1147819, z: -0.00000023841858}
   m_ShapePathHash: 1255621576
   m_Mesh: {fileID: 0}
-  m_InstanceId: 955070
+  m_InstanceId: -121432
 --- !u!1 &5079949131664370661
 GameObject:
   m_ObjectHideFlags: 0

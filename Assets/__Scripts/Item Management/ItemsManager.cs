@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager instance;
-    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food }
+    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food, Shield, Helmet }
     public ItemType itemType;
 
     public string itemName, itemDescription;
@@ -23,8 +23,8 @@ public class ItemsManager : MonoBehaviour
     public AffectType affectType;
     public int amountOfEffect;
 
-    public int itemWeaponPower;
-    public int itemArmourDefence;
+    public int itemAttack;
+    public int itemDefence;
 
 
     public bool isStackable;
@@ -34,7 +34,7 @@ public class ItemsManager : MonoBehaviour
     private void Start()
     {
         instance = this;
-        valueInCoins += (amountOfEffect + itemWeaponPower + itemArmourDefence) * 2;
+        valueInCoins += (amountOfEffect + itemAttack + itemDefence) * 2;
     }
 
     public void UseItem(int characterToUseOn)
@@ -61,34 +61,69 @@ public class ItemsManager : MonoBehaviour
         else if (itemType == ItemType.Armour)
         {
 
-            selectedCharacter.npcDefence -= selectedCharacter.characterArmourDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterArmour.itemDefence;
 
-            if (selectedCharacter.equippedArmourName != "")
+            if (selectedCharacter.characterArmourName != "")
             {
-                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.equippedArmour.itemName + " has been added back into the Inventory");
-                Inventory.instance.AddItems(selectedCharacter.equippedArmour);
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterArmour.itemName + " has been added back into the Inventory");
+                Inventory.instance.AddItems(selectedCharacter.characterArmour);
 
                 MenuManager.instance.UpdateItemsInventory();
             }
-            selectedCharacter.AddArmourDefence(itemArmourDefence);
+            selectedCharacter.AddArmourDefence(itemDefence);
             selectedCharacter.EquipArmour(this);
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
+        else if (itemType == ItemType.Shield)
+        {
+
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterShield.itemDefence;
+
+            if (selectedCharacter.characterShieldName != "")
+            {
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterShield.itemName + " has been added back into the Inventory");
+                Inventory.instance.AddItems(selectedCharacter.characterShield);
+
+                MenuManager.instance.UpdateItemsInventory();
+            }
+            selectedCharacter.AddArmourDefence(itemDefence);
+            selectedCharacter.EquipShield(this);
+            Debug.Log(selectedCharacter.playerName + " equipped with " + this);
+        }
+
+        else if (itemType == ItemType.Helmet)
+        {
+
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterHelmet.itemDefence;
+
+            if (selectedCharacter.characterHelmetName != "")
+            {
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterHelmet.itemName + " has been added back into the Inventory");
+                Inventory.instance.AddItems(selectedCharacter.characterHelmet);
+
+                MenuManager.instance.UpdateItemsInventory();
+            }
+            selectedCharacter.AddArmourDefence(itemDefence);
+            selectedCharacter.EquipHelmet(this);
+            Debug.Log(selectedCharacter.playerName + " equipped with " + this);
+        }
+
+
         else if (itemType == ItemType.Weapon)
         {
 
-            selectedCharacter.npcAttack -= selectedCharacter.characterWeaponPower;
+            selectedCharacter.characterAttackTotal -= selectedCharacter.characterWeapon.itemAttack;
 
-            if (selectedCharacter.equippedWeaponName != "")
+            if (selectedCharacter.characterWeaponName != "")
             {
-                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.equippedWeapon.itemName + " has been added back into the Inventory");
-                Inventory.instance.AddItems(selectedCharacter.equippedWeapon);
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterWeapon.itemName + " has been added back into the Inventory");
+                Inventory.instance.AddItems(selectedCharacter.characterWeapon);
 
                 MenuManager.instance.UpdateItemsInventory();
             }
 
-            selectedCharacter.AddWeaponPower(itemWeaponPower);
+            selectedCharacter.AddWeaponPower(itemAttack);
             selectedCharacter.EquipWeapon(this);
 
             Debug.Log(selectedCharacter.playerName + " equipped with " + this.itemName);

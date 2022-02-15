@@ -4184,48 +4184,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterImage: {fileID: 21300000, guid: bd4e1af4b99f51f4a99f8d5d1fa61426, type: 3}
-  characterMug: {fileID: 21300000, guid: e0a0b070f7cc697488e8caad0f4c3b08, type: 3}
-  characterPlain: {fileID: 21300000, guid: d99c706db841dae408c3976084a701f3, type: 3}
-  skills: []
   homeScene: Homestead
-  skillBonus: 
-  thulGold: 0
-  thulSpells: 0
-  thulPotions: 0
-  xpLevelUp: 
-  maxLevel: 5
-  baseLevelXP: 0
-  maxMana: 200
-  maxHP: 300
-  isTeamMember: 0
-  isAvailable: 0
-  isNew: 1
   playerName: Grumpy Greta
   playerDesc: Retired assassin. Could play a barmaid or flower seller with equal
     guile. Legend has it she took out a dozen bodyguards with a knitting needle.
   playerMoniker: Pugilist - Brown Order
-  npcLevel: 5
-  npcXP: 250
-  npcMana: 130
-  npcHP: 180
-  npcAttack: 80
-  npcDefence: 80
-  npcIntelligence: 70
-  npcPerception: 80
-  jumpAbility: 0
-  speed: 0
-  equippedWeaponName: Basic Axe
-  characterWeaponPower: 5
-  equippedWeaponImage: {fileID: 21300000, guid: d69b3d2126ca599449d43b95df828fb2, type: 3}
-  equippedArmourName: Basic Armour
-  characterArmourDefence: 5
-  equippedArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
-  equippedArmourDescription: Basic Armour that you can by at H&M's
-  equippedWeaponDescription: Basic Axe that you can find lying around in the forest.
+  thulGold: 0
+  thulSpells: 0
+  thulPotions: 0
+  characterImage: {fileID: 21300000, guid: bd4e1af4b99f51f4a99f8d5d1fa61426, type: 3}
+  characterMug: {fileID: 21300000, guid: e0a0b070f7cc697488e8caad0f4c3b08, type: 3}
+  characterPlain: {fileID: 21300000, guid: d99c706db841dae408c3976084a701f3, type: 3}
+  maxLevel: 5
+  baseLevelXP: 50
+  characterXP: 100
+  maxMana: 200
+  maxHP: 300
+  characterLevel: 5
+  characterMana: 207
+  characterHP: 138
+  characterIntelligence: 70
+  characterPerception: 79
+  characterBaseAttack: 12
+  characterBaseDefence: 14
+  characterSpeed: 11
+  characterJumpAbility: 10
+  isTeamMember: 0
+  isAvailable: 0
+  isNew: 1
+  characterWeapon: {fileID: 4839942417948302789, guid: 32d69d14d50e2444e9b6f8232c0f20b5, type: 3}
+  characterArmour: {fileID: 5419324439845498617, guid: 7e1b663f82d24434390bfdf4fc878328, type: 3}
+  characterHelmet: {fileID: 8858589205418067986, guid: 162ab05eb0ce98f4c84eba01710d95c1, type: 3}
+  characterShield: {fileID: 1886274307985849950, guid: 52d9083b7fb47e941b500045514f8e31, type: 3}
+  characterWeaponName: Long axe
+  characterArmourName: Leather armour
+  characterHelmetName: Leather helmet
+  characterShieldName: Wooden shield
+  characterWeaponDescription: Basic axe for chopping wood and maybe people if push
+    comes to shove
+  characterArmourDescription: Basic leather armour, but makes you sweaty
+  characterHelmetDescription: Basic leather helmet. Not a fashion statement, but
+    might keep an axe from splitting your head open. Won't stop the headache though
+  characterShieldDescription: Basic wooden shield, the kind that is annoying to carry,
+    but which you can sledge with during winter. Might wedge a light axe if you're
+    lucky.
+  characterAttackTotal: 0
+  characterDefenceTotal: 0
+  characterWeaponImage: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
+  characterArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
+  characterHelmetImage: {fileID: 21300000, guid: 6d91d533c905b47459cf4c3f1a3f618e, type: 3}
+  characterShieldImage: {fileID: 21300000, guid: c67f6060700f79d4f842b3632c073ff9, type: 3}
+  skills: []
+  xpLevelUp: 
+  skillBonus: 
   magicSlots: []
-  equippedWeapon: {fileID: 0}
-  equippedArmour: {fileID: 0}
 --- !u!58 &1746456514
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4295,7 +4307,7 @@ MonoBehaviour:
   - {x: 0.38219857, y: -1.0304282, z: 0}
   m_ShapePathHash: 1481211734
   m_Mesh: {fileID: 0}
-  m_InstanceId: 944988
+  m_InstanceId: -122108
 --- !u!1 &5402037402990206465
 GameObject:
   m_ObjectHideFlags: 0
@@ -4474,44 +4486,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterImage: {fileID: 0}
-  characterMug: {fileID: 0}
-  characterPlain: {fileID: 0}
-  skills: []
   homeScene: 
-  skillBonus: 
-  thulGold: 0
-  thulSpells: 0
-  thulPotions: 0
-  xpLevelUp: 
-  maxLevel: 5
-  baseLevelXP: 0
-  maxMana: 0
-  maxHP: 0
-  isTeamMember: 0
-  isAvailable: 0
-  isNew: 1
   playerName: 
   playerDesc: 
   playerMoniker: 
-  npcLevel: 0
-  npcXP: 0
-  npcMana: 0
-  npcHP: 0
-  npcAttack: 0
-  npcDefence: 0
-  npcIntelligence: 0
-  npcPerception: 0
-  jumpAbility: 0
-  speed: 0
-  equippedWeaponName: 
-  characterWeaponPower: 0
-  equippedWeaponImage: {fileID: 0}
-  equippedArmourName: 
-  characterArmourDefence: 0
-  equippedArmourImage: {fileID: 0}
-  equippedArmourDescription: 
-  equippedWeaponDescription: 
+  thulGold: 0
+  thulSpells: 0
+  thulPotions: 0
+  characterImage: {fileID: 0}
+  characterMug: {fileID: 0}
+  characterPlain: {fileID: 0}
+  maxLevel: 5
+  baseLevelXP: 0
+  characterXP: 0
+  maxMana: 0
+  maxHP: 0
+  characterLevel: 0
+  characterMana: 0
+  characterHP: 0
+  characterIntelligence: 0
+  characterPerception: 0
+  characterBaseAttack: 0
+  characterBaseDefence: 0
+  characterSpeed: 0
+  characterJumpAbility: 0
+  isTeamMember: 0
+  isAvailable: 0
+  isNew: 1
+  characterWeapon: {fileID: 0}
+  characterArmour: {fileID: 0}
+  characterHelmet: {fileID: 0}
+  characterShield: {fileID: 0}
+  characterWeaponName: 
+  characterArmourName: 
+  characterHelmetName: 
+  characterShieldName: 
+  characterWeaponDescription: 
+  characterArmourDescription: 
+  characterHelmetDescription: 
+  characterShieldDescription: 
+  characterAttackTotal: 0
+  characterDefenceTotal: 0
+  characterWeaponImage: {fileID: 0}
+  characterArmourImage: {fileID: 0}
+  characterHelmetImage: {fileID: 0}
+  characterShieldImage: {fileID: 0}
+  skills: []
+  xpLevelUp: 
+  skillBonus: 
   magicSlots: []
-  equippedWeapon: {fileID: 0}
-  equippedArmour: {fileID: 0}

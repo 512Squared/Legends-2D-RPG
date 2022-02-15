@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4283112051484239539}
   - component: {fileID: 4283112051484239536}
   - component: {fileID: 4283112051484239537}
+  - component: {fileID: 941435172449300596}
   - component: {fileID: 7658590310300458551}
   - component: {fileID: 1742322469595772402}
   - component: {fileID: 807171266}
@@ -149,6 +150,18 @@ MonoBehaviour:
   arrivingAt: 
   deactivedMovement: 0
   controllerSwitch: 0
+--- !u!114 &941435172449300596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4283112051484239550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aa56baec31caa049a8cde5bb318d426, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7658590310300458551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,50 +174,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterImage: {fileID: 21300000, guid: 41dd776a2bccc344eafb45a3dc58ef12, type: 3}
-  characterMug: {fileID: 21300000, guid: 9e42d1329b457d244a4c1801f623c403, type: 3}
-  characterPlain: {fileID: 21300000, guid: 40c1501ed8955a74b941601138ebd9a3, type: 3}
-  skills: []
   homeScene: Homestead
-  skillBonus: 
-  thulGold: 0
-  thulSpells: 0
-  thulPotions: 0
-  xpLevelUp: 
-  maxLevel: 5
-  baseLevelXP: 0
-  maxMana: 200
-  maxHP: 300
-  isTeamMember: 1
-  isAvailable: 1
-  isNew: 0
   playerName: Thulgran
   playerDesc: Thulgran is dwarf royalty but he can't say not to an adventure. His
     life's ambition is to defeat a dragon.
   playerMoniker: Dwarf Lord - PARTY LEADER
-  npcLevel: 1
-  npcXP: 75
-  npcMana: 0
-  npcHP: 0
-  npcAttack: 26
-  npcDefence: 81
-  npcIntelligence: 80
-  npcPerception: 70
-  jumpAbility: 0
-  speed: 0
-  equippedWeaponName: Long Woodman's Axe
-  characterWeaponPower: 10
-  equippedWeaponImage: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
-  equippedArmourName: Leather chest armour
-  characterArmourDefence: 10
-  equippedArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
-  equippedArmourDescription: 'Basic Leather Armour but with a bit of dwarf spit to
-    strengthen it. '
-  equippedWeaponDescription: 'Long axe - you might have to ask a woodchopper to give
-    you an axe like this. '
+  thulGold: 10
+  thulSpells: 0
+  thulPotions: 0
+  characterImage: {fileID: 21300000, guid: 41dd776a2bccc344eafb45a3dc58ef12, type: 3}
+  characterMug: {fileID: 21300000, guid: 9e42d1329b457d244a4c1801f623c403, type: 3}
+  characterPlain: {fileID: 21300000, guid: 40c1501ed8955a74b941601138ebd9a3, type: 3}
+  maxLevel: 5
+  baseLevelXP: 0
+  characterXP: 1
+  maxMana: 200
+  maxHP: 300
+  characterLevel: 1
+  characterMana: 10
+  characterHP: 10
+  characterIntelligence: 25
+  characterPerception: 30
+  characterBaseAttack: 15
+  characterBaseDefence: 8
+  characterSpeed: 7
+  characterJumpAbility: 12
+  isTeamMember: 1
+  isAvailable: 1
+  isNew: 0
+  characterWeapon: {fileID: 4839942417948302789, guid: 32d69d14d50e2444e9b6f8232c0f20b5, type: 3}
+  characterArmour: {fileID: 5419324439845498617, guid: 7e1b663f82d24434390bfdf4fc878328, type: 3}
+  characterHelmet: {fileID: 8858589205418067986, guid: 162ab05eb0ce98f4c84eba01710d95c1, type: 3}
+  characterShield: {fileID: 1886274307985849950, guid: 52d9083b7fb47e941b500045514f8e31, type: 3}
+  characterWeaponName: Long axe
+  characterArmourName: Leather armour
+  characterHelmetName: Leather helmet
+  characterShieldName: Wooden shield
+  characterWeaponDescription: Basic axe for chopping wood and maybe people if push
+    comes to shove
+  characterArmourDescription: Basic leather armour, but makes you sweaty
+  characterHelmetDescription: Basic leather helmet. Not a fashion statement, but
+    might keep an axe from splitting your head open. Won't stop the headache though
+  characterShieldDescription: Basic wooden shield, the kind that is annoying to carry,
+    but which you can sledge with during winter. Might wedge a light axe if you're
+    lucky.
+  characterAttackTotal: 0
+  characterDefenceTotal: 0
+  characterWeaponImage: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
+  characterArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
+  characterHelmetImage: {fileID: 21300000, guid: 6d91d533c905b47459cf4c3f1a3f618e, type: 3}
+  characterShieldImage: {fileID: 21300000, guid: c67f6060700f79d4f842b3632c073ff9, type: 3}
+  skills: []
+  xpLevelUp: 
+  skillBonus: 
   magicSlots: []
-  equippedWeapon: {fileID: 0}
-  equippedArmour: {fileID: 0}
 --- !u!70 &1742322469595772402
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -316,4 +339,4 @@ MonoBehaviour:
   - {x: -0.21, y: 0.06999999, z: 0}
   m_ShapePathHash: 1230505302
   m_Mesh: {fileID: 0}
-  m_InstanceId: 952270
+  m_InstanceId: -121762

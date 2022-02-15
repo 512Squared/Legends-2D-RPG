@@ -42,7 +42,7 @@ public class ShopManager : MonoBehaviour
     public CanvasGroup itemSoldMessage;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI shopEffectText, shopItemArmourDefence, shopItemWeaponPower;
+    public TextMeshProUGUI shopEffectText;
     [TabGroup("New Group", "Items")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public GameObject shopItemBox, shopItemDamageBox, shopItemArmourBox, shopItemPotionBox, shopItemFoodBox, shopEffectBox, messageContainer;

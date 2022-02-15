@@ -1,13 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Sirenix.OdinInspector;
 using DG.Tweening;
-using UnityEngine.EventSystems;
-using System;
+
 
 
 
@@ -150,30 +148,30 @@ public class MenuManager : MonoBehaviour
 
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.447f, 0.454f, 0.496f)]
-    public TextMeshProUGUI[] equippedWeaponName, equippedArmourName;
+    public TextMeshProUGUI[] equippedWeaponName, equippedArmourName, equippedHelmetName, equippedShieldName;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.447f, 0.454f, 0.496f)]
-    public Image[] equippedWeaponImage, equippedArmourImage;
+    public Image[] equippedWeaponImage, equippedArmourImage, equippedHelmetImage, equippedShieldImage;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.447f, 0.454f, 0.496f)]
     public Image[] characterMugWeaponry;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.447f, 0.454f, 0.496f)]
-    public TextMeshProUGUI[] inventoryWeaponPower, inventoryArmourDefence;
+    public TextMeshProUGUI[] equippedWeaponBonus, equippedArmourBonus, equippedHelmetBonus, equippedShieldBonus;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.147f, 0.154f, 0.496f)]
-    public TextMeshProUGUI itemWeaponPower, itemArmourDefence, itemPotionPower;
+    public TextMeshProUGUI itemPotionPower;
     [TabGroup("New Group", "Weaponry")]
     [GUIColor(0.147f, 0.154f, 0.496f)]
-    public Sprite basicAxe, basicArmour;
+    public Sprite basicAxe, basicArmour, basicHelmet, basicShield;
 
 
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamEquippedWeaponName, teamEquippedArmourName, teamCharacterName;
+    public TextMeshProUGUI[] teamCharacterName;
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Image[] teamEquippedWeaponImage, teamEquippedArmourImage;
+    public Image[] teamEquippedWeaponImage, teamEquippedArmourImage, teamEquippedHelmetImage, teamEquippedShieldImage;
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
     public Image[] teamCharacterMugWeaponry;
@@ -182,10 +180,10 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI[] teamInventoryAttackTotal, teamInventoryDefenceTotal; // attack power is actually Dexterity in PlayerStats (yeah, I had to same thought... wtf??
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
-    public TextMeshProUGUI[] teamItemWeaponBonus, teamItemArmourBonus;
+    public TextMeshProUGUI[] teamItemWeaponBonus, teamItemArmourBonus, teamItemHelmetBonus, teamItemShieldBonus;
     [TabGroup("Weapon Group", "Team Weaponry")]
     [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Sprite teamBasicAxe, teamBasicArmour;
+    public Sprite teamBasicAxe, teamBasicArmour, teamBasicHelmet, TeamBasicShield;
 
     [TabGroup("Weapon Group", "Team Popup")]
     [GUIColor(0.207f, 0.121f, 0.027f)]
@@ -425,7 +423,7 @@ public class MenuManager : MonoBehaviour
         mainMenu.GetComponent<CanvasGroup>().interactable = true;
         mainMenu.GetComponent<CanvasGroup>().alpha = 1;
     }
-    
+
     private void ControllersFadeOut(float fadeTime)
     {
         StartCoroutine(DisableJoystickDelay());
@@ -433,7 +431,7 @@ public class MenuManager : MonoBehaviour
         StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, fadeTime));
         StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, fadeTime));
     }
-    
+
     private void ControllersFadeIn(float fadeTime)
     {
         joystick.EnableJoystick();
@@ -493,7 +491,7 @@ public class MenuManager : MonoBehaviour
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().interactable = false;
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().alpha = 0;
-                        
+
             GameManager.instance.isShopUIOn = false;
         }
 
@@ -566,10 +564,10 @@ public class MenuManager : MonoBehaviour
     {
         playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
 
-        levelMain.text = playerStats[0].npcLevel.ToString();
-        xpMain.text = playerStats[0].npcXP.ToString() + "/" + playerStats[0].xpLevelUp[playerStats[0].npcLevel];
-        xpMainS.value = playerStats[0].npcXP;
-        xpMainS.maxValue = playerStats[0].xpLevelUp[playerStats[0].npcLevel];
+        levelMain.text = playerStats[0].characterLevel.ToString();
+        xpMain.text = playerStats[0].characterXP.ToString() + "/" + playerStats[0].xpLevelUp[playerStats[0].characterLevel];
+        xpMainS.value = playerStats[0].characterXP;
+        xpMainS.maxValue = playerStats[0].xpLevelUp[playerStats[0].characterLevel];
 
     }
 
@@ -585,10 +583,10 @@ public class MenuManager : MonoBehaviour
             {
                 if (i != 0)
                 {
-                    hpEquipToString[i].text = playerStats[i].npcHP.ToString();
-                    manaEquipToString[i].text = playerStats[i].npcMana.ToString();
-                    hpEquipSlider[i].value = playerStats[i].npcHP;
-                    manaEquipSlider[i].value = playerStats[i].npcMana;
+                    hpEquipToString[i].text = playerStats[i].characterHP.ToString();
+                    manaEquipToString[i].text = playerStats[i].characterMana.ToString();
+                    hpEquipSlider[i].value = playerStats[i].characterHP;
+                    manaEquipSlider[i].value = playerStats[i].characterMana;
                 }
 
                 else if (i == 0)
@@ -604,38 +602,61 @@ public class MenuManager : MonoBehaviour
 
                 //stat text values
                 characterEquip[i].SetActive(true);
-                defenceEquipToString[i].text = playerStats[i].npcDefence.ToString();
+                defenceEquipToString[i].text = playerStats[i].characterBaseDefence.ToString();
                 //stat sliders
-                defenceEquipSlider[i].value = playerStats[i].npcDefence;
+                defenceEquipSlider[i].value = playerStats[i].characterBaseDefence;
                 characterMugEquip[i].sprite = playerStats[i].characterMug;
 
-                // EQUIP weaponry
+                // Inventory weaponry
 
                 characterWeaponry[i].SetActive(true);
                 characterMugWeaponry[i].sprite = playerStats[i].characterMug;
 
-                equippedWeaponName[i].text = playerStats[i].equippedWeaponName;
-                equippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
-                inventoryWeaponPower[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
+                equippedWeaponName[i].text = playerStats[i].characterWeaponName;
+                equippedWeaponImage[i].sprite = playerStats[i].characterWeaponImage;
+                equippedWeaponBonus[i].text = "+" + playerStats[i].characterWeapon.itemAttack.ToString();
 
-                equippedArmourName[i].text = playerStats[i].equippedArmourName;
-                equippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
-                inventoryArmourDefence[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
+                equippedArmourName[i].text = playerStats[i].characterArmourName;
+                equippedArmourImage[i].sprite = playerStats[i].characterArmourImage;
+                equippedArmourBonus[i].text = "+" + playerStats[i].characterArmour.itemDefence.ToString();
+
+                equippedHelmetName[i].text = playerStats[i].characterHelmetName;
+                equippedHelmetImage[i].sprite = playerStats[i].characterHelmetImage;
+                equippedHelmetBonus[i].text = "+" + playerStats[i].characterHelmet.itemDefence.ToString();
+
+                equippedShieldName[i].text = playerStats[i].characterShieldName;
+                equippedShieldImage[i].sprite = playerStats[i].characterShieldImage;
+                equippedShieldBonus[i].text = "+" + playerStats[i].characterShield.itemDefence.ToString();
+
 
                 // this assigns a basic weapon and armour if none are set so that UI doesn't return blanks
 
-                if (playerStats[i].equippedWeaponName == "")
+                if (playerStats[i].characterWeaponName == "")
                 {
                     equippedWeaponName[i].text = "Basic Axe";
                     equippedWeaponImage[i].sprite = basicAxe;
-                    inventoryWeaponPower[i].text = "+5";
+                    equippedWeaponBonus[i].text = "+5";
                 }
 
-                if (playerStats[i].equippedArmourName == "")
+                if (playerStats[i].characterArmourName == "")
                 {
                     equippedArmourName[i].text = "Basic Armour";
                     equippedArmourImage[i].sprite = basicArmour;
-                    inventoryArmourDefence[i].text = "+5";
+                    equippedArmourBonus[i].text = "+5";
+                }
+
+                if (playerStats[i].characterHelmetName == "")
+                {
+                    equippedHelmetName[i].text = "Basic Helmet";
+                    equippedHelmetImage[i].sprite = basicHelmet;
+                    equippedHelmetBonus[i].text = "+5";
+                }
+
+                if (playerStats[i].characterShieldName == "")
+                {
+                    equippedShieldName[i].text = "Basic Shield";
+                    equippedShieldImage[i].sprite = basicShield;
+                    equippedShieldBonus[i].text = "+5";
                 }
 
             }
@@ -667,23 +688,23 @@ public class MenuManager : MonoBehaviour
                     {
                         characterName[i].text = playerStats[i].playerName;
                         description[i].text = playerStats[i].playerDesc;
-                        health[i].text = playerStats[i].npcHP.ToString();
+                        health[i].text = playerStats[i].characterHP.ToString();
                         characterImage[i].sprite = playerStats[i].characterImage;
-                        level[i].text = playerStats[i].npcLevel.ToString();
-                        xp[i].text = playerStats[i].npcXP.ToString();
-                        mana[i].text = playerStats[i].npcMana.ToString();
-                        attack[i].text = playerStats[i].npcAttack.ToString();
-                        defence[i].text = playerStats[i].npcDefence.ToString();
-                        intelligence[i].text = playerStats[i].npcIntelligence.ToString();
-                        perception[i].text = playerStats[i].npcPerception.ToString();
-                        intelligenceS[i].value = playerStats[i].npcIntelligence;
-                        xpS[i].value = playerStats[i].npcXP;
-                        manaS[i].value = playerStats[i].npcMana;
-                        healthS[i].value = playerStats[i].npcHP;
-                        attackS[i].value = playerStats[i].npcAttack;
-                        defenceS[i].value = playerStats[i].npcDefence;
-                        intelligenceS[i].value = playerStats[i].npcIntelligence;
-                        perceptionS[i].value = playerStats[i].npcPerception;
+                        level[i].text = playerStats[i].characterLevel.ToString();
+                        xp[i].text = playerStats[i].characterXP.ToString();
+                        mana[i].text = playerStats[i].characterMana.ToString();
+                        attack[i].text = playerStats[i].characterBaseAttack.ToString();
+                        defence[i].text = playerStats[i].characterBaseDefence.ToString();
+                        intelligence[i].text = playerStats[i].characterIntelligence.ToString();
+                        perception[i].text = playerStats[i].characterPerception.ToString();
+                        intelligenceS[i].value = playerStats[i].characterIntelligence;
+                        xpS[i].value = playerStats[i].characterXP;
+                        manaS[i].value = playerStats[i].characterMana;
+                        healthS[i].value = playerStats[i].characterHP;
+                        attackS[i].value = playerStats[i].characterBaseAttack;
+                        defenceS[i].value = playerStats[i].characterBaseDefence;
+                        intelligenceS[i].value = playerStats[i].characterIntelligence;
+                        perceptionS[i].value = playerStats[i].characterPerception;
                     }
 
                     if (i == 0) // Thulgran
@@ -695,54 +716,48 @@ public class MenuManager : MonoBehaviour
                         characterName[i].text = playerStats[i].playerName;
                         description[i].text = playerStats[i].playerDesc;
                         characterImage[i].sprite = playerStats[i].characterImage;
-                        level[i].text = playerStats[i].npcLevel.ToString();
-                        xp[i].text = playerStats[i].npcXP.ToString();
-                        attack[i].text = playerStats[i].npcAttack.ToString();
-                        defence[i].text = playerStats[i].npcDefence.ToString();
-                        intelligence[i].text = playerStats[i].npcIntelligence.ToString();
-                        perception[i].text = playerStats[i].npcPerception.ToString();
-                        intelligenceS[i].value = playerStats[i].npcIntelligence;
-                        xpS[i].value = playerStats[i].npcXP;
-                        attackS[i].value = playerStats[i].npcAttack;
-                        defenceS[i].value = playerStats[i].npcDefence;
-                        intelligenceS[i].value = playerStats[i].npcIntelligence;
-                        perceptionS[i].value = playerStats[i].npcPerception;
+                        level[i].text = playerStats[i].characterLevel.ToString();
+                        xp[i].text = playerStats[i].characterXP.ToString();
+                        attack[i].text = playerStats[i].characterBaseAttack.ToString();
+                        defence[i].text = playerStats[i].characterBaseDefence.ToString();
+                        intelligence[i].text = playerStats[i].characterIntelligence.ToString();
+                        perception[i].text = playerStats[i].characterPerception.ToString();
+                        intelligenceS[i].value = playerStats[i].characterIntelligence;
+                        xpS[i].value = playerStats[i].characterXP;
+                        attackS[i].value = playerStats[i].characterBaseAttack;
+                        defenceS[i].value = playerStats[i].characterBaseDefence;
+                        intelligenceS[i].value = playerStats[i].characterIntelligence;
+                        perceptionS[i].value = playerStats[i].characterPerception;
                     }
 
 
                     // Some team equipped stuff
 
                     teamCharacterWeaponry[i].SetActive(true);
-                    if (playerStats[i].characterArmourDefence > 5)
-                    {
-                        teamEquippedArmourImage[i].sprite = playerStats[i].equippedArmourImage;
-                    }
-                    else if (playerStats[i].characterArmourDefence == 5)
-                    {
-                        teamEquippedArmourImage[i].sprite = teamBasicArmour;
-                    }
-
-                    if (playerStats[i].characterWeaponPower > 5)
-                    {
-                        teamEquippedWeaponImage[i].sprite = playerStats[i].equippedWeaponImage;
-                    }
-                    else if (playerStats[i].characterWeaponPower == 5)
-                    {
-                        teamEquippedWeaponImage[i].sprite = teamBasicAxe;
-                    }
 
                     teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
-                    teamInventoryDefenceTotal[i].text = (playerStats[i].npcDefence - playerStats[i].characterArmourDefence).ToString() + "+" + playerStats[i].characterArmourDefence;
-                    teamInventoryAttackTotal[i].text = (playerStats[i].npcAttack - playerStats[i].characterWeaponPower).ToString() + "+" + playerStats[i].characterWeaponPower;
-                    teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmourDefence.ToString();
-                    teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeaponPower.ToString();
+
                     teamCharacterName[i].text = playerStats[i].playerName;
+
+                    teamEquippedArmourImage[i].sprite = playerStats[i].characterArmourImage;
+                    teamEquippedHelmetImage[i].sprite = playerStats[i].characterHelmetImage;
+                    teamEquippedShieldImage[i].sprite = playerStats[i].characterShieldImage;
+                    teamEquippedWeaponImage[i].sprite = playerStats[i].characterWeaponImage;
+
+                    teamInventoryDefenceTotal[i].text = $"<color=#CFCFCF>{playerStats[i].characterBaseDefence}</color> +{(playerStats[i].characterDefenceTotal - playerStats[i].characterBaseDefence).ToString()}";
+                    teamInventoryAttackTotal[i].text = $"<color=#CFCFCF>{playerStats[i].characterBaseAttack}</color> +{(playerStats[i].characterAttackTotal - playerStats[i].characterBaseAttack).ToString()}";
+
+                    teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmour.itemDefence.ToString();
+                    teamItemHelmetBonus[i].text = "+" + playerStats[i].characterHelmet.itemDefence.ToString();
+                    teamItemShieldBonus[i].text = "+" + playerStats[i].characterShield.itemDefence.ToString();
+                    teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeapon.itemAttack.ToString();
+
                 }
 
                 // these are the references for the Team Overview (add to party)
 
                 characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" + playerStats[i].playerMoniker + "</color></size>";
-                levelP[i].text = playerStats[i].npcLevel.ToString();
+                levelP[i].text = playerStats[i].characterLevel.ToString();
                 characterMug[i].sprite = playerStats[i].characterMug;
             }
         }
@@ -792,7 +807,7 @@ public class MenuManager : MonoBehaviour
         {
             if (selectedCharacter != 0)
             {
-                if (playerStats[selectedCharacter].npcHP == playerStats[selectedCharacter].maxHP)
+                if (playerStats[selectedCharacter].characterHP == playerStats[selectedCharacter].maxHP)
                 {
                     NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400);
                     Debug.Log($"Yo");
@@ -845,12 +860,12 @@ public class MenuManager : MonoBehaviour
 
             if (selectedCharacter != 0)
             {
-                if (playerStats[selectedCharacter].npcMana == playerStats[selectedCharacter].maxMana)
+                if (playerStats[selectedCharacter].characterMana == playerStats[selectedCharacter].maxMana)
                 {
                     NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color> \n Try someone else?", Sprites.instance.manaSprite, 1.5f, 1400);
                 }
 
-                else if (playerStats[selectedCharacter].npcMana < playerStats[selectedCharacter].maxMana)
+                else if (playerStats[selectedCharacter].characterMana < playerStats[selectedCharacter].maxMana)
                 {
                     cancelButton.SetActive(false);
                     useButton.GetComponent<Button>().interactable = false;
@@ -892,7 +907,7 @@ public class MenuManager : MonoBehaviour
             }
         }
 
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon || activeItem.itemType == ItemsManager.ItemType.Helmet || activeItem.itemType == ItemsManager.ItemType.Shield)
         {
             cancelButton.SetActive(false);
             useButton.GetComponent<Button>().interactable = false;
@@ -965,7 +980,7 @@ public class MenuManager : MonoBehaviour
         itemDamageBox.SetActive(false);
         itemArmourBox.SetActive(false);
         itemPotionBox.SetActive(false);
-        itemFoodBox.SetActive(false);        
+        itemFoodBox.SetActive(false);
     }
 
     public void MenuPanelsOff(string call)
@@ -1097,7 +1112,7 @@ public class MenuManager : MonoBehaviour
             characterChoicePanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
 
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon || activeItem.itemType == ItemsManager.ItemType.Helmet || activeItem.itemType == ItemsManager.ItemType.Shield)
         {
             characterWeaponryPanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
@@ -1442,22 +1457,40 @@ public class MenuManager : MonoBehaviour
 
     public void TeamWeaponryPopup(int selectedCharacter, string itemType)
     {
-        if (itemType == "armour")
+        if (itemType == "weapon")
         {
-            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].equippedArmourImage;
-            teamPopWeaponryName.text = playerStats[selectedCharacter].equippedArmourName;
-            teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedArmourDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmourDefence.ToString();
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterWeaponImage;
+            teamPopWeaponryName.text = playerStats[selectedCharacter].characterWeaponName;
+            teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterWeaponDescription;
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeapon.itemAttack.ToString();
+            teamPopWeaponryBonusText.text = "Weapon Power:";
+        }
+        else if (itemType == "armour")
+        {
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterArmourImage;
+            teamPopWeaponryName.text = playerStats[selectedCharacter].characterArmourName;
+            teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterArmourDescription;
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmour.itemDefence.ToString();
             teamPopWeaponryBonusText.text = "Armour Defence:";
         }
 
-        else if (itemType == "weapon")
+
+        else if (itemType == "helmet")
         {
-            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].equippedWeaponImage;
-            teamPopWeaponryName.text = playerStats[selectedCharacter].equippedWeaponName;
-            teamPopWeaponryDescription.text = playerStats[selectedCharacter].equippedWeaponDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeaponPower.ToString();
-            teamPopWeaponryBonusText.text = "Weapon Power:";
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterHelmetImage;
+            teamPopWeaponryName.text = playerStats[selectedCharacter].characterHelmetName;
+            teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterHelmetDescription;
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterHelmet.itemDefence.ToString();
+            teamPopWeaponryBonusText.text = "Helmet Defence:";
+        }
+
+        else if (itemType == "shield")
+        {
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterShieldImage;
+            teamPopWeaponryName.text = playerStats[selectedCharacter].characterShieldName;
+            teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterShieldDescription;
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterShield.itemDefence.ToString();
+            teamPopWeaponryBonusText.text = "Shield Defence:";
         }
     }
 
@@ -1634,7 +1667,7 @@ public class MenuManager : MonoBehaviour
                         if (item.itemType == ItemsManager.ItemType.Armour)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: { item.amountOfEffect} | Power: { item.itemWeaponPower} | Defence: { item.itemArmourDefence}");
+                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: { item.amountOfEffect} | Power: { item.itemAttack} | Defence: { item.itemDefence}");
                             textUseEquipTake.text = "Equip";
                         }
 
@@ -1643,7 +1676,7 @@ public class MenuManager : MonoBehaviour
                         if (item.itemType == ItemsManager.ItemType.Weapon)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: { item.amountOfEffect} | Weapon Power: { item.itemWeaponPower} | Armour Defence: { item.itemArmourDefence}");
+                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: { item.amountOfEffect} | Weapon Power: { item.itemAttack} | Armour Defence: { item.itemDefence}");
                             textUseEquipTake.text = "Equip";
                         }
 
@@ -1652,7 +1685,7 @@ public class MenuManager : MonoBehaviour
                         if (item.itemType == ItemsManager.ItemType.Item)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect} | Weapon Power: {item.itemWeaponPower} | Armour Defence: {item.itemArmourDefence}");
+                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect} | Weapon Power: {item.itemAttack} | Armour Defence: {item.itemDefence}");
                             textUseEquipTake.text = "Use";
                         }
                     }
@@ -1667,7 +1700,9 @@ public class MenuManager : MonoBehaviour
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Item) ||
                         (item.itemType == ItemsManager.ItemType.Skill) ||
-                        (item.itemType == ItemsManager.ItemType.Food))
+                        (item.itemType == ItemsManager.ItemType.Food) ||
+                        (item.itemType == ItemsManager.ItemType.Helmet) ||
+                        (item.itemType == ItemsManager.ItemType.Shield))
                     {
                         Destroy(itemSlot.gameObject);
                     }
@@ -1691,7 +1726,9 @@ public class MenuManager : MonoBehaviour
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Weapon) ||
-                        (item.itemType == ItemsManager.ItemType.Spell))
+                        (item.itemType == ItemsManager.ItemType.Spell) ||
+                        (item.itemType == ItemsManager.ItemType.Helmet) ||
+                        (item.itemType == ItemsManager.ItemType.Shield))
                     {
                         Destroy(itemSlot.gameObject);
                     }
@@ -1702,7 +1739,9 @@ public class MenuManager : MonoBehaviour
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Item) ||
-                        (item.itemType == ItemsManager.ItemType.Weapon))
+                        (item.itemType == ItemsManager.ItemType.Weapon) ||
+                        (item.itemType == ItemsManager.ItemType.Helmet) ||
+                        (item.itemType == ItemsManager.ItemType.Shield))
                     {
                         Destroy(itemSlot.gameObject);
                     }
@@ -1714,7 +1753,9 @@ public class MenuManager : MonoBehaviour
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Item) ||
                         (item.itemType == ItemsManager.ItemType.Spell) ||
-                        (item.itemType == ItemsManager.ItemType.Food))
+                        (item.itemType == ItemsManager.ItemType.Food) ||
+                        (item.itemType == ItemsManager.ItemType.Helmet) ||
+                        (item.itemType == ItemsManager.ItemType.Shield))
                     {
                         Destroy(itemSlot.gameObject);
                     }
@@ -1774,11 +1815,11 @@ public class MenuManager : MonoBehaviour
 
         if (activeItem.affectType == ItemsManager.AffectType.HP)
         {
-            playerStats[0].npcHP = Thulgran.ThulgranHP;
+            playerStats[0].characterHP = Thulgran.ThulgranHP;
 
             if (panelStuff != 0)
             {
-                hpEquipToString[panelStuff].text = playerStats[panelStuff].npcHP.ToString();
+                hpEquipToString[panelStuff].text = playerStats[panelStuff].characterHP.ToString();
             }
             else if (panelStuff == 0) // Thulgran is controlled by Thulgran.cs
             {
@@ -1787,7 +1828,7 @@ public class MenuManager : MonoBehaviour
             var sequence = DOTween.Sequence()
                 .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
                 .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcHP + activeItem.amountOfEffect, 1.8f));
+                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].characterHP + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
 
 
@@ -1800,11 +1841,11 @@ public class MenuManager : MonoBehaviour
 
         else if (activeItem.affectType == ItemsManager.AffectType.Mana)
         {
-            playerStats[0].npcMana = Thulgran.ThulgranMana;
+            playerStats[0].characterMana = Thulgran.ThulgranMana;
 
             if (panelStuff != 0)
             {
-                manaEquipToString[panelStuff].text = playerStats[panelStuff].npcMana.ToString();
+                manaEquipToString[panelStuff].text = playerStats[panelStuff].characterMana.ToString();
             }
             else if (panelStuff == 0)
             {
@@ -1813,7 +1854,7 @@ public class MenuManager : MonoBehaviour
             var sequence = DOTween.Sequence()
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].npcMana + activeItem.amountOfEffect, 1.8f));
+                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].characterMana + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
 
             yield return new WaitForSecondsRealtime(1.8f);
@@ -1822,27 +1863,47 @@ public class MenuManager : MonoBehaviour
 
             Debug.Log("Slider Mana fill expand and slide");
         }
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon)
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon || activeItem.itemType == ItemsManager.ItemType.Helmet ||
+                        activeItem.itemType == ItemsManager.ItemType.Shield)
         {
 
             if (activeItem.itemType == ItemsManager.ItemType.Armour)
             {
                 InventoryStats();
                 var sequence = DOTween.Sequence()
-                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
-                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.4f));
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
-            if (activeItem.itemType == ItemsManager.ItemType.Weapon)
+            else if (activeItem.itemType == ItemsManager.ItemType.Weapon)
             {
                 InventoryStats();
                 var sequence = DOTween.Sequence()
-                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(2f, 0.4f))
-                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1f, 0.4f));
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
 
-            yield return new WaitForSecondsRealtime(1f);
+            else if (activeItem.itemType == ItemsManager.ItemType.Helmet)
+            {
+                InventoryStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedHelmetImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedHelmetImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+
+            else if (activeItem.itemType == ItemsManager.ItemType.Shield)
+            {
+                InventoryStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedShieldImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedShieldImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+
+
+            yield return new WaitForSecondsRealtime(1.3f);
             mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
             characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
 

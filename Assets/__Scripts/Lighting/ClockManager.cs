@@ -8,29 +8,36 @@ using System.Collections;
 
 public class ClockManager : MonoBehaviour
 {
+    [Header("Day-Night Clock")]
     public RectTransform ClockFace;
+    [Space]
     public TextMeshProUGUI Date, Time, Seasons, Year;
 
+    [Space]
     public Image seasonSprite;
-    public Sprite[] seasonSprites = new Sprite[3];
     private _DateTime _time;
 
     private float startingRotation;
 
+    [Space]
     public Light2D sunlight;
     public float nightIntensity;
     public float dayIntensity;
     public float lightScaler;
 
+    [Space]
     public AnimationCurve dayNightCurve;
     [Space]
     public bool isDaylightOn;
     public string scene;
+    [Space]
 
+    public Sprite[] seasonSprites = new Sprite[3];
     private void Awake()
     {
         startingRotation = ClockFace.localEulerAngles.z - 90;
         isDaylightOn = true;
+        lightScaler = 0;
     }
 
     private void OnEnable()

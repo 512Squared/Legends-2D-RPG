@@ -30,17 +30,15 @@ public class ItemButton : MonoBehaviour
         if (itemOnButton.itemType == ItemsManager.ItemType.Weapon )
         {
             MenuManager.instance.itemDamageBox.SetActive(true);
-            //MenuManager.instance.itemWeaponPower.text = "+" + itemOnButton.itemWeaponPower.ToString();
-            MenuManager.instance.itemDamage.text = "+" + itemOnButton.itemWeaponPower.ToString();
+            MenuManager.instance.itemDamage.text = "+" + itemOnButton.itemAttack.ToString();
             MenuManager.instance.itemArmourBox.SetActive(false);
             MenuManager.instance.itemPotionBox.SetActive(false);
             MenuManager.instance.itemFoodBox.SetActive(false);
         }
-        else if (itemOnButton.itemType == ItemsManager.ItemType.Armour)
+        else if (itemOnButton.itemType == ItemsManager.ItemType.Armour || itemOnButton.itemType == ItemsManager.ItemType.Helmet || itemOnButton.itemType == ItemsManager.ItemType.Shield)
         {
             MenuManager.instance.itemArmourBox.SetActive(true);
-            //MenuManager.instance.itemArmourDefence.text = "+" + itemOnButton.itemArmourDefence.ToString();
-            MenuManager.instance.itemArmour.text = "+" + itemOnButton.itemArmourDefence.ToString();
+            MenuManager.instance.itemArmour.text = "+" + itemOnButton.itemDefence.ToString();
             MenuManager.instance.itemDamageBox.SetActive(false);
             MenuManager.instance.itemPotionBox.SetActive(false);
             MenuManager.instance.itemFoodBox.SetActive(false);
@@ -76,15 +74,15 @@ public class ItemButton : MonoBehaviour
         if (itemOnButton.itemType == ItemsManager.ItemType.Weapon)
         {
             ShopManager.instance.shopItemDamageBox.SetActive(true);
-            ShopManager.instance.shopItemDamage.text = "+" + itemOnButton.itemWeaponPower.ToString();
+            ShopManager.instance.shopItemDamage.text = "+" + itemOnButton.itemAttack.ToString();
             ShopManager.instance.shopItemArmourBox.SetActive(false);
             ShopManager.instance.shopItemPotionBox.SetActive(false);
             ShopManager.instance.shopItemFoodBox.SetActive(false);
         }
-        else if (itemOnButton.itemType == ItemsManager.ItemType.Armour)
+        else if (itemOnButton.itemType == ItemsManager.ItemType.Armour || itemOnButton.itemType == ItemsManager.ItemType.Helmet || itemOnButton.itemType == ItemsManager.ItemType.Shield)
         {
             ShopManager.instance.shopItemArmourBox.SetActive(true);
-            ShopManager.instance.shopItemArmour.text = "+" + itemOnButton.itemArmourDefence.ToString();
+            ShopManager.instance.shopItemArmour.text = "+" + itemOnButton.itemDefence.ToString();
             ShopManager.instance.shopItemDamageBox.SetActive(false);
             ShopManager.instance.shopItemPotionBox.SetActive(false);
             ShopManager.instance.shopItemFoodBox.SetActive(false);

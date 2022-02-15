@@ -1,69 +1,82 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.UI;
+using Sirenix.OdinInspector;
+
 
 public class PlayerStats : MonoBehaviour
 {
-
     public static PlayerStats instance;
 
-    public Sprite characterImage;
-    public Sprite characterMug;
-    public Sprite characterPlain;
-    public Sprite[] skills;
+    #region Serialized Fields
+
     public string homeScene;
-
-
-    public int[] skillBonus;
-
-    public int thulGold;
-    public int thulSpells;
-    public int thulPotions;
-    public int[] xpLevelUp;
-    public int maxLevel;
-    public int baseLevelXP;
-    public int maxMana;
-    public int maxHP;
-
-    public bool isTeamMember;
-    public bool isAvailable;
-    public bool isNew = true;
 
     public string playerName;
     public string playerDesc;
     public string playerMoniker;
+    [Space]
+    public int thulGold, thulSpells, thulPotions;
+
+    [TabGroup("Images")]
+    [GUIColor(0.670f, 1, 0.560f)]
+    [PreviewField, Required]
+    public Sprite characterImage, characterMug, characterPlain;
+
+    [TabGroup("Stats")]
+    [GUIColor(0.970f, 1, 0.260f)]
+    public int maxLevel, baseLevelXP, characterXP, maxMana, maxHP;
+
+    [TabGroup("Range")]
+    [GUIColor(0.970f, 1, 0.260f)]
+    [Range(1, 10)]
+    public int characterLevel;
+    [TabGroup("Range")]
+    [GUIColor(0.970f, 1, 0.260f)]
+    [Range(1, 300)]
+    public int characterMana, characterHP;
+    [TabGroup("Range")]
+    [GUIColor(0.970f, 1, 0.260f)]
+    [Range(1, 100)]
+    public int characterIntelligence, characterPerception;
+    [TabGroup("Range")]
+    [GUIColor(0.970f, 1, 0.260f)]
+    [Range(1, 20)]
+    public int characterBaseAttack, characterBaseDefence, characterSpeed, characterJumpAbility;
 
 
-    public int npcLevel;
-    public int npcXP;
-    public int npcMana;
-    public int npcHP;
-    public int npcAttack;
-    public int npcDefence;
-    public int npcIntelligence;
-    public int npcPerception;
 
-    public int jumpAbility;
-    public int speed;
+    [TabGroup("Bools")]
+    [GUIColor(0.670f, 1, 0.560f)]
+    public bool isTeamMember, isAvailable = false, isNew = true;
 
 
-    public string equippedWeaponName = null;
-    public int characterWeaponPower = 0;
-    public Sprite equippedWeaponImage = null;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public ItemsManager characterWeapon, characterArmour, characterHelmet, characterShield;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public string characterWeaponName, characterArmourName,characterHelmetName, characterShieldName;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public string characterWeaponDescription, characterArmourDescription, characterHelmetDescription, characterShieldDescription;
+    [TabGroup("New Group", "Weaponry")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    public int characterAttackTotal, characterDefenceTotal;
 
-    public string equippedArmourName = null;
-    public int characterArmourDefence = 0;
-    public Sprite equippedArmourImage = null;
 
-    public string equippedArmourDescription;
-    public string equippedWeaponDescription;
+    [TabGroup("New Group", "Weaponry Images")]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [PreviewField, Required]
+    public Sprite characterWeaponImage, characterArmourImage, characterHelmetImage, characterShieldImage;
 
+    
+
+    public Sprite[] skills;
+    public int[] xpLevelUp;
+    public int[] skillBonus;
     public MagicManager[] magicSlots;
 
-
-    public ItemsManager equippedWeapon, equippedArmour = null;
+    #endregion
 
 
 
@@ -77,7 +90,11 @@ public class PlayerStats : MonoBehaviour
         {
             xpLevelUp[i] = (int)(0.02f * Math.Pow(i, 3) + 3.06f * Math.Pow(i, 2) + 105.6f * i);
         }
+
+        characterDefenceTotal = characterBaseDefence + characterArmour.itemDefence + characterShield.itemDefence + characterHelmet.itemDefence;
+        characterAttackTotal = characterBaseAttack + characterWeapon.itemAttack;
     }
+
 
 
     // Update is called once per frame YnPCmrtgUB0uhClQKlSTeTjVJ82fkbzf
@@ -93,34 +110,34 @@ public class PlayerStats : MonoBehaviour
 
     public void AddXP(int amountOfXp)
     {
-        npcXP += amountOfXp;
-        if (npcXP > xpLevelUp[npcLevel])
+        characterXP += amountOfXp;
+        if (characterXP > xpLevelUp[characterLevel])
         {
-            npcXP -= xpLevelUp[npcLevel];
-            npcLevel++;
+            characterXP -= xpLevelUp[characterLevel];
+            characterLevel++;
 
             maxHP = (int)(maxHP * 1.06f);
             maxMana = (int)(maxMana * 1.06f);
-            npcHP = maxHP;
-            npcMana = maxMana;
+            characterHP = maxHP;
+            characterMana = maxMana;
 
-            if (npcLevel % 2 == 0)
+            if (characterLevel % 2 == 0)
             {
-                npcAttack++;
+                characterBaseAttack++;
             }
             else
             {
-                npcDefence++;
+                characterBaseDefence++;
             }
 
-            if (npcLevel % 3 == 0)
+            if (characterLevel % 3 == 0)
             {
-                npcIntelligence++;
+                characterIntelligence++;
             }
 
-            if (npcLevel % 5 == 0)
+            if (characterLevel % 5 == 0)
             {
-                npcPerception++;
+                characterPerception++;
             }
 
 
@@ -131,11 +148,11 @@ public class PlayerStats : MonoBehaviour
     {
         if (playerName != "Thulgran")
         {
-            npcHP += amountOfHPToAdd;
+            characterHP += amountOfHPToAdd;
 
-            if (npcHP > maxHP)
+            if (characterHP > maxHP)
             {
-                npcHP = maxHP;
+                characterHP = maxHP;
                 NotificationFader.instance.CallFadeInOut($"{playerName}'s HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
                 3f,
                 1400);
@@ -150,10 +167,10 @@ public class PlayerStats : MonoBehaviour
     {
         if (playerName != "Thulgran")
         {
-            npcMana += amountOfManaToAdd;
-            if (npcMana > maxMana)
+            characterMana += amountOfManaToAdd;
+            if (characterMana > maxMana)
             {
-                npcMana = maxMana;
+                characterMana = maxMana;
                 NotificationFader.instance.CallFadeInOut($"{playerName}'s Mana is <color=#E0A515>full</color> - well done!", Sprites.instance.manaSprite, 3f, 1400);
                 Debug.Log($"Yo");
             }
@@ -162,31 +179,46 @@ public class PlayerStats : MonoBehaviour
 
     public void AddArmourDefence(int amountOfArmourDefenceToAdd)
     {
-        npcDefence += amountOfArmourDefenceToAdd;
+        characterDefenceTotal += amountOfArmourDefenceToAdd;
     }
 
     public void AddWeaponPower(int amountOfWeaponPowerToAdd)
     {
-        npcAttack += amountOfWeaponPowerToAdd;
+        characterAttackTotal += amountOfWeaponPowerToAdd;
     }
 
     public void EquipWeapon(ItemsManager weaponToEquip)
     {
-        equippedWeapon = weaponToEquip;
-        equippedWeaponName = equippedWeapon.itemName;
-        characterWeaponPower = equippedWeapon.itemWeaponPower;
-        equippedWeaponImage = equippedWeapon.itemsImage;
-        equippedWeaponDescription = equippedWeapon.itemDescription;
+        characterWeapon = weaponToEquip;
+        characterWeaponName = characterWeapon.itemName;
+        characterWeaponImage = characterWeapon.itemsImage;
+        characterWeaponDescription = characterWeapon.itemDescription;
+
 
     }
 
     public void EquipArmour(ItemsManager armourToEquip)
     {
-        equippedArmour = armourToEquip;
-        equippedArmourName = equippedArmour.itemName;
-        characterArmourDefence = equippedArmour.itemArmourDefence;
-        equippedArmourImage = equippedArmour.itemsImage;
-        equippedArmourDescription = equippedArmour.itemDescription;
+        characterArmour = armourToEquip;
+        characterArmourName = characterArmour.itemName;
+        characterArmourImage = characterArmour.itemsImage;
+        characterArmourDescription = characterArmour.itemDescription;
+    }
+
+    public void EquipHelmet(ItemsManager helmetToEquip)
+    {
+        characterHelmet = helmetToEquip;
+        characterHelmetName = characterHelmet.itemName;
+        characterHelmetImage = characterHelmet.itemsImage;
+        characterHelmetDescription = characterHelmet.itemDescription;
+    }
+
+    public void EquipShield(ItemsManager shieldToEquip)
+    {
+        characterShield = shieldToEquip;
+        characterShieldName = characterShield.itemName;
+        characterShieldImage = characterShield.itemsImage;
+        characterShieldDescription = characterShield.itemDescription;
     }
 
 

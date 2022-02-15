@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
 using TMPro;
-using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -143,7 +141,7 @@ public class GameManager : MonoBehaviour
             if (sceneToLoad == playerStats[i].homeScene)
             {
                 playerStats[i].gameObject.SetActive(true);
-                Debug.Log(playerStats[i].playerName + " is active in " + sceneToLoad);
+                UnityEngine.Debug.Log(playerStats[i].playerName + " is active in " + sceneToLoad);
             }
             else if (sceneToLoad != playerStats[i].homeScene)
             {
