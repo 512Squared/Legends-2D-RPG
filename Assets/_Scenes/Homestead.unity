@@ -1692,6 +1692,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cameras
       objectReference: {fileID: 0}
+    - target: {fileID: 4489525803450529851, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.150171
@@ -1706,36 +1710,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259517, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: field of view
-      value: 60
+      value: 26.991467
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805261132712, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_BoundingShape2D
       value: 
       objectReference: {fileID: 887204278}
+    - target: {fileID: 4489525805261132727, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
+      propertyPath: _maximum
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489525805261132727, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
+      propertyPath: _minimum
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4489525805091259518, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
---- !u!1 &186276134 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4489525805261132715, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
-  m_PrefabInstance: {fileID: 186276133}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &186276135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 186276134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4700f9f03ad19f94baf0367cb7a9c988, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Width: 2
-  m_Damping: 1
-  m_MinFOV: 3
-  m_MaxFOV: 60
 --- !u!4 &186483396 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2101134996019550526, guid: 7dfde68ceebb90a40a907904e2bdc3de, type: 3}
@@ -2087,10 +2078,10 @@ Transform:
   - {fileID: 5375350620303110285}
   - {fileID: 2007523515}
   - {fileID: 55470883}
+  - {fileID: 1955015040}
   - {fileID: 651410862}
   - {fileID: 93224739}
   - {fileID: 305413933}
-  - {fileID: 1955015040}
   - {fileID: 31430847}
   - {fileID: 386733862}
   - {fileID: 1833373517}
@@ -2102,10 +2093,10 @@ Transform:
   - {fileID: 501898424}
   - {fileID: 740111323}
   - {fileID: 951347778}
+  - {fileID: 1075412967}
   - {fileID: 1816788979}
   - {fileID: 1361079692}
   - {fileID: 1876360854}
-  - {fileID: 1075412967}
   - {fileID: 921028440}
   - {fileID: 1754550051}
   - {fileID: 1583937172}
@@ -6821,7 +6812,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 229198118}
-  m_RootOrder: 117
+  m_RootOrder: 114
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1075412968
 CircleCollider2D:
@@ -11953,7 +11944,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 229198118}
-  m_RootOrder: 102
+  m_RootOrder: 99
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1955015041
 CircleCollider2D:

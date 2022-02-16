@@ -217,7 +217,7 @@ public struct _DateTime
     #region Bool Checks
     public bool IsNight()
     {
-        return hour > streetLightsOnAt || hour < streetLightsOffAt;
+        return hour > streetLightsOnAt - 1 || hour < streetLightsOffAt;
     }
 
     public bool IsMorning()
@@ -227,7 +227,7 @@ public struct _DateTime
 
     public bool IsAfternoon()
     {
-        return hour > 12 && hour < streetLightsOnAt;
+        return hour > 12 && hour < streetLightsOnAt - 1;
     }
 
     public bool IsWeekend()
@@ -246,18 +246,18 @@ public struct _DateTime
     public _DateTime NewYearsDay(int year)
     {
         if (year == 0) year = 1;
-        return new _DateTime(1, 0, year, 6, 0, StreetLightsOnAt, StreetLightsOffAt);
+        return new _DateTime(1, 0, year, 6, 0, StreetLightsOnAt - 1, StreetLightsOffAt);
     }
 
     public _DateTime SummerSolstice(int year)
     {
         if (year == 0) year = 1;
-        return new _DateTime(28, 1, year, 6, 0, StreetLightsOnAt, StreetLightsOffAt);
+        return new _DateTime(28, 1, year, 6, 0, StreetLightsOnAt - 1, StreetLightsOffAt);
     }
     public _DateTime PumpkinHarvest(int year)
     {
         if (year == 0) year = 1;
-        return new _DateTime(28, 2, year, 6, 0, StreetLightsOnAt, StreetLightsOffAt);
+        return new _DateTime(28, 2, year, 6, 0, StreetLightsOnAt - 1, StreetLightsOffAt);
     }
 
     #endregion
@@ -269,7 +269,7 @@ public struct _DateTime
         season = Mathf.Clamp(season, 0, 3);
         if (year == 0) year = 1;
 
-        return new _DateTime(1, season, year, 6, 0, StreetLightsOnAt, StreetLightsOffAt);
+        return new _DateTime(1, season, year, 6, 0, StreetLightsOnAt - 1, StreetLightsOffAt);
     }
 
     public _DateTime StartOfSpring(int year)

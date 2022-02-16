@@ -11,26 +11,44 @@ public static class Actions
     /// </summary>
 
 
-    // requires ItemsManager for item info
+    #region Shop Functions
+
     public static Action<ItemsManager> OnSellItem;
     public static Action<ItemsManager> OnBuyItem;
-
-    // int = selectedCharacter | Vector2 = mugshot target for UI animation
     public static Action<ItemsManager, int, Vector2> OnUseItem;
+    public static Action<int> OnCoinAdd;
+
+    #endregion
+
+    #region Stats
 
     public static Action<Thulgran, ItemsManager> OnThulgran; //
 
-    //public static Action<ItemsManager> _cUpdate;
+    #endregion
 
-    public static Action<int> OnCoinAdd;
-
-    // UI Stuff
+    #region UI buttons
 
     public static Action OnBackButton;
     public static Action OnHomeButton;
     public static Action OnMainMenuButton;
     public static Action OnResumeButton;
 
+    #endregion
+
+    #region Scene managament
+
     public static Action<string> OnSceneChange;
+
+    #endregion
+
+    #region Region Name
+
+
+
+    #endregion
+
+
+
+
 
 }

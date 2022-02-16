@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ItemsManager : MonoBehaviour
@@ -21,7 +20,7 @@ public class ItemsManager : MonoBehaviour
 
     public enum AffectType { HP, Mana, Defence, Attack, Perception, Speed }
     public AffectType affectType;
-    public int amountOfEffect;
+    public int amountOfEffect = 0;
 
     public int itemAttack;
     public int itemDefence;
@@ -31,10 +30,20 @@ public class ItemsManager : MonoBehaviour
 
     public int amount;
 
+
     private void Start()
     {
         instance = this;
-        valueInCoins += (amountOfEffect + itemAttack + itemDefence) * 2;
+
+        // randomise item valueInCoins to ± 20% of double the bonus advantage gained
+        int totalBonus = valueInCoins + amountOfEffect + itemAttack + itemDefence;
+        float totBonus = (float)totalBonus;
+        float valueInCoinsF = 0;
+
+        valueInCoinsF +=  (totBonus * 2) + (totBonus * UnityEngine.Random.Range(-0.2f, 0.2f));
+
+        valueInCoins = (int)Math.Round(valueInCoinsF);
+
     }
 
     public void UseItem(int characterToUseOn)
