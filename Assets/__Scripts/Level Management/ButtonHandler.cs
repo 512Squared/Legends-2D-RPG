@@ -66,7 +66,7 @@ public class ButtonHandler : MonoBehaviour
         SetAllButtonsInteractable();
 
         if (calledTab == "weapon") buttons[1].interactable = false;
-        else if (calledTab == "armour") buttons[2].interactable = false;
+        else if (calledTab == "armour" || calledTab == "helmet" || calledTab == "shield") buttons[2].interactable = false;
     }
 
 

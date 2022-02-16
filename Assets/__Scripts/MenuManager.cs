@@ -6,9 +6,6 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 
-
-
-
 public class MenuManager : MonoBehaviour
 {
 
@@ -16,7 +13,7 @@ public class MenuManager : MonoBehaviour
 
     private int panelStuff;
     private string whichPanelIsOn = "";
-    public int teamNofifyCount;
+    private int teamNofifyCount;
     private Tween fadeText;
     private int foodItems, weaponItems, potionItems, itemItems, armourItems;
 
@@ -281,8 +278,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
     #endregion
 
-
-    // SUBSCRIBERS
+    #region SUBSCRIBERS
 
 
     private void OnEnable()
@@ -308,9 +304,9 @@ public class MenuManager : MonoBehaviour
         Actions.OnResumeButton -= ResumeButton;
     }
 
+    #endregion
 
-
-    // ACTION METHOD CALLS
+    #region ACTION METHOD CALLS
 
     public void UpdateStats_1(ItemsManager item, int character, Vector2 position)
     {
@@ -535,13 +531,23 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    #endregion
 
+    #region CO-ROUTINES
 
-
-
-
-    // CO-ROUTINES
-
+    private IEnumerator ButtonDelay()
+    {
+        yield return new WaitForSeconds(1.2f);
+        clockFrame.GetComponent<Image>().raycastTarget = true;
+        clockFrame.GetComponent<Button>().interactable = true;
+    }
+    private IEnumerator PanelCancelCoR()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+    }
     private IEnumerator DisableJoystickDelay()
     {
         yield return new WaitForSeconds(0.7f);
@@ -557,9 +563,130 @@ public class MenuManager : MonoBehaviour
     {
         gameObject.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
     }
+    private static IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
+    {
+        float startingAlpha = canvasGroup.alpha;
+
+        for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
+        {
+            canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
+
+            yield return null;
+        }
+        canvasGroup.alpha = targetAlpha;
+    }
+    private IEnumerator DelayPanelReturn() // also USE item tweens
+    {
+
+        Debug.Log("InventoryLeft panel animations engaged");
+
+        if (activeItem.affectType == ItemsManager.AffectType.HP)
+        {
+            playerStats[0].characterHP = Thulgran.ThulgranHP;
+
+            if (panelStuff != 0)
+            {
+                hpEquipToString[panelStuff].text = playerStats[panelStuff].characterHP.ToString();
+            }
+            else if (panelStuff == 0) // Thulgran is controlled by Thulgran.cs
+            {
+                hpEquipToString[panelStuff].text = Thulgran.ThulgranHP.ToString();
+            }
+            var sequence = DOTween.Sequence()
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].characterHP + activeItem.amountOfEffect, 1.8f));
+            sequence.SetLoops(1, LoopType.Yoyo);
 
 
-    // METHODS
+            yield return new WaitForSecondsRealtime(1.8f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
+            Debug.Log("Slider HP fill scale enacted");
+        }
+
+        else if (activeItem.affectType == ItemsManager.AffectType.Mana)
+        {
+            playerStats[0].characterMana = Thulgran.ThulgranMana;
+
+            if (panelStuff != 0)
+            {
+                manaEquipToString[panelStuff].text = playerStats[panelStuff].characterMana.ToString();
+            }
+            else if (panelStuff == 0)
+            {
+                manaEquipToString[panelStuff].text = Thulgran.ThulgranMana.ToString();
+            }
+            var sequence = DOTween.Sequence()
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].characterMana + activeItem.amountOfEffect, 1.8f));
+            sequence.SetLoops(1, LoopType.Yoyo);
+
+            yield return new WaitForSecondsRealtime(1.8f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
+            Debug.Log("Slider Mana fill expand and slide");
+        }
+        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon || activeItem.itemType == ItemsManager.ItemType.Helmet ||
+                        activeItem.itemType == ItemsManager.ItemType.Shield)
+        {
+
+            if (activeItem.itemType == ItemsManager.ItemType.Armour)
+            {
+                InventoryStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+            else if (activeItem.itemType == ItemsManager.ItemType.Weapon)
+            {
+                InventoryStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+
+            else if (activeItem.itemType == ItemsManager.ItemType.Helmet)
+            {
+                InventoryStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedHelmetImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedHelmetImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+
+            else if (activeItem.itemType == ItemsManager.ItemType.Shield)
+            {
+                InventoryStats();
+                var sequence = DOTween.Sequence()
+                    .Append(equippedShieldImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedShieldImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                sequence.SetLoops(1, LoopType.Yoyo);
+            }
+
+
+            yield return new WaitForSecondsRealtime(1.3f);
+            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+
+        }
+
+        yield return new WaitForSecondsRealtime(0.3f);
+        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
+        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
+        SetAllButtonsInteractable();
+        isInventorySlidePanelOn = false;
+
+    }
+
+    #endregion
+
+    #region METHODS
     public void HomeScreenStats()
     {
         playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
@@ -674,7 +801,7 @@ public class MenuManager : MonoBehaviour
         {
             if (playerStats[i].isAvailable == true) // on 'add to party screen'
             {
-                //Debug.Log(playerStats[i].playerName + " (LEVEL " + playerStats[i].npcLevel + ") is now active");
+                Debug.Log($"{playerStats[i].playerName} (LEVEL {playerStats[i].characterLevel}) is now active");
 
                 characterParty[i].SetActive(true);
 
@@ -1077,7 +1204,6 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-
     public void OnCancelButton()
     {
         StartCoroutine(PanelCancelCoR());
@@ -1087,20 +1213,6 @@ public class MenuManager : MonoBehaviour
     {
 
         StartCoroutine(DelayPanelReturn());
-    }
-
-
-    private static IEnumerator FadeToAlpha(CanvasGroup canvasGroup, float targetAlpha, float fadeTime)
-    {
-        float startingAlpha = canvasGroup.alpha;
-
-        for (float i = 0; i < 1; i += Time.deltaTime / fadeTime)
-        {
-            canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, i);
-
-            yield return null;
-        }
-        canvasGroup.alpha = targetAlpha;
     }
 
     public void OnUseButton()
@@ -1664,7 +1776,7 @@ public class MenuManager : MonoBehaviour
 
                         // SORT BY ARMOUR
 
-                        if (item.itemType == ItemsManager.ItemType.Armour)
+                        if (item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Helmet || item.itemType == ItemsManager.ItemType.Shield)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
                             Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: { item.amountOfEffect} | Power: { item.itemAttack} | Defence: { item.itemDefence}");
@@ -1779,7 +1891,6 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-
     public void WhichPanelIsOn()
     {
 
@@ -1808,115 +1919,6 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    IEnumerator DelayPanelReturn() // also USE item tweens
-    {
-
-        Debug.Log("InventoryLeft panel animations engaged");
-
-        if (activeItem.affectType == ItemsManager.AffectType.HP)
-        {
-            playerStats[0].characterHP = Thulgran.ThulgranHP;
-
-            if (panelStuff != 0)
-            {
-                hpEquipToString[panelStuff].text = playerStats[panelStuff].characterHP.ToString();
-            }
-            else if (panelStuff == 0) // Thulgran is controlled by Thulgran.cs
-            {
-                hpEquipToString[panelStuff].text = Thulgran.ThulgranHP.ToString();
-            }
-            var sequence = DOTween.Sequence()
-                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(hpEquipSlider[panelStuff].DOValue(playerStats[panelStuff].characterHP + activeItem.amountOfEffect, 1.8f));
-            sequence.SetLoops(1, LoopType.Yoyo);
-
-
-            yield return new WaitForSecondsRealtime(1.8f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-
-            Debug.Log("Slider HP fill scale enacted");
-        }
-
-        else if (activeItem.affectType == ItemsManager.AffectType.Mana)
-        {
-            playerStats[0].characterMana = Thulgran.ThulgranMana;
-
-            if (panelStuff != 0)
-            {
-                manaEquipToString[panelStuff].text = playerStats[panelStuff].characterMana.ToString();
-            }
-            else if (panelStuff == 0)
-            {
-                manaEquipToString[panelStuff].text = Thulgran.ThulgranMana.ToString();
-            }
-            var sequence = DOTween.Sequence()
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(manaEquipSlider[panelStuff].DOValue(playerStats[panelStuff].characterMana + activeItem.amountOfEffect, 1.8f));
-            sequence.SetLoops(1, LoopType.Yoyo);
-
-            yield return new WaitForSecondsRealtime(1.8f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-
-            Debug.Log("Slider Mana fill expand and slide");
-        }
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour || activeItem.itemType == ItemsManager.ItemType.Weapon || activeItem.itemType == ItemsManager.ItemType.Helmet ||
-                        activeItem.itemType == ItemsManager.ItemType.Shield)
-        {
-
-            if (activeItem.itemType == ItemsManager.ItemType.Armour)
-            {
-                InventoryStats();
-                var sequence = DOTween.Sequence()
-                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
-                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
-                sequence.SetLoops(1, LoopType.Yoyo);
-            }
-            else if (activeItem.itemType == ItemsManager.ItemType.Weapon)
-            {
-                InventoryStats();
-                var sequence = DOTween.Sequence()
-                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
-                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
-                sequence.SetLoops(1, LoopType.Yoyo);
-            }
-
-            else if (activeItem.itemType == ItemsManager.ItemType.Helmet)
-            {
-                InventoryStats();
-                var sequence = DOTween.Sequence()
-                    .Append(equippedHelmetImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
-                    .Append(equippedHelmetImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
-                sequence.SetLoops(1, LoopType.Yoyo);
-            }
-
-            else if (activeItem.itemType == ItemsManager.ItemType.Shield)
-            {
-                InventoryStats();
-                var sequence = DOTween.Sequence()
-                    .Append(equippedShieldImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
-                    .Append(equippedShieldImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
-                sequence.SetLoops(1, LoopType.Yoyo);
-            }
-
-
-            yield return new WaitForSecondsRealtime(1.3f);
-            mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-            characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-
-        }
-
-        yield return new WaitForSecondsRealtime(0.3f);
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-        SetAllButtonsInteractable();
-        isInventorySlidePanelOn = false;
-
-    }
-
     private void Fade(float endValue, float duration, TweenCallback onEnd)
     {
         if (fadeText != null)
@@ -1925,14 +1927,6 @@ public class MenuManager : MonoBehaviour
         }
 
         fadeText = chooseText.DOFade(endValue, duration);
-    }
-
-    IEnumerator PanelCancelCoR()
-    {
-        yield return new WaitForSecondsRealtime(0.1f);
-        mainEquipInfoPanel.DOAnchorPos(new Vector2(0, 0), 0.8f);
-        characterWeaponryPanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
-        characterChoicePanel.DOAnchorPos(new Vector2(0, 1200), 0.8f);
     }
 
     private void Start()
@@ -1980,12 +1974,8 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    IEnumerator ButtonDelay()
-    {
-        yield return new WaitForSeconds(1.2f);
-        clockFrame.GetComponent<Image>().raycastTarget = true;
-        clockFrame.GetComponent<Button>().interactable = true;
-    }
+
+    #endregion
 }
 
 
