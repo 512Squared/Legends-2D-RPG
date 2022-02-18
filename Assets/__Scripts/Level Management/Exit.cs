@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 
 // cant
@@ -24,8 +25,7 @@ public class Exit : MonoBehaviour
         {
             if (isLoaded) return;
             isLoaded = true;
-
-
+             
             SceneHandling sceneHandle = gameObject.GetComponent<SceneHandling>();
 
             StartCoroutine(LoadSceneCoroutine(sceneHandle));
@@ -46,7 +46,7 @@ public class Exit : MonoBehaviour
 
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
-        while (!asyncLoadLevel.isDone)
+        while (asyncLoadLevel != null && !asyncLoadLevel.isDone)
         {
             yield return new WaitForEndOfFrame();
 

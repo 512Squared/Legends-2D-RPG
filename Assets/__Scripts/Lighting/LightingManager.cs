@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LightingManager : MonoBehaviour
 {
@@ -36,10 +37,17 @@ public class LightingManager : MonoBehaviour
 
     private void LightsOn()
     {
+        StartCoroutine(FlickTheSwitchBoy());       
+    }
+
+    private IEnumerator FlickTheSwitchBoy()
+    {
+        yield return new WaitForSeconds(2f);
         for (int i = 0; i < sceneLighting.Length; i++)
         {
             sceneLighting[i].GetComponent<Light2D>().enabled = true;
-        }        
+        }
+
     }
 
     private void LightsOff()
