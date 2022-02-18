@@ -6,9 +6,9 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 
-public class MenuManager : MonoBehaviour 
+public class MenuManager : MonoBehaviour
 {
-    
+
     public static MenuManager instance;
 
     #region FIELDS
@@ -285,6 +285,25 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
     #endregion
+
+    #region CALLBACKS
+    private void Start()
+    {
+        instance = this;
+        mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
+        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
+    }
+
+    private void Awake()
+    {
+        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
+    }
+
+    private void Update()
+    {
+    }
+
+    #endregion CALLBACKS
 
     #region SUBSCRIBERS
 
@@ -1937,22 +1956,6 @@ public class MenuManager : MonoBehaviour
         fadeText = chooseText.DOFade(endValue, duration);
     }
 
-    private void Start()
-    {
-        instance = this;
-        mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
-        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
-    }
-
-    private void Awake()
-    {
-        mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
-    }
-
-    private void Update()
-    {
-    }
-
     public void OpenClock()
     {
         isClockPopOutVisible = !isClockPopOutVisible;
@@ -1981,7 +1984,11 @@ public class MenuManager : MonoBehaviour
             seq.SetLoops(1, LoopType.Yoyo);
         }
     }
+    
+    public void UpdateQuestList()
+    {
 
+    }
 
     #endregion
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
@@ -13,7 +14,7 @@ public class QuestsManager : MonoBehaviour
 
     #region FIELDS
 
-
+    private List<QuestObject> questList;
 
     #endregion FIELDS
 
@@ -59,6 +60,8 @@ public class QuestsManager : MonoBehaviour
             MarkQuestComplete("Defeat a dragon");
             MarkQuestInComplete("Add two people to your character party");
         }
+
+        //UpdateQuestObjects();
     }
 
     #endregion CALLBACKS
@@ -131,6 +134,28 @@ public class QuestsManager : MonoBehaviour
     {
         int questNumberToCheck = GetQuestNumber(questToMark);
         questDone[questNumberToCheck] = false;
+    }
+
+    public void UpdateQuestObjects()
+    {
+       if(questList.Count > 0)
+        {
+            foreach (QuestObject questObject in questList)
+            {
+                questObject.CheckForCompletion();
+                Debug.Log($"Quest list length: {questList.Count}");
+            }
+        }
+    }
+
+    public void AddQuest(QuestObject questObject)
+    {
+        questList.Add(questObject);
+    }
+
+    public void UpdateQuestList()
+    {
+
     }
 
     #endregion METHODS

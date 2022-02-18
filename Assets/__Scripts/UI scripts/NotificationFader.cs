@@ -22,6 +22,8 @@ public class NotificationFader : MonoBehaviour
     private static Image memoryImage;
     private static float memoryPos;
 
+    private bool isInProgress = false;
+
 
 
     // Start is called before the first frame update
@@ -32,14 +34,17 @@ public class NotificationFader : MonoBehaviour
 
     private void OnEnable()
     {
-        if(memoryString != null && memoryImage != null) CallFadeInOut(memoryString, memoryImage.sprite, 1.5f, memoryPos); 
+        if(isInProgress) if(memoryString != null && memoryImage != null) CallFadeInOut(memoryString, memoryImage.sprite, 1.5f, memoryPos); 
     }
 
     private void OnDisable()
     {
-        memoryString = message.text;
-        memoryPos = messageContainer.position.x;
-        memoryImage = noteCharacter;
+        if (isInProgress == true)
+        {
+            memoryString = message.text;
+            memoryPos = messageContainer.position.x;
+            memoryImage = noteCharacter;
+        }
     }
 
 
@@ -77,6 +82,8 @@ public class NotificationFader : MonoBehaviour
 
     private IEnumerator Fader(string passedMessage, Sprite characterMug, float duration, float pos)
     {
+        isInProgress = true;
+        DOTween.KillAll();
         this.duration = duration;
         yield return new WaitForSeconds(0f);
         messageContainer.position = new Vector3(pos, 30f, 0f);
@@ -84,6 +91,7 @@ public class NotificationFader : MonoBehaviour
         FadeIn(0.5f, passedMessage, characterMug);
         yield return new WaitForSeconds(duration);
         FadeOut(1f);
+        isInProgress = false;    
     }
 
     public void CallFadeInOut(string message, Sprite character, float dur, float position)
