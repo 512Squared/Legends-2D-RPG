@@ -47,7 +47,11 @@ public static class Actions
 
     #endregion
 
+    #region Quests
 
+    public static Action OnQuestMarkedComplete;
+
+    #endregion
 
 
 

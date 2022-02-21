@@ -16,6 +16,16 @@
     town
 }
 
+public enum Season
+{
+    Spring = 0,
+    Summer = 1,
+    Autumn = 2,
+    Winter = 3, 
+
+
+}
+
 public enum SceneObjectsUnload
 {
     building,
@@ -32,15 +42,6 @@ public enum SceneObjectsUnload
     shop2,
     shop3,
     town
-}
-
-public enum Season
-{
-    Spring = 0,
-    Summer = 1,
-    Autumn = 2,
-    Winter = 3, 
-
 }
 
 
