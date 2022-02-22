@@ -9,9 +9,18 @@ public class QuestElement : MonoBehaviour
     [SerializeField] string questToComplete; // which quest to have completed first
     [SerializeField] bool enabledAfterDone; // is this element activated on completion of a quest?
 
+
+
+
     private void OnEnable()
     {
         Actions.OnQuestMarkedComplete += CheckForCompletion;
+    }
+
+
+    private void OnDisable()
+    {
+        Actions.OnQuestMarkedComplete -= CheckForCompletion;
     }
 
     public void CheckForCompletion()
@@ -20,6 +29,7 @@ public class QuestElement : MonoBehaviour
         {
             Debug.Log($"Check completion: {questElement.name}");
             questElement.GetComponent<SpriteRenderer>().enabled = enabledAfterDone;
+            questElement.GetComponent<ItemsManager>().isQuestObject = false;    
             //QuestManager.instance.pSystem.Play();
         }
 

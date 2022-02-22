@@ -6,10 +6,6 @@ using UnityEngine.SceneManagement;
 
 public static class Actions
 {
-    /// <summary>
-    /// Stat related actions standardised to a single form to facilitate one UpdateStats()
-    /// </summary>
-
 
     #region Shop Functions
 
@@ -50,9 +46,10 @@ public static class Actions
     #region Quests
 
     public static Action OnQuestMarkedComplete;
+    public static Action<string> OnMarkQuestComplete;
+    public static Action<string> OnMarkQuestInComplete;
+    public static Action<string, bool, string, float, Sprite> OnActivateQuest;
 
     #endregion
-
-
 
 }

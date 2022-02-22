@@ -13,6 +13,7 @@ public class ItemsManager : MonoBehaviour
     public bool itemSelected = false;
     public bool isNewItem = true;
     public bool shopItem = false;
+    public bool isQuestObject;
 
     public enum Shop { inventory, shop1, shop2, shop3 }
     public Shop shop; // inventory, shop1, shop2, shop3
@@ -142,7 +143,7 @@ public class ItemsManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !isQuestObject)
         {
             print("You picked up a " + itemName);
             SelfDestroy();

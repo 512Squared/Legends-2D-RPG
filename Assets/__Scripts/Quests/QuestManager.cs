@@ -41,11 +41,6 @@ public class QuestManager : MonoBehaviour
 
     #region CALLBACKS
 
-    private void Awake()
-    {
-
-    }
-
     private void Start()
     {
         instance = this;
@@ -69,16 +64,14 @@ public class QuestManager : MonoBehaviour
 
     private void OnEnable()
     {
-
-
-
+        Actions.OnMarkQuestComplete += MarkQuestComplete;
+        Actions.OnMarkQuestComplete += MarkQuestIncomplete;
     }
 
     private void OnDisable()
     {
-
-
-
+        Actions.OnMarkQuestComplete -= MarkQuestComplete;
+        Actions.OnMarkQuestComplete -= MarkQuestIncomplete;
     }
 
     #endregion SUBSCRIBERS

@@ -12,10 +12,27 @@ public class DialogueController : MonoBehaviour
     [SerializeField] TextMeshProUGUI dialogueText, nameText;
     [SerializeField] GameObject dialogueBox, nameBox;
 
+    private string questToMark;
+    private bool markQuestComplete;
+    private bool shouldMarkQuest;
+
+    private string message;
+    private Sprite sprite;
+    private float fadeTime;
+    private string questName;
+
+
     [SerializeField] string[] dialogueSentences;
     [SerializeField] int currentSentence;
 
     public bool dialogueJustStarted;
+
+
+
+    private void OnEnable()
+    {
+        Actions.OnActivateQuest += ActivateQuestAtEnd;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -41,8 +58,22 @@ public class DialogueController : MonoBehaviour
                         dialogueBox.SetActive(false);
                         GameManager.instance.dialogueBoxOpened = false;
 
+                        if (shouldMarkQuest)
+                        {
+                            Debug.Log($"Should Mark Quest triggered");
+                            shouldMarkQuest = false;
+                            if (markQuestComplete)
+                            {
+                                Actions.OnMarkQuestComplete?.Invoke(questToMark);
+                                Notification(message, questName, fadeTime, sprite);                        
+                            }
+                            else
+                            {
+                                Actions.OnMarkQuestInComplete?.Invoke(questToMark);
+                            }
+                        }
                         // disable trigger after dialogue
-                        
+
 
                     }
                     else
@@ -79,7 +110,7 @@ public class DialogueController : MonoBehaviour
 
     void CheckForName()
     {
-        if(dialogueSentences[currentSentence].StartsWith("#"))
+        if (dialogueSentences[currentSentence].StartsWith("#"))
         {
             nameText.text = dialogueSentences[currentSentence].Replace("#", "");
             currentSentence++;
@@ -89,6 +120,23 @@ public class DialogueController : MonoBehaviour
     public bool isDialogueBoxActive()
     {
         return dialogueBox.activeInHierarchy;
+    }
+
+    public void ActivateQuestAtEnd(string questName, bool markComplete, string message, float fadeTime, Sprite sprite)
+    {
+        Debug.Log($"Activate quest at end of dialogue: {message}");
+        questToMark = questName;
+        markQuestComplete = markComplete;
+        shouldMarkQuest = true;
+        this.message = message;
+        this.fadeTime = fadeTime;
+        this.sprite = sprite;
+        this.questName = questName;  
+    }
+
+    public void Notification(string message, string questName, float fadeTime, Sprite sprite)
+    {
+        NotificationFader.instance.CallFadeInOut($"You have activated a new quest: <color=#E0A515>{questName}</color>. {message}", sprite, fadeTime, 1000);
     }
 
 }

@@ -11,6 +11,7 @@ public class QuestZone : MonoBehaviour
     private bool markOnOther;  // alternative to OnEnter, e.g. OnFire button
 
     public bool enabledAfterMarking;
+    public bool isMarkable;    
 
     [Space]
     [SerializeField] string onDoneMessage;
@@ -20,7 +21,7 @@ public class QuestZone : MonoBehaviour
 
     private void Update()
     {
-        if (markOnOther && Input.GetButtonDown("Fire1"))
+        if (markOnOther && isMarkable && Input.GetButtonDown("Fire1"))
         {
             markOnOther = false;
             MarkTheQuest();
@@ -32,7 +33,7 @@ public class QuestZone : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (isMarkable && collision.CompareTag("Player"))
         {
             if (markOnEnter)
             {
@@ -47,11 +48,12 @@ public class QuestZone : MonoBehaviour
 
     public void MarkTheQuest()
     {
-        if (setAsDoneAfterMarking)
+        if (isMarkable && setAsDoneAfterMarking)
         {
             QuestManager.instance.MarkQuestComplete(questToMark);
             
             NotificationFader.instance.CallFadeInOut($"<color=#E0A515>{questToMark}</color> completed. {onDoneMessage}", gameObject.GetComponentInChildren<SpriteRenderer>().sprite, fadeTime, 1000);
+            isMarkable = false;
         }
         else
         {

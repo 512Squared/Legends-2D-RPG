@@ -7,10 +7,18 @@ using Cinemachine;
 public class DialogueHandler : MonoBehaviour
 {
 
+    [SerializeField] bool activateAQuest;
+    [SerializeField] string questToMark;
+    [SerializeField] bool markAsComplete;
+    [SerializeField] string activateMessage;
+    [SerializeField] float fadeTime;
+    [SerializeField] Sprite messageSprite;
+
     public string[] sentences;
     private bool canActivateBox;
 
     public int runCount = 0;
+
 
 
     // Start is called before the first frame update
@@ -26,7 +34,11 @@ public class DialogueHandler : MonoBehaviour
         {
             DialogueController.instance.ActivateDialogue(sentences);
             runCount++;
-        } 
+            if (activateAQuest)
+            {
+                Actions.OnActivateQuest?.Invoke(questToMark, markAsComplete, activateMessage, fadeTime, messageSprite);
+            }
+        }
     }
 
 

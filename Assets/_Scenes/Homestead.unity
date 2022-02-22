@@ -1415,7 +1415,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_RootOrder
-      value: 137
+      value: 135
       objectReference: {fileID: 0}
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2092,7 +2092,6 @@ Transform:
   - {fileID: 1565432054}
   - {fileID: 501898424}
   - {fileID: 740111323}
-  - {fileID: 951347778}
   - {fileID: 1075412967}
   - {fileID: 1816788979}
   - {fileID: 1361079692}
@@ -2102,6 +2101,7 @@ Transform:
   - {fileID: 1583937172}
   - {fileID: 1685243743}
   - {fileID: 1482998410}
+  - {fileID: 1633891758}
   - {fileID: 495030415}
   - {fileID: 1159021086}
   - {fileID: 1202171063}
@@ -2114,7 +2114,6 @@ Transform:
   - {fileID: 1086472012}
   - {fileID: 957907451}
   - {fileID: 785294183}
-  - {fileID: 1633891758}
   - {fileID: 160478062}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -6210,7 +6209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2304141808706988267, guid: ddddfb8089f23fb4cbe4ee0e81e74637, type: 3}
       propertyPath: m_RootOrder
-      value: 118
+      value: 117
       objectReference: {fileID: 0}
     - target: {fileID: 2304141808706988267, guid: ddddfb8089f23fb4cbe4ee0e81e74637, type: 3}
       propertyPath: m_LocalScale.z
@@ -6354,11 +6353,6 @@ Transform:
   m_Father: {fileID: 229198118}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &951347778 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-  m_PrefabInstance: {fileID: 1640820409}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &957907450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6812,7 +6806,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 229198118}
-  m_RootOrder: 114
+  m_RootOrder: 113
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1075412968
 CircleCollider2D:
@@ -7768,7 +7762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6906593321212818763, guid: 04390da9e3a76124c8e7a16e33db3dcb, type: 3}
       propertyPath: m_RootOrder
-      value: 116
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 6906593321212818763, guid: 04390da9e3a76124c8e7a16e33db3dcb, type: 3}
       propertyPath: m_LocalScale.z
@@ -8606,7 +8600,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_RootOrder
-      value: 122
+      value: 121
       objectReference: {fileID: 0}
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9476,7 +9470,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_RootOrder
-      value: 120
+      value: 119
       objectReference: {fileID: 0}
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9732,7 +9726,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 229198118}
-  m_RootOrder: 135
+  m_RootOrder: 122
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1633891759
 CircleCollider2D:
@@ -9902,140 +9896,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &1640820409
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 229198118}
-    m_Modifications:
-    - target: {fileID: 409690803609527012, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 409690803609527012, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 409690803609527012, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1660444129
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_RootOrder
-      value: 113
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 13.97
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -20.38
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4608271363396380638, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6169765260598872164, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_Name
-      value: table_3 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 6169765260598872164, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
---- !u!1 &1640820410 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6169765260598872164, guid: 14b26627f2806924eb25174b7fec7fef, type: 3}
-  m_PrefabInstance: {fileID: 1640820409}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1640820411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1640820410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 225792fcf83c1de45af1fc10ceacd37e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sentences:
-  - '#Thulgran'
-  - Grunt!
-  - '#Shopkeeper'
-  - Hey shrimp, what do you want?
-  - '#Thulgran'
-  - Not your fat arse, if that's what you're thinking.
-  - '#Shopkeeper'
-  - You think you're funny don't yer. I've had funnier boils on the end of my tit!
-  - '#Thulgran'
-  - That's the only thing you've ever had on your tit.
-  - '#Shopkeeper'
-  - Hi Thulgran, how are you?
-  - '#Thulgran'
-  - I'm great Greta, how are you?
-  - '#Shopkeeper'
-  - Oh you know, waiting for my life to magically get better in this miserable dump.
-    What are you looking for?
-  - '#Thulgran'
-  - 'A weapon. Nothing shabby. '
-  - '#Shopkeeper'
-  - 'I have just the thing. A Rungen-Dwarf Magnesium Hammer. Hardened with zinc,
-    alluminium, manganese and an ugly dwarf''s spit.. '
-  - '#Thulgran'
-  - 'Wow - that''s something special! '
-  - '#Shopkeeper'
-  - You bet. Harder than a dwarf's cock on milking day!
-  - '#Thulgran'
-  - Those were the days. How many livers is that gonna cost me?
-  - '#Shopkeeper'
-  - 'You''re whisky sodden liver isn''t worth shit, so that''ll be a 1000 gold coins
-    to you. '
-  - '#Thulgran'
-  - Yikes, you planning on retiring after this Greta?
-  - '#Shopkeeper'
-  - 'I wish. But being the stingy bastard yer are, I''m sure you''ve got that buried
-    around here somewhere. '
-  - '#Thulgran'
-  - 'Here you go, you miserable cunt '
-  - '#Shopkeeper'
-  - 'Thanks, yer bastard son of a hairy cannonball '
-  - '#Thulgran'
-  - 'Steady on girl! '
-  runCount: 0
 --- !u!1 &1641084317
 GameObject:
   m_ObjectHideFlags: 0
@@ -10475,7 +10335,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_RootOrder
-      value: 121
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10636,7 +10496,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_RootOrder
-      value: 119
+      value: 118
       objectReference: {fileID: 0}
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11068,7 +10928,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_RootOrder
-      value: 115
+      value: 114
       objectReference: {fileID: 0}
     - target: {fileID: 4199134517452442160, guid: 4e799eb30eb1a0b489a6ce6fcb85c52a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11597,7 +11457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2304141808706988267, guid: ddddfb8089f23fb4cbe4ee0e81e74637, type: 3}
       propertyPath: m_RootOrder
-      value: 117
+      value: 116
       objectReference: {fileID: 0}
     - target: {fileID: 2304141808706988267, guid: ddddfb8089f23fb4cbe4ee0e81e74637, type: 3}
       propertyPath: m_LocalScale.z
