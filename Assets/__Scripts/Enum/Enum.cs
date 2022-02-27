@@ -21,9 +21,7 @@ public enum Season
     Spring = 0,
     Summer = 1,
     Autumn = 2,
-    Winter = 3, 
-
-
+    Winter = 3 
 }
 
 public enum SceneObjectsUnload
@@ -42,6 +40,15 @@ public enum SceneObjectsUnload
     shop2,
     shop3,
     town
+}
+
+public enum Position
+{
+    Left,
+    Right,
+    Top,
+    Bottom,
+    Centre
 }
 
 

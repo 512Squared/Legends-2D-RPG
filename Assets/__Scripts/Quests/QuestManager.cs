@@ -56,6 +56,12 @@ public class QuestManager : MonoBehaviour
                 print($"Quest: {questNames[i]} | isDone: {CheckIfComplete(questNames[i])}");
             }                        
         }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            Debug.Log($"Data has been saved");
+            SaveQuestData();
+        }
     }
 
     #endregion CALLBACKS
@@ -98,6 +104,7 @@ public class QuestManager : MonoBehaviour
             {
                 return i;
             }
+        //Debug.Log($"Quest checked: {i}");
         }
         return 0;
     }
@@ -133,6 +140,20 @@ public class QuestManager : MonoBehaviour
         Actions.OnQuestMarkedComplete?.Invoke();
     }
 
+    public void SaveQuestData()
+    {
+        for (int i = 0; i < questNames.Length; i++)
+        {
+           if(questDoneArray[i])
+            {
+                PlayerPrefs.SetInt("QuestMarker_" + questNames[i], 1);
+            }
+           else 
+            {
+                PlayerPrefs.SetInt("QuestMarker_" + questNames[i], 0);
+            }
+        }
+    }
 
     #endregion METHODS
 

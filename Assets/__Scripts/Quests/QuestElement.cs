@@ -29,11 +29,14 @@ public class QuestElement : MonoBehaviour
         {
             Debug.Log($"Check completion: {questElement.name}");
             questElement.GetComponent<SpriteRenderer>().enabled = enabledAfterDone;
-            questElement.GetComponent<ItemsManager>().isQuestObject = false;    
+            questElement.GetComponent<ItemsManager>().isQuestObject = false;
             //QuestManager.instance.pSystem.Play();
         }
 
-        else Debug.Log($"Quest not yet completed: {questToComplete}");
+        else if (!QuestManager.instance.CheckIfComplete(questToComplete))
+        {
+            Debug.Log($"Quest not yet completed: {questToComplete} | Quest status: {QuestManager.instance.CheckIfComplete(questToComplete)}");
+        }
     }
 
 }

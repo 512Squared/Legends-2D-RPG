@@ -29,8 +29,6 @@ public class QuestZone : MonoBehaviour
 
     }
 
-
-
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (isMarkable && collision.CompareTag("Player"))
@@ -52,15 +50,16 @@ public class QuestZone : MonoBehaviour
         {
             QuestManager.instance.MarkQuestComplete(questToMark);
             
-            NotificationFader.instance.CallFadeInOut($"<color=#E0A515>{questToMark}</color> completed. {onDoneMessage}", gameObject.GetComponentInChildren<SpriteRenderer>().sprite, fadeTime, 1000);
+            NotificationFader.instance.CallFadeInOut($"You have completed the quest <color=#E0A515>{questToMark}</color>. {onDoneMessage}", gameObject.GetComponentInChildren<SpriteRenderer>().sprite, fadeTime, 1000);
             isMarkable = false;
+            Debug.Log($"Quest Marked: {questToMark}");
         }
         else
         {
             QuestManager.instance.MarkQuestIncomplete(questToMark);
         }
 
-        gameObject.GetComponent<SpriteRenderer>().enabled = enabledAfterMarking;
+        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = enabledAfterMarking;
     }
 
 }

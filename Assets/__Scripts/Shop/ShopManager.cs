@@ -11,6 +11,9 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance;
 
+    #region SERIALIZATION
+
+
 
     [SerializeField] private PlayerStats playerStats;
     private SecretShopSection secretShop;
@@ -77,44 +80,41 @@ public class ShopManager : MonoBehaviour
     private readonly Tween fadeText;
 
     public ItemsManager.Shop shopType;
-    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
+    private int foodItems, weaponItems, potionItems, itemItems, armourItems, helmetItems, shieldItems;
 
     private int shop1NormalItems, shop1SecretItems, shop2NormalItems, shop2SecretItems;
 
+    #endregion
 
-    // SUBSCRIBERS
+    #region SUBSCRIBERS
+
 
 
     private void OnEnable()
     {
-        //Actions.OnUseItem += UpdateStats_1;
-        //Actions.OnBuyItem += UpdateStats_2; //hook into Action with minimal Args
-        //Actions.OnSellItem += UpdateStats_2;
-        //Actions.OnBackButton += BackButton;
         Actions.OnHomeButton += HomeButton;        
         Actions.OnMainMenuButton += MainMenuButton;
-        //Actions.OnResumeButton += ResumeButton;
     }
 
 
     private void OnDisable()
     {
-        //Actions.OnUseItem -= UpdateStats_1;
-        //Actions.OnBuyItem -= UpdateStats_2;
-        //Actions.OnSellItem -= UpdateStats_2;
-        //Actions.OnBackButton -= BackButton;
         Actions.OnHomeButton -= HomeButton;
         Actions.OnMainMenuButton -= MainMenuButton;
-        //Actions.OnResumeButton -= ResumeButton;
     }
+
+
+    #endregion
+
 
     private void MainMenuButton()
     {
         NofifyOnly();
     }
 
+    #region METHODS
 
-    // METHODS
+
 
     public void CallToBuyItem()
     {
@@ -179,7 +179,7 @@ public class ShopManager : MonoBehaviour
 
                 if (isShopArmouryOpen == false && item.shop == shopType && item.isNewItem == true)
                 {
-                    if (item.itemType == ItemsManager.ItemType.Weapon || item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Spell)
+                    if (item.itemType == ItemsManager.ItemType.Weapon || item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Spell || item.itemType == ItemsManager.ItemType.Shield || item.itemType == ItemsManager.ItemType.Helmet)
                     {
                         shopCurrentNewItems--;
                     }
@@ -227,7 +227,7 @@ public class ShopManager : MonoBehaviour
                     {
                         if (isShopInstantiated == false)
                         {
-                            if (item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Weapon || item.itemType == ItemsManager.ItemType.Spell)
+                            if (item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Weapon || item.itemType == ItemsManager.ItemType.Spell || item.itemType == ItemsManager.ItemType.Shield || item.itemType == ItemsManager.ItemType.Helmet)
                             {
                                 Inventory.instance.AddShopItems(item);
                                 secretShopItemsCount++;
@@ -382,6 +382,8 @@ public class ShopManager : MonoBehaviour
         weaponItems = 0;
         itemItems = 0;
         armourItems = 0;
+        shieldItems = 0;
+        helmetItems = 0;
 
         foreach (Transform itemSlot in shopItemBoxParent)
         {
@@ -429,6 +431,14 @@ public class ShopManager : MonoBehaviour
                     case ItemsManager.ItemType.Armour:
                         armourItems++;
                         break;
+                    case ItemsManager.ItemType.Helmet:
+                        armourItems++;
+                        break;
+                    case ItemsManager.ItemType.Shield:
+                        armourItems++;
+                        break;
+
+
                 }
 
                 // new items - needs to run here to count how many new items
@@ -521,7 +531,7 @@ public class ShopManager : MonoBehaviour
 
                         // EFFECTS - ARMOUR
 
-                        if (item.itemType == ItemsManager.ItemType.Armour)
+                        if (item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Helmet || item.itemType == ItemsManager.ItemType.Shield)
                         {
                             shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName + " | Shop no: " + item.shop);
@@ -562,7 +572,9 @@ public class ShopManager : MonoBehaviour
                             item.itemType == ItemsManager.ItemType.Armour ||
                             item.itemType == ItemsManager.ItemType.Item ||
                             item.itemType == ItemsManager.ItemType.Skill ||
-                            item.itemType == ItemsManager.ItemType.Food)
+                            item.itemType == ItemsManager.ItemType.Food ||
+                            item.itemType == ItemsManager.ItemType.Helmet ||
+                            item.itemType == ItemsManager.ItemType.Shield)
                         {
                             Destroy(itemSlot.gameObject);
                         }
@@ -585,7 +597,9 @@ public class ShopManager : MonoBehaviour
                         if (item.itemType == ItemsManager.ItemType.Potion ||
                             item.itemType == ItemsManager.ItemType.Armour ||
                             item.itemType == ItemsManager.ItemType.Weapon ||
-                            item.itemType == ItemsManager.ItemType.Spell)
+                            item.itemType == ItemsManager.ItemType.Spell ||
+                            item.itemType == ItemsManager.ItemType.Helmet ||
+                            item.itemType == ItemsManager.ItemType.Shield)
                         {
                             Destroy(itemSlot.gameObject);
                         }
@@ -597,6 +611,8 @@ public class ShopManager : MonoBehaviour
                             item.itemType == ItemsManager.ItemType.Armour ||
                             item.itemType == ItemsManager.ItemType.Item ||
                             item.itemType == ItemsManager.ItemType.Weapon ||
+                            item.itemType == ItemsManager.ItemType.Helmet ||
+                            item.itemType == ItemsManager.ItemType.Shield ||
                             item.itemType == ItemsManager.ItemType.Food)
                         {
                             Destroy(itemSlot.gameObject);
@@ -609,7 +625,9 @@ public class ShopManager : MonoBehaviour
                             item.itemType == ItemsManager.ItemType.Armour ||
                             item.itemType == ItemsManager.ItemType.Item ||
                             item.itemType == ItemsManager.ItemType.Spell ||
-                            item.itemType == ItemsManager.ItemType.Food)
+                            item.itemType == ItemsManager.ItemType.Food ||
+                            item.itemType == ItemsManager.ItemType.Helmet ||
+                            item.itemType == ItemsManager.ItemType.Shield)
                         {
                             Destroy(itemSlot.gameObject);
                         }
@@ -622,6 +640,8 @@ public class ShopManager : MonoBehaviour
                         if (item.itemType == ItemsManager.ItemType.Weapon) Destroy(itemSlot.gameObject);
                         if (item.itemType == ItemsManager.ItemType.Armour) Destroy(itemSlot.gameObject);
                         if (item.itemType == ItemsManager.ItemType.Spell) Destroy(itemSlot.gameObject);
+                        if (item.itemType == ItemsManager.ItemType.Helmet) Destroy(itemSlot.gameObject);
+                        if (item.itemType == ItemsManager.ItemType.Shield) Destroy(itemSlot.gameObject);
                     }
                 }
                 // SORTING - NOFIFY
@@ -634,7 +654,7 @@ public class ShopManager : MonoBehaviour
 
                 if (isShopArmouryOpen == false && item.shop == shopType && item.isNewItem == true)
                 {
-                    if (item.itemType == ItemsManager.ItemType.Weapon || item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Spell)
+                    if (item.itemType == ItemsManager.ItemType.Weapon || item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Spell || item.itemType == ItemsManager.ItemType.Helmet || item.itemType == ItemsManager.ItemType.Shield)
                     {
                         shopCurrentNewItems--;
                     }
@@ -701,4 +721,7 @@ public class ShopManager : MonoBehaviour
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         ShopArmoury();
     }
+
+    #endregion
+
 }
