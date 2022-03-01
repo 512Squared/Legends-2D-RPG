@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Sirenix.OdinInspector;
 
+[System.Serializable]
 public class QuestZone : MonoBehaviour
 {
     [SerializeField] string questToMark;
@@ -11,13 +14,22 @@ public class QuestZone : MonoBehaviour
     private bool markOnOther;  // alternative to OnEnter, e.g. OnFire button
 
     public bool enabledAfterMarking;
-    public bool isMarkable;    
+    public bool isMarkable;
+
+    public string questName;
+    public string questDescription;
+    [PreviewField]
+    public Sprite questImage;
+    public bool isDone;
 
     [Space]
     [SerializeField] string onDoneMessage;
     [SerializeField] float fadeTime;
 
-
+    private void Start()
+    {
+        QuestManager.instance.AddQuests(this);  
+    }
 
     private void Update()
     {

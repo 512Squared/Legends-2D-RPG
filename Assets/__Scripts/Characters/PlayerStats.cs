@@ -101,7 +101,7 @@ public class PlayerStats : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.X))
         {
             AddXP(100);
             Debug.Log("XP was added");

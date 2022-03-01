@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ public class MenuManager : MonoBehaviour
     private int teamNofifyCount;
     private Tween fadeText;
     private int foodItems, weaponItems, potionItems, itemItems, armourItems;
+
     #endregion
 
     #region PROPERTIES
@@ -96,7 +98,7 @@ public class MenuManager : MonoBehaviour
     [GUIColor(1f, 0.886f, 0.780f)]
     [SerializeField] Slider xpVS, manaVS, healthVS, attackVS, defenceVS, intelligenceVS, perceptionVS;
 
-    
+
     [TabGroup("New Group", "Thulgren")]
     [GUIColor(1f, 0.780f, 0.984f)]
     [SerializeField] TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain;
@@ -216,6 +218,26 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.307f, 0.321f, 0.027f)]
     public GameObject[] isNewNotification;
 
+
+    [TabGroup("Quest Group", "Quest log")]
+    [GUIColor(0.707f, 0.321f, 0.827f)]
+    public Image questImageQuestLog, questRewardImageQuestLog;
+    [TabGroup("Quest Group", "Quest log")]
+    [GUIColor(0.707f, 0.321f, 0.827f)]
+    public TextMeshProUGUI questNameQuestLog, questDescriptionQuestLog;
+    [TabGroup("Quest Group", "Quest log")]
+    [GUIColor(0.707f, 0.321f, 0.827f)]
+    public TextMeshProUGUI questClaimNofifyQuestLog, rewardQuantityQuestLog;
+    [TabGroup("Quest Group", "Quest log")]
+    [GUIColor(0.707f, 0.321f, 0.827f)]
+    public GameObject pf_QuestListDefault, pf_QuestListComplete;
+    [TabGroup("Quest Group", "Quest log")]
+    [GUIColor(0.707f, 0.321f, 0.827f)]
+    public Transform QuestListParent;
+
+
+
+
     [ShowInInspector]
     [Title("Nofify Info")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
@@ -284,6 +306,10 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
+
+    [SerializeField] GameObject questItem;
+
+
     #endregion
 
     #region CALLBACKS
@@ -292,6 +318,7 @@ public class MenuManager : MonoBehaviour
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
         mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
+
     }
 
     private void Awake()
@@ -317,6 +344,7 @@ public class MenuManager : MonoBehaviour
         Actions.OnHomeButton += HomeButton;
         Actions.OnMainMenuButton += MainMenuButton;
         Actions.OnResumeButton += ResumeButton;
+        Actions.OnQuestLogCalled += UpdateQuestList;
     }
 
 
@@ -1984,13 +2012,51 @@ public class MenuManager : MonoBehaviour
             seq.SetLoops(1, LoopType.Yoyo);
         }
     }
-    
+
     public void UpdateQuestList()
     {
+        QuestManager quests = QuestManager.instance.GetQuestList();
 
+        int m_IndexNumber = 0;
+
+        foreach (Transform questPanel in QuestListParent)
+        {
+            Destroy(questPanel.gameObject);
+        }
+
+        for (int i = 0; i < quests.questNames.Length; i++)
+        {
+            if (quests.CheckIfComplete(quests.questNames[i]))
+            {
+
+                RectTransform questPanel = Instantiate(pf_QuestListComplete, QuestListParent).GetComponent<RectTransform>();
+                questPanel.SetSiblingIndex(m_IndexNumber);
+                m_IndexNumber++;
+                TextMeshProUGUI questName = questPanel.Find("Quest Name").GetComponent<TextMeshProUGUI>();
+                TextMeshProUGUI questDescription = questPanel.Find("Quest Description").GetComponent<TextMeshProUGUI>();
+                Image questImage = questPanel.Find("Quest Image").GetComponent<Image>();
+                questName.text = quests.questNames[i];
+                questDescription.text = quests.questDescription[i];
+                questImage.sprite = quests.questImage[i];
+                Debug.Log($"Quest comleted: {quests.questNames[i]}");
+                if (quests.questNames[i] == "null") Destroy(questPanel.gameObject);
+            }
+
+            else if (!quests.CheckIfComplete(quests.questNames[i]))
+
+            {
+                RectTransform questPanel = Instantiate(pf_QuestListDefault, QuestListParent).GetComponent<RectTransform>();
+                TextMeshProUGUI questName = questPanel.Find("Quest Name").GetComponent<TextMeshProUGUI>();
+                TextMeshProUGUI questDescription = questPanel.Find("Quest Description").GetComponent<TextMeshProUGUI>();
+                Image questImage = questPanel.Find("Quest Image").GetComponent<Image>();
+                questName.text = quests.questNames[i];
+                questDescription.text = quests.questDescription[i];
+                questImage.sprite = quests.questImage[i];
+                if (quests.questNames[i] == "null") Destroy(questPanel.gameObject);
+                Debug.Log($"Quest in progress: {quests.questNames[i]}");
+            }
+        }
     }
-
     #endregion
 }
-
 
