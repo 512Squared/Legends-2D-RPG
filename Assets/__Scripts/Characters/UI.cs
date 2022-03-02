@@ -70,7 +70,7 @@ public class UI : MonoBehaviour
     {
         for (int i = 0; i < goldStats.Length; i++)
         {
-            goldStats[i].text = Thulgran.ThulgranGold.ToString();
+            if(goldStats[i] != null) goldStats[i].text = Thulgran.ThulgranGold.ToString();
         }
     }
 

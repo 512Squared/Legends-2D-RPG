@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System.Collections;
-using System;
+using System.Linq;
 using UnityEngine.ParticleSystemJobs;
 
 public class QuestManager : MonoBehaviour
@@ -16,7 +15,7 @@ public class QuestManager : MonoBehaviour
     #region FIELDS
 
     [TableList]
-    public List<QuestZone> questList;
+    public List<Quest> questList;
 
 
     #endregion FIELDS
@@ -59,7 +58,7 @@ public class QuestManager : MonoBehaviour
     {
         instance = this;
         questDoneArray = new bool[questNames.Length]; // structs always initialise to false
-        questList = new List<QuestZone>();
+        questList = new List<Quest>();
     }
 
     private void Update()
@@ -194,13 +193,13 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    public QuestManager GetQuestList()
+    public List<Quest> GetQuestList()
     {
-        return this;
-
+        questList = questList.OrderBy(o => o.questID).ToList();
+        return questList;
     }
 
-    public void AddQuests(QuestZone quest)
+    public void AddQuests(Quest quest)
     {
         questList.Add(quest);
     }

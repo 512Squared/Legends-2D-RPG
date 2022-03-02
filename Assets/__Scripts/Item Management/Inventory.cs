@@ -10,6 +10,7 @@ public class Inventory : MonoBehaviour
 
     private List<ItemsManager> inventoryList;
     private List<ItemsManager> shopList;
+    private List<Quest> questList;
 
     void Start()
     {
@@ -188,6 +189,7 @@ public class Inventory : MonoBehaviour
     {
 
     }
+
 }
 
 

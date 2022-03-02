@@ -8,6 +8,7 @@ namespace Assets.__Scripts.UI_scripts
         public void BackButtonPressed()
         {
             Actions.OnBackButton?.Invoke();
+            Debug.Log($"Back button invoked");
         }
 
         public void HomeButtonPressed()
