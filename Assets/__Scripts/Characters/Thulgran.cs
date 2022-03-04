@@ -58,11 +58,6 @@ public class Thulgran : MonoBehaviour
         instance = this;
     }
 
-    private void Awake()
-    {
-        Debug.Log($"Thulgran's stats: Gold {ThulgranGold} | Mana {s_thulgranMana} | HP {s_thulgranHP}");
-    }
-
     private void OnEnable()
     {
         Actions.OnSellItem += SellItem;

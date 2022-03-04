@@ -78,7 +78,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject teamTabMenu;
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] CanvasGroup teamNofify;
+    [SerializeField] CanvasGroup teamNofify, questsNofify;
     [SerializeField] TextMeshProUGUI teamMemberCount;
 
 
@@ -250,9 +250,9 @@ public class MenuManager : MonoBehaviour
     [ShowInInspector]
     [Title("Nofify Info")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
-    public int currentNewItems;
+    public int currentNewItems, claimQuestReward;
     [GUIColor(0.878f, 0.219f, 0.219f)]
-    [SerializeField] TextMeshProUGUI newItemsText;
+    [SerializeField] TextMeshProUGUI newItemsText, claimQuestText;
     [GUIColor(0.878f, 0.219f, 0.219f)]
     public ItemsManager activeItem; //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
 
@@ -401,10 +401,10 @@ public class MenuManager : MonoBehaviour
         #region Data
 
         currentNewItems = 0;
+        claimQuestReward = 0;
         ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.instance.ShopItemInfoReset();
         ItemInfoReset();
-
         UpdateItemsInventory();
         UpdateStats();
 
@@ -426,6 +426,7 @@ public class MenuManager : MonoBehaviour
     {
         PanelController();
         currentNewItems = 0;
+        claimQuestReward = 0;
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         GameManager.instance.isItemSelected = false;
         UpdateItemsInventory();
@@ -448,6 +449,7 @@ public class MenuManager : MonoBehaviour
         #region Data
 
         currentNewItems = 0;
+        claimQuestReward = 0;
         ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.instance.ShopItemInfoReset();
         ItemInfoReset();
@@ -476,6 +478,7 @@ public class MenuManager : MonoBehaviour
         DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.1f);
         UpdateStats();
         UpdateItemsInventory();
+        UpdateQuestList();
     }
 
     private void MainMenuCGOn()
@@ -866,8 +869,6 @@ public class MenuManager : MonoBehaviour
         {
             if (playerStats[i].isAvailable == true) // on 'add to party screen'
             {
-                Debug.Log($"{playerStats[i].playerName} (Lvl: {playerStats[i].characterLevel}) is now active");
-
                 characterParty[i].SetActive(true);
 
                 if (playerStats[i].isTeamMember == true)
@@ -2103,9 +2104,10 @@ public class MenuManager : MonoBehaviour
         }
         UpdateStats();
     }
+
     public void UpdateQuestList()
     {
-
+        claimQuestReward = 0;
 
         int m_IndexNumber = 0;
 
@@ -2143,7 +2145,11 @@ public class MenuManager : MonoBehaviour
 
                 if (quest.questName == "null") questPanel.gameObject.SetActive(false);
 
-                Debug.Log($"Quest comleted: {quest.questName}");
+                if (!quest.questRewardClaimed) claimQuestReward++;
+                claimQuestText.text = claimQuestReward.ToString();
+                if (claimQuestReward > 0) questsNofify.alpha = 1;
+
+                Debug.Log($"Quest completed: {quest.questName}");
             }
 
             if (!QuestManager.instance.CheckIfComplete(quest.questName))  // In Progress
@@ -2171,7 +2177,9 @@ public class MenuManager : MonoBehaviour
                 if (quest.questName == "null") questPanel.gameObject.SetActive(false);
 
                 Debug.Log($"Quest in progress: {quest.questName}");
+
             }
+
         }
     }
 

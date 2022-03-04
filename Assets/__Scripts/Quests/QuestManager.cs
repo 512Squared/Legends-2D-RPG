@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using System.Linq;
 using UnityEngine.ParticleSystemJobs;
 
+[System.Serializable]
 public class QuestManager : MonoBehaviour
 {
     #region SINGLETON
@@ -44,6 +46,7 @@ public class QuestManager : MonoBehaviour
     [BoxGroup("Images/Image")]
     [GUIColor(0.9f, 0.5f, 0.615f)]
     public Sprite[] questImage;
+
 
     // each quest also has its own bool for completed - this is the array for the manager to keep track
 

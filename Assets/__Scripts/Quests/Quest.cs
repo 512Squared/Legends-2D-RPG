@@ -24,6 +24,8 @@ public class Quest : MonoBehaviour
     public int totalStages = 1;
     public int completedStages = 0;
     public int stageNumber;
+    private PolygonCollider2D polyCollider;
+    private SpriteRenderer spriteRenderer;
 
 
     [SerializeField] string onDoneMessage;
@@ -31,8 +33,16 @@ public class Quest : MonoBehaviour
 
     private void Start()
     {
-        QuestManager.instance.AddQuests(this);  
+        QuestManager.instance.AddQuests(this);
+        polyCollider = gameObject.GetComponent<PolygonCollider2D>(); 
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>(); 
     }
+
+    private void OnEnable()
+    {
+        Actions.OnQuestMarkedComplete += EnablePoly;
+    }
+
 
     private void Update()
     {
@@ -65,7 +75,7 @@ public class Quest : MonoBehaviour
         {
             QuestManager.instance.MarkQuestComplete(questName);
             
-            NotificationFader.instance.CallFadeInOut($"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", gameObject.GetComponentInChildren<SpriteRenderer>().sprite, messageFadeTime, 1000);
+            NotificationFader.instance.CallFadeInOut($"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", spriteRenderer.sprite, messageFadeTime, 1000);
             isMarkable = false;
             Debug.Log($"Quest Marked: {questName}");
         }
@@ -74,7 +84,13 @@ public class Quest : MonoBehaviour
             QuestManager.instance.MarkQuestIncomplete(questName);
         }
 
-        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = enabledAfterMarking;
+        spriteRenderer.enabled = enabledAfterMarking;
+    }
+
+    public void EnablePoly()
+    {
+        if(polyCollider != null)
+        polyCollider.enabled = true;
     }
 
 }
