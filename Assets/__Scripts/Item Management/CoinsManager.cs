@@ -17,7 +17,7 @@ public class CoinsManager : MonoBehaviour
 
 
     public static CoinsManager instance;
-    
+
     [Header("Main connectors")]
     [TabGroup("UI references")]
     [GUIColor(1f, 1f, 0.215f)]
@@ -117,26 +117,13 @@ public class CoinsManager : MonoBehaviour
 
     public int chosenCharacter;
 
-    private int _c;  
-    private int _hp;
-    private int _mana;
-
-    int thulGold;
-    int thulHP;
-    int thulMana;
-
     private void Start()
     {
-        instance = this;        
+        instance = this;
 
         PrepareCoins();
         PrepareHP();
         PrepareMana();
-    }
-
-    private void Update()
-    {
-
     }
 
     void PrepareCoins()
@@ -149,6 +136,7 @@ public class CoinsManager : MonoBehaviour
             coin.SetActive(false);
             coinsQueue.Enqueue(coin);
         }
+
     }
 
     void PrepareHP()
@@ -175,12 +163,24 @@ public class CoinsManager : MonoBehaviour
         }
     }
 
-    public void AnimateCoins(Vector2 source, int valueInCoins) 
+    public void AnimateCoins(Vector2 source, int valueInCoins)
     {
-        Debug.Log("Animate coins called");
+        if (maxCoins < valueInCoins)
+        {
+            for (int j = 0; j < (valueInCoins - maxCoins + 1); j++)
+            {
+                GameObject coin;
+                coin = Instantiate(animatedCoinPrefab);
+                coin.transform.SetParent(sourceTransformCoin, false);
+                coin.SetActive(false);
+                coinsQueue.Enqueue(coin);
+            }
+            maxCoins = valueInCoins;
+        }
+
+        // check if there's coins in the pool
         for (int i = 0; i < valueInCoins; i++)
         {
-            // check if there's coins in the pool
             if (coinsQueue.Count > 0)
             {
                 GameObject coin;
@@ -189,7 +189,6 @@ public class CoinsManager : MonoBehaviour
 
                 // move coin to the collected coin position
                 coin.transform.position = source + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
-
 
                 // animate coin to target position
                 float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
@@ -200,16 +199,14 @@ public class CoinsManager : MonoBehaviour
                         // executes whenever coin reach target position;
                         coin.SetActive(false);
                         coinsQueue.Enqueue(coin);
-                        Thulgran.ThulgranGold++;                        
+                        Thulgran.ThulgranGold++;
                     });
             }
         }
-        Debug.Log($"Coins total: {_c}");
-
 
     }
 
-    public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget) 
+    public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget)
     {
 
         // trying to assign a target position to player image
@@ -237,13 +234,13 @@ public class CoinsManager : MonoBehaviour
                     {
                         // executes whenever heart reaches target position;
                         heart.SetActive(false);
-                        coinsQueue.Enqueue(heart);
+                        hpQueue.Enqueue(heart);
                     });
             }
         }
     }
 
-    public void AnimateMana(Vector2 sourceMana, int amountOfEffect, Vector2 receivedTarget) 
+    public void AnimateMana(Vector2 sourceMana, int amountOfEffect, Vector2 receivedTarget)
     {
         // assigning target position to polayer image
 
@@ -298,9 +295,8 @@ public class CoinsManager : MonoBehaviour
 
     public void SellItem(ItemsManager item)
     {
-            UpdateCoins();
-            AnimateCoins(sourceCoins, item.valueInCoins);
-            Debug.Log("UIAddCoins called from CoinsManager");
+        UpdateCoins();
+        AnimateCoins(sourceCoins, item.valueInCoins);
     }
 
     public void UpdateCoins()

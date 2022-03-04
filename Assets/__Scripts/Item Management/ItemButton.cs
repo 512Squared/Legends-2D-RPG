@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
-using System.Linq;
+using DG.Tweening;
 
 public class ItemButton : MonoBehaviour
 {
 
     public ItemsManager itemOnButton;
-
     [TabGroup("Buttons"), Button]
     public void Press()
     {
@@ -27,7 +26,7 @@ public class ItemButton : MonoBehaviour
 
         //Set up item stats in side panel. Reset values call values based on item type
 
-        if (itemOnButton.itemType == ItemsManager.ItemType.Weapon )
+        if (itemOnButton.itemType == ItemsManager.ItemType.Weapon)
         {
             MenuManager.instance.itemDamageBox.SetActive(true);
             MenuManager.instance.itemDamage.text = "+" + itemOnButton.itemAttack.ToString();
@@ -53,7 +52,7 @@ public class ItemButton : MonoBehaviour
             MenuManager.instance.itemDamageBox.SetActive(false);
             MenuManager.instance.itemFoodBox.SetActive(false);
         }
-        
+
         else if (itemOnButton.itemType == ItemsManager.ItemType.Item)
         {
             MenuManager.instance.itemArmourBox.SetActive(false);
@@ -133,12 +132,5 @@ public class ItemButton : MonoBehaviour
             itemOnButton.itemSelected = MenuManager.instance.activeItem;
             MenuManager.instance.UpdateItemsInventory();
         }
-        
-
     }
-
-   
-
-
-
 }

@@ -42,6 +42,13 @@ public class MenuManager : MonoBehaviour
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
     [SerializeField] RectTransform clockPanel, clockFrame;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [Range(0.5f, 2f)]
+    [SerializeField] float minButtonSize = 0.9f;
+    [FoldoutGroup("Miscellaneous", expanded: false)]
+    [Range(0.5f, 2f)]
+    [SerializeField] float maxButtonSize = 1f;
+
 
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
@@ -287,8 +294,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI textUseEquipTake;
     [GUIColor(1f, 1f, 0.215f)]
     public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
-    [GUIColor(1f, 1f, 0.215f)]
-    public RectTransform leftShopPanel, rightShopPanel;
+    //[GUIColor(1f, 1f, 0.215f)]
+    //public RectTransform leftShopPanel, rightShopPanel;
 
 
 
@@ -323,7 +330,6 @@ public class MenuManager : MonoBehaviour
         instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
         mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
-
     }
 
     private void Awake()
@@ -1598,7 +1604,6 @@ public class MenuManager : MonoBehaviour
 
     public void UpdateItemsInventory()
     {
-
         currentNewItems = 0;
 
         foodItems = 0; // debug stuff
@@ -1607,9 +1612,9 @@ public class MenuManager : MonoBehaviour
         itemItems = 0;
         armourItems = 0;
 
-        foreach (Transform itemSlot in itemBoxParent)
+        foreach (Transform _itemSlot in itemBoxParent)
         {
-            Destroy(itemSlot.gameObject);
+            Destroy(_itemSlot.gameObject);
         }
 
 
@@ -1618,9 +1623,7 @@ public class MenuManager : MonoBehaviour
 
             if (item.shopItem == false)
             {
-
                 RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
-
 
                 // show item image
 
@@ -1695,11 +1698,12 @@ public class MenuManager : MonoBehaviour
                     else if (item.itemSelected == true) // if item has been selected
                     {
                         item.itemSelected = false;
+                        itemSlot.GetComponent<ButtonBounce>().AnimateItemSelection(); // button bounce
                         itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
 
                         // ITEM SELECTED animation
 
-                        itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
+                        //itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
 
                         // NEW ITEM tagging
 
@@ -1785,13 +1789,13 @@ public class MenuManager : MonoBehaviour
                         }
                     }
                 }
-
                 // sorting strategy - destroy everything else but the chosen type
 
                 if (weaponBool == true)
 
                 {
-                    if ((item.itemType == ItemsManager.ItemType.Potion) ||
+                    if (item.itemType == ItemsManager.ItemType.Weapon) itemSlot.gameObject.SetActive(true);
+                    else if ((item.itemType == ItemsManager.ItemType.Potion) ||
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Item) ||
                         (item.itemType == ItemsManager.ItemType.Skill) ||
@@ -1799,25 +1803,27 @@ public class MenuManager : MonoBehaviour
                         (item.itemType == ItemsManager.ItemType.Helmet) ||
                         (item.itemType == ItemsManager.ItemType.Shield))
                     {
-                        Destroy(itemSlot.gameObject);
+                        itemSlot.gameObject.SetActive(false);
                     }
 
                 }
                 else if (armourBool == true)
 
                 {
+                    if (item.itemType == ItemsManager.ItemType.Armour) itemSlot.gameObject.SetActive(true);
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
                         (item.itemType == ItemsManager.ItemType.Weapon) ||
                         (item.itemType == ItemsManager.ItemType.Item) ||
                         (item.itemType == ItemsManager.ItemType.Spell) ||
                         (item.itemType == ItemsManager.ItemType.Food))
                     {
-                        Destroy(itemSlot.gameObject);
+                        itemSlot.gameObject.SetActive(false);
                     }
                 }
                 else if (itemBool == true)
 
                 {
+                    if (item.itemType == ItemsManager.ItemType.Item) itemSlot.gameObject.SetActive(true);
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Weapon) ||
@@ -1825,12 +1831,13 @@ public class MenuManager : MonoBehaviour
                         (item.itemType == ItemsManager.ItemType.Helmet) ||
                         (item.itemType == ItemsManager.ItemType.Shield))
                     {
-                        Destroy(itemSlot.gameObject);
+                        itemSlot.gameObject.SetActive(false);
                     }
                 }
                 else if (spellBool == true)
 
                 {
+                    if (item.itemType == ItemsManager.ItemType.Spell) itemSlot.gameObject.SetActive(true);
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Item) ||
@@ -1838,12 +1845,13 @@ public class MenuManager : MonoBehaviour
                         (item.itemType == ItemsManager.ItemType.Helmet) ||
                         (item.itemType == ItemsManager.ItemType.Shield))
                     {
-                        Destroy(itemSlot.gameObject);
+                        itemSlot.gameObject.SetActive(false);
                     }
                 }
                 else if (potionBool == true)
 
                 {
+                    if (item.itemType == ItemsManager.ItemType.Potion) itemSlot.gameObject.SetActive(true);
                     if ((item.itemType == ItemsManager.ItemType.Weapon) ||
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Item) ||
@@ -1852,7 +1860,7 @@ public class MenuManager : MonoBehaviour
                         (item.itemType == ItemsManager.ItemType.Helmet) ||
                         (item.itemType == ItemsManager.ItemType.Shield))
                     {
-                        Destroy(itemSlot.gameObject);
+                        itemSlot.gameObject.SetActive(false);
                     }
                 }
 
@@ -1870,6 +1878,7 @@ public class MenuManager : MonoBehaviour
                 }
 
                 GameManager.instance.currentNewItems = currentNewItems;
+
             }
         }
     }
@@ -2165,6 +2174,8 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
+
+
     #endregion
 }
 

@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using System.Collections;
 using Sirenix.OdinInspector;
+
 
 public class ButtonHandler : MonoBehaviour
 {
@@ -68,7 +69,6 @@ public class ButtonHandler : MonoBehaviour
         if (calledTab == "weapon") buttons[1].interactable = false;
         else if (calledTab == "armour" || calledTab == "helmet" || calledTab == "shield") buttons[2].interactable = false;
     }
-
-
+   
 
 }

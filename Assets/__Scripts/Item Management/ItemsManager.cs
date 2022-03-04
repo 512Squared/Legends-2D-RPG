@@ -14,6 +14,7 @@ public class ItemsManager : MonoBehaviour
     public bool isNewItem = true;
     public bool shopItem = false;
     public bool isQuestObject;
+    public bool isInstantiated;
 
     public enum Shop { inventory, shop1, shop2, shop3 }
     public Shop shop; // inventory, shop1, shop2, shop3
@@ -41,7 +42,7 @@ public class ItemsManager : MonoBehaviour
         float totBonus = (float)totalBonus;
         float valueInCoinsF = 0;
 
-        valueInCoinsF +=  (totBonus * 2) + (totBonus * UnityEngine.Random.Range(-0.2f, 0.2f));
+        valueInCoinsF += (totBonus * 2) + (totBonus * UnityEngine.Random.Range(-0.2f, 0.2f));
 
         valueInCoins = (int)Math.Round(valueInCoinsF);
 
@@ -146,16 +147,15 @@ public class ItemsManager : MonoBehaviour
         if (collision.CompareTag("Player") && !isQuestObject)
         {
             print("You picked up a " + itemName);
-            SelfDestroy();
+            SelfDeactivate();
             Inventory.instance.AddItems(this);
-
         }
     }
 
-    public void SelfDestroy()
+    public void SelfDeactivate()
     {
         gameObject.SetActive(false);
-        //Destroy(gameObject);
+        gameObject.transform.position = new Vector3(-1000, 2000, 0);
     }
 
 

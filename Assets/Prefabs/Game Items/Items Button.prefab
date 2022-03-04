@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 146, y: 146}
+  m_AnchoredPosition: {x: 0, y: 0.2377}
+  m_SizeDelta: {x: 140, y: 144.2386}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &125989707355259367
 CanvasRenderer:
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -180,8 +180,8 @@ GameObject:
   - component: {fileID: 8163860727650346804}
   - component: {fileID: 2950060829562999145}
   - component: {fileID: -2273809868125113421}
-  - component: {fileID: 6646614661158716276}
   - component: {fileID: 8647004524911529489}
+  - component: {fileID: 8496429659925620316}
   m_Layer: 5
   m_Name: Items Button
   m_TagString: Untagged
@@ -270,7 +270,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -295,9 +295,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8647004524911529489}
-        m_TargetAssemblyTypeName: ButtonHandler, Assembly-CSharp
-        m_MethodName: UseButtonIsOn
+      - m_Target: {fileID: -2273809868125113421}
+        m_TargetAssemblyTypeName: ItemButton, Assembly-CSharp
+        m_MethodName: Press
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -307,9 +307,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: -2273809868125113421}
-        m_TargetAssemblyTypeName: ItemButton, Assembly-CSharp
-        m_MethodName: Press
+      - m_Target: {fileID: 8647004524911529489}
+        m_TargetAssemblyTypeName: ButtonHandler, Assembly-CSharp
+        m_MethodName: UseButtonIsOn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -332,25 +332,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemOnButton: {fileID: 0}
---- !u!95 &6646614661158716276
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6733940417252993636}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cdaa29ef7e300fd459d15aa8375ce2c0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &8647004524911529489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,8 +344,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330bd7bbedffd2847ab259a5965b62fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interfaceOn: 0
   buttons: []
+--- !u!114 &8496429659925620316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6733940417252993636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d97784b690cd464896bdc81d09a1eb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonToBounce: []
+  minImageSize: 0.8
+  maxImageSize: 1.2
+  minButtonSize: 0.7
+  maxButtonSize: 1
+  item: {fileID: 3486405409904147190}
 --- !u!1 &7000873543981128172
 GameObject:
   m_ObjectHideFlags: 0
