@@ -155,7 +155,7 @@ public class PlayerStats : MonoBehaviour
                 characterHP = maxHP;
                 NotificationFader.instance.CallFadeInOut($"{playerName}'s HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
                 3f,
-                1400);
+                1400, 30);
                 Debug.Log($"Yo");
             }
         Debug.Log($"Not thulgran: {playerName}");
@@ -171,7 +171,7 @@ public class PlayerStats : MonoBehaviour
             if (characterMana > maxMana)
             {
                 characterMana = maxMana;
-                NotificationFader.instance.CallFadeInOut($"{playerName}'s Mana is <color=#E0A515>full</color> - well done!", Sprites.instance.manaSprite, 3f, 1400);
+                NotificationFader.instance.CallFadeInOut($"{playerName}'s Mana is <color=#E0A515>full</color> - well done!", Sprites.instance.manaSprite, 3f, 1400, 30);
                 Debug.Log($"Yo");
             }
         }

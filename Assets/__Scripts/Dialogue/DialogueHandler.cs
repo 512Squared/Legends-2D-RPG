@@ -7,10 +7,11 @@ using Cinemachine;
 public class DialogueHandler : MonoBehaviour
 {
 
-    [SerializeField] bool activateAQuest;
-    [SerializeField] string questToMark;
-    [SerializeField] bool markAsComplete;
-    [SerializeField] string activateMessage;
+    [SerializeField] bool activatesQuest;
+    [SerializeField] string questToActivate;
+    [SerializeField] bool completesQuest;
+    [SerializeField] string questToComplete;  
+    [SerializeField] string message;
     [SerializeField] float fadeTime;
     [SerializeField] Sprite messageSprite;
 
@@ -34,9 +35,15 @@ public class DialogueHandler : MonoBehaviour
         {
             DialogueController.instance.ActivateDialogue(sentences);
             runCount++;
-            if (activateAQuest)
+            if (activatesQuest)
             {
-                Actions.OnActivateQuest?.Invoke(questToMark, markAsComplete, activateMessage, fadeTime, messageSprite);
+                Notification(message, questToActivate, fadeTime, messageSprite, "activate");
+                Actions.OnActivateQuest?.Invoke(questToActivate);
+            }
+            if (completesQuest)
+            {
+                Notification(message, questToComplete, fadeTime, messageSprite, "complete");
+                Actions.MarkQuestCompleted?.Invoke(questToComplete);
             }
         }
     }
@@ -64,5 +71,14 @@ public class DialogueHandler : MonoBehaviour
         }
     }
 
-    
+    public void Notification(string message, string questName, float fadeTime, Sprite sprite, string trigger)
+    {
+        if(trigger == "activate")
+            NotificationFader.instance.CallFadeInOut($"You have activated a new quest: <color=#E0A515>{questName}</color>.{message}", sprite, fadeTime, 1000, 30);
+        
+        if (trigger == "complete")
+            NotificationFader.instance.CallFadeInOut($"You have completed the quest: <color=#E0A515>{questName}</color>.{message}", sprite, fadeTime, 1000, 252);
+    }
+
+
 }

@@ -19,6 +19,7 @@ public class MenuManager : MonoBehaviour
     private Tween fadeText;
     private int foodItems, weaponItems, potionItems, itemItems, armourItems;
 
+
     #endregion
 
     #region PROPERTIES
@@ -78,7 +79,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject teamTabMenu;
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] CanvasGroup teamNofify, questsNofify;
+    [SerializeField] CanvasGroup teamNofify, questsNofify, fadeResume;
     [SerializeField] TextMeshProUGUI teamMemberCount;
 
 
@@ -294,8 +295,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI textUseEquipTake;
     [GUIColor(1f, 1f, 0.215f)]
     public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
-    //[GUIColor(1f, 1f, 0.215f)]
-    //public RectTransform leftShopPanel, rightShopPanel;
+
 
 
 
@@ -486,6 +486,9 @@ public class MenuManager : MonoBehaviour
         mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
         mainMenu.GetComponent<CanvasGroup>().interactable = true;
         mainMenu.GetComponent<CanvasGroup>().alpha = 1;
+        fadeResume.blocksRaycasts = true;
+        fadeResume.alpha = 1;
+        fadeResume.interactable = true;
     }
 
     private void ControllersFadeOut(float fadeTime)
@@ -1002,7 +1005,7 @@ public class MenuManager : MonoBehaviour
             {
                 if (playerStats[selectedCharacter].characterHP == playerStats[selectedCharacter].maxHP)
                 {
-                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400);
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400,30);
                     Debug.Log($"Yo");
                 }
 
@@ -1027,7 +1030,7 @@ public class MenuManager : MonoBehaviour
             {
                 if (Thulgran.ThulgranHP == Thulgran.maxThulgranHP)
                 {
-                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400);
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400, 30);
                     Debug.Log($"Yo");
                 }
 
@@ -1055,7 +1058,7 @@ public class MenuManager : MonoBehaviour
             {
                 if (playerStats[selectedCharacter].characterMana == playerStats[selectedCharacter].maxMana)
                 {
-                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color> \n Try someone else?", Sprites.instance.manaSprite, 1.5f, 1400);
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color> \n Try someone else?", Sprites.instance.manaSprite, 1.5f, 1400, 30);
                 }
 
                 else if (playerStats[selectedCharacter].characterMana < playerStats[selectedCharacter].maxMana)
@@ -1079,7 +1082,7 @@ public class MenuManager : MonoBehaviour
             {
                 if (Thulgran.ThulgranMana == Thulgran.maxThulgranMana)
                 {
-                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.manaSprite, 1.5f, 1400);
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.manaSprite, 1.5f, 1400, 30);
                 }
 
                 else if (Thulgran.ThulgranMana < Thulgran.maxThulgranMana)
@@ -2108,7 +2111,8 @@ public class MenuManager : MonoBehaviour
     public void UpdateQuestList()
     {
         claimQuestReward = 0;
-
+        float subQuestIndent = 51;
+        float defaultIndent = 1351;
         int m_IndexNumber = 0;
 
         foreach (Transform questPanel in QuestParent)
@@ -2119,15 +2123,15 @@ public class MenuManager : MonoBehaviour
         foreach (Quest quest in QuestManager.instance.GetQuestList())
         {
 
-            if (QuestManager.instance.CheckIfComplete(quest.questName)) // Completed
+            if (quest.isDone) // Completed
             {
                 RectTransform questPanel = Instantiate(pf_QuestComplete, QuestParent).GetComponent<RectTransform>();
 
                 questPanel.SetSiblingIndex(m_IndexNumber);
                 m_IndexNumber++;
 
-                if (quest.isSubquest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
-                else if (!quest.isSubquest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
+                if (quest.isSubquest && !quest.hasSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, defaultIndent-subQuestIndent);
+                else if (!quest.isSubquest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, defaultIndent);
 
                 TextMeshProUGUI questNameQC = questPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
                 TextMeshProUGUI questDescriptionQC = questPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
@@ -2152,7 +2156,7 @@ public class MenuManager : MonoBehaviour
                 Debug.Log($"Quest completed: {quest.questName}");
             }
 
-            if (!QuestManager.instance.CheckIfComplete(quest.questName))  // In Progress
+            if (!quest.isDone)  // In Progress
 
             {
                 RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>();
@@ -2164,9 +2168,10 @@ public class MenuManager : MonoBehaviour
 
                 TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
                 TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
-                TextMeshProUGUI questStageQD = questPanel.Find("Slider/QD Stage").GetComponent<TextMeshProUGUI>();
+                TextMeshProUGUI questStageQD = questPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
                 Image questImageQD = questPanel.Find("QD Image").GetComponent<Image>();
                 Image questRewardImageQD = questPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
+                Slider questSlider = questPanel.Find("QD Slider").GetComponent<Slider>();
 
                 questNameQD.text = quest.questName;
                 questDescriptionQD.text = quest.questDescription;
@@ -2175,6 +2180,8 @@ public class MenuManager : MonoBehaviour
                 questRewardImageQD.sprite = quest.questReward;
 
                 if (quest.questName == "null") questPanel.gameObject.SetActive(false);
+
+                if (quest.hasSubQuest) questSlider.enabled = true;
 
                 Debug.Log($"Quest in progress: {quest.questName}");
 

@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using System.Linq;
 using UnityEngine.ParticleSystemJobs;
 
-[System.Serializable]
-public class QuestManager : MonoBehaviour
+public class QuestManager : SerializedMonoBehaviour
 {
     #region SINGLETON
 
@@ -16,8 +14,9 @@ public class QuestManager : MonoBehaviour
 
     #region FIELDS
 
-    [TableList]
+    [InlineEditor]
     public List<Quest> questList;
+    public Dictionary<string, bool> questProgress;
 
 
     #endregion FIELDS
@@ -29,23 +28,6 @@ public class QuestManager : MonoBehaviour
     #endregion PROPERTIES
 
     #region SERIALIZATION
-
-    [HorizontalGroup("Quests", 280)]
-    [BoxGroup("Quests/Quests")]
-    [GUIColor(1f, 0.1f, 0.715f)]
-    public string[] questNames;
-    [HorizontalGroup("Quests")]
-    [BoxGroup("Quests/Description")]
-    [GUIColor(0.5f, 0.4f, 0.315f)]
-    public string[] questDescription;
-    [HorizontalGroup("Quests", 80)]
-    [BoxGroup("Quests/Complete")]
-    [GUIColor(0.5f, 0.4f, 0.315f)]
-    public bool[] questDoneArray;
-    [HorizontalGroup("Images")]
-    [BoxGroup("Images/Image")]
-    [GUIColor(0.9f, 0.5f, 0.615f)]
-    public Sprite[] questImage;
 
 
     // each quest also has its own bool for completed - this is the array for the manager to keep track
@@ -60,20 +42,15 @@ public class QuestManager : MonoBehaviour
     private void Start()
     {
         instance = this;
-        questDoneArray = new bool[questNames.Length]; // structs always initialise to false
         questList = new List<Quest>();
+        GetQuestList();
+        questProgress = new Dictionary<string, bool>();
+        UpdateQuestProgress();  
     }
+
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            for (int i = 0; i < questNames.Length; i++)
-            {
-                print($"Quest: {questNames[i]} | isDone: {CheckIfComplete(questNames[i])}");
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.V))
         {
             Debug.Log($"Data has been saved");
@@ -85,22 +62,23 @@ public class QuestManager : MonoBehaviour
             Debug.Log($"Data has been loaded");
             LoadQuestData();
         }
+        
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            UpdateQuestProgress();
+        }
     }
 
     #endregion CALLBACKS
 
     #region SUBSCRIBERS
-
     private void OnEnable()
     {
-        Actions.OnMarkQuestComplete += MarkQuestComplete;
-        Actions.OnMarkQuestComplete += MarkQuestIncomplete;
+        Actions.OnQuestCompleted += UpdateQuestProgress;        
     }
-
     private void OnDisable()
     {
-        Actions.OnMarkQuestComplete -= MarkQuestComplete;
-        Actions.OnMarkQuestComplete -= MarkQuestIncomplete;
+        Actions.OnQuestCompleted -= UpdateQuestProgress;
     }
 
     #endregion SUBSCRIBERS
@@ -119,71 +97,39 @@ public class QuestManager : MonoBehaviour
 
     #region METHODS
 
-    public int GetQuestNumber(string questToFind)
-    {
-        for (int i = 0; i < questNames.Length; i++)
-        {
-            if (questNames[i] == questToFind && i != 0)
-            {
-                return i;
-            }
-            //Debug.Log($"Quest checked: {i}");
-        }
-        return 0;
-    }
 
     public bool CheckIfComplete(string questToCheck)
     {
-        int questNumberToCheck = GetQuestNumber(questToCheck);
-        if (questNumberToCheck != 0)
+        foreach (Quest quest in questList)
         {
-            return questDoneArray[questNumberToCheck];
+            if (quest.questName == questToCheck && quest.isDone == true)
+                return true;
         }
+
         return false;
-
-    }
-
-    public void MarkQuestComplete(string questToMark)
-    {
-        int questNumberToCheck = GetQuestNumber(questToMark);
-        questDoneArray[questNumberToCheck] = true;
-        Debug.Log($"MarkQuest Complete: {questToMark}");
-        UpdateQuestElements(); // check if new elements need activating
-    }
-
-    public void MarkQuestIncomplete(string questToMark)
-    {
-        int questNumberToCheck = GetQuestNumber(questToMark);
-        questDoneArray[questNumberToCheck] = false;
-        UpdateQuestElements(); // check if new elements need activating
-    }
-
-    public void UpdateQuestElements()
-    {
-        Actions.OnQuestMarkedComplete?.Invoke();
     }
 
     public void SaveQuestData()
     {
-        for (int i = 0; i < questNames.Length; i++)
+        foreach (Quest quest in questList)
         {
-            if (questDoneArray[i])
+            if (quest.isDone)
             {
-                PlayerPrefs.SetInt("QuestMarker_" + questNames[i], 1);
+                PlayerPrefs.SetInt("QuestMarker_" + quest.questName, 1);
             }
             else
             {
-                PlayerPrefs.SetInt("QuestMarker_" + questNames[i], 0);
+                PlayerPrefs.SetInt("QuestMarker_" + quest.questName, 0);
             }
         }
     }
 
     public void LoadQuestData()
     {
-        for (int i = 0; i < questNames.Length; i++)
+        foreach (Quest quest in questList)
         {
             int valueToSet = 0;
-            string keyToUse = "QuestMarker_" + questNames[i];
+            string keyToUse = "QuestMarker_" + quest.questName;
 
             if (PlayerPrefs.HasKey(keyToUse))
             {
@@ -191,8 +137,8 @@ public class QuestManager : MonoBehaviour
             }
 
             if (valueToSet == 0)
-                questDoneArray[i] = false;
-            else questDoneArray[i] = true;
+                quest.isDone = false;
+            else quest.isDone = true;
         }
     }
 
@@ -206,7 +152,16 @@ public class QuestManager : MonoBehaviour
     {
         questList.Add(quest);
     }
-    #endregion METHODS
 
+    public void UpdateQuestProgress()
+    {
+        questProgress.Clear();
+        foreach (Quest quest in questList)
+        {
+            questProgress.Add(quest.questName, quest.isDone);
+        }
+    }
+
+    #endregion METHODS
 }
 

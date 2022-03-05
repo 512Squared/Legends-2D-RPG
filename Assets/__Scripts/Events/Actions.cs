@@ -45,10 +45,9 @@ public static class Actions
 
     #region Quests
 
-    public static Action OnQuestMarkedComplete;
-    public static Action<string> OnMarkQuestComplete;
-    public static Action<string> OnMarkQuestInComplete;
-    public static Action<string, bool, string, float, Sprite> OnActivateQuest;
+    public static Action OnQuestCompleted;
+    public static Action<string> MarkQuestCompleted;
+    public static Action<string> OnActivateQuest;
     public static Action OnQuestLogCalled;
 
     #endregion

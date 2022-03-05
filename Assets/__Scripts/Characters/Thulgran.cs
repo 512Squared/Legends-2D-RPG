@@ -116,7 +116,7 @@ public class Thulgran : MonoBehaviour
                 ThulgranHP = maxThulgranHP;
                 NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
                     2f,
-                    1400);
+                    1400, 30);
             }
             Debug.Log($"Added HP | Amount: {item.amountOfEffect}");
         }
@@ -129,7 +129,7 @@ public class Thulgran : MonoBehaviour
                 ThulgranMana = maxThulgranMana;
                 NotificationFader.instance.CallFadeInOut("Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
                     2f,
-                    1400);
+                    1400, 30);
             }
             Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
         }

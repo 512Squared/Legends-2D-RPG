@@ -113,7 +113,7 @@ public class PlayerGlobalData : MonoBehaviour
                 NotificationFader.instance.CallFadeInOut(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available to add to your character party!",
                 collision.gameObject.GetComponent<PlayerStats>().characterPlain,
                 3.4f,
-                1000);
+                1000, 30);
             }
         }
     }

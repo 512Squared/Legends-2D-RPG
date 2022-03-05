@@ -146,7 +146,7 @@ public class ItemsManager : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !isQuestObject)
         {
-            NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage, 3f, 1000f);
+            NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage, 3f, 1000f, 30);
             SelfDeactivate();
             Inventory.instance.AddItems(this);
         }

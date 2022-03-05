@@ -20,7 +20,8 @@ public class NotificationFader : MonoBehaviour
 
     private static string memoryString;
     private static Image memoryImage;
-    private static float memoryPos;
+    private static float memoryPosX;
+    private static float memoryPosY;
 
     private bool isInProgress = false;
 
@@ -34,7 +35,7 @@ public class NotificationFader : MonoBehaviour
 
     private void OnEnable()
     {
-        if(isInProgress) if(memoryString != null && memoryImage != null) CallFadeInOut(memoryString, memoryImage.sprite, 1.5f, memoryPos); 
+        if(isInProgress) if(memoryString != null && memoryImage != null) CallFadeInOut(memoryString, memoryImage.sprite, 1.5f, memoryPosX, memoryPosY); 
     }
 
     private void OnDisable()
@@ -42,7 +43,8 @@ public class NotificationFader : MonoBehaviour
         if (isInProgress == true)
         {
             memoryString = message.text;
-            memoryPos = messageContainer.position.x;
+            memoryPosX = messageContainer.position.x;
+            memoryPosY = messageContainer.position.y;
             memoryImage = noteCharacter;
         }
     }
@@ -80,13 +82,13 @@ public class NotificationFader : MonoBehaviour
         fadeTween.onComplete += onEnd;
     }
 
-    private IEnumerator Fader(string passedMessage, Sprite characterMug, float duration, float pos)
+    private IEnumerator Fader(string passedMessage, Sprite characterMug, float duration, float xpos, float ypos)
     {
         isInProgress = true;
         DOTween.KillAll();
         this.duration = duration;
         yield return new WaitForSeconds(0f);
-        messageContainer.position = new Vector3(pos, 30f, 0f);
+        messageContainer.position = new Vector3(xpos, ypos, 0f);
         yield return new WaitForSeconds(0f);
         FadeIn(0.5f, passedMessage, characterMug);
         yield return new WaitForSeconds(duration);
@@ -94,8 +96,8 @@ public class NotificationFader : MonoBehaviour
         isInProgress = false;    
     }
 
-    public void CallFadeInOut(string message, Sprite character, float dur, float position)
+    public void CallFadeInOut(string message, Sprite character, float dur, float xposition, float yposition)
     {
-        StartCoroutine(Fader(message, character, dur, position));
+        StartCoroutine(Fader(message, character, dur, xposition, yposition));
     }
 }
