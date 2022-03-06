@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8356377569660532739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1845182354788341689}
+  - component: {fileID: 2578093553561440899}
+  - component: {fileID: 7645477388215637948}
+  - component: {fileID: 2767666415642275941}
+  m_Layer: 6
+  m_Name: Dialogue_greta
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1845182354788341689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8356377569660532739}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.97, y: -20.38, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2578093553561440899
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8356377569660532739}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -1660444129
+  m_SortingLayer: 3
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: cfe0cc682ab84bb49bc642e3c8bc6028, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2.56, y: 2.56}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!61 &7645477388215637948
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8356377569660532739}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.7633686, y: 0.87213683}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 2.56, y: 2.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.57053375, y: 2.8269238}
+  m_EdgeRadius: 0
+--- !u!114 &2767666415642275941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8356377569660532739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 225792fcf83c1de45af1fc10ceacd37e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatesQuest: 0
+  questToActivate: Add two people to your character party
+  completesQuest: 0
+  questToComplete: 
+  message: Well done!
+  fadeTime: 5
+  messageSprite: {fileID: 21300000, guid: e7d29a79bc7fae248887c8a08a160303, type: 3}
+  sentences:
+  - '#Thulgran'
+  - Grunt!
+  - '#Shopkeeper'
+  - Hey shrimp, what do you want?
+  - '#Thulgran'
+  - Not your fat arse, if that's what you're thinking.
+  - '#Shopkeeper'
+  - You think you're funny don't yer. I've had funnier boils on the end of my tit!
+  - '#Thulgran'
+  - That's the only thing you've ever had on your tit.
+  - '#Shopkeeper'
+  - Hi Thulgran, how are you?
+  - '#Thulgran'
+  - I'm great Greta, how are you?
+  - '#Shopkeeper'
+  - Oh you know, waiting for my life to magically get better in this miserable dump.
+    What are you looking for?
+  - '#Thulgran'
+  - 'A weapon. Nothing shabby. '
+  - '#Shopkeeper'
+  - 'I have just the thing. A Rungen-Dwarf Magnesium Hammer. Hardened with zinc,
+    alluminium, manganese and an ugly dwarf''s spit.. '
+  - '#Thulgran'
+  - 'Wow - that''s something special! '
+  - '#Shopkeeper'
+  - You bet. Harder than a dwarf's cock on milking day!
+  - '#Thulgran'
+  - Those were the days. How many livers is that gonna cost me?
+  - '#Shopkeeper'
+  - 'You''re whisky sodden liver isn''t worth shit, so that''ll be a 1000 gold coins
+    to you. '
+  - '#Thulgran'
+  - Yikes, you planning on retiring after this Greta?
+  - '#Shopkeeper'
+  - 'I wish. But being the stingy bastard yer are, I''m sure you''ve got that buried
+    around here somewhere. '
+  - '#Thulgran'
+  - 'Here you go, you miserable cunt '
+  - '#Shopkeeper'
+  - 'Thanks, yer bastard son of a hairy cannonball '
+  - '#Thulgran'
+  - 'Steady on girl! '
+  runCount: 0

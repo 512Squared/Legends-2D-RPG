@@ -15,6 +15,10 @@ public class ItemsManager : MonoBehaviour
     public bool shopItem = false;
     public bool isQuestObject;
     public bool isInstantiated;
+    public bool pickUpNotice = true;
+
+    private SpriteRenderer spriteRenderer;
+    private PolygonCollider2D polyCollider;  
 
     public enum Shop { inventory, shop1, shop2, shop3 }
     public Shop shop; // inventory, shop1, shop2, shop3
@@ -36,6 +40,9 @@ public class ItemsManager : MonoBehaviour
     private void Start()
     {
         instance = this;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        polyCollider = GetComponent<PolygonCollider2D>();
 
         // randomise item valueInCoins to ± 20% of double the bonus advantage gained
         int totalBonus = valueInCoins + amountOfEffect + itemAttack + itemDefence;
@@ -146,17 +153,19 @@ public class ItemsManager : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !isQuestObject)
         {
-            NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage, 3f, 1000f, 30);
             SelfDeactivate();
+            if (pickUpNotice)
+            {
+                NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage, 3f, 1000f, 30);
+            }
             Inventory.instance.AddItems(this);
         }
     }
 
     public void SelfDeactivate()
     {
-        gameObject.SetActive(false);
-        gameObject.transform.position = new Vector3(-1000, 2000, 0);
+        spriteRenderer.enabled = false;
+        polyCollider.enabled = false;
     }
-
 
 }

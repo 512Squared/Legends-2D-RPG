@@ -9,6 +9,12 @@ using DG.Tweening;
 
 public class MenuManager : MonoBehaviour
 {
+    // TODO Q only when active in UI
+    // TODO Q only active in first UI tab
+    // TODO Q tab to claims
+    // TODO Q subquest sliders
+
+
 
     public static MenuManager instance;
 
@@ -2130,8 +2136,8 @@ public class MenuManager : MonoBehaviour
                 questPanel.SetSiblingIndex(m_IndexNumber);
                 m_IndexNumber++;
 
-                if (quest.isSubquest && !quest.hasSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, defaultIndent-subQuestIndent);
-                else if (!quest.isSubquest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, defaultIndent);
+                if (quest.isSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, defaultIndent-subQuestIndent);
+                else if (!quest.isSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, defaultIndent);
 
                 TextMeshProUGUI questNameQC = questPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
                 TextMeshProUGUI questDescriptionQC = questPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
@@ -2156,15 +2162,15 @@ public class MenuManager : MonoBehaviour
                 Debug.Log($"Quest completed: {quest.questName}");
             }
 
-            if (!quest.isDone)  // In Progress
+            if (quest.isActive && !quest.isDone)  // In Progress
 
             {
                 RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>();
 
                 questPanel.SetSiblingIndex(quest.questID);
 
-                if (quest.isSubquest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
-                else if (!quest.isSubquest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
+                if (quest.isSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
+                else if (!quest.isSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
                 TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
                 TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
@@ -2181,7 +2187,8 @@ public class MenuManager : MonoBehaviour
 
                 if (quest.questName == "null") questPanel.gameObject.SetActive(false);
 
-                if (quest.hasSubQuest) questSlider.enabled = true;
+                if (quest.isSubQuest) questSlider.gameObject.SetActive(false);
+                else if (quest.isMasterQuest)questSlider.gameObject.SetActive(true);
 
                 Debug.Log($"Quest in progress: {quest.questName}");
 

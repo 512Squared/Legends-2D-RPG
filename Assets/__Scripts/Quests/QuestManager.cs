@@ -45,7 +45,7 @@ public class QuestManager : SerializedMonoBehaviour
         questList = new List<Quest>();
         GetQuestList();
         questProgress = new Dictionary<string, bool>();
-        UpdateQuestProgress();  
+        UpdateQuestProgress("");  
     }
 
 
@@ -65,7 +65,7 @@ public class QuestManager : SerializedMonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.P))
         {
-            UpdateQuestProgress();
+            UpdateQuestProgress("");
         }
     }
 
@@ -153,7 +153,7 @@ public class QuestManager : SerializedMonoBehaviour
         questList.Add(quest);
     }
 
-    public void UpdateQuestProgress()
+    public void UpdateQuestProgress(string empty)
     {
         questProgress.Clear();
         foreach (Quest quest in questList)

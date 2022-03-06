@@ -12,23 +12,17 @@ public class DialogueController : MonoBehaviour
     [SerializeField] TextMeshProUGUI dialogueText, nameText;
     [SerializeField] GameObject dialogueBox, nameBox;
 
-    private bool activatesQuest;
-    private string questToActivate;
-    private bool completesQuest;
-    private string questYouHaveJustCompleted;
-
-
-    private string message;
-    private Sprite sprite;
-    private float fadeTime;
-
-
+    public bool activatesQuest;
+    public string questToActivate;
+    public bool completesQuest;
+    public string questYouHaveJustCompleted;
+    public string emptyArg = string.Empty;
 
     [SerializeField] string[] dialogueSentences;
     [SerializeField] int currentSentence;
 
     public bool dialogueJustStarted;
-
+    public bool activatedOnEnter = false;
 
     // Start is called before the first frame update
     void Start()
@@ -48,21 +42,29 @@ public class DialogueController : MonoBehaviour
                 if (!dialogueJustStarted)
                 {
                     currentSentence++;
-
+                    
                     if (currentSentence >= dialogueSentences.Length)
                     {
                         dialogueBox.SetActive(false);
                         GameManager.instance.dialogueBoxOpened = false;
 
-                        if (activatesQuest)
+                        if (activatesQuest && !completesQuest)
                         {
+                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("activate", questToActivate, emptyArg);
                             Actions.OnActivateQuest?.Invoke(questToActivate);
+                            Debug.Log($"Dialogue complete. 'Activate' event called {questToActivate}");
                         }
 
-
-                        if (completesQuest)
+                        else if (completesQuest && !activatesQuest)
                         {
-                            Actions.MarkQuestCompleted?.Invoke(questYouHaveJustCompleted);
+                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete", emptyArg, questYouHaveJustCompleted);
+                            Debug.Log($"Dialogue complete. 'Complete' event called {questYouHaveJustCompleted}");
+
+                        }
+                        else if (completesQuest && activatesQuest)
+                        {
+                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("both", questToActivate, questYouHaveJustCompleted);
+                            Debug.Log($"Dialogue complete. 'Both' event called: {questYouHaveJustCompleted} | {questToActivate}");
                         }
                         // disable trigger after dialogue
 
@@ -73,6 +75,7 @@ public class DialogueController : MonoBehaviour
                         CheckForName();
                         dialogueText.text = dialogueSentences[currentSentence];
                     }
+                    
                 }
                 else
                 {
@@ -95,8 +98,6 @@ public class DialogueController : MonoBehaviour
 
         dialogueJustStarted = true;
         GameManager.instance.dialogueBoxOpened = true;
-
-
     }
 
 
@@ -113,17 +114,5 @@ public class DialogueController : MonoBehaviour
     {
         return dialogueBox.activeInHierarchy;
     }
-
-    public void ActivateQuestAtEnd(string questName, bool markComplete, string message, float fadeTime, Sprite sprite)
-    {
-        questToActivate = questName;
-        this.message = message;
-        this.fadeTime = fadeTime;
-        this.sprite = sprite;
-
-        Debug.Log($"Activate quest at end of dialogue: {message}");
-    }
-
-
 
 }

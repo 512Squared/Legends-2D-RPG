@@ -6,7 +6,8 @@ using UnityEngine;
 public class QuestElement : MonoBehaviour
 {
     [SerializeField] GameObject questElement;
-    [SerializeField] string questToComplete; // which quest to have completed first
+    [SerializeField] string completeQuestFirst; // which quest to have completed first
+    [SerializeField] string activateQuestFirst;
     [SerializeField] bool enabledAfterDone; // is this element activated on completion of a quest?
     private PolygonCollider2D polyCollider;
     private SpriteRenderer spriteRenderer;
@@ -22,17 +23,19 @@ public class QuestElement : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnQuestCompleted += CheckForCompletion;
+        Actions.OnActivateQuest += ActivateElement;
     }
 
 
     private void OnDisable()
     {
         Actions.OnQuestCompleted -= CheckForCompletion;
+        Actions.OnActivateQuest -= ActivateElement;
     }
 
-    public void CheckForCompletion()
+    public void CheckForCompletion(string questCompleted)
     {
-        if (QuestManager.instance.CheckIfComplete(questToComplete)) // returns true if completed
+        if (questCompleted == completeQuestFirst) // returns true if completed
         {
             Debug.Log($"Check completion: {questElement.name}");
             spriteRenderer.enabled = enabledAfterDone; // is now visible
@@ -42,11 +45,23 @@ public class QuestElement : MonoBehaviour
             //QuestManager.instance.pSystem.Play();
         }
 
-        else if (!QuestManager.instance.CheckIfComplete(questToComplete))
+        else if (questCompleted == completeQuestFirst)
         {
-            Debug.Log($"Quest not yet completed: {questToComplete} | Quest status: {QuestManager.instance.CheckIfComplete(questToComplete)}");
+            Debug.Log($"Quest not yet completed: {completeQuestFirst} | Quest status: {QuestManager.instance.CheckIfComplete(completeQuestFirst)}");
         }
     }
+
+    public void ActivateElement(string onQuestActivated)
+    {
+        if (enabledAfterDone && onQuestActivated == activateQuestFirst)
+        {
+            spriteRenderer.enabled = enabledAfterDone; // is now visible
+            polyCollider.enabled = enabledAfterDone; // can now be picked up   
+        }
+
+    }
+
+
 
 
 }
