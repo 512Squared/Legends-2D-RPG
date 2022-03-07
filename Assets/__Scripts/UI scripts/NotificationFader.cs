@@ -35,7 +35,7 @@ public class NotificationFader : MonoBehaviour
 
     private void OnEnable()
     {
-        if(isInProgress) if(memoryString != null && memoryImage != null) CallFadeInOut(memoryString, memoryImage.sprite, 1.5f, memoryPosX, memoryPosY); 
+        if(isInProgress) if(memoryString != null && memoryImage != null) CallFadeInOut(memoryString, memoryImage.sprite, duration, memoryPosX, memoryPosY); 
     }
 
     private void OnDisable()
@@ -84,12 +84,11 @@ public class NotificationFader : MonoBehaviour
 
     private IEnumerator Fader(string passedMessage, Sprite characterMug, float duration, float xpos, float ypos)
     {
+        Debug.Log($"FadeInOut called: {characterMug}");
         isInProgress = true;
         DOTween.KillAll();
         this.duration = duration;
-        yield return new WaitForSeconds(0f);
         messageContainer.position = new Vector3(xpos, ypos, 0f);
-        yield return new WaitForSeconds(0f);
         FadeIn(0.5f, passedMessage, characterMug);
         yield return new WaitForSeconds(duration);
         FadeOut(1f);

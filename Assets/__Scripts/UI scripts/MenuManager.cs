@@ -238,20 +238,20 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.107f, 0.621f, 0.227f)]
     public GameObject pf_QuestComplete;
     [GUIColor(0.107f, 0.621f, 0.227f)]
-    public Transform QuestParent;
+    public Transform QuestParent, ClaimsParent, AchieveParent;
 
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] GameObject focusQuests, focusWeekly, focusAchieve, questTabMenu;
+    [SerializeField] GameObject focusQuests, focusClaims, focusAchieve, questTabMenu;
 
     [Header("Quest UI Sprites")]
     [Space]
     [FoldoutGroup("UI Sprites", expanded: false)]
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] Sprite questsSpriteOn, questsSpriteOff, weeklySpriteOn, weeklySpriteOff, achieveSpriteOn, achieveSpriteOff;
+    [SerializeField] Sprite questsSpriteOn, questsSpriteOff, claimsSpriteOn, claimsSpriteOff, achieveSpriteOn, achieveSpriteOff;
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] Image questSprite, weeklySprite, achieveSprite;
+    [SerializeField] Image questSprite, claimsSprite, achieveSprite;
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] TextMeshProUGUI questFocusTitle, questText, weeklyText, achieveText;
+    [SerializeField] TextMeshProUGUI questFocusTitle, questText, claimsText, achieveText;
 
 
     [ShowInInspector]
@@ -290,7 +290,8 @@ public class MenuManager : MonoBehaviour
     public bool isClockPopOutVisible;
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isQuestsOn, isWeeklyOn, isAchieveOn;
+    public bool isQuestsOn, isClaimsOn, isAchieveOn;
+
 
 
 
@@ -577,7 +578,7 @@ public class MenuManager : MonoBehaviour
 
         }
 
-        else if (isQuestsOn || isWeeklyOn || isAchieveOn)
+        else if (isQuestsOn || isClaimsOn || isAchieveOn)
         {
             mainMenu.GetComponent<CanvasGroup>().alpha = 1;
             mainMenu.GetComponent<CanvasGroup>().interactable = true;
@@ -1011,7 +1012,7 @@ public class MenuManager : MonoBehaviour
             {
                 if (playerStats[selectedCharacter].characterHP == playerStats[selectedCharacter].maxHP)
                 {
-                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400,30);
+                    NotificationFader.instance.CallFadeInOut($"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?", Sprites.instance.hpSprite, 1.5f, 1400, 30);
                     Debug.Log($"Yo");
                 }
 
@@ -1159,7 +1160,7 @@ public class MenuManager : MonoBehaviour
         //    team UI buttons 7
         //    team fadebackground 8
         //    quests 9
-        //    weekly 10
+        //    claims 10
         //    achieve 11
         //    quest UI Buttons 12
         //    quest fadebackground 13
@@ -1966,7 +1967,7 @@ public class MenuManager : MonoBehaviour
         {
 
             isQuestsOn = true;
-            isWeeklyOn = false;
+            isClaimsOn = false;
             isAchieveOn = false;
 
             questFocusTitle.text = "Quest Log - Main Quests";
@@ -1982,14 +1983,14 @@ public class MenuManager : MonoBehaviour
 
             focusQuests.SetActive(true);
 
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().interactable = false;
-            weeklyText.color = new Color(0.745f, 0.709f, 0.713f, 1);
-            weeklySprite.sprite = weeklySpriteOff;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().interactable = false;
+            claimsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            claimsSprite.sprite = claimsSpriteOff;
 
 
-            focusWeekly.SetActive(false);
+            focusClaims.SetActive(false);
 
             GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -2000,10 +2001,10 @@ public class MenuManager : MonoBehaviour
             focusAchieve.SetActive(false);
 
         }
-        else if (questPanelTrigger == "weekly")
+        else if (questPanelTrigger == "claims")
         {
             isQuestsOn = false;
-            isWeeklyOn = true;
+            isClaimsOn = true;
             isAchieveOn = false;
 
             questFocusTitle.text = "Quest Log - Bonus Challenges";
@@ -2019,14 +2020,14 @@ public class MenuManager : MonoBehaviour
 
             focusQuests.SetActive(false);
 
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().alpha = 1;
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().interactable = true;
-            weeklyText.color = new Color(0.964f, 0.882f, 0.611f, 1);
-            weeklySprite.sprite = weeklySpriteOn;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha = 1;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().interactable = true;
+            claimsText.color = new Color(0.964f, 0.882f, 0.611f, 1);
+            claimsSprite.sprite = claimsSpriteOn;
 
 
-            focusWeekly.SetActive(true);
+            focusClaims.SetActive(true);
 
             GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -2040,7 +2041,7 @@ public class MenuManager : MonoBehaviour
         {
 
             isQuestsOn = false;
-            isWeeklyOn = false;
+            isClaimsOn = false;
             isAchieveOn = true;
 
             questFocusTitle.text = "Quest Log - Achievements";
@@ -2056,14 +2057,14 @@ public class MenuManager : MonoBehaviour
 
             focusQuests.SetActive(false);
 
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().interactable = false;
-            weeklyText.color = new Color(0.745f, 0.709f, 0.713f, 1);
-            weeklySprite.sprite = weeklySpriteOff;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().interactable = false;
+            claimsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            claimsSprite.sprite = claimsSpriteOff;
 
 
-            focusWeekly.SetActive(false);
+            focusClaims.SetActive(false);
 
             GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha = 1;
             GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -2076,7 +2077,7 @@ public class MenuManager : MonoBehaviour
         else if (questPanelTrigger == "exit")
         {
             isQuestsOn = false;
-            isWeeklyOn = false;
+            isClaimsOn = false;
             isAchieveOn = false;
 
 
@@ -2088,12 +2089,12 @@ public class MenuManager : MonoBehaviour
             focusQuests.SetActive(false);
 
 
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().interactable = false;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha = 0;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().interactable = false;
 
 
-            focusWeekly.SetActive(false);
+            focusClaims.SetActive(false);
 
             GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha = 0;
             GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -2109,95 +2110,255 @@ public class MenuManager : MonoBehaviour
 
             //WhichPanelIsOn();
 
-            Debug.Log($"Exiting Quest Log. Panel status - Quests: { GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().alpha} | Weekly: { GameObject.FindGameObjectWithTag("weeklyPanel").GetComponent<CanvasGroup>().alpha} | Achievements: {GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha} | Tabs: {questTabMenu.GetComponent<CanvasGroup>().alpha}");
+            Debug.Log($"Exiting Quest Log. Panel status - Quests: { GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().alpha} | claims: { GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha} | Achievements: {GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha} | Tabs: {questTabMenu.GetComponent<CanvasGroup>().alpha}");
         }
-        UpdateStats();
+        UpdateQuestList();
     }
 
     public void UpdateQuestList()
     {
+
         claimQuestReward = 0;
-        float subQuestIndent = 51;
-        float defaultIndent = 1351;
-        int m_IndexNumber = 0;
+
 
         foreach (Transform questPanel in QuestParent)
         {
             Destroy(questPanel.gameObject);
         }
+        foreach (Transform claimsPanel in ClaimsParent)
+        {
+            Destroy(claimsPanel.gameObject);
+        }
+        foreach (Transform achievePanel in AchieveParent)
+        {
+            Destroy(achievePanel.gameObject);
+        }
+
 
         foreach (Quest quest in QuestManager.instance.GetQuestList())
         {
 
-            if (quest.isDone) // Completed
+            // QUESTS
+
+            if (isQuestsOn)
             {
-                RectTransform questPanel = Instantiate(pf_QuestComplete, QuestParent).GetComponent<RectTransform>();
+                // In progress - Master Quests
 
-                questPanel.SetSiblingIndex(m_IndexNumber);
-                m_IndexNumber++;
+                if (quest.isActive)
+                {
+                    if (quest.isMasterQuest || quest.isSubQuest)
+                    {
 
-                if (quest.isSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, defaultIndent-subQuestIndent);
-                else if (!quest.isSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, defaultIndent);
+                        if (quest.isMasterQuest && !quest.isDone)
+                        {
+                            Debug.Log($"Incomplete Master: {quest.questName}");
 
-                TextMeshProUGUI questNameQC = questPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
-                TextMeshProUGUI questDescriptionQC = questPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
-                Image questImageQC = questPanel.Find("QC Image").GetComponent<Image>();
-                Image questRewardImageQC = questPanel.Find("MissionReward/QC RewardImage").GetComponent<Image>();
-                GameObject questNofify = questPanel.Find("QC Nofify").gameObject;
+                            // in progress Master
+                            RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // QD
 
-                questNameQC.text = quest.questName;
-                questDescriptionQC.text = quest.questDescription;
-                questImageQC.sprite = quest.questImage;
-                questRewardImageQC.sprite = quest.questReward;
+                            questPanel.SetSiblingIndex(quest.questID);
 
-                if (!quest.questRewardClaimed) questNofify.SetActive(true);
-                else if (quest.questRewardClaimed) questNofify.SetActive(false);
+                            questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
-                if (quest.questName == "null") questPanel.gameObject.SetActive(false);
+                            TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questStageQD = questPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
+                            Image questImageQD = questPanel.Find("QD Image").GetComponent<Image>();
+                            Image questRewardImageQD = questPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
+                            Slider questSlider = questPanel.Find("QD Slider").GetComponent<Slider>();
 
-                if (!quest.questRewardClaimed) claimQuestReward++;
-                claimQuestText.text = claimQuestReward.ToString();
-                if (claimQuestReward > 0) questsNofify.alpha = 1;
+                            questNameQD.text = quest.questName;
+                            questDescriptionQD.text = quest.questDescription;
+                            questStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                            questImageQD.sprite = quest.questImage;
+                            questRewardImageQD.sprite = quest.questReward;
+                            questSlider.maxValue = quest.totalStages;
+                            questSlider.value = quest.completedStages;
 
-                Debug.Log($"Quest completed: {quest.questName}");
+                            questSlider.gameObject.SetActive(true);
+
+                        }
+
+                        if (quest.isSubQuest && !quest.isDone)
+                        {
+                            Debug.Log($"incompleted sub: {quest.questName}");
+
+                            // in progress subs
+                            RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // QD
+
+                            questPanel.SetSiblingIndex(quest.questID);
+
+                            questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
+
+                            TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questStageQD = questPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
+                            Image questImageQD = questPanel.Find("QD Image").GetComponent<Image>();
+                            Image questRewardImageQD = questPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
+                            Slider questSlider = questPanel.Find("QD Slider").GetComponent<Slider>();
+
+                            questNameQD.text = quest.questName;
+                            questDescriptionQD.text = quest.questDescription;
+                            questStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                            questImageQD.sprite = quest.questImage;
+                            questRewardImageQD.sprite = quest.questReward;
+
+                            questSlider.gameObject.SetActive(false);
+
+                        }
+                    }
+                }
+
+                // In progress - Other Quests
+
+                if (quest.isActive && !quest.isDone)
+                {
+                    if (!quest.isSubQuest && !quest.isMasterQuest)
+                    {
+
+                        // in progress
+
+                        Debug.Log($"Normal Quest. In progress: {quest.questName}");
+
+                        RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // QD
+
+                        questPanel.SetSiblingIndex(quest.questID);
+
+                        questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
+
+                        TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI questStageQD = questPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
+                        Image questImageQD = questPanel.Find("QD Image").GetComponent<Image>();
+                        Image questRewardImageQD = questPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
+                        Slider questSlider = questPanel.Find("QD Slider").GetComponent<Slider>();
+
+                        questNameQD.text = quest.questName;
+                        questDescriptionQD.text = quest.questDescription;
+                        questStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                        questImageQD.sprite = quest.questImage;
+                        questRewardImageQD.sprite = quest.questReward;
+                        questSlider.maxValue = quest.totalStages;
+                        questSlider.value = quest.completedStages;
+
+                        if (quest.questName == "null") questPanel.gameObject.SetActive(false);
+
+                        questSlider.gameObject.SetActive(true);
+                    }
+                }
+
             }
 
-            if (quest.isActive && !quest.isDone)  // In Progress
+            // CLAIMS 
 
+            if (isClaimsOn)
             {
-                RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>();
+                if (quest.isActive && !quest.isDone)
+                {   
+                    if (quest.isMasterQuest && quest.completedStages > 0)
+                    {
+                        // in progress Master
+                        RectTransform claimsPanel = Instantiate(pf_QuestDefault, ClaimsParent).GetComponent<RectTransform>(); // QD
 
-                questPanel.SetSiblingIndex(quest.questID);
+                        claimsPanel.SetSiblingIndex(quest.questID);
 
-                if (quest.isSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
-                else if (!quest.isSubQuest) questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
+                        claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
-                TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
-                TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
-                TextMeshProUGUI questStageQD = questPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
-                Image questImageQD = questPanel.Find("QD Image").GetComponent<Image>();
-                Image questRewardImageQD = questPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
-                Slider questSlider = questPanel.Find("QD Slider").GetComponent<Slider>();
+                        TextMeshProUGUI claimsNameQD = claimsPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI claimsDescriptionQD = claimsPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI claimsStageQD = claimsPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
+                        Image claimsImageQD = claimsPanel.Find("QD Image").GetComponent<Image>();
+                        Image claimsRewardImageQD = claimsPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
+                        Slider claimsSliderQD = claimsPanel.Find("QD Slider").GetComponent<Slider>();
+                        claimsSliderQD.gameObject.SetActive(true);
 
-                questNameQD.text = quest.questName;
-                questDescriptionQD.text = quest.questDescription;
-                questStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
-                questImageQD.sprite = quest.questImage;
-                questRewardImageQD.sprite = quest.questReward;
+                        claimsNameQD.text = quest.questName;
+                        claimsDescriptionQD.text = quest.questDescription;
+                        claimsStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                        claimsImageQD.sprite = quest.questImage;
+                        claimsRewardImageQD.sprite = quest.questReward;
 
-                if (quest.questName == "null") questPanel.gameObject.SetActive(false);
+                        claimsSliderQD.maxValue = quest.totalStages;
+                        claimsSliderQD.value = quest.completedStages;
 
-                if (quest.isSubQuest) questSlider.gameObject.SetActive(false);
-                else if (quest.isMasterQuest)questSlider.gameObject.SetActive(true);
+                    }
+                }
 
-                Debug.Log($"Quest in progress: {quest.questName}");
+                if (quest.isMasterQuest && quest.isDone)
+                {
+                    Debug.Log($"Completed Master: {quest.questName}");
+
+                    // in progress Master
+                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // QC
+
+                    claimsPanel.SetSiblingIndex(quest.questID);
+
+                    claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
+
+                    TextMeshProUGUI claimsNameQC = claimsPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI claimsDescriptionQC = claimsPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
+                    Image claimsImageQC = claimsPanel.Find("QC Image").GetComponent<Image>();
+                    Image claimsRewardImageQC = claimsPanel.Find("MissionReward/QC RewardImage").GetComponent<Image>();
+
+                    claimsNameQC.text = quest.questName;
+                    claimsDescriptionQC.text = quest.questDescription;
+                    claimsImageQC.sprite = quest.questImage;
+                    claimsRewardImageQC.sprite = quest.questReward;
+
+                }
+
+                if (quest.isSubQuest && quest.isDone)
+                {
+                    Debug.Log($"completed sub: {quest.questName}");
+
+                    // completed subs
+                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // QC
+
+                    claimsPanel.SetSiblingIndex(quest.questID);
+
+                    claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
+
+                    TextMeshProUGUI claimsNameQC = claimsPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI claimsDescriptionQC = claimsPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
+                    Image claimsImageQC = claimsPanel.Find("QC Image").GetComponent<Image>();
+                    Image questRewardImageQC = claimsPanel.Find("MissionReward/QC RewardImage").GetComponent<Image>();
+
+                    claimsNameQC.text = quest.questName;
+                    claimsDescriptionQC.text = quest.questDescription;
+                    claimsImageQC.sprite = quest.questImage;
+                    questRewardImageQC.sprite = quest.questReward;
+                }
+
+                if (!quest.isSubQuest && !quest.isMasterQuest && quest.isDone)
+                {
+                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // QC
+
+                    claimsPanel.SetSiblingIndex(quest.questID);
+
+                    claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
+
+                    TextMeshProUGUI claimsNameQC = claimsPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI claimsDescriptionQC = claimsPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
+                    Image claimsImageQC = claimsPanel.Find("QC Image").GetComponent<Image>();
+                    Image questRewardImageQC = claimsPanel.Find("MissionReward/QC RewardImage").GetComponent<Image>();
+
+                    claimsNameQC.text = quest.questName;
+                    claimsDescriptionQC.text = quest.questDescription;
+                    claimsImageQC.sprite = quest.questImage;
+                    questRewardImageQC.sprite = quest.questReward;
+                }
 
             }
 
+            // ACHIEVEMENTS
+
+            if (isAchieveOn)
+            {
+
+
+            }
         }
     }
-
-
     #endregion
 }
 

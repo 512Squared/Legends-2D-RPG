@@ -52,7 +52,7 @@ public class DialogueController : MonoBehaviour
                         {
                             Actions.OnDoQuestStuffAfterDialogue?.Invoke("activate", questToActivate, emptyArg);
                             Actions.OnActivateQuest?.Invoke(questToActivate);
-                            Debug.Log($"Dialogue complete. 'Activate' event called {questToActivate}");
+                            Debug.Log($"Dialogue complete. 'Activate' quest: {questToActivate}");
                         }
 
                         else if (completesQuest && !activatesQuest)

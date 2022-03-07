@@ -41,16 +41,16 @@ public class Quest : MonoBehaviour
     [VerticalGroup("Info/a")]
     [GUIColor(1f, 1f, 0.215f)]
     public int totalStages = 1;
-    [VerticalGroup("Info/a")]
-    [GUIColor(1f, 1f, 0.215f)]
-    public int completedStages = 0;
     [Space]
     [VerticalGroup("Info/b")]
     [GUIColor(1f, 1f, 0.215f)]
-    public int stageNumber;
+    public int completedStages = 0;
     [VerticalGroup("Info/b")]
     [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] float messageFadeTime;
+    public int thisStage;
+    [VerticalGroup("Info/b")]
+    [GUIColor(1f, 1f, 0.215f)]
+    private float messageFadeTime = 5f;
 
     [Space]
     [HorizontalGroup("Bools"), TableColumnWidth(1000)]
@@ -88,7 +88,7 @@ public class Quest : MonoBehaviour
     [Space]
     [GUIColor(.5f, 0.8f, 0.215f)]
     public Quest[] subQuests;
-    [ShowIf("isSubQuest")]
+    [ShowIf("isSubQuest"), Required]
     [GUIColor(.5f, 0.8f, 0.215f)]
     [SerializeField] Quest masterQuest;
     [HideIf("isMasterQuest")]
@@ -103,12 +103,14 @@ public class Quest : MonoBehaviour
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public string onActivateMessage;
     [Space]
-    [InfoBox("IF THE QUEST IS NOT ACTIVE TO START, DISABLE THE RENDERER AND COLLIDER SO THE OBJECT IS NOT VISIBLE AND NOT ADDED TO INVENTORY ACCIDENTALLY. AS SOON AS THE QUEST BECOMES ACTIVE, THESE WILL ALSO BE ACTIVATED BY SCRIPT", InfoMessageType.Warning, "InstanceShowInfoBoxField"), HideLabel]
+    [InfoBox("IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.", InfoMessageType.Warning, "InstanceShowInfoBoxField"), HideLabel]
     public bool InstanceShowInfoBoxField = true;
 
     private bool markAfterClick;
     private Quest[] childQuests;
     private ItemsManager item;
+    [HideInInspector]
+    public int masterStages;
 
     #endregion SERIALIZATION
 
@@ -172,15 +174,21 @@ public class Quest : MonoBehaviour
             Actions.OnQuestCompleted?.Invoke(questName);
             Debug.Log($"Quest Completed: {questName}");
 
-            if (spriteRenderer != null) spriteRenderer.enabled = enabledAfterDone;
+            if(!isMasterQuest && !isSubQuest) completedStages++;    
+
             if (isSubQuest)
             {
-                if(masterQuest.MasterQuestComplete())
+                masterQuest.completedStages++;
+                Debug.Log($"masterQuest: {masterQuest.questName} | Stages: {masterQuest.completedStages} / {masterQuest.totalStages}");
+                if (masterQuest.MasterQuestComplete())
                 {
                     Actions.MarkQuestCompleted?.Invoke(masterQuest.questName);
                 }
             }
+            
             if (item != null) item.isQuestObject = false;
+
+            if (spriteRenderer != null) spriteRenderer.enabled = enabledAfterDone;
         }
 
         else
@@ -275,4 +283,13 @@ public class Quest : MonoBehaviour
             return false;
     }
 
+    public bool IsMasterComplete()
+    {
+        if (masterQuest != null && masterQuest.completedStages == masterQuest.totalStages)
+        {
+            isActive = false;
+            return true;
+        }
+        else return false;
+    }
 }
