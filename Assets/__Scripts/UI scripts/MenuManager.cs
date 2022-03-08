@@ -233,12 +233,20 @@ public class MenuManager : MonoBehaviour
     public GameObject[] isNewNotification;
 
     [Title("Quests")]
-    [GUIColor(0.107f, 0.621f, 0.227f)]
+    [GUIColor(0.5f, 1f, 0.515f)]
     public GameObject pf_QuestDefault;
-    [GUIColor(0.107f, 0.621f, 0.227f)]
+    [GUIColor(0.5f, 1f, 0.515f)]
     public GameObject pf_QuestComplete;
-    [GUIColor(0.107f, 0.621f, 0.227f)]
+    [GUIColor(0.5f, 1f, 0.515f)]
     public Transform QuestParent, ClaimsParent, AchieveParent;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] CanvasGroup questsUIPanel;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] CanvasGroup claimsUIPanel;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] CanvasGroup achieveUIPanel;
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] Button questsTabButton;
 
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] GameObject focusQuests, focusClaims, focusAchieve, questTabMenu;
@@ -290,10 +298,7 @@ public class MenuManager : MonoBehaviour
     public bool isClockPopOutVisible;
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isQuestsOn, isClaimsOn, isAchieveOn;
-
-
-
+    public bool isQuestsOn, isClaimsOn, isAchieveOn, areSubQuestsShowing = true;
 
     [Header("UI Tweening")]
     [GUIColor(1f, 1f, 0.215f)]
@@ -302,10 +307,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI textUseEquipTake;
     [GUIColor(1f, 1f, 0.215f)]
     public RectTransform mainEquipInfoPanel, characterChoicePanel, characterWeaponryPanel;
-
-
-
-
 
     [Header("Player Choice")]
     [GUIColor(1f, 0.2f, 0.515f)]
@@ -325,8 +326,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject focusWeaponry, focusStats, focusOverview;
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
-
-    [SerializeField] GameObject questItem;
 
 
     #endregion
@@ -398,6 +397,8 @@ public class MenuManager : MonoBehaviour
         #region Graphics
 
         StartCoroutine(FadeToAlpha(mainMenu.GetComponent<CanvasGroup>(), 0f, 0.3f));
+        mainMenu.GetComponent<CanvasGroup>().interactable = false;
+        mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
         DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.4f);
         ControllersFadeIn(0.5f);
         StartCoroutine(EnableJoystickDelay(0.7f));
@@ -437,6 +438,7 @@ public class MenuManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         GameManager.instance.isItemSelected = false;
         UpdateItemsInventory();
+        UpdateQuestList();
         isInventoryOn = false;
         GameManager.instance.isInventoryOn = false;
         Debug.Log($"isInventoryOn: {isInventoryOn}");
@@ -460,7 +462,7 @@ public class MenuManager : MonoBehaviour
         ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.instance.ShopItemInfoReset();
         ItemInfoReset();
-
+        UpdateQuestList();
         UpdateItemsInventory();
         UpdateStats();
 
@@ -475,6 +477,11 @@ public class MenuManager : MonoBehaviour
         isInventoryOn = false;
         GameManager.instance.isInventoryOn = false;
         Debug.Log($"isInventoryOn: {isInventoryOn}");
+
+        isQuestsOn = false;
+        isClaimsOn = false;
+        isAchieveOn = false;
+
         #endregion             
     }
 
@@ -1965,36 +1972,31 @@ public class MenuManager : MonoBehaviour
     {
         if (questPanelTrigger == "quests")
         {
-
             isQuestsOn = true;
             isClaimsOn = false;
             isAchieveOn = false;
 
-            questFocusTitle.text = "Quest Log - Main Quests";
-
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().interactable = true;
-            GameObject.FindGameObjectWithTag("questsTab").GetComponent<Button>().Select();
+            questsUIPanel.blocksRaycasts = true;
+            questsUIPanel.interactable = true;
+            questsTabButton.Select();
             questText.color = new Color(0.964f, 0.882f, 0.611f, 1);
             questSprite.sprite = questsSpriteOn;
 
-
             focusQuests.SetActive(true);
 
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().interactable = false;
+            claimsUIPanel.alpha = 0;
+            claimsUIPanel.blocksRaycasts = false;
+            claimsUIPanel.interactable = false;
             claimsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
             claimsSprite.sprite = claimsSpriteOff;
 
-
             focusClaims.SetActive(false);
 
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().interactable = false;
+            achieveUIPanel.alpha = 0;
+            achieveUIPanel.blocksRaycasts = false;
+            achieveUIPanel.interactable = false;
             achieveSprite.sprite = achieveSpriteOff;
             achieveText.color = new Color(0.745f, 0.709f, 0.713f, 1);
 
@@ -2007,31 +2009,25 @@ public class MenuManager : MonoBehaviour
             isClaimsOn = true;
             isAchieveOn = false;
 
-            questFocusTitle.text = "Quest Log - Bonus Challenges";
-
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().interactable = false;
+            focusQuests.SetActive(false);
+            questsUIPanel.alpha = 0;
+            questsUIPanel.blocksRaycasts = false;
+            questsUIPanel.interactable = false;
             questText.color = new Color(0.745f, 0.709f, 0.713f, 1);
             questSprite.sprite = questsSpriteOff;
 
+            focusClaims.SetActive(true);
 
-            focusQuests.SetActive(false);
-
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha = 1;
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().interactable = true;
+            claimsUIPanel.blocksRaycasts = true;
+            claimsUIPanel.interactable = true;
             claimsText.color = new Color(0.964f, 0.882f, 0.611f, 1);
             claimsSprite.sprite = claimsSpriteOn;
 
-
-            focusClaims.SetActive(true);
-
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().interactable = false;
+            achieveUIPanel.alpha = 0;
+            achieveUIPanel.blocksRaycasts = false;
+            achieveUIPanel.interactable = false;
             achieveSprite.sprite = achieveSpriteOff;
             achieveText.color = new Color(0.745f, 0.709f, 0.713f, 1);
 
@@ -2048,27 +2044,24 @@ public class MenuManager : MonoBehaviour
 
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().interactable = false;
+            questsUIPanel.alpha = 0;
+            questsUIPanel.blocksRaycasts = false;
+            questsUIPanel.interactable = false;
             questText.color = new Color(0.745f, 0.709f, 0.713f, 1);
             questSprite.sprite = questsSpriteOff;
 
-
             focusQuests.SetActive(false);
 
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().interactable = false;
+            claimsUIPanel.alpha = 0;
+            claimsUIPanel.blocksRaycasts = false;
+            claimsUIPanel.interactable = false;
             claimsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
             claimsSprite.sprite = claimsSpriteOff;
 
-
             focusClaims.SetActive(false);
 
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha = 1;
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().blocksRaycasts = true;
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().interactable = true;
+            achieveUIPanel.blocksRaycasts = true;
+            achieveUIPanel.interactable = true;
             achieveSprite.sprite = achieveSpriteOn;
             achieveText.color = new Color(0.964f, 0.882f, 0.611f, 1);
 
@@ -2080,39 +2073,31 @@ public class MenuManager : MonoBehaviour
             isClaimsOn = false;
             isAchieveOn = false;
 
-
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().interactable = false;
-
+            questsUIPanel.alpha = 0;
+            questsUIPanel.blocksRaycasts = false;
+            questsUIPanel.interactable = false;
 
             focusQuests.SetActive(false);
 
-
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().interactable = false;
-
+            claimsUIPanel.alpha = 0;
+            claimsUIPanel.blocksRaycasts = false;
+            claimsUIPanel.interactable = false;
 
             focusClaims.SetActive(false);
 
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha = 0;
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().interactable = false;
-
+            achieveUIPanel.alpha = 0;
+            achieveUIPanel.blocksRaycasts = false;
+            achieveUIPanel.interactable = false;
 
             focusAchieve.SetActive(false);
 
             questTabMenu.GetComponent<CanvasGroup>().interactable = false;
             questTabMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
             questTabMenu.GetComponent<CanvasGroup>().alpha = 0;
-
-
-            //WhichPanelIsOn();
-
-            Debug.Log($"Exiting Quest Log. Panel status - Quests: { GameObject.FindGameObjectWithTag("questsPanel").GetComponent<CanvasGroup>().alpha} | claims: { GameObject.FindGameObjectWithTag("claimsPanel").GetComponent<CanvasGroup>().alpha} | Achievements: {GameObject.FindGameObjectWithTag("achievePanel").GetComponent<CanvasGroup>().alpha} | Tabs: {questTabMenu.GetComponent<CanvasGroup>().alpha}");
         }
+
         UpdateQuestList();
+
     }
 
     public void UpdateQuestList()
@@ -2151,7 +2136,7 @@ public class MenuManager : MonoBehaviour
 
                         if (quest.isMasterQuest && !quest.isDone)
                         {
-                            Debug.Log($"Incomplete Master: {quest.questName}");
+                            //Debug.Log($"Incomplete Master: {quest.questName}");
 
                             // in progress Master
                             RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
@@ -2164,6 +2149,20 @@ public class MenuManager : MonoBehaviour
                             TextMeshProUGUI questDescription = questPanel.Find("Description").GetComponent<TextMeshProUGUI>();
                             TextMeshProUGUI questStage = questPanel.Find("Slider/Stage").GetComponent<TextMeshProUGUI>();
                             TextMeshProUGUI questTrophies = questPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
+
+                            RectTransform upButton = questPanel.Find("upButton").GetComponent<RectTransform>();
+                            RectTransform downButton = questPanel.Find("downButton").GetComponent<RectTransform>();
+
+                            if (areSubQuestsShowing)
+                            {
+                                upButton.gameObject.SetActive(false);
+                                downButton.gameObject.SetActive(true);
+                            }
+                            else if (!areSubQuestsShowing)
+                            {
+                                upButton.gameObject.SetActive(true);
+                                downButton.gameObject.SetActive(false);
+                            }
 
                             Image questImage = questPanel.Find("Image").GetComponent<Image>();
                             Image questRewardImage = questPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
@@ -2189,23 +2188,53 @@ public class MenuManager : MonoBehaviour
 
                         if (quest.isSubQuest && !quest.isDone)
                         {
-                            Debug.Log($"incompleted sub: {quest.questName}");
+                            //Debug.Log($"incompleted sub: {quest.questName}");
 
                             // in progress subs
-                            RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
+
+                            RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>();  // Default
 
                             questPanel.SetSiblingIndex(quest.questID);
 
                             questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
 
+                            RectTransform upButton = questPanel.Find("upButton").GetComponent<RectTransform>();
+                            RectTransform downButton = questPanel.Find("downButton").GetComponent<RectTransform>();
+                            
+                            RectTransform buttonBox = questPanel.Find("MissionReward").GetComponent<RectTransform>();
+                            RectTransform TextBox = questPanel.Find("Name").GetComponent<RectTransform>();
+                            RectTransform DescriptionBox = questPanel.Find("Description").GetComponent<RectTransform>();
+
+
+                            if (areSubQuestsShowing) // tween them out
+                            {
+                                questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
+                                
+                                questPanel.DOSizeDelta(new Vector3(0f, 0f, 1f), 0.8f).SetEase(Ease.InCirc);
+                            }
+                            else if (!areSubQuestsShowing) // tween them in
+                            {
+                                questPanel.sizeDelta = new Vector3(0, 0, 1);
+                                questPanel.localScale = new Vector3(0, 0, 0);
+
+                                questPanel.DOSizeDelta(new Vector3(1300, 131, 1), 0.3f).SetEase(Ease.InCirc);
+                                questPanel.DOScale(new Vector3(1, 1, 1), 0.3f).SetEase(Ease.InCirc);                                
+
+                            }
+
+
+                            upButton.gameObject.SetActive(false);
+                            downButton.gameObject.SetActive(false);
+
                             TextMeshProUGUI questName = questPanel.Find("Name").GetComponent<TextMeshProUGUI>();
                             TextMeshProUGUI questDescription = questPanel.Find("Description").GetComponent<TextMeshProUGUI>();
                             TextMeshProUGUI questStage = questPanel.Find("Slider/Stage").GetComponent<TextMeshProUGUI>();
                             TextMeshProUGUI questTrophies = questPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
-                            
+
                             Image questImage = questPanel.Find("Image").GetComponent<Image>();
                             Image questRewardImage = questPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                             RectTransform mask = questPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
+
 
                             if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
                             else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
@@ -2235,7 +2264,7 @@ public class MenuManager : MonoBehaviour
 
                         // in progress
 
-                        Debug.Log($"Normal Quest. In progress: {quest.questName}");
+                        //Debug.Log($"Normal Quest. In progress: {quest.questName}");
 
                         RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
 
@@ -2276,7 +2305,7 @@ public class MenuManager : MonoBehaviour
             if (isClaimsOn)
             {
                 if (quest.isActive && !quest.isDone)
-                {   
+                {
                     if (quest.isMasterQuest && quest.completedStages > 0)
                     {
                         // in progress Master
@@ -2316,7 +2345,7 @@ public class MenuManager : MonoBehaviour
 
                 if (quest.isMasterQuest && quest.isDone)
                 {
-                    Debug.Log($"Completed Master: {quest.questName}");
+                    //Debug.Log($"Completed Master: {quest.questName}");
 
                     // in progress Master
                     RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
@@ -2405,6 +2434,14 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
+
+    public void SubQuestsShowing()
+    {
+        areSubQuestsShowing = !areSubQuestsShowing;
+        UpdateQuestList();
+    }
+
+
     #endregion
 }
 

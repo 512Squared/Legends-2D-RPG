@@ -17,6 +17,7 @@ public class DialogueController : MonoBehaviour
     public bool completesQuest;
     public string questYouHaveJustCompleted;
     public string emptyArg = string.Empty;
+    private int turn = 0;
 
     [SerializeField] string[] dialogueSentences;
     [SerializeField] int currentSentence;
@@ -53,18 +54,21 @@ public class DialogueController : MonoBehaviour
                             Actions.OnDoQuestStuffAfterDialogue?.Invoke("activate", questToActivate, emptyArg);
                             Actions.OnActivateQuest?.Invoke(questToActivate);
                             Debug.Log($"Dialogue complete. 'Activate' quest: {questToActivate}");
+                            activatesQuest = false; 
                         }
 
                         else if (completesQuest && !activatesQuest)
                         {
                             Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete", emptyArg, questYouHaveJustCompleted);
                             Debug.Log($"Dialogue complete. 'Complete' event called {questYouHaveJustCompleted}");
-
+                            completesQuest = false;
                         }
                         else if (completesQuest && activatesQuest)
                         {
                             Actions.OnDoQuestStuffAfterDialogue?.Invoke("both", questToActivate, questYouHaveJustCompleted);
                             Debug.Log($"Dialogue complete. 'Both' event called: {questYouHaveJustCompleted} | {questToActivate}");
+                            completesQuest = false;
+                            activatesQuest = false;
                         }
                         // disable trigger after dialogue
 
@@ -102,11 +106,22 @@ public class DialogueController : MonoBehaviour
 
 
     void CheckForName()
-    {
+    {   
         if (dialogueSentences[currentSentence].StartsWith("#"))
         {
             nameText.text = dialogueSentences[currentSentence].Replace("#", "");
             currentSentence++;
+            if (turn == 1)
+            {
+                nameText.color = new Color32(209, 206, 66, 255);
+                turn = 0;
+                return;
+            }
+            else if (turn == 0)
+            {
+                nameText.color = new Color32(89, 198, 200, 255);
+                turn = 1;
+            }
         }
     }
 
