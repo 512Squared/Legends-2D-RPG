@@ -54,7 +54,6 @@ public class NotificationFader : MonoBehaviour
     {
         message.text = notification;
         noteCharacter.sprite = mug;
-        Debug.Log("Fade in called with message: " + notification);
         Fade(1f, duration, () =>
         {
             canvasGroup.interactable = true;
@@ -84,7 +83,6 @@ public class NotificationFader : MonoBehaviour
 
     private IEnumerator Fader(string passedMessage, Sprite characterMug, float duration, float xpos, float ypos)
     {
-        Debug.Log($"FadeInOut called: {characterMug}");
         isInProgress = true;
         DOTween.KillAll();
         this.duration = duration;

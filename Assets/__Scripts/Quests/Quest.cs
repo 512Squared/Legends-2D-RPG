@@ -40,17 +40,21 @@ public class Quest : MonoBehaviour
     public int questID;
     [VerticalGroup("Info/a")]
     [GUIColor(1f, 1f, 0.215f)]
-    public int totalStages = 1;
+    public int trophiesAwarded = 10;
+    [VerticalGroup("Info/a")]
+    [GUIColor(1f, 1f, 0.215f)]
+    public float messageFadeTime = 5f;
     [Space]
+    [VerticalGroup("Info/b")]
+    [GUIColor(1f, 1f, 0.215f)]
+    public int totalStages = 1;
     [VerticalGroup("Info/b")]
     [GUIColor(1f, 1f, 0.215f)]
     public int completedStages = 0;
     [VerticalGroup("Info/b")]
     [GUIColor(1f, 1f, 0.215f)]
     public int thisStage;
-    [VerticalGroup("Info/b")]
-    [GUIColor(1f, 1f, 0.215f)]
-    private float messageFadeTime = 5f;
+
 
     [Space]
     [HorizontalGroup("Bools"), TableColumnWidth(1000)]
@@ -118,9 +122,17 @@ public class Quest : MonoBehaviour
     private void Start()
     {
         QuestManager.instance.AddQuests(this);
-        if(isMasterQuest) childQuests = GetComponentsInChildren<Quest>();
         item = GetComponent<ItemsManager>();
-
+        
+        if (isMasterQuest)
+        {
+            childQuests = GetComponentsInChildren<Quest>();
+            trophiesAwarded = 0;
+            for (int i = 0; i < childQuests.Length; i++)
+            {
+                trophiesAwarded += childQuests[i].trophiesAwarded + 15;
+            }
+        }
     }
 
     private void OnEnable()
@@ -174,7 +186,7 @@ public class Quest : MonoBehaviour
             Actions.OnQuestCompleted?.Invoke(questName);
             Debug.Log($"Quest Completed: {questName}");
 
-            if(!isMasterQuest && !isSubQuest) completedStages++;    
+            if (!isMasterQuest && !isSubQuest) completedStages++;
 
             if (isSubQuest)
             {
@@ -185,7 +197,7 @@ public class Quest : MonoBehaviour
                     Actions.MarkQuestCompleted?.Invoke(masterQuest.questName);
                 }
             }
-            
+
             if (item != null) item.isQuestObject = false;
 
             if (spriteRenderer != null) spriteRenderer.enabled = enabledAfterDone;

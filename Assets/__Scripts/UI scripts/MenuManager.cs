@@ -2154,26 +2154,34 @@ public class MenuManager : MonoBehaviour
                             Debug.Log($"Incomplete Master: {quest.questName}");
 
                             // in progress Master
-                            RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // QD
+                            RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
 
                             questPanel.SetSiblingIndex(quest.questID);
 
                             questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
-                            TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
-                            TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
-                            TextMeshProUGUI questStageQD = questPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
-                            Image questImageQD = questPanel.Find("QD Image").GetComponent<Image>();
-                            Image questRewardImageQD = questPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
-                            Slider questSlider = questPanel.Find("QD Slider").GetComponent<Slider>();
+                            TextMeshProUGUI questName = questPanel.Find("Name").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questDescription = questPanel.Find("Description").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questStage = questPanel.Find("Slider/Stage").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questTrophies = questPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
 
-                            questNameQD.text = quest.questName;
-                            questDescriptionQD.text = quest.questDescription;
-                            questStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
-                            questImageQD.sprite = quest.questImage;
-                            questRewardImageQD.sprite = quest.questReward;
+                            Image questImage = questPanel.Find("Image").GetComponent<Image>();
+                            Image questRewardImage = questPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
+                            RectTransform mask = questPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
+
+                            if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
+                            else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
+
+                            Slider questSlider = questPanel.Find("Slider").GetComponent<Slider>();
+
+                            questName.text = quest.questName;
+                            questDescription.text = quest.questDescription;
+                            questStage.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                            questImage.sprite = quest.questImage;
+                            questRewardImage.sprite = quest.questReward;
                             questSlider.maxValue = quest.totalStages;
                             questSlider.value = quest.completedStages;
+                            questTrophies.text = quest.trophiesAwarded.ToString();
 
                             questSlider.gameObject.SetActive(true);
 
@@ -2184,24 +2192,33 @@ public class MenuManager : MonoBehaviour
                             Debug.Log($"incompleted sub: {quest.questName}");
 
                             // in progress subs
-                            RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // QD
+                            RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
 
                             questPanel.SetSiblingIndex(quest.questID);
 
                             questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
 
-                            TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
-                            TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
-                            TextMeshProUGUI questStageQD = questPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
-                            Image questImageQD = questPanel.Find("QD Image").GetComponent<Image>();
-                            Image questRewardImageQD = questPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
-                            Slider questSlider = questPanel.Find("QD Slider").GetComponent<Slider>();
+                            TextMeshProUGUI questName = questPanel.Find("Name").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questDescription = questPanel.Find("Description").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questStage = questPanel.Find("Slider/Stage").GetComponent<TextMeshProUGUI>();
+                            TextMeshProUGUI questTrophies = questPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
+                            
+                            Image questImage = questPanel.Find("Image").GetComponent<Image>();
+                            Image questRewardImage = questPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
+                            RectTransform mask = questPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
 
-                            questNameQD.text = quest.questName;
-                            questDescriptionQD.text = quest.questDescription;
-                            questStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
-                            questImageQD.sprite = quest.questImage;
-                            questRewardImageQD.sprite = quest.questReward;
+                            if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
+                            else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
+
+                            Slider questSlider = questPanel.Find("Slider").GetComponent<Slider>();
+
+                            questName.text = quest.questName;
+                            questDescription.text = quest.questDescription;
+                            questStage.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                            questImage.sprite = quest.questImage;
+                            questRewardImage.sprite = quest.questReward;
+                            questTrophies.text = quest.trophiesAwarded.ToString();
+
 
                             questSlider.gameObject.SetActive(false);
 
@@ -2220,30 +2237,35 @@ public class MenuManager : MonoBehaviour
 
                         Debug.Log($"Normal Quest. In progress: {quest.questName}");
 
-                        RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // QD
+                        RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
 
                         questPanel.SetSiblingIndex(quest.questID);
 
                         questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
-                        TextMeshProUGUI questNameQD = questPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
-                        TextMeshProUGUI questDescriptionQD = questPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
-                        TextMeshProUGUI questStageQD = questPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
-                        Image questImageQD = questPanel.Find("QD Image").GetComponent<Image>();
-                        Image questRewardImageQD = questPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
-                        Slider questSlider = questPanel.Find("QD Slider").GetComponent<Slider>();
+                        TextMeshProUGUI questName = questPanel.Find("Name").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI questDescription = questPanel.Find("Description").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI questStage = questPanel.Find("Slider/Stage").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI questTrophies = questPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
 
-                        questNameQD.text = quest.questName;
-                        questDescriptionQD.text = quest.questDescription;
-                        questStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
-                        questImageQD.sprite = quest.questImage;
-                        questRewardImageQD.sprite = quest.questReward;
-                        questSlider.maxValue = quest.totalStages;
-                        questSlider.value = quest.completedStages;
+                        Image questImage = questPanel.Find("Image").GetComponent<Image>();
+                        Image questRewardImage = questPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
+                        RectTransform mask = questPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
+
+                        if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
+                        else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
+
+                        Slider questSlider = questPanel.Find("Slider").GetComponent<Slider>();
+
+                        questName.text = quest.questName;
+                        questDescription.text = quest.questDescription;
+                        questImage.sprite = quest.questImage;
+                        questRewardImage.sprite = quest.questReward;
+                        questTrophies.text = quest.trophiesAwarded.ToString();
 
                         if (quest.questName == "null") questPanel.gameObject.SetActive(false);
 
-                        questSlider.gameObject.SetActive(true);
+                        questSlider.gameObject.SetActive(false);
                     }
                 }
 
@@ -2258,28 +2280,36 @@ public class MenuManager : MonoBehaviour
                     if (quest.isMasterQuest && quest.completedStages > 0)
                     {
                         // in progress Master
-                        RectTransform claimsPanel = Instantiate(pf_QuestDefault, ClaimsParent).GetComponent<RectTransform>(); // QD
+                        RectTransform claimsPanel = Instantiate(pf_QuestDefault, ClaimsParent).GetComponent<RectTransform>(); // Default
 
                         claimsPanel.SetSiblingIndex(quest.questID);
 
                         claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
-                        TextMeshProUGUI claimsNameQD = claimsPanel.Find("QD Name").GetComponent<TextMeshProUGUI>();
-                        TextMeshProUGUI claimsDescriptionQD = claimsPanel.Find("QD Description").GetComponent<TextMeshProUGUI>();
-                        TextMeshProUGUI claimsStageQD = claimsPanel.Find("QD Slider/QD Stage").GetComponent<TextMeshProUGUI>();
-                        Image claimsImageQD = claimsPanel.Find("QD Image").GetComponent<Image>();
-                        Image claimsRewardImageQD = claimsPanel.Find("Button_Dim/QD RewardImage").GetComponent<Image>();
-                        Slider claimsSliderQD = claimsPanel.Find("QD Slider").GetComponent<Slider>();
-                        claimsSliderQD.gameObject.SetActive(true);
+                        TextMeshProUGUI claimsName = claimsPanel.Find("Name").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI claimsDescription = claimsPanel.Find("Description").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI claimsStage = claimsPanel.Find("Slider/Stage").GetComponent<TextMeshProUGUI>();
+                        TextMeshProUGUI questTrophies = claimsPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
+                        Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
+                        Image claimsRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
+                        RectTransform mask = claimsPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
 
-                        claimsNameQD.text = quest.questName;
-                        claimsDescriptionQD.text = quest.questDescription;
-                        claimsStageQD.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
-                        claimsImageQD.sprite = quest.questImage;
-                        claimsRewardImageQD.sprite = quest.questReward;
+                        if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
+                        else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
 
-                        claimsSliderQD.maxValue = quest.totalStages;
-                        claimsSliderQD.value = quest.completedStages;
+                        Slider claimsSlider = claimsPanel.Find("Slider").GetComponent<Slider>();
+                        claimsSlider.gameObject.SetActive(true);
+
+                        claimsName.text = quest.questName;
+                        claimsDescription.text = quest.questDescription;
+                        claimsStage.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                        claimsImage.sprite = quest.questImage;
+                        claimsRewardImage.sprite = quest.questReward;
+                        questTrophies.text = quest.trophiesAwarded.ToString();
+
+
+                        claimsSlider.maxValue = quest.totalStages;
+                        claimsSlider.value = quest.completedStages;
 
                     }
                 }
@@ -2289,21 +2319,28 @@ public class MenuManager : MonoBehaviour
                     Debug.Log($"Completed Master: {quest.questName}");
 
                     // in progress Master
-                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // QC
+                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
 
                     claimsPanel.SetSiblingIndex(quest.questID);
 
                     claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
-                    TextMeshProUGUI claimsNameQC = claimsPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
-                    TextMeshProUGUI claimsDescriptionQC = claimsPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
-                    Image claimsImageQC = claimsPanel.Find("QC Image").GetComponent<Image>();
-                    Image claimsRewardImageQC = claimsPanel.Find("MissionReward/QC RewardImage").GetComponent<Image>();
+                    TextMeshProUGUI claimsName = claimsPanel.Find("Name").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI claimsDescription = claimsPanel.Find("Description").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI questTrophies = claimsPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
 
-                    claimsNameQC.text = quest.questName;
-                    claimsDescriptionQC.text = quest.questDescription;
-                    claimsImageQC.sprite = quest.questImage;
-                    claimsRewardImageQC.sprite = quest.questReward;
+                    Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
+                    Image claimsRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
+                    RectTransform mask = claimsPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
+
+                    if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
+                    else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
+
+                    claimsName.text = quest.questName;
+                    claimsDescription.text = quest.questDescription;
+                    claimsImage.sprite = quest.questImage;
+                    claimsRewardImage.sprite = quest.questReward;
+                    questTrophies.text = quest.trophiesAwarded.ToString();
 
                 }
 
@@ -2312,40 +2349,49 @@ public class MenuManager : MonoBehaviour
                     Debug.Log($"completed sub: {quest.questName}");
 
                     // completed subs
-                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // QC
+                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
 
                     claimsPanel.SetSiblingIndex(quest.questID);
 
                     claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1300f);
 
-                    TextMeshProUGUI claimsNameQC = claimsPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
-                    TextMeshProUGUI claimsDescriptionQC = claimsPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
-                    Image claimsImageQC = claimsPanel.Find("QC Image").GetComponent<Image>();
-                    Image questRewardImageQC = claimsPanel.Find("MissionReward/QC RewardImage").GetComponent<Image>();
+                    TextMeshProUGUI claimsName = claimsPanel.Find("Name").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI claimsDescription = claimsPanel.Find("Description").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI questTrophies = claimsPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
+                    Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
+                    Image questRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
+                    RectTransform mask = claimsPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
 
-                    claimsNameQC.text = quest.questName;
-                    claimsDescriptionQC.text = quest.questDescription;
-                    claimsImageQC.sprite = quest.questImage;
-                    questRewardImageQC.sprite = quest.questReward;
+                    if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
+                    else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
+                    claimsName.text = quest.questName;
+                    claimsDescription.text = quest.questDescription;
+                    claimsImage.sprite = quest.questImage;
+                    questRewardImage.sprite = quest.questReward;
+                    questTrophies.text = quest.trophiesAwarded.ToString();
+
                 }
 
                 if (!quest.isSubQuest && !quest.isMasterQuest && quest.isDone)
                 {
-                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // QC
+                    RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
 
                     claimsPanel.SetSiblingIndex(quest.questID);
 
                     claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
-                    TextMeshProUGUI claimsNameQC = claimsPanel.Find("QC Name").GetComponent<TextMeshProUGUI>();
-                    TextMeshProUGUI claimsDescriptionQC = claimsPanel.Find("QC Description").GetComponent<TextMeshProUGUI>();
-                    Image claimsImageQC = claimsPanel.Find("QC Image").GetComponent<Image>();
-                    Image questRewardImageQC = claimsPanel.Find("MissionReward/QC RewardImage").GetComponent<Image>();
+                    TextMeshProUGUI claimsName = claimsPanel.Find("Name").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI claimsDescription = claimsPanel.Find("Description").GetComponent<TextMeshProUGUI>();
+                    TextMeshProUGUI questTrophies = claimsPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
+                    Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
+                    Image questRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
 
-                    claimsNameQC.text = quest.questName;
-                    claimsDescriptionQC.text = quest.questDescription;
-                    claimsImageQC.sprite = quest.questImage;
-                    questRewardImageQC.sprite = quest.questReward;
+                    claimsName.text = quest.questName;
+                    claimsDescription.text = quest.questDescription;
+                    claimsImage.sprite = quest.questImage;
+                    questRewardImage.sprite = quest.questReward;
+                    questTrophies.text = quest.trophiesAwarded.ToString();
+
                 }
 
             }
