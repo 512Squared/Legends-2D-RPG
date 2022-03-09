@@ -97,16 +97,6 @@ public class PlayerStats : MonoBehaviour
 
 
 
-    // Update is called once per frame YnPCmrtgUB0uhClQKlSTeTjVJ82fkbzf
-    void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            AddXP(100);
-            Debug.Log("XP was added");
-        }
-    }
 
     public void AddXP(int amountOfXp)
     {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
+using System.Collections;
 using UnityEngine.ParticleSystemJobs;
 
 public class QuestManager : SerializedMonoBehaviour
@@ -17,6 +18,9 @@ public class QuestManager : SerializedMonoBehaviour
     [InlineEditor]
     public List<Quest> questList;
     public Dictionary<string, bool> questProgress;
+    public Dictionary<int, string> questId;
+    [HideInInspector]
+    public Quest[] questArray;
 
 
     #endregion FIELDS
@@ -43,11 +47,18 @@ public class QuestManager : SerializedMonoBehaviour
     {
         instance = this;
         questList = new List<Quest>();
-        GetQuestList();
         questProgress = new Dictionary<string, bool>();
-        UpdateQuestProgress("");  
+        questId = new Dictionary<int, string>();
+        StartCoroutine(InitializeQuestManager());        
     }
 
+    public IEnumerator InitializeQuestManager()
+    {
+        yield return null;
+        InitializeQuestID();
+        GetQuestList();
+        UpdateQuestProgress("");
+    }
 
     private void Update()
     {
@@ -156,12 +167,24 @@ public class QuestManager : SerializedMonoBehaviour
     public void UpdateQuestProgress(string empty)
     {
         questProgress.Clear();
+        questId.Clear();
         foreach (Quest quest in questList)
         {
             questProgress.Add(quest.questName, quest.isDone);
+            questId.Add(quest.questID, quest.questName);
         }
     }
 
+    public void InitializeQuestID()
+    {
+        questArray = questList.ToArray();
+        HierarchicalSorting.Sort(questArray);
+        for (int i = 0; i < questArray.Length; i++)
+        {
+            questArray[i].questID = i + 1001;            
+        }
+        questList = questArray.ToList();
+    }
     #endregion METHODS
 }
 

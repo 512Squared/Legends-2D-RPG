@@ -131,9 +131,12 @@ public class Quest : MonoBehaviour
             for (int i = 0; i < childQuests.Length; i++)
             {
                 trophiesAwarded += childQuests[i].trophiesAwarded + 15;
+                Debug.Log($"{questName}'s child quest: {childQuests[i].questName}");
             }
-        }
+       }
     }
+
+
 
     private void OnEnable()
     {
@@ -201,6 +204,8 @@ public class Quest : MonoBehaviour
             if (item != null) item.isQuestObject = false;
 
             if (spriteRenderer != null) spriteRenderer.enabled = enabledAfterDone;
+
+            MenuManager.instance.QuestCompletePanel(questName);
         }
 
         else

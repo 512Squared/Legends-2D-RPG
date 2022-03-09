@@ -85,7 +85,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject teamTabMenu;
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] CanvasGroup teamNofify, questsNofify, fadeResume;
+    [SerializeField] CanvasGroup teamNofify, questsNofify, fadeResume, questsComplete;
     [SerializeField] TextMeshProUGUI teamMemberCount;
 
 
@@ -2133,6 +2133,7 @@ public class MenuManager : MonoBehaviour
                 {
                     if (quest.isMasterQuest || quest.isSubQuest)
                     {
+                        // Master Quests
 
                         if (quest.isMasterQuest && !quest.isDone)
                         {
@@ -2186,9 +2187,11 @@ public class MenuManager : MonoBehaviour
 
                         }
 
+                        // Master's Subquests
+
                         if (quest.isSubQuest && !quest.isDone)
                         {
-                            //Debug.Log($"incompleted sub: {quest.questName}");
+                            Debug.Log($"incompleted sub: {quest.questName} | {quest.questID}");
 
                             // in progress subs
 
@@ -2210,7 +2213,7 @@ public class MenuManager : MonoBehaviour
                             {
                                 questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
                                 
-                                questPanel.DOSizeDelta(new Vector3(0f, 0f, 1f), 0.8f).SetEase(Ease.InCirc);
+                                questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 0.8f).SetEase(Ease.InCirc);
                             }
                             else if (!areSubQuestsShowing) // tween them in
                             {
@@ -2218,7 +2221,7 @@ public class MenuManager : MonoBehaviour
                                 questPanel.localScale = new Vector3(0, 0, 0);
 
                                 questPanel.DOSizeDelta(new Vector3(1300, 131, 1), 0.3f).SetEase(Ease.InCirc);
-                                questPanel.DOScale(new Vector3(1, 1, 1), 0.3f).SetEase(Ease.InCirc);                                
+                                questPanel.DOScale(new Vector3(1, 1, 1), 0.4f).SetEase(Ease.InCirc);                                
 
                             }
 
@@ -2280,6 +2283,13 @@ public class MenuManager : MonoBehaviour
                         Image questImage = questPanel.Find("Image").GetComponent<Image>();
                         Image questRewardImage = questPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                         RectTransform mask = questPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
+
+
+                        RectTransform upButton = questPanel.Find("upButton").GetComponent<RectTransform>();
+                        RectTransform downButton = questPanel.Find("downButton").GetComponent<RectTransform>();
+
+                        downButton.gameObject.SetActive(false);
+                        upButton.gameObject.SetActive(false);
 
                         if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
                         else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
@@ -2439,6 +2449,13 @@ public class MenuManager : MonoBehaviour
     {
         areSubQuestsShowing = !areSubQuestsShowing;
         UpdateQuestList();
+    }
+
+    public void QuestCompletePanel(string quest)
+    {
+        questsComplete.alpha = 1;
+        questsComplete.enabled = true;
+        questsComplete.blocksRaycasts = true;
     }
 
 
