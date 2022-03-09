@@ -1172,6 +1172,7 @@ public class MenuManager : MonoBehaviour
         //    quest UI Buttons 12
         //    quest fadebackground 13
         //    inventory 14
+        //    completed Quest 15  
 
 
         menuPanels[panel].blocksRaycasts = true;
@@ -2453,9 +2454,8 @@ public class MenuManager : MonoBehaviour
 
     public void QuestCompletePanel(string quest)
     {
-        questsComplete.alpha = 1;
-        questsComplete.enabled = true;
-        questsComplete.blocksRaycasts = true;
+        MainMenuPanel(15);
+        MainMenuPanel(13);
     }
 
 
