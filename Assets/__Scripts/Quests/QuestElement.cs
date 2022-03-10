@@ -33,7 +33,7 @@ public class QuestElement : MonoBehaviour
         Actions.OnActivateQuest -= ActivateElement;
     }
 
-    public void CheckForCompletion(string questCompleted)
+    public void CheckForCompletion(string questCompleted, QuestRewards empty)
     {
         if (questCompleted == completeQuestFirst) // returns true if completed
         {

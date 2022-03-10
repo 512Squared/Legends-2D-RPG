@@ -21,6 +21,10 @@ public class QuestManager : SerializedMonoBehaviour
     public Dictionary<int, string> questId;
     [HideInInspector]
     public Quest[] questArray;
+    
+    public IRewardable<QuestRewards>[] rewardables;
+
+    private QuestRewards reward;
 
 
     #endregion FIELDS
@@ -49,7 +53,9 @@ public class QuestManager : SerializedMonoBehaviour
         questList = new List<Quest>();
         questProgress = new Dictionary<string, bool>();
         questId = new Dictionary<int, string>();
-        StartCoroutine(InitializeQuestManager());        
+        StartCoroutine(InitializeQuestManager());
+        rewardables = FindObjectsOfType<IRewardable<QuestRewards>>();
+        Debug.Log($"IRewardable Array: {rewardables.Length}");
     }
 
     public IEnumerator InitializeQuestManager()
@@ -57,7 +63,8 @@ public class QuestManager : SerializedMonoBehaviour
         yield return null;
         InitializeQuestID();
         GetQuestList();
-        UpdateQuestProgress("");
+        UpdateQuestProgress("", reward);
+   
     }
 
     private void Update()
@@ -73,10 +80,10 @@ public class QuestManager : SerializedMonoBehaviour
             Debug.Log($"Data has been loaded");
             LoadQuestData();
         }
-        
+
         if (Input.GetKeyDown(KeyCode.P))
         {
-            UpdateQuestProgress("");
+            UpdateQuestProgress("", reward);
         }
     }
 
@@ -85,7 +92,7 @@ public class QuestManager : SerializedMonoBehaviour
     #region SUBSCRIBERS
     private void OnEnable()
     {
-        Actions.OnQuestCompleted += UpdateQuestProgress;        
+        Actions.OnQuestCompleted += UpdateQuestProgress;
     }
     private void OnDisable()
     {
@@ -164,7 +171,7 @@ public class QuestManager : SerializedMonoBehaviour
         questList.Add(quest);
     }
 
-    public void UpdateQuestProgress(string empty)
+    public void UpdateQuestProgress(string empty, QuestRewards empty2)
     {
         questProgress.Clear();
         questId.Clear();
@@ -181,10 +188,19 @@ public class QuestManager : SerializedMonoBehaviour
         HierarchicalSorting.Sort(questArray);
         for (int i = 0; i < questArray.Length; i++)
         {
-            questArray[i].questID = i + 1001;            
+            questArray[i].questID = i + 1001;
         }
         questList = questArray.ToList();
     }
+    public void HandOutReward(QuestRewards rewardType)
+    {
+        for (int i = 0; i < rewardables.Length; i++)
+        {
+            rewardables[i].Reward(rewardType);
+        }
+    }
+
+
     #endregion METHODS
 }
 

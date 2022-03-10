@@ -1,18 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class QuestRewards : MonoBehaviour
+[System.Serializable]
+public class QuestRewards
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public enum RewardTypes
     {
-        
+        none,
+        hp,
+        gold,
+        skills,
+        immuneToDragonBreath
+    }
+    [HideInInlineEditors]
+    public enum PlayerClasses
+    {
+        Thulgran,
+        NPC,
+        all,
+        enemy
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public RewardTypes rewardType;
+    [HideInInspector]
+    public PlayerClasses playerClass;
+
+    [EnumToggleButtons]
+    public Recipients recipients;
+    
+    public int rewardAmount;
 }
+
+[Flags]
+public enum Recipients
+{
+    Thulgran = 1 << 1, // 1
+    NPC = 1 << 2, // 2
+    enemy = 1 << 3, // 4
+    all = Thulgran | NPC | enemy
+}
+

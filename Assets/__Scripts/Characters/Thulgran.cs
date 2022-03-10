@@ -1,14 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using Sirenix.OdinInspector;
+using System;
 
-public class Thulgran : MonoBehaviour
+public class Thulgran : IRewardable<QuestRewards>, IDamageable
 {
 
+    #region Singleton
+
     public static Thulgran instance;
+
+    #endregion
+
 
     #region Core stats
 
@@ -51,8 +54,11 @@ public class Thulgran : MonoBehaviour
 
     public static int maxThulgranHP { get; private set; } = 300;
     public static int maxThulgranMana { get; private set; } = 200;
+
+    public bool immuneToDragonBreath;
     #endregion
 
+    #region Callbacks
     void Start()
     {
         instance = this;
@@ -68,6 +74,21 @@ public class Thulgran : MonoBehaviour
     {
         Actions.OnSellItem -= SellItem;
         Actions.OnUseItem -= UseItem;
+    }
+
+    #endregion
+
+
+    public override void Reward(QuestRewards rewards)
+    {
+        Debug.Log($"Reward called {rewards.rewardType}");
+        if (rewards.playerClass == QuestRewards.PlayerClasses.Thulgran || rewards.playerClass == QuestRewards.PlayerClasses.all)
+        {
+            if (rewards.rewardType == QuestRewards.RewardTypes.gold) ThulgranGold += rewards.rewardAmount;
+            if (rewards.rewardType == QuestRewards.RewardTypes.hp) ThulgranHP += rewards.rewardAmount;
+            if (rewards.rewardType == QuestRewards.RewardTypes.immuneToDragonBreath) immuneToDragonBreath = true;
+        }
+
     }
 
     public void SellItem(ItemsManager item)
@@ -96,45 +117,45 @@ public class Thulgran : MonoBehaviour
         }
     }
 
-        public void AddGold(ItemsManager item)
+    public void AddGold(ItemsManager item)
+    {
+        ThulgranGold += item.valueInCoins;
+
+        for (int i = 0; i < UI.instance.goldStats.Length; i++)
         {
-            ThulgranGold += item.valueInCoins;
-
-            for (int i = 0; i < UI.instance.goldStats.Length; i++)
-            {
-                if (i != 0)
-                    UI.instance.goldStats[i].text = ThulgranGold.ToString();
-            }
-            Debug.Log($"Add Gold | Value: {item.valueInCoins}");
+            if (i != 0)
+                UI.instance.goldStats[i].text = ThulgranGold.ToString();
         }
-
-        public void AddHp(ItemsManager item)
-        {
-            ThulgranHP += item.amountOfEffect;
-            if (ThulgranHP > maxThulgranHP)
-            {
-                ThulgranHP = maxThulgranHP;
-                NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
-                    2f,
-                    1400, 30);
-            }
-            Debug.Log($"Added HP | Amount: {item.amountOfEffect}");
-        }
-
-        public void AddMana(ItemsManager item)
-        {
-            ThulgranMana += item.amountOfEffect;
-            if (ThulgranMana > maxThulgranMana)
-            {
-                ThulgranMana = maxThulgranMana;
-                NotificationFader.instance.CallFadeInOut("Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
-                    2f,
-                    1400, 30);
-            }
-            Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
-        }
-
-
+        Debug.Log($"Add Gold | Value: {item.valueInCoins}");
     }
+
+    public void AddHp(ItemsManager item)
+    {
+        ThulgranHP += item.amountOfEffect;
+        if (ThulgranHP > maxThulgranHP)
+        {
+            ThulgranHP = maxThulgranHP;
+            NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
+                2f,
+                1400, 30);
+        }
+        Debug.Log($"Added HP | Amount: {item.amountOfEffect}");
+    }
+
+    public void AddMana(ItemsManager item)
+    {
+        ThulgranMana += item.amountOfEffect;
+        if (ThulgranMana > maxThulgranMana)
+        {
+            ThulgranMana = maxThulgranMana;
+            NotificationFader.instance.CallFadeInOut("Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
+                2f,
+                1400, 30);
+        }
+        Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
+    }
+
+
+}
 
 

@@ -88,6 +88,10 @@ public class Quest : MonoBehaviour
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool questRewardClaimed;
 
+    [Space]
+    [ShowInInspector]
+    [GUIColor(1f, 0.886f, 0.780f)]
+    public QuestRewards rewards;
 
     [Space]
     [GUIColor(.5f, 0.8f, 0.215f)]
@@ -116,6 +120,8 @@ public class Quest : MonoBehaviour
     [HideInInspector]
     public int masterStages;
 
+
+
     #endregion SERIALIZATION
 
 
@@ -131,12 +137,9 @@ public class Quest : MonoBehaviour
             for (int i = 0; i < childQuests.Length; i++)
             {
                 trophiesAwarded += childQuests[i].trophiesAwarded + 15;
-                Debug.Log($"{questName}'s child quest: {childQuests[i].questName}");
             }
        }
     }
-
-
 
     private void OnEnable()
     {
@@ -186,7 +189,9 @@ public class Quest : MonoBehaviour
             isDone = true;
             NotifyPlayer();
             ActivateSubQuests(questName);
-            Actions.OnQuestCompleted?.Invoke(questName);
+            Actions.OnQuestCompleted?.Invoke(questName, rewards);
+            QuestManager.instance.HandOutReward(rewards);
+
             Debug.Log($"Quest Completed: {questName}");
 
             if (!isMasterQuest && !isSubQuest) completedStages++;
@@ -212,6 +217,7 @@ public class Quest : MonoBehaviour
         {
             isDone = false;
         }
+               
 
     }
 
@@ -309,4 +315,7 @@ public class Quest : MonoBehaviour
         }
         else return false;
     }
+
+
+
 }

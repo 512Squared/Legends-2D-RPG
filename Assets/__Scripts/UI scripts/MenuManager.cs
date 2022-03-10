@@ -7,6 +7,7 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 
+
 public class MenuManager : MonoBehaviour
 {
     // TODO Q only when active in UI
@@ -240,11 +241,7 @@ public class MenuManager : MonoBehaviour
     [GUIColor(0.5f, 1f, 0.515f)]
     public Transform QuestParent, ClaimsParent, AchieveParent;
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] CanvasGroup questsUIPanel;
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] CanvasGroup claimsUIPanel;
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] CanvasGroup achieveUIPanel;
+    [SerializeField] CanvasGroup questsUIPanel, claimsUIPanel, achieveUIPanel, fadeBackground;
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] Button questsTabButton;
 
@@ -501,8 +498,8 @@ public class MenuManager : MonoBehaviour
         mainMenu.GetComponent<CanvasGroup>().interactable = true;
         mainMenu.GetComponent<CanvasGroup>().alpha = 1;
         fadeResume.blocksRaycasts = true;
-        fadeResume.alpha = 1;
         fadeResume.interactable = true;
+        fadeResume.alpha = 1;
     }
 
     private void ControllersFadeOut(float fadeTime)
@@ -590,6 +587,7 @@ public class MenuManager : MonoBehaviour
             mainMenu.GetComponent<CanvasGroup>().alpha = 1;
             mainMenu.GetComponent<CanvasGroup>().interactable = true;
             mainMenu.GetComponent<CanvasGroup>().blocksRaycasts = true;
+
             Debug.Log($"Quest UI back triggered");
         }
 
@@ -2095,6 +2093,11 @@ public class MenuManager : MonoBehaviour
             questTabMenu.GetComponent<CanvasGroup>().interactable = false;
             questTabMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
             questTabMenu.GetComponent<CanvasGroup>().alpha = 0;
+
+            fadeBackground.GetComponent<CanvasGroup>().interactable = false;
+            fadeBackground.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            fadeBackground.GetComponent<CanvasGroup>().alpha = 0;
+
         }
 
         UpdateQuestList();

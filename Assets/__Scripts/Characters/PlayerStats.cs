@@ -3,7 +3,8 @@ using System;
 using Sirenix.OdinInspector;
 
 
-public class PlayerStats : MonoBehaviour
+
+public class PlayerStats : IRewardable<QuestRewards>
 {
     public static PlayerStats instance;
 
@@ -96,7 +97,13 @@ public class PlayerStats : MonoBehaviour
     }
 
 
-
+    public override void Reward(QuestRewards rewards)
+    {
+        if (rewards.playerClass == QuestRewards.PlayerClasses.NPC || rewards.playerClass == QuestRewards.PlayerClasses.all)
+        {
+            if (rewards.rewardType == QuestRewards.RewardTypes.hp) characterHP += rewards.rewardAmount;
+        }
+    }
 
     public void AddXP(int amountOfXp)
     {
