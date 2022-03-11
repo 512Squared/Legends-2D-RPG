@@ -105,7 +105,11 @@ public class Quest : MonoBehaviour
     [HideIf("isMasterQuest")]
     [GUIColor(.5f, 0.8f, 0.215f)]
     [SerializeField] SpriteRenderer spriteRenderer;
+    [GUIColor(.5f, 0.8f, 0.215f)]
+    [SerializeField] RectTransform relicBox;
     [Space]
+
+
 
     [TextArea(2, 15)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
@@ -129,7 +133,7 @@ public class Quest : MonoBehaviour
     {
         QuestManager.instance.AddQuests(this);
         item = GetComponent<ItemsManager>();
-        
+
         if (isMasterQuest)
         {
             childQuests = GetComponentsInChildren<Quest>();
@@ -138,7 +142,7 @@ public class Quest : MonoBehaviour
             {
                 trophiesAwarded += childQuests[i].trophiesAwarded + 15;
             }
-       }
+        }
     }
 
     private void OnEnable()
@@ -173,13 +177,19 @@ public class Quest : MonoBehaviour
         {
             if (markOnEnter)
             {
+                Inventory.instance.AddItems(item);
+                item.gameObject.SetActive(false);
                 MarkTheQuest();
             }
             else if (markOnClick)
             {
                 markAfterClick = true;
             }
+
+
         }
+
+
     }
 
     public void MarkTheQuest()
@@ -187,7 +197,8 @@ public class Quest : MonoBehaviour
         if (isActive && isMarkable && !isDone)
         {
             isDone = true;
-            NotifyPlayer();
+            if (item.pickUpNotice == true) NotifyPlayer();
+
             ActivateSubQuests(questName);
             Actions.OnQuestCompleted?.Invoke(questName, rewards);
             QuestManager.instance.HandOutReward(rewards);
@@ -208,6 +219,20 @@ public class Quest : MonoBehaviour
 
             if (item != null) item.isQuestObject = false;
 
+            if (item != null && item.isRelic)
+            {
+                MenuManager.instance.UpdateRelicInfo(item);
+
+                // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
+                Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
+                foreach (Transform t in relicTransforms)
+                {
+                    t.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+                    t.GetComponent<Image>().material = null;
+                }
+                relicBox.GetComponent<Image>().color = new Color32(13, 15, 41, 255);
+            }
+
             if (spriteRenderer != null) spriteRenderer.enabled = enabledAfterDone;
 
             MenuManager.instance.QuestCompletePanel(questName);
@@ -217,7 +242,7 @@ public class Quest : MonoBehaviour
         {
             isDone = false;
         }
-               
+
 
     }
 

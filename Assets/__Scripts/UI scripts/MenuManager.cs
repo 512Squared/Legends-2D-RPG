@@ -234,35 +234,51 @@ public class MenuManager : MonoBehaviour
     public GameObject[] isNewNotification;
 
     [Title("Quests")]
+    [TabGroup("Quests Group", "Quest Prefab")]
     [GUIColor(0.5f, 1f, 0.515f)]
     public GameObject pf_QuestDefault;
+    [TabGroup("Quests Group", "Quest Prefab")]
     [GUIColor(0.5f, 1f, 0.515f)]
     public GameObject pf_QuestComplete;
+    [TabGroup("Quests Group", "Quest Prefab")]
     [GUIColor(0.5f, 1f, 0.515f)]
-    public Transform QuestParent, ClaimsParent, AchieveParent;
+    public Transform QuestParent, ClaimsParent, relicsParent;
+    [TabGroup("Quests Group", "Quest Prefab")]
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] CanvasGroup questsUIPanel, claimsUIPanel, achieveUIPanel, fadeBackground;
+    [SerializeField] CanvasGroup questsUIPanel, claimsUIPanel, relicsUIPanel, fadeBackground;
+    [TabGroup("Quests Group", "Quest UI")]
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] Button questsTabButton;
-
+    [TabGroup("Quests Group", "Quest UI")]
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] GameObject focusQuests, focusClaims, focusAchieve, questTabMenu;
+    [SerializeField] Image questSprite, claimsSprite, relicsSprite;
+    [TabGroup("Quests Group", "Quest UI")]
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] TextMeshProUGUI questFocusTitle, questText, claimsText, relicsText;
+    [TabGroup("Quests Group", "Quest UI")]
+    [GUIColor(0.5f, 1f, 0.515f)]
+    [SerializeField] GameObject focusQuests, focusClaims, focusRelics, questTabMenu;
+    [TabGroup("Quests Group", "Quest Relics")]
+    [GUIColor(0.5f, 1f, 0f)]
+    [SerializeField] TextMeshProUGUI questRelicName, questRelicDescription;
+    [TabGroup("Quests Group", "Quest Relics")]
+    [GUIColor(0.5f, 1f, 0f)]
+    [SerializeField] Image questRelicImage;
+
 
     [Header("Quest UI Sprites")]
     [Space]
     [FoldoutGroup("UI Sprites", expanded: false)]
     [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] Sprite questsSpriteOn, questsSpriteOff, claimsSpriteOn, claimsSpriteOff, achieveSpriteOn, achieveSpriteOff;
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] Image questSprite, claimsSprite, achieveSprite;
-    [GUIColor(0.5f, 1f, 0.515f)]
-    [SerializeField] TextMeshProUGUI questFocusTitle, questText, claimsText, achieveText;
+    [SerializeField] Sprite questsSpriteOn, questsSpriteOff, claimsSpriteOn, claimsSpriteOff, relicsSpriteOn, relicsSpriteOff;
 
 
     [ShowInInspector]
     [Title("Nofify Info")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
-    public int currentNewItems, claimQuestReward;
+    public int currentNewItems;
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    public int claimQuestReward;
     [GUIColor(0.878f, 0.219f, 0.219f)]
     [SerializeField] TextMeshProUGUI newItemsText, claimQuestText;
     [GUIColor(0.878f, 0.219f, 0.219f)]
@@ -295,7 +311,7 @@ public class MenuManager : MonoBehaviour
     public bool isClockPopOutVisible;
     [FoldoutGroup("UI Bools", expanded: false)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isQuestsOn, isClaimsOn, isAchieveOn, areSubQuestsShowing = true;
+    public bool isQuestsOn, isClaimsOn, isRelicsOn, areSubQuestsShowing = true;
 
     [Header("UI Tweening")]
     [GUIColor(1f, 1f, 0.215f)]
@@ -477,7 +493,7 @@ public class MenuManager : MonoBehaviour
 
         isQuestsOn = false;
         isClaimsOn = false;
-        isAchieveOn = false;
+        isRelicsOn = false;
 
         #endregion             
     }
@@ -582,7 +598,7 @@ public class MenuManager : MonoBehaviour
 
         }
 
-        else if (isQuestsOn || isClaimsOn || isAchieveOn)
+        else if (isQuestsOn || isClaimsOn || isRelicsOn)
         {
             mainMenu.GetComponent<CanvasGroup>().alpha = 1;
             mainMenu.GetComponent<CanvasGroup>().interactable = true;
@@ -1166,7 +1182,7 @@ public class MenuManager : MonoBehaviour
         //    team fadebackground 8
         //    quests 9
         //    claims 10
-        //    achieve 11
+        //    relics 11
         //    quest UI Buttons 12
         //    quest fadebackground 13
         //    inventory 14
@@ -1973,7 +1989,7 @@ public class MenuManager : MonoBehaviour
         {
             isQuestsOn = true;
             isClaimsOn = false;
-            isAchieveOn = false;
+            isRelicsOn = false;
 
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
@@ -1993,20 +2009,20 @@ public class MenuManager : MonoBehaviour
 
             focusClaims.SetActive(false);
 
-            achieveUIPanel.alpha = 0;
-            achieveUIPanel.blocksRaycasts = false;
-            achieveUIPanel.interactable = false;
-            achieveSprite.sprite = achieveSpriteOff;
-            achieveText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            relicsUIPanel.alpha = 0;
+            relicsUIPanel.blocksRaycasts = false;
+            relicsUIPanel.interactable = false;
+            relicsSprite.sprite = relicsSpriteOff;
+            relicsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
 
-            focusAchieve.SetActive(false);
+            focusRelics.SetActive(false);
 
         }
         else if (questPanelTrigger == "claims")
         {
             isQuestsOn = false;
             isClaimsOn = true;
-            isAchieveOn = false;
+            isRelicsOn = false;
 
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
@@ -2024,22 +2040,22 @@ public class MenuManager : MonoBehaviour
             claimsText.color = new Color(0.964f, 0.882f, 0.611f, 1);
             claimsSprite.sprite = claimsSpriteOn;
 
-            achieveUIPanel.alpha = 0;
-            achieveUIPanel.blocksRaycasts = false;
-            achieveUIPanel.interactable = false;
-            achieveSprite.sprite = achieveSpriteOff;
-            achieveText.color = new Color(0.745f, 0.709f, 0.713f, 1);
+            relicsUIPanel.alpha = 0;
+            relicsUIPanel.blocksRaycasts = false;
+            relicsUIPanel.interactable = false;
+            relicsSprite.sprite = relicsSpriteOff;
+            relicsText.color = new Color(0.745f, 0.709f, 0.713f, 1);
 
-            focusAchieve.SetActive(false);
+            focusRelics.SetActive(false);
         }
-        else if (questPanelTrigger == "achieve")
+        else if (questPanelTrigger == "relics")
         {
 
             isQuestsOn = false;
             isClaimsOn = false;
-            isAchieveOn = true;
+            isRelicsOn = true;
 
-            questFocusTitle.text = "Quest Log - Achievements";
+            questFocusTitle.text = "Quest Log - Relics";
 
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
@@ -2059,18 +2075,18 @@ public class MenuManager : MonoBehaviour
 
             focusClaims.SetActive(false);
 
-            achieveUIPanel.blocksRaycasts = true;
-            achieveUIPanel.interactable = true;
-            achieveSprite.sprite = achieveSpriteOn;
-            achieveText.color = new Color(0.964f, 0.882f, 0.611f, 1);
+            relicsUIPanel.blocksRaycasts = true;
+            relicsUIPanel.interactable = true;
+            relicsSprite.sprite = relicsSpriteOn;
+            relicsText.color = new Color(0.964f, 0.882f, 0.611f, 1);
 
-            focusAchieve.SetActive(true);
+            focusRelics.SetActive(true);
         }
         else if (questPanelTrigger == "exit")
         {
             isQuestsOn = false;
             isClaimsOn = false;
-            isAchieveOn = false;
+            isRelicsOn = false;
 
             questsUIPanel.alpha = 0;
             questsUIPanel.blocksRaycasts = false;
@@ -2084,11 +2100,11 @@ public class MenuManager : MonoBehaviour
 
             focusClaims.SetActive(false);
 
-            achieveUIPanel.alpha = 0;
-            achieveUIPanel.blocksRaycasts = false;
-            achieveUIPanel.interactable = false;
+            relicsUIPanel.alpha = 0;
+            relicsUIPanel.blocksRaycasts = false;
+            relicsUIPanel.interactable = false;
 
-            focusAchieve.SetActive(false);
+            focusRelics.SetActive(false);
 
             questTabMenu.GetComponent<CanvasGroup>().interactable = false;
             questTabMenu.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -2118,10 +2134,7 @@ public class MenuManager : MonoBehaviour
         {
             Destroy(claimsPanel.gameObject);
         }
-        foreach (Transform achievePanel in AchieveParent)
-        {
-            Destroy(achievePanel.gameObject);
-        }
+
 
 
         foreach (Quest quest in QuestManager.instance.GetQuestList())
@@ -2439,9 +2452,9 @@ public class MenuManager : MonoBehaviour
 
             }
 
-            // ACHIEVEMENTS
+            // RELICS
 
-            if (isAchieveOn)
+            if (isRelicsOn)
             {
 
 
@@ -2459,6 +2472,29 @@ public class MenuManager : MonoBehaviour
     {
         MainMenuPanel(15);
         MainMenuPanel(13);
+    }
+
+    public void OpenRelicInfo(string relicName)
+    {               
+        List<ItemsManager> items = Inventory.instance.GetItemsList();
+
+        foreach(ItemsManager item in items)
+        {            
+            if (item.isRelic) // add a bool check before string, less overhead
+            {
+                if (relicName == item.itemName)
+                {
+                    questRelicName.text = item.itemName;
+                    questRelicDescription.text = item.itemDescription;
+                    questRelicImage.sprite = item.itemsImage;
+                }
+            }
+        }
+    }
+
+    public void UpdateRelicInfo(ItemsManager item)
+    {
+
     }
 
 

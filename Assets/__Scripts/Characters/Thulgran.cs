@@ -3,7 +3,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
 
-public class Thulgran : IRewardable<QuestRewards>, IDamageable
+public class Thulgran : Rewardable<QuestRewards>, IDamageable
 {
 
     #region Singleton

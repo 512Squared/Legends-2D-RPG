@@ -22,9 +22,9 @@ public class QuestManager : SerializedMonoBehaviour
     [HideInInspector]
     public Quest[] questArray;
     
-    public IRewardable<QuestRewards>[] rewardables;
+    public Rewardable<QuestRewards>[] rewardables;
 
-    private QuestRewards reward;
+    public QuestRewards reward;
 
 
     #endregion FIELDS
@@ -54,7 +54,7 @@ public class QuestManager : SerializedMonoBehaviour
         questProgress = new Dictionary<string, bool>();
         questId = new Dictionary<int, string>();
         StartCoroutine(InitializeQuestManager());
-        rewardables = FindObjectsOfType<IRewardable<QuestRewards>>();
+        rewardables = FindObjectsOfType<Rewardable<QuestRewards>>();
         Debug.Log($"IRewardable Array: {rewardables.Length}");
     }
 

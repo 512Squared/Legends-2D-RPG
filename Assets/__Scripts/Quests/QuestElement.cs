@@ -12,12 +12,13 @@ public class QuestElement : MonoBehaviour
     private PolygonCollider2D polyCollider;
     private SpriteRenderer spriteRenderer;
     private ItemsManager item;
+    public Rewardable<QuestRewards> rewards;
 
     private void Start()
     {
         polyCollider = gameObject.GetComponent<PolygonCollider2D>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        item = gameObject.GetComponent<ItemsManager>();
+        item = gameObject.GetComponent<ItemsManager>();        
     }
 
     private void OnEnable()

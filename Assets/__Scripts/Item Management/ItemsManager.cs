@@ -1,13 +1,16 @@
 using System;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager instance;
-    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food, Shield, Helmet }
+    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food, Shield, Helmet, Relic }
     public ItemType itemType;
 
-    public string itemName, itemDescription;
+    public string itemName;
+    [TextArea(5,5)]
+    public string itemDescription;
     public int valueInCoins;
     public Sprite itemsImage;
     public bool itemSelected = false;
@@ -16,6 +19,7 @@ public class ItemsManager : MonoBehaviour
     public bool isQuestObject;
     public bool isInstantiated;
     public bool pickUpNotice = true;
+    public bool isRelic;
 
     private SpriteRenderer spriteRenderer;
     private PolygonCollider2D polyCollider;  

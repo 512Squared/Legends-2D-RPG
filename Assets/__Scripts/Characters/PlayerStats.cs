@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 
 
 
-public class PlayerStats : IRewardable<QuestRewards>
+public class PlayerStats : Rewardable<QuestRewards>
 {
     public static PlayerStats instance;
 

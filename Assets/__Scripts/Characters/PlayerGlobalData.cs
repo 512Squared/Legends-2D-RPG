@@ -28,6 +28,8 @@ public class PlayerGlobalData : MonoBehaviour
     private _DateTime date;
     private Continental cont;
 
+    private int characterParty = 0;
+
 
 
     // Start is called before the first frame update
@@ -114,7 +116,10 @@ public class PlayerGlobalData : MonoBehaviour
                 collision.gameObject.GetComponent<PlayerStats>().characterPlain,
                 3.4f,
                 1000, 30);
+                if(characterParty < 3) characterParty++;
+                if (characterParty == 2) Actions.MarkQuestCompleted?.Invoke("Add two people to your character party");
             }
+
         }
     }
 

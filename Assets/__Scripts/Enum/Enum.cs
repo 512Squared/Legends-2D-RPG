@@ -50,14 +50,7 @@ public enum Position
     Bottom,
     Centre
 }
-//[System.Serializable]
-//public enum RewardType
-//{
-//    none,
-//    hp,
-//    gold,
-//    skills,
-//}
+
 
 
 
