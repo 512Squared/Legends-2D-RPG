@@ -24,6 +24,11 @@ namespace Assets.__Scripts.UI_scripts
             Actions.OnResumeButton?.Invoke();
         }
 
+        public void QuestCompletedResume()
+        {
+            Actions.OnQuestCompletedResume?.Invoke();
+        }
+
 
     }
 }

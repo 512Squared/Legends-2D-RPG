@@ -32,7 +32,7 @@ public class Quest : MonoBehaviour
     [HorizontalGroup("Quests")]
     [BoxGroup("Quests/Done Message"), HideLabel]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] string onDoneMessage;
+    public string onDoneMessage;
     [Space]
     [HorizontalGroup("Info")]
     [VerticalGroup("Info/a")]
@@ -47,24 +47,28 @@ public class Quest : MonoBehaviour
     [Space]
     [VerticalGroup("Info/b")]
     [GUIColor(1f, 1f, 0.215f)]
-    public int totalStages = 1;
+    public int thisStage;
+    [VerticalGroup("Info/b")]
+    [GUIColor(1f, 1f, 0.215f)]
+    [ShowIf("isMasterQuest")]
+    public int totalMasterStages = 1;
     [VerticalGroup("Info/b")]
     [GUIColor(1f, 1f, 0.215f)]
     public int completedStages = 0;
-    [VerticalGroup("Info/b")]
-    [GUIColor(1f, 1f, 0.215f)]
-    public int thisStage;
 
 
     [Space]
-    [HorizontalGroup("Bools"), TableColumnWidth(1000)]
-    [VerticalGroup("Bools/a"), LabelWidth(100)]
+    [HorizontalGroup("Bools"), TableColumnWidth(1200)]
+    [VerticalGroup("Bools/a"), LabelWidth(90)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isActive;
-    [VerticalGroup("Bools/a"), LabelWidth(100)]
+    [VerticalGroup("Bools/a"), LabelWidth(90)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isDone;
-    [VerticalGroup("Bools/a"), LabelWidth(100)]
+    [VerticalGroup("Bools/a"), LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isItem;
+    [VerticalGroup("Bools/a"), LabelWidth(90)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isSubQuest;
     [Space]
@@ -73,20 +77,24 @@ public class Quest : MonoBehaviour
     public bool isMasterQuest;
     [VerticalGroup("Bools/b"), LabelWidth(100)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isMarkable;
+    public bool hasSubQuests;
     [VerticalGroup("Bools/b"), LabelWidth(100)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool markOnEnter;
-    [Space]
-    [VerticalGroup("Bools/c"), LabelWidth(160)]
+    [VerticalGroup("Bools/b"), LabelWidth(100)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool markOnClick;
+    [Space]
     [VerticalGroup("Bools/c"), LabelWidth(160)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool enabledAfterDone;
     [VerticalGroup("Bools/c"), LabelWidth(160)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool questRewardClaimed;
+    [VerticalGroup("Bools/c"), LabelWidth(160)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [ShowIf("isItem")]
+    public bool itemIsRelic;
 
     [Space]
     [ShowInInspector]
@@ -95,17 +103,24 @@ public class Quest : MonoBehaviour
 
     [Space]
     [GUIColor(.5f, 0.8f, 0.215f)]
+    [PropertyTooltip("If there are no subQuests, this should be empty")]
+    [ShowIf("hasSubQuests")]
     public Quest[] subQuests;
     [ShowIf("isSubQuest"), Required]
     [GUIColor(.5f, 0.8f, 0.215f)]
     [SerializeField] Quest masterQuest;
     [HideIf("isMasterQuest")]
     [GUIColor(.5f, 0.8f, 0.215f)]
+    [PropertyTooltip("drag quest item into this box from hierarchy")]
+    [ShowIf("isItem")]
     [SerializeField] PolygonCollider2D polyCollider;
-    [HideIf("isMasterQuest")]
+    [ShowIf("isItem")]
     [GUIColor(.5f, 0.8f, 0.215f)]
+    [PropertyTooltip("drag quest item into this box from hierarchy")]
     [SerializeField] SpriteRenderer spriteRenderer;
+    [PropertyTooltip("If this item is a relic, drag the appropriate relicBox from the Relics UI panel")]
     [GUIColor(.5f, 0.8f, 0.215f)]
+    [ShowIf("itemIsRelic")]
     [SerializeField] RectTransform relicBox;
     [Space]
 
@@ -151,6 +166,7 @@ public class Quest : MonoBehaviour
         Actions.MarkQuestCompleted += UpdateQuestStatus;
         Actions.OnActivateQuest += ActivateQuest;
         Actions.OnDoQuestStuffAfterDialogue += ActivateAfterDialogue;
+        Actions.OnClaimQuestRewards += ClaimQuestReward;
     }
 
     private void OnDisable()
@@ -159,11 +175,12 @@ public class Quest : MonoBehaviour
         Actions.MarkQuestCompleted -= ActivateSubQuests;
         Actions.OnActivateQuest -= ActivateQuest;
         Actions.OnDoQuestStuffAfterDialogue -= ActivateAfterDialogue;
+        Actions.OnClaimQuestRewards -= ClaimQuestReward;
     }
 
     private void Update()
     {
-        if (markAfterClick && isMarkable && Input.GetButtonDown("Fire1"))
+        if (markAfterClick && Input.GetButtonDown("Fire1"))
         {
             markAfterClick = false;
             MarkTheQuest();
@@ -173,35 +190,34 @@ public class Quest : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isActive && isMarkable && collision.CompareTag("Player"))
+        if (isActive && collision.CompareTag("Player"))
         {
             if (markOnEnter)
             {
-                Inventory.instance.AddItems(item);
-                item.gameObject.SetActive(false);
                 MarkTheQuest();
             }
             else if (markOnClick)
             {
                 markAfterClick = true;
             }
-
-
         }
-
-
     }
 
     public void MarkTheQuest()
     {
-        if (isActive && isMarkable && !isDone)
+        if (isActive && !isDone)
         {
             isDone = true;
-            if (item.pickUpNotice == true) NotifyPlayer();
+            
+            if (isItem && item != null) Inventory.instance.AddItems(item);
+
+            Actions.OnQuestCompleted?.Invoke(questName);
+            
+            MenuManager.instance.QuestCompletePanel(this);
+
+            if (item != null && item.pickUpNotice == true) NotifyPlayer();
 
             ActivateSubQuests(questName);
-            Actions.OnQuestCompleted?.Invoke(questName, rewards);
-            QuestManager.instance.HandOutReward(rewards);
 
             Debug.Log($"Quest Completed: {questName}");
 
@@ -210,32 +226,20 @@ public class Quest : MonoBehaviour
             if (isSubQuest)
             {
                 masterQuest.completedStages++;
-                Debug.Log($"masterQuest: {masterQuest.questName} | Stages: {masterQuest.completedStages} / {masterQuest.totalStages}");
+                Debug.Log($"masterQuest: {masterQuest.questName} | subQuest: {questName} | Stages: {masterQuest.completedStages} / {masterQuest.totalMasterStages} ");
                 if (masterQuest.MasterQuestComplete())
                 {
                     Actions.MarkQuestCompleted?.Invoke(masterQuest.questName);
                 }
             }
 
-            if (item != null) item.isQuestObject = false;
+            //if (isItem) item.isQuestObject = false;
 
-            if (item != null && item.isRelic)
-            {
-                MenuManager.instance.UpdateRelicInfo(item);
+            if (spriteRenderer != null && isItem) spriteRenderer.enabled = enabledAfterDone;
+            if (polyCollider != null && isItem) polyCollider.enabled = enabledAfterDone; // some quests can disable item. Here we just disable the renderer and collider 
+            // TODO check if is really necessary - disable renderer and collider might be getting called somewhere else already
 
-                // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
-                Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
-                foreach (Transform t in relicTransforms)
-                {
-                    t.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
-                    t.GetComponent<Image>().material = null;
-                }
-                relicBox.GetComponent<Image>().color = new Color32(13, 15, 41, 255);
-            }
 
-            if (spriteRenderer != null) spriteRenderer.enabled = enabledAfterDone;
-
-            MenuManager.instance.QuestCompletePanel(questName);
         }
 
         else
@@ -249,8 +253,7 @@ public class Quest : MonoBehaviour
 
     private void NotifyPlayer()
     {
-        NotificationFader.instance.CallFadeInOut($"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", questImage, messageFadeTime, 1000, 30);
-        isMarkable = false;
+        NotificationFader.instance.CallFadeInOut($"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", questImage, messageFadeTime, 1000, 30);        
     }
 
     private void UpdateQuestStatus(string questCompleted)
@@ -275,10 +278,15 @@ public class Quest : MonoBehaviour
     {
         if (activator == questName)
         {
-            for (int i = 0; i < subQuests.Length; i++)
+            Debug.Log($"Number of subQuests: {subQuests.Length}");
+            if (subQuests.Length > 0)
             {
-                subQuests[i].isActive = true;
+                for (int i = 0; i < subQuests.Length; i++)
+                {
+                    subQuests[i].isActive = true;
+                }
             }
+            else Debug.Log($"No subquests for {questName}");
         }
     }
 
@@ -333,7 +341,7 @@ public class Quest : MonoBehaviour
 
     public bool IsMasterComplete()
     {
-        if (masterQuest != null && masterQuest.completedStages == masterQuest.totalStages)
+        if (masterQuest != null && masterQuest.completedStages == masterQuest.totalMasterStages)
         {
             isActive = false;
             return true;
@@ -341,6 +349,27 @@ public class Quest : MonoBehaviour
         else return false;
     }
 
+    private void ClaimQuestReward(Quest quest)
+    {
+        if (quest.questName == questName && !quest.questRewardClaimed)
+        {
+            Debug.Log($"Quest Reward called: {quest.questName}");
+            questRewardClaimed = true;
 
+            QuestManager.instance.HandOutReward(rewards);
+
+            if (item != null && item.isRelic)
+            {
+                // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
+                Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
+                foreach (Transform t in relicTransforms)
+                {
+                    t.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+                    t.GetComponent<Image>().material = null;
+                }
+                relicBox.GetComponent<Image>().color = new Color32(13, 15, 41, 255);
+            }
+        }
+    }
 
 }

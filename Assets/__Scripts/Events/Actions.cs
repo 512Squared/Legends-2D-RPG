@@ -28,6 +28,7 @@ public static class Actions
     public static Action OnHomeButton;
     public static Action OnMainMenuButton;
     public static Action OnResumeButton;
+    public static Action OnQuestCompletedResume;
 
     #endregion
 
@@ -45,10 +46,11 @@ public static class Actions
 
     #region Quests
 
-    public static Action <string, QuestRewards>OnQuestCompleted;
+    public static Action <string>OnQuestCompleted;
     public static Action<string> MarkQuestCompleted;
     public static Action<string> OnActivateQuest;
     public static Action OnQuestLogCalled;
+    public static Action <Quest>OnClaimQuestRewards;
     public static Action <string, string, string> OnDoQuestStuffAfterDialogue;
 
     #endregion

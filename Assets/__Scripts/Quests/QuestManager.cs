@@ -63,7 +63,7 @@ public class QuestManager : SerializedMonoBehaviour
         yield return null;
         InitializeQuestID();
         GetQuestList();
-        UpdateQuestProgress("", reward);
+        UpdateQuestProgress("");
    
     }
 
@@ -83,7 +83,7 @@ public class QuestManager : SerializedMonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            UpdateQuestProgress("", reward);
+            UpdateQuestProgress("");
         }
     }
 
@@ -171,7 +171,7 @@ public class QuestManager : SerializedMonoBehaviour
         questList.Add(quest);
     }
 
-    public void UpdateQuestProgress(string empty, QuestRewards empty2)
+    public void UpdateQuestProgress(string empty) // QuestDone panel in Inspector
     {
         questProgress.Clear();
         questId.Clear();
@@ -192,8 +192,9 @@ public class QuestManager : SerializedMonoBehaviour
         }
         questList = questArray.ToList();
     }
-    public void HandOutReward(QuestRewards rewardType)
+    public void HandOutReward(QuestRewards rewardType) // invoked by a specific quest only
     {
+        Debug.Log($"Hand out reward: {rewardType}");
         for (int i = 0; i < rewardables.Length; i++)
         {
             rewardables[i].Reward(rewardType);

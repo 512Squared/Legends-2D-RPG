@@ -71,6 +71,11 @@ public class ButtonHandler : MonoBehaviour
     {
         MenuManager.instance.SubQuestsShowing();
     }
+
+    public void ClaimQuestReward()
+    {
+
+    }
    
 
 }

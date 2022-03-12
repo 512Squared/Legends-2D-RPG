@@ -10,13 +10,6 @@ using DG.Tweening;
 
 public class MenuManager : MonoBehaviour
 {
-    // TODO Q only when active in UI
-    // TODO Q only active in first UI tab
-    // TODO Q tab to claims
-    // TODO Q subquest sliders
-
-
-
     public static MenuManager instance;
 
     #region FIELDS
@@ -260,10 +253,10 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject focusQuests, focusClaims, focusRelics, questTabMenu;
     [TabGroup("Quests Group", "Quest Relics")]
     [GUIColor(0.5f, 1f, 0f)]
-    [SerializeField] TextMeshProUGUI questRelicName, questRelicDescription;
+    [SerializeField] TextMeshProUGUI questRelicName, questRelicDescription, questCompleted, questCompletedName;
     [TabGroup("Quests Group", "Quest Relics")]
     [GUIColor(0.5f, 1f, 0f)]
-    [SerializeField] Image questRelicImage;
+    [SerializeField] Image questRelicImage, questCompletedPanelSprite, questRewardSprite;
 
 
     [Header("Quest UI Sprites")]
@@ -375,6 +368,7 @@ public class MenuManager : MonoBehaviour
         Actions.OnMainMenuButton += MainMenuButton;
         Actions.OnResumeButton += ResumeButton;
         Actions.OnQuestLogCalled += UpdateQuestList;
+        Actions.OnQuestCompletedResume += QuestPanelClose;
     }
 
 
@@ -387,6 +381,7 @@ public class MenuManager : MonoBehaviour
         Actions.OnHomeButton -= HomeButton;
         Actions.OnMainMenuButton -= MainMenuButton;
         Actions.OnResumeButton -= ResumeButton;
+        Actions.OnQuestCompletedResume += QuestPanelClose;
     }
 
     #endregion
@@ -2193,10 +2188,10 @@ public class MenuManager : MonoBehaviour
 
                             questName.text = quest.questName;
                             questDescription.text = quest.questDescription;
-                            questStage.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                            questStage.text = quest.completedStages.ToString() + " / " + quest.totalMasterStages.ToString();
                             questImage.sprite = quest.questImage;
                             questRewardImage.sprite = quest.questReward;
-                            questSlider.maxValue = quest.totalStages;
+                            questSlider.maxValue = quest.totalMasterStages;
                             questSlider.value = quest.completedStages;
                             questTrophies.text = quest.trophiesAwarded.ToString();
 
@@ -2263,7 +2258,7 @@ public class MenuManager : MonoBehaviour
 
                             questName.text = quest.questName;
                             questDescription.text = quest.questDescription;
-                            questStage.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                            questStage.text = quest.completedStages.ToString() + " / " + quest.totalMasterStages.ToString();
                             questImage.sprite = quest.questImage;
                             questRewardImage.sprite = quest.questReward;
                             questTrophies.text = quest.trophiesAwarded.ToString();
@@ -2358,13 +2353,13 @@ public class MenuManager : MonoBehaviour
 
                         claimsName.text = quest.questName;
                         claimsDescription.text = quest.questDescription;
-                        claimsStage.text = quest.completedStages.ToString() + " / " + quest.totalStages.ToString();
+                        claimsStage.text = quest.completedStages.ToString() + " / " + quest.totalMasterStages.ToString();
                         claimsImage.sprite = quest.questImage;
                         claimsRewardImage.sprite = quest.questReward;
                         questTrophies.text = quest.trophiesAwarded.ToString();
 
 
-                        claimsSlider.maxValue = quest.totalStages;
+                        claimsSlider.maxValue = quest.totalMasterStages;
                         claimsSlider.value = quest.completedStages;
 
                     }
@@ -2374,7 +2369,7 @@ public class MenuManager : MonoBehaviour
                 {
                     //Debug.Log($"Completed Master: {quest.questName}");
 
-                    // in progress Master
+                    // Completed Master
                     RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
 
                     claimsPanel.SetSiblingIndex(quest.questID);
@@ -2388,6 +2383,7 @@ public class MenuManager : MonoBehaviour
                     Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
                     Image claimsRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                     RectTransform mask = claimsPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
+                    Button claimsButton = claimsPanel.Find("Button_Claim").GetComponent<Button>();
 
                     if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
                     else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
@@ -2397,7 +2393,7 @@ public class MenuManager : MonoBehaviour
                     claimsImage.sprite = quest.questImage;
                     claimsRewardImage.sprite = quest.questReward;
                     questTrophies.text = quest.trophiesAwarded.ToString();
-
+                    claimsButton.onClick.AddListener(() => ClaimQuestRewards(quest));
                 }
 
                 if (quest.isSubQuest && quest.isDone)
@@ -2417,6 +2413,7 @@ public class MenuManager : MonoBehaviour
                     Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
                     Image questRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                     RectTransform mask = claimsPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
+                    Button claimsButton = claimsPanel.Find("Button_Claim").GetComponent<Button>();
 
                     if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
                     else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
@@ -2425,6 +2422,7 @@ public class MenuManager : MonoBehaviour
                     claimsImage.sprite = quest.questImage;
                     questRewardImage.sprite = quest.questReward;
                     questTrophies.text = quest.trophiesAwarded.ToString();
+                    claimsButton.onClick.AddListener(() => ClaimQuestRewards(quest));
 
                 }
 
@@ -2441,13 +2439,14 @@ public class MenuManager : MonoBehaviour
                     TextMeshProUGUI questTrophies = claimsPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
                     Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
                     Image questRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
+                    Button claimsButton = claimsPanel.Find("Button_Claim").GetComponent<Button>();
 
                     claimsName.text = quest.questName;
                     claimsDescription.text = quest.questDescription;
                     claimsImage.sprite = quest.questImage;
                     questRewardImage.sprite = quest.questReward;
                     questTrophies.text = quest.trophiesAwarded.ToString();
-
+                    claimsButton.onClick.AddListener(() => ClaimQuestRewards(quest));
                 }
 
             }
@@ -2468,10 +2467,22 @@ public class MenuManager : MonoBehaviour
         UpdateQuestList();
     }
 
-    public void QuestCompletePanel(string quest)
+    public void QuestCompletePanel(Quest quest)
     {
         MainMenuPanel(15);
-        MainMenuPanel(13);
+        DoPunch(menuPanels[15].gameObject, new Vector3(0.15f, 0.15f, 0), 0.1f);
+        questCompleted.text = quest.questDescription + " " + quest.onDoneMessage;
+        questCompletedName.text = quest.questName;
+        questCompletedPanelSprite.sprite = quest.questImage;
+        questRewardSprite.sprite = quest.questReward;
+    }
+
+    public void QuestPanelClose()
+    {
+        StartCoroutine(FadeToAlpha(menuPanels[15].GetComponent<CanvasGroup>(), 0f, 0.3f));
+        menuPanels[15].GetComponent<CanvasGroup>().interactable = false;
+        menuPanels[15].GetComponent<CanvasGroup>().blocksRaycasts = false;
+        DoPunch(menuPanels[15].gameObject, new Vector3(0.15f, 0.15f, 0), 0.4f);
     }
 
     public void OpenRelicInfo(string relicName)
@@ -2492,10 +2503,14 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void UpdateRelicInfo(ItemsManager item)
+    public void ClaimQuestRewards(Quest quest)
     {
-
+        Debug.Log($"Claim button clicked: {quest.questName}");
+        Actions.OnClaimQuestRewards?.Invoke(quest);
+        // TODO what to do with old quests? Claimed label? Bottom of list? Use the isRewardClaimed bool
+        // TODO animations for claiming a reward
     }
+
 
 
     #endregion
