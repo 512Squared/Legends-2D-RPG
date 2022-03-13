@@ -278,7 +278,6 @@ public class Quest : MonoBehaviour
     {
         if (activator == questName)
         {
-            Debug.Log($"Number of subQuests: {subQuests.Length}");
             if (subQuests.Length > 0)
             {
                 for (int i = 0; i < subQuests.Length; i++)

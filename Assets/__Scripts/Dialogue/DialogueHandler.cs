@@ -41,15 +41,13 @@ public class DialogueHandler : MonoBehaviour
             if (activatesQuest) // passes dialogue-specific data to the controller
             {
                 DialogueController.instance.activatesQuest = activatesQuest;
-                DialogueController.instance.questToActivate = questToActivate;
-                Debug.Log($"Activate data passed: {gameObject.name}");
+                DialogueController.instance.questToActivate = questToActivate;                
             }
             if (completesQuest)
 
             {
                 DialogueController.instance.completesQuest = completesQuest;
-                DialogueController.instance.questYouHaveJustCompleted = questToComplete;
-                Debug.Log($"Complete data passed {gameObject.name}");
+                DialogueController.instance.questYouHaveJustCompleted = questToComplete;                
             }
 
             DialogueController.instance.ActivateDialogue(sentences);
@@ -64,9 +62,7 @@ public class DialogueHandler : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
-            canActivateBox = true;
-            Debug.Log($"Dialogue activated: {gameObject.name}");
-
+            canActivateBox = true;           
         }
     }
 
