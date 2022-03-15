@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 
 public class ButtonHandler : MonoBehaviour
@@ -72,10 +73,15 @@ public class ButtonHandler : MonoBehaviour
         MenuManager.instance.SubQuestsShowing();
     }
 
-    public void ClaimQuestReward()
+    public void ChangeButtonColorToGrayscale()
     {
-
+        var button = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        button.color = new Color32(75,75,75,255);
     }
-   
 
+    public void ChangeButtonColorToWhite()
+    {
+        var button = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        button.color = new Color32(255, 255, 255, 255);
+    }
 }

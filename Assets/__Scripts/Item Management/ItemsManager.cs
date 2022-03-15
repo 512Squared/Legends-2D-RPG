@@ -19,11 +19,12 @@ public class ItemsManager : MonoBehaviour
     public bool isQuestObject;
     public bool isInstantiated;
     public bool pickUpNotice = true;
+    [Space]
+    [InfoBox("ALL RELICS ARE QUEST ITEMS. IF YOU TICK THIS BOX, MAKE SURE THE ITEM HAS A QUEST COMPONENT ATTACHED AND THAT 'ITEM IS RELIC' IS TICKED THERE TOO. A RELIC BOX FROM THE RELICS UI PANEL IN THE HIERARCHY MUST ALSO BE ATTACHED TO THE QUEST COMPONENT IF IT IS TO WORK CORRECTLY.", InfoMessageType.Warning, "isRelic")]
     public bool isRelic;
-
-    private SpriteRenderer spriteRenderer;
-    private PolygonCollider2D polyCollider;  
-
+    [Space]
+    public SpriteRenderer spriteRenderer;
+    public PolygonCollider2D polyCollider;  
     public enum Shop { inventory, shop1, shop2, shop3 }
     public Shop shop; // inventory, shop1, shop2, shop3
 

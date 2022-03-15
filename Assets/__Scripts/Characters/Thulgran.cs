@@ -81,9 +81,9 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
 
     public override void Reward(QuestRewards rewards)
     {
-        Debug.Log($"Reward called {rewards.rewardType}");
         if (rewards.playerClass == QuestRewards.PlayerClasses.Thulgran || rewards.playerClass == QuestRewards.PlayerClasses.all)
         {
+            Debug.Log($"Player class: {rewards.playerClass} | Reward called {rewards.rewardType}");
             if (rewards.rewardType == QuestRewards.RewardTypes.gold) ThulgranGold += rewards.rewardAmount;
             if (rewards.rewardType == QuestRewards.RewardTypes.hp) ThulgranHP += rewards.rewardAmount;
             if (rewards.rewardType == QuestRewards.RewardTypes.immuneToDragonBreath) immuneToDragonBreath = true;

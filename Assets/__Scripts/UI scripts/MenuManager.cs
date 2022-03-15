@@ -288,7 +288,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public GameObject pf_QuestDefault;
     [TabGroup("Quests Group", "Quest Prefab")]
     [GUIColor(0.5f, 1f, 0.515f)]
-    public GameObject pf_QuestComplete;
+    public GameObject pf_QuestComplete, pf_QuestClaimed;
     [TabGroup("Quests Group", "Quest Prefab")]
     [GUIColor(0.5f, 1f, 0.515f)]
     public Transform QuestParent, ClaimsParent, relicsParent;
@@ -312,7 +312,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [SerializeField] TextMeshProUGUI questRelicName, questRelicDescription, questCompleted, questCompletedName;
     [TabGroup("Quests Group", "Quest Relics")]
     [GUIColor(0.5f, 1f, 0f)]
-    [SerializeField] Image questRelicImage, questCompletedPanelSprite, questRewardSprite;
+    [SerializeField] Image questRelicImage, questCompletedPanelSprite, questRewardSprite, questRewardSprite2;
 
 
     [Header("Quest UI Sprites")]
@@ -442,8 +442,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     }
 
     #endregion
-
-
 
     #region INVOCATIONS
 

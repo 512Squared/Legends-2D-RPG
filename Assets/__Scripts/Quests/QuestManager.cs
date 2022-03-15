@@ -24,7 +24,8 @@ public class QuestManager : SerializedMonoBehaviour
     
     public Rewardable<QuestRewards>[] rewardables;
 
-    public QuestRewards reward;
+    [Space]
+    public int questNumberLimit = 300;
 
 
     #endregion FIELDS

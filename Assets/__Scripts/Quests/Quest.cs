@@ -108,7 +108,7 @@ public class Quest : MonoBehaviour
     public Quest[] subQuests;
     [ShowIf("isSubQuest"), Required]
     [GUIColor(.5f, 0.8f, 0.215f)]
-    [SerializeField] Quest masterQuest;
+    public Quest masterQuest;
     [HideIf("isMasterQuest")]
     [GUIColor(.5f, 0.8f, 0.215f)]
     [PropertyTooltip("drag quest item into this box from hierarchy")]
@@ -130,8 +130,8 @@ public class Quest : MonoBehaviour
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public string onActivateMessage;
     [Space]
-    [InfoBox("IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.", InfoMessageType.Warning, "InstanceShowInfoBoxField"), HideLabel]
-    public bool InstanceShowInfoBoxField = true;
+    [InfoBox("IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.", InfoMessageType.Warning, "showWarnings")]
+    public bool showWarnings = true;
 
     private bool markAfterClick;
     private Quest[] childQuests;
@@ -232,13 +232,11 @@ public class Quest : MonoBehaviour
                     Actions.MarkQuestCompleted?.Invoke(masterQuest.questName);
                 }
             }
-
-            //if (isItem) item.isQuestObject = false;
-
+                        
             if (spriteRenderer != null && isItem) spriteRenderer.enabled = enabledAfterDone;
-            if (polyCollider != null && isItem) polyCollider.enabled = enabledAfterDone; // some quests can disable item. Here we just disable the renderer and collider 
-            // TODO check if is really necessary - disable renderer and collider might be getting called somewhere else already
-
+            if (polyCollider != null && isItem) polyCollider.enabled = enabledAfterDone; 
+            
+            // Quest elements           
 
         }
 
@@ -246,10 +244,7 @@ public class Quest : MonoBehaviour
         {
             isDone = false;
         }
-
-
     }
-
 
     private void NotifyPlayer()
     {
@@ -271,7 +266,6 @@ public class Quest : MonoBehaviour
             if (spriteRenderer != null)
                 spriteRenderer.enabled = true;
         }
-
     }
 
     private void ActivateSubQuests(string activator)
@@ -284,8 +278,7 @@ public class Quest : MonoBehaviour
                 {
                     subQuests[i].isActive = true;
                 }
-            }
-            else Debug.Log($"No subquests for {questName}");
+            }             
         }
     }
 
@@ -326,7 +319,6 @@ public class Quest : MonoBehaviour
     {
         if (isMasterQuest)
         {
-            Debug.Log($"childQuests No: {childQuests.Length}");
             for (int i = 1; i < childQuests.Length; i++)
             {
                 if (childQuests[i].isDone == false) return false;
@@ -347,18 +339,21 @@ public class Quest : MonoBehaviour
         }
         else return false;
     }
-
+    
     private void ClaimQuestReward(Quest quest)
     {
         if (quest.questName == questName && !quest.questRewardClaimed)
         {
             Debug.Log($"Quest Reward called: {quest.questName}");
             questRewardClaimed = true;
+            questID += QuestManager.instance.questNumberLimit;
 
             QuestManager.instance.HandOutReward(rewards);
 
             if (item != null && item.isRelic)
             {
+                Debug.Log($"Item: {item.itemName} | isRelic: {item.isRelic}");
+                
                 // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
                 Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
                 foreach (Transform t in relicTransforms)
@@ -369,6 +364,21 @@ public class Quest : MonoBehaviour
                 relicBox.GetComponent<Image>().color = new Color32(13, 15, 41, 255);
             }
         }
+    }
+
+    public bool MasterHasUnclaimedSubs()
+    {
+        if (isMasterQuest)
+        {
+            for (int i = 1; i < childQuests.Length; i++)
+            {
+                if (childQuests[i].isDone && !childQuests[i].questRewardClaimed) return true;
+            }
+
+            return false;
+        }
+        else
+            return false;
     }
 
 }
