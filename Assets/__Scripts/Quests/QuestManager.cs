@@ -190,6 +190,7 @@ public class QuestManager : SerializedMonoBehaviour
         for (int i = 0; i < questArray.Length; i++)
         {
             questArray[i].questID = i + 1001;
+            if (questArray[i].isActive) MenuManager.instance.newQuestActive++;
         }
         questList = questArray.ToList();
     }

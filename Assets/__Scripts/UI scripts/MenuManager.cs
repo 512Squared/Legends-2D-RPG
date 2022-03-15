@@ -135,7 +135,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [SerializeField] GameObject teamTabMenu;
     [FoldoutGroup("Miscellaneous", expanded: false)]
     [GUIColor(1f, 0.8f, 0.315f)]
-    [SerializeField] CanvasGroup teamNofify, questsNofify, fadeResume, questsComplete;
+    [SerializeField] CanvasGroup teamNofify, fadeResume;
     [SerializeField] TextMeshProUGUI teamMemberCount;
 
 
@@ -312,7 +312,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [SerializeField] TextMeshProUGUI questRelicName, questRelicDescription, questCompleted, questCompletedName;
     [TabGroup("Quests Group", "Quest Relics")]
     [GUIColor(0.5f, 1f, 0f)]
-    [SerializeField] Image questRelicImage, questCompletedPanelSprite, questRewardSprite, questRewardSprite2;
+    [SerializeField] Image questRelicImage, questCompletedPanelSprite, questRewardTrophies, questRewardGold, questRewardBonus, questRewardSprite, questRewardSprite2, QuestRewardSprite3, QuestRewardSprite4, QuestRewardSprite5;
 
 
     [Header("Quest UI Sprites")]
@@ -327,11 +327,13 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [GUIColor(0.878f, 0.219f, 0.219f)]
     public int currentNewItems;
     [GUIColor(0.878f, 0.219f, 0.219f)]
-    public int claimQuestReward;
+    public int newQuestActive, newClaimQuestReward,newQuestRelicActive, totalQuestNotifications;
     [GUIColor(0.878f, 0.219f, 0.219f)]
-    [SerializeField] TextMeshProUGUI newItemsText, claimQuestText;
+    [SerializeField] TextMeshProUGUI newItemsText, newQuestActiveText, newClaimQuestRewardText, newQuestRelicActiveText, totalQuestNofifyText;
     [GUIColor(0.878f, 0.219f, 0.219f)]
-    public ItemsManager activeItem; //what are we doing here? Creating a slot in inspector for an 'active item', which is an object that has an ItemsManager script attached?
+    public ItemsManager activeItem;
+    [GUIColor(0.878f, 0.219f, 0.219f)]
+    public CanvasGroup questsTabNofify, claimsTabNofify, relicsTabNofify, totalQuestNofify;
 
 
     [FoldoutGroup("UI Bools", expanded: false)]
@@ -474,7 +476,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         #region Data
 
         currentNewItems = 0;
-        claimQuestReward = 0;
+        newClaimQuestReward = 0;
         ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.instance.ShopItemInfoReset();
         ItemInfoReset();
@@ -499,7 +501,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         PanelController();
         currentNewItems = 0;
-        claimQuestReward = 0;
+        newClaimQuestReward = 0;
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         GameManager.instance.isItemSelected = false;
         UpdateItemsInventory();
@@ -523,7 +525,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         #region Data
 
         currentNewItems = 0;
-        claimQuestReward = 0;
+        newClaimQuestReward = 0;
         ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.instance.ShopItemInfoReset();
         ItemInfoReset();

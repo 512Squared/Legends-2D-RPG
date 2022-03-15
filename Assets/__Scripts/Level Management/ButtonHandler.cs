@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 
 public class ButtonHandler : MonoBehaviour
@@ -83,5 +84,16 @@ public class ButtonHandler : MonoBehaviour
     {
         var button = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         button.color = new Color32(255, 255, 255, 255);
+    }
+
+    public void UpdateNofify()
+    {
+        StartCoroutine(UpdateNotifications());
+    }
+
+    IEnumerator UpdateNotifications()
+    {
+        yield return null; 
+        MenuManager.instance.UpdateQuestNotifications();
     }
 }

@@ -87,6 +87,8 @@ public partial class MenuManager
 
             questFocusTitle.text = "Quest Log - Relics";
 
+            if (newQuestRelicActive > 0) newQuestRelicActive = 0;
+
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
             questsUIPanel.alpha = 0;
@@ -152,8 +154,6 @@ public partial class MenuManager
 
     public void UpdateQuestList()
     {
-        claimQuestReward = 0;
-
         foreach (Transform questPanel in QuestParent)
         {
             Destroy(questPanel.gameObject);
@@ -165,7 +165,6 @@ public partial class MenuManager
 
         foreach (Quest quest in QuestManager.instance.GetQuestList())
         {
-
             #region QUESTS PANEL
 
             // Master Quests 
@@ -670,6 +669,27 @@ public partial class MenuManager
             #endregion
         }
 
+        UpdateQuestNotifications();
+    }
+
+    public void UpdateQuestNotifications()
+    {
+        // nofify
+        totalQuestNotifications = newQuestActive + newClaimQuestReward + newQuestRelicActive;
+
+        if (newQuestActive > 0) questsTabNofify.alpha = 1;
+        else questsTabNofify.alpha = 0;
+        if (newClaimQuestReward > 0) claimsTabNofify.alpha = 1;
+        else claimsTabNofify.alpha = 0;
+        if (newQuestRelicActive > 0) relicsTabNofify.alpha = 1;
+        else relicsTabNofify.alpha = 0;
+        if (totalQuestNotifications > 0) totalQuestNofify.alpha = 1;
+        else totalQuestNofify.alpha = 0;
+
+        newQuestActiveText.text = newQuestActive.ToString();
+        newClaimQuestRewardText.text = newClaimQuestReward.ToString();
+        newQuestRelicActiveText.text = newQuestRelicActive.ToString();
+        totalQuestNofifyText.text = totalQuestNotifications.ToString();
     }
 
     public void SubQuestsShowing()
@@ -705,14 +725,11 @@ public partial class MenuManager
 
         foreach (ItemsManager item in items)
         {
-            if (item.isRelic) // add a bool check before string, less overhead
+            if (item.isRelic && item.itemName == relicName) // add a bool check before string, less 
             {
-                if (relicName == item.itemName)
-                {
-                    questRelicName.text = item.itemName;
-                    questRelicDescription.text = item.itemDescription;
-                    questRelicImage.sprite = item.itemsImage;
-                }
+                questRelicName.text = item.itemName;
+                questRelicDescription.text = item.itemDescription;
+                questRelicImage.sprite = item.itemsImage;
             }
         }
     }
@@ -722,12 +739,12 @@ public partial class MenuManager
         // invoked via a listener added via updateQuestList
 
         Actions.OnClaimQuestRewards?.Invoke(quest);
-        CanvasGroup canvas = questPanel.GetComponent<CanvasGroup>();    
+        CanvasGroup canvas = questPanel.GetComponent<CanvasGroup>();
         canvas.DOFade(0, 2f);
         canvas.blocksRaycasts = false;
         canvas.interactable = false;
         questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.8f).SetEase(Ease.InCirc);
-        questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 2f).SetEase(Ease.InCirc);
+        questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 1f).SetEase(Ease.InCirc);
 
     }
 
