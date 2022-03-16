@@ -482,7 +482,7 @@ public class ShopManager : MonoBehaviour
 
                         // ITEM SELECTED animation
 
-                        itemSlot.GetComponent<Animator>().SetTrigger("animatePlease");
+                        itemSlot.GetComponent<ButtonBounce>().AnimateItemSelection();
 
                         // NEW ITEM tagging
 
@@ -562,6 +562,11 @@ public class ShopManager : MonoBehaviour
                             shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
                             Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
                         }
+
+
+
+
+
                     }
 
                     //SORTING - ITEMS(plural)
@@ -574,9 +579,10 @@ public class ShopManager : MonoBehaviour
                             item.itemType == ItemsManager.ItemType.Skill ||
                             item.itemType == ItemsManager.ItemType.Food ||
                             item.itemType == ItemsManager.ItemType.Helmet ||
-                            item.itemType == ItemsManager.ItemType.Shield)
+                            item.itemType == ItemsManager.ItemType.Shield ||
+                            item.itemType == ItemsManager.ItemType.Relic)
                         {
-                            Destroy(itemSlot.gameObject);
+                            itemSlot.gameObject.SetActive(false);
                         }
                     }
 
@@ -586,9 +592,10 @@ public class ShopManager : MonoBehaviour
                             item.itemType == ItemsManager.ItemType.Weapon ||
                             item.itemType == ItemsManager.ItemType.Item ||
                             item.itemType == ItemsManager.ItemType.Skill ||
-                            item.itemType == ItemsManager.ItemType.Food)
+                            item.itemType == ItemsManager.ItemType.Food ||
+                            item.itemType == ItemsManager.ItemType.Relic)
                         {
-                            Destroy(itemSlot.gameObject);
+                            itemSlot.gameObject.SetActive(false);
                         }
                     }
 
@@ -601,7 +608,7 @@ public class ShopManager : MonoBehaviour
                             item.itemType == ItemsManager.ItemType.Helmet ||
                             item.itemType == ItemsManager.ItemType.Shield)
                         {
-                            Destroy(itemSlot.gameObject);
+                            itemSlot.gameObject.SetActive(false);
                         }
                     }
 
@@ -613,9 +620,10 @@ public class ShopManager : MonoBehaviour
                             item.itemType == ItemsManager.ItemType.Weapon ||
                             item.itemType == ItemsManager.ItemType.Helmet ||
                             item.itemType == ItemsManager.ItemType.Shield ||
-                            item.itemType == ItemsManager.ItemType.Food)
+                            item.itemType == ItemsManager.ItemType.Food ||
+                            item.itemType == ItemsManager.ItemType.Relic)
                         {
-                            Destroy(itemSlot.gameObject);
+                            itemSlot.gameObject.SetActive(false);
                         }
                     }
 
@@ -627,9 +635,10 @@ public class ShopManager : MonoBehaviour
                             item.itemType == ItemsManager.ItemType.Spell ||
                             item.itemType == ItemsManager.ItemType.Food ||
                             item.itemType == ItemsManager.ItemType.Helmet ||
-                            item.itemType == ItemsManager.ItemType.Shield)
+                            item.itemType == ItemsManager.ItemType.Shield ||
+                            item.itemType == ItemsManager.ItemType.Relic)
                         {
-                            Destroy(itemSlot.gameObject);
+                            itemSlot.gameObject.SetActive(false);
                         }
                     }
 
@@ -637,11 +646,14 @@ public class ShopManager : MonoBehaviour
 
                     if (isShopArmouryOpen != true)
                     {
-                        if (item.itemType == ItemsManager.ItemType.Weapon) Destroy(itemSlot.gameObject);
-                        if (item.itemType == ItemsManager.ItemType.Armour) Destroy(itemSlot.gameObject);
-                        if (item.itemType == ItemsManager.ItemType.Spell) Destroy(itemSlot.gameObject);
-                        if (item.itemType == ItemsManager.ItemType.Helmet) Destroy(itemSlot.gameObject);
-                        if (item.itemType == ItemsManager.ItemType.Shield) Destroy(itemSlot.gameObject);
+                        if ((item.itemType == ItemsManager.ItemType.Weapon) ||
+                        (item.itemType == ItemsManager.ItemType.Armour) ||
+                        (item.itemType == ItemsManager.ItemType.Spell) ||
+                        (item.itemType == ItemsManager.ItemType.Helmet) ||
+                        (item.itemType == ItemsManager.ItemType.Shield) ||
+                        (item.itemType == ItemsManager.ItemType.Relic))
+
+                        itemSlot.gameObject.SetActive(false); 
                     }
                 }
                 // SORTING - NOFIFY

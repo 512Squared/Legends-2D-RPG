@@ -21,7 +21,8 @@ public class QuestManager : SerializedMonoBehaviour
     public Dictionary<int, string> questId;
     [HideInInspector]
     public Quest[] questArray;
-    
+    private List<ItemsManager> relicList;
+
     public Rewardable<QuestRewards>[] rewardables;
 
     [Space]
@@ -52,6 +53,7 @@ public class QuestManager : SerializedMonoBehaviour
     {
         instance = this;
         questList = new List<Quest>();
+        relicList = new List<ItemsManager>();
         questProgress = new Dictionary<string, bool>();
         questId = new Dictionary<int, string>();
         StartCoroutine(InitializeQuestManager());
@@ -190,9 +192,12 @@ public class QuestManager : SerializedMonoBehaviour
         for (int i = 0; i < questArray.Length; i++)
         {
             questArray[i].questID = i + 1001;
-            if (questArray[i].isActive) MenuManager.instance.newQuestActive++;
+            if (questArray[i].isActive) MenuManager.instance.notifyActiveQuest++;
+            if (questArray[i].itemIsRelic) relicList.Add(questArray[i].GetComponent<ItemsManager>()); // useful place to build the relic list too           
         }
         questList = questArray.ToList();
+        Debug.Log($"Relic List: {relicList.Count} items");
+
     }
     public void HandOutReward(QuestRewards rewardType) // invoked by a specific quest only
     {
@@ -201,6 +206,11 @@ public class QuestManager : SerializedMonoBehaviour
         {
             rewardables[i].Reward(rewardType);
         }
+    }
+    
+    public List<ItemsManager> GetRelicList()
+    {
+        return relicList;
     }
 
 

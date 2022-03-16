@@ -22,6 +22,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     private int foodItems, weaponItems, potionItems, itemItems, armourItems;
 
 
+
     #endregion
 
     #region PROPERTIES
@@ -327,7 +328,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [GUIColor(0.878f, 0.219f, 0.219f)]
     public int currentNewItems;
     [GUIColor(0.878f, 0.219f, 0.219f)]
-    public int newQuestActive, newClaimQuestReward,newQuestRelicActive, totalQuestNotifications;
+    public int notifyActiveQuest, notifyQuestReward,notifyRelicActive, totalQuestNotifications;
     [GUIColor(0.878f, 0.219f, 0.219f)]
     [SerializeField] TextMeshProUGUI newItemsText, newQuestActiveText, newClaimQuestRewardText, newQuestRelicActiveText, totalQuestNofifyText;
     [GUIColor(0.878f, 0.219f, 0.219f)]
@@ -476,7 +477,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         #region Data
 
         currentNewItems = 0;
-        newClaimQuestReward = 0;
         ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.instance.ShopItemInfoReset();
         ItemInfoReset();
@@ -501,7 +501,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         PanelController();
         currentNewItems = 0;
-        newClaimQuestReward = 0;
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         GameManager.instance.isItemSelected = false;
         UpdateItemsInventory();
@@ -525,7 +524,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         #region Data
 
         currentNewItems = 0;
-        newClaimQuestReward = 0;
         ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.instance.ShopItemInfoReset();
         ItemInfoReset();
@@ -1311,8 +1309,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             characterWeaponryPanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
         isInventorySlidePanelOn = true;
-
-
     }
 
     public void QuitGame()
@@ -1880,6 +1876,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                             Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect} | Weapon Power: {item.itemAttack} | Armour Defence: {item.itemDefence}");
                             textUseEquipTake.text = "Use";
                         }
+
                     }
                 }
                 // sorting strategy - destroy everything else but the chosen type
@@ -1894,7 +1891,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         (item.itemType == ItemsManager.ItemType.Skill) ||
                         (item.itemType == ItemsManager.ItemType.Food) ||
                         (item.itemType == ItemsManager.ItemType.Helmet) ||
-                        (item.itemType == ItemsManager.ItemType.Shield))
+                        (item.itemType == ItemsManager.ItemType.Shield) || 
+                        (item.itemType == ItemsManager.ItemType.Relic))
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -1908,7 +1906,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         (item.itemType == ItemsManager.ItemType.Weapon) ||
                         (item.itemType == ItemsManager.ItemType.Item) ||
                         (item.itemType == ItemsManager.ItemType.Spell) ||
-                        (item.itemType == ItemsManager.ItemType.Food))
+                        (item.itemType == ItemsManager.ItemType.Food) ||
+                        (item.itemType == ItemsManager.ItemType.Relic))
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -1916,7 +1915,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 else if (itemBool == true)
 
                 {
-                    if (item.itemType == ItemsManager.ItemType.Item) itemSlot.gameObject.SetActive(true);
+                    if (item.itemType == ItemsManager.ItemType.Item ||
+                        item.itemType == ItemsManager.ItemType.Relic) itemSlot.gameObject.SetActive(true);
                     if ((item.itemType == ItemsManager.ItemType.Potion) ||
                         (item.itemType == ItemsManager.ItemType.Armour) ||
                         (item.itemType == ItemsManager.ItemType.Weapon) ||
@@ -1936,7 +1936,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         (item.itemType == ItemsManager.ItemType.Item) ||
                         (item.itemType == ItemsManager.ItemType.Weapon) ||
                         (item.itemType == ItemsManager.ItemType.Helmet) ||
-                        (item.itemType == ItemsManager.ItemType.Shield))
+                        (item.itemType == ItemsManager.ItemType.Shield) ||
+                        (item.itemType == ItemsManager.ItemType.Relic))
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -1951,7 +1952,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         (item.itemType == ItemsManager.ItemType.Spell) ||
                         (item.itemType == ItemsManager.ItemType.Food) ||
                         (item.itemType == ItemsManager.ItemType.Helmet) ||
-                        (item.itemType == ItemsManager.ItemType.Shield))
+                        (item.itemType == ItemsManager.ItemType.Shield) ||
+                        (item.itemType == ItemsManager.ItemType.Relic))
                     {
                         itemSlot.gameObject.SetActive(false);
                     }

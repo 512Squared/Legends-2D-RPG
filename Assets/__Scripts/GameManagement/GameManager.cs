@@ -2,6 +2,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
 using TMPro;
+using System.Collections.Generic;
 
 
 public class GameManager : MonoBehaviour
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour
     [Space]
     public TextMeshProUGUI playerMessages;
     private string firstScene;
-
+    
     #endregion
 
 
@@ -86,9 +87,6 @@ public class GameManager : MonoBehaviour
     {
         IsInterfaceOn();
     }
-
-
-
 
 
     // Start is called before the first frame update

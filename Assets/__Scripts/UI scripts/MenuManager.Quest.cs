@@ -87,7 +87,7 @@ public partial class MenuManager
 
             questFocusTitle.text = "Quest Log - Relics";
 
-            if (newQuestRelicActive > 0) newQuestRelicActive = 0;
+            if (notifyRelicActive > 0) notifyRelicActive = 0;
 
             // not necessary to change alpha on overview, FadeIn(onClick) takes care of it
 
@@ -675,20 +675,20 @@ public partial class MenuManager
     public void UpdateQuestNotifications()
     {
         // nofify
-        totalQuestNotifications = newQuestActive + newClaimQuestReward + newQuestRelicActive;
+        totalQuestNotifications = notifyActiveQuest + notifyQuestReward + notifyRelicActive;
 
-        if (newQuestActive > 0) questsTabNofify.alpha = 1;
+        if (notifyActiveQuest > 0) questsTabNofify.alpha = 1;
         else questsTabNofify.alpha = 0;
-        if (newClaimQuestReward > 0) claimsTabNofify.alpha = 1;
+        if (notifyQuestReward > 0) claimsTabNofify.alpha = 1;
         else claimsTabNofify.alpha = 0;
-        if (newQuestRelicActive > 0) relicsTabNofify.alpha = 1;
+        if (notifyRelicActive > 0) relicsTabNofify.alpha = 1;
         else relicsTabNofify.alpha = 0;
         if (totalQuestNotifications > 0) totalQuestNofify.alpha = 1;
         else totalQuestNofify.alpha = 0;
 
-        newQuestActiveText.text = newQuestActive.ToString();
-        newClaimQuestRewardText.text = newClaimQuestReward.ToString();
-        newQuestRelicActiveText.text = newQuestRelicActive.ToString();
+        newQuestActiveText.text = notifyActiveQuest.ToString();
+        newClaimQuestRewardText.text = notifyQuestReward.ToString();
+        newQuestRelicActiveText.text = notifyRelicActive.ToString();
         totalQuestNofifyText.text = totalQuestNotifications.ToString();
     }
 
@@ -721,15 +721,16 @@ public partial class MenuManager
 
     public void OpenRelicInfo(string relicName)
     {
-        List<ItemsManager> items = Inventory.instance.GetItemsList();
+        List<ItemsManager> relicItems = QuestManager.instance.GetRelicList();
 
-        foreach (ItemsManager item in items)
+        foreach (ItemsManager relic in relicItems)
         {
-            if (item.isRelic && item.itemName == relicName) // add a bool check before string, less 
+            if (relic.itemName == relicName) // add a bool check before string, less 
             {
-                questRelicName.text = item.itemName;
-                questRelicDescription.text = item.itemDescription;
-                questRelicImage.sprite = item.itemsImage;
+                questRelicName.text = relic.itemName;
+                questRelicDescription.text = relic.itemDescription;
+                questRelicImage.sprite = relic.itemsImage;
+                break;
             }
         }
     }

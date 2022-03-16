@@ -213,7 +213,8 @@ public class Quest : MonoBehaviour
 
             Actions.OnQuestCompleted?.Invoke(questName);
             
-            MenuManager.instance.newClaimQuestReward++;
+            MenuManager.instance.notifyQuestReward++;
+            MenuManager.instance.notifyActiveQuest--;
             MenuManager.instance.QuestCompletePanel(this);
 
             if (item != null && item.pickUpNotice == true) NotifyPlayer();
@@ -261,7 +262,7 @@ public class Quest : MonoBehaviour
         if (questToActivate == questName)
         {
             isActive = true;
-            MenuManager.instance.newQuestActive++;
+            MenuManager.instance.notifyActiveQuest++;
             if (polyCollider != null)
                 polyCollider.enabled = true;
             if (spriteRenderer != null)
@@ -347,7 +348,7 @@ public class Quest : MonoBehaviour
         {
             Debug.Log($"Quest Reward called: {quest.questName}");
             questRewardClaimed = true;
-            MenuManager.instance.newClaimQuestReward--;
+            MenuManager.instance.notifyQuestReward--;
             questID += QuestManager.instance.questNumberLimit;
 
             QuestManager.instance.HandOutReward(rewards);
@@ -356,7 +357,7 @@ public class Quest : MonoBehaviour
             if (item != null && item.isRelic)
             {
                 Debug.Log($"Item: {item.itemName} | isRelic: {item.isRelic}");
-                MenuManager.instance.newQuestRelicActive++;
+                MenuManager.instance.notifyRelicActive++;
 
                 // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
                 Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
