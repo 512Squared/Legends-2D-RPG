@@ -313,7 +313,20 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [SerializeField] TextMeshProUGUI questRelicName, questRelicDescription, questCompleted, questCompletedName;
     [TabGroup("Quests Group", "Quest Relics")]
     [GUIColor(0.5f, 1f, 0f)]
-    [SerializeField] Image questRelicImage, questCompletedPanelSprite, questRewardTrophies, questRewardGold, questRewardBonus, questRewardSprite, questRewardSprite2, QuestRewardSprite3, QuestRewardSprite4, QuestRewardSprite5;
+    [SerializeField] Image questRelicImage, questCompletedPanelSprite, questRewardTrophies, questRewardGold, questRewardBonus, questRewardSprite;
+    [TabGroup("Quests Group", "Quest Complete")]
+    [GUIColor(0.5f, 1f, 0f)]
+    [SerializeField] GameObject[] questRewardSlots;
+    [TabGroup("Quests Group", "Quest Complete")]
+    [GUIColor(0.5f, 1f, 0f)]
+    [SerializeField] Image[] questSlotImage;
+    [TabGroup("Quests Group", "Quest Complete")]
+    [GUIColor(0.5f, 1f, 0f)]
+    [SerializeField] TextMeshProUGUI[] questRewardText;
+    [TabGroup("Quests Group", "Quest Complete")]
+    [GUIColor(0.5f, 1f, 0f)]
+    [SerializeField] Sprite questRewardTest;
+
 
 
     [Header("Quest UI Sprites")]

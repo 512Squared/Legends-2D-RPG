@@ -51,6 +51,19 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
         }
     }
 
+    private static int s_thulgranTrophies = 0;
+    [ShowInInspector]
+    public static int ThulgranTrophies
+    {
+        get { return s_thulgranTrophies; }
+        set
+        {
+            s_thulgranTrophies = value;
+            UI.instance.UpdateGoldUI(s_thulgranMana);
+        }
+    }
+
+
 
     public static int maxThulgranHP { get; private set; } = 300;
     public static int maxThulgranMana { get; private set; } = 200;
@@ -127,6 +140,35 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
                 UI.instance.goldStats[i].text = ThulgranGold.ToString();
         }
         Debug.Log($"Add Gold | Value: {item.valueInCoins}");
+    }
+
+    public static void AddGold(int amountToAdd)
+    {
+        ThulgranGold += amountToAdd;
+
+        for (int i = 0; i < UI.instance.goldStats.Length; i++)
+        {
+            if (i != 0)
+                UI.instance.goldStats[i].text = ThulgranGold.ToString();
+        }
+        Debug.Log($"Add Gold | Value: {amountToAdd}");
+    }
+
+    public static void AddTrophies(int trophiesToAdd)
+    {
+        ThulgranTrophies += trophiesToAdd;
+
+        for (int i = 0; i < UI.instance.thulgranTrophies.Length; i++)
+        {
+            UI.instance.thulgranTrophies[i].text = ThulgranTrophies.ToString() + " / <color=#DECEB7>500</color>";
+        }
+
+        for (int i = 0; i < UI.instance.thulgranTrophySliders.Length; i++)
+        {
+            UI.instance.thulgranTrophySliders[i].value = ThulgranTrophies;
+        }
+
+        Debug.Log($"Add Trophies | Value: {trophiesToAdd}");
     }
 
     public void AddHp(ItemsManager item)

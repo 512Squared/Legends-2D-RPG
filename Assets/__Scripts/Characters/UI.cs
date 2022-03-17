@@ -15,10 +15,12 @@ public class UI : MonoBehaviour
 
     #endregion
 
-    public TextMeshProUGUI[] goldStats, manaStats, hpStats;
+    public TextMeshProUGUI[] goldStats, manaStats, hpStats, thulgranTrophies;
     [Space]
     public Slider[] hpSliders;
     public Slider[] manaSliders;
+    public Slider[] thulgranTrophySliders;
+    
 
     void Start()
     {
@@ -109,12 +111,21 @@ public class UI : MonoBehaviour
         }
     }
 
+    public void UpdateTrophiesUI(int trophies)
+    {
+        for (int i = 0; i < thulgranTrophies.Length; i++)
+        {
+            thulgranTrophies[i].text = Thulgran.ThulgranTrophies.ToString() + " / <color=#BEB5B6>500</color>";
+        }
+    }
+
     public void UpdateAll(int empty)
     {
 
         UpdateGoldUI(empty); // values are taken from static ThulgranGold
         UpdateHPUI(empty);
         UpdateManaUI(empty);
+        UpdateTrophiesUI(empty);
 
         for (int i = 0; i < hpSliders.Length; i++)
         {

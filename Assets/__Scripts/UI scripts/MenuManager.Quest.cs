@@ -701,14 +701,35 @@ public partial class MenuManager
         animate = false;
     }
 
-    public void QuestCompletePanel(Quest quest)
+    public void QuestCompletePanel(Quest quest, Quest[] childQuests)
     {
+
         MainMenuPanel(15);
         DoPunch(menuPanels[15].gameObject, new Vector3(0.15f, 0.15f, 0), 0.1f);
         questCompleted.text = quest.questDescription + " " + quest.onDoneMessage;
         questCompletedName.text = quest.questName;
         questCompletedPanelSprite.sprite = quest.questImage;
         questRewardSprite.sprite = quest.questReward;
+        questRewardText[0].text = quest.trophiesAwarded.ToString();
+        questRewardText[1].text = (quest.trophiesAwarded + 10).ToString();       
+
+        if (quest.isMasterQuest && childQuests != null) // child quest stuff + trophies etc
+        {
+            Debug.Log($"Master slots test 1 | Child quests: {childQuests.Length - 1}");
+
+            if (quest.isDone)
+            {
+                Debug.Log($"Master slots test 2");
+
+                for (int i = 1; i < childQuests.Length; i++) // child quest stuff
+                {
+                    Debug.Log($"Master slots test 3 | {i}");
+                    questRewardSlots[i + 3].SetActive(true);
+                    questSlotImage[i + 3].sprite = childQuests[i].questImage;
+                    questRewardText[i + 3].enabled = false;
+                }
+            }
+        }
     }
 
     public void QuestPanelClose()
@@ -746,6 +767,10 @@ public partial class MenuManager
         canvas.interactable = false;
         questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.8f).SetEase(Ease.InCirc);
         questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 1f).SetEase(Ease.InCirc);
+
+        Thulgran.AddGold(quest.trophiesAwarded + 10);
+        Thulgran.AddTrophies(quest.trophiesAwarded);
+
 
     }
 

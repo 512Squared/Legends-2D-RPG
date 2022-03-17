@@ -152,11 +152,6 @@ public class Quest : MonoBehaviour
         if (isMasterQuest)
         {
             childQuests = GetComponentsInChildren<Quest>();
-            trophiesAwarded = 0;
-            for (int i = 0; i < childQuests.Length; i++)
-            {
-                trophiesAwarded += childQuests[i].trophiesAwarded + 15;
-            }
         }
     }
 
@@ -215,7 +210,7 @@ public class Quest : MonoBehaviour
             
             MenuManager.instance.notifyQuestReward++;
             MenuManager.instance.notifyActiveQuest--;
-            MenuManager.instance.QuestCompletePanel(this);
+            MenuManager.instance.QuestCompletePanel(this, GetChildQuests());
 
             if (item != null && item.pickUpNotice == true) NotifyPlayer();
 
@@ -384,6 +379,15 @@ public class Quest : MonoBehaviour
         }
         else
             return false;
+    }
+
+    public Quest[] GetChildQuests()
+    {
+        if(isMasterQuest)
+        {
+            return childQuests; 
+        }
+        else return null;
     }
 
 }
