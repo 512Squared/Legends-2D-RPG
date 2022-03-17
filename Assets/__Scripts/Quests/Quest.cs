@@ -95,6 +95,9 @@ public class Quest : MonoBehaviour
     [GUIColor(0.4f, 0.886f, 0.780f)]
     [ShowIf("isItem")]
     public bool itemIsRelic;
+    [VerticalGroup("Bools/c"), LabelWidth(160)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool bonusRewardItem;
 
     [Space]
     [ShowInInspector]

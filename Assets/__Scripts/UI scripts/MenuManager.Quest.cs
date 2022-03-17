@@ -711,7 +711,16 @@ public partial class MenuManager
         questCompletedPanelSprite.sprite = quest.questImage;
         questRewardSprite.sprite = quest.questReward;
         questRewardText[0].text = quest.trophiesAwarded.ToString();
-        questRewardText[1].text = (quest.trophiesAwarded + 10).ToString();       
+        questRewardText[1].text = (quest.trophiesAwarded + 10).ToString();
+
+
+        for (int i = 4; i < questRewardSlots.Length; i++) 
+        {
+            questRewardSlots[i].SetActive(false);
+        } // slot reset
+        questRewardSlots[2].SetActive(false); // bonus reset
+
+        if (quest.bonusRewardItem) questRewardSlots[2].SetActive(true);
 
         if (quest.isMasterQuest && childQuests != null) // child quest stuff + trophies etc
         {
