@@ -517,7 +517,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
         GameManager.instance.isItemSelected = false;
         UpdateItemsInventory();
-        UpdateQuestList();
+        UpdateQuestList("");
         isInventoryOn = false;
         GameManager.instance.isInventoryOn = false;
         Debug.Log($"isInventoryOn: {isInventoryOn}");
@@ -540,7 +540,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.instance.ShopItemInfoReset();
         ItemInfoReset();
-        UpdateQuestList();
+        UpdateQuestList("");
         UpdateItemsInventory();
         UpdateStats();
 
@@ -570,7 +570,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         DoPunch(mainMenu, new Vector3(0.15f, 0.15f, 0), 0.1f);
         UpdateStats();
         UpdateItemsInventory();
-        UpdateQuestList();
+        UpdateQuestList("");
     }
 
     private void MainMenuCGOn()

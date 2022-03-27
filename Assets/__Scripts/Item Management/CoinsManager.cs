@@ -136,7 +136,6 @@ public class CoinsManager : MonoBehaviour
             coin.SetActive(false);
             coinsQueue.Enqueue(coin);
         }
-
     }
 
     void PrepareHP()

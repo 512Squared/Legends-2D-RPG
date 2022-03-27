@@ -148,11 +148,11 @@ public partial class MenuManager
 
         }
 
-        UpdateQuestList();
+        UpdateQuestList(questPanelTrigger);
 
     }
 
-    public void UpdateQuestList()
+    public void UpdateQuestList(string toggle)
     {
         foreach (Transform questPanel in QuestParent)
         {
@@ -175,12 +175,9 @@ public partial class MenuManager
 
                 if (quest.isMasterQuest && !quest.isDone)
                 {
-                    //Debug.Log($"Incomplete Master: {quest.questName}");
 
                     // in progress Master
                     RectTransform questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
-
-                    questPanel.SetSiblingIndex(quest.questID);
 
                     questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
@@ -190,42 +187,49 @@ public partial class MenuManager
                     TextMeshProUGUI questDescription = questPanel.Find("Description").GetComponent<TextMeshProUGUI>();
                     TextMeshProUGUI questStage = questPanel.Find("Slider/Stage").GetComponent<TextMeshProUGUI>();
                     TextMeshProUGUI questTrophies = questPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
-                    RectTransform upButton = questPanel.Find("upButton").GetComponent<RectTransform>();
-                    RectTransform downButton = questPanel.Find("downButton").GetComponent<RectTransform>();
+                    RectTransform upButton = questPanel.Find("upDownIcon").GetComponent<RectTransform>();
                     Image questImage = questPanel.Find("Image").GetComponent<Image>();
                     Image questRewardImage = questPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                     RectTransform mask = questPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
                     Slider questSlider = questPanel.Find("Slider").GetComponent<Slider>();
+                    Button upDownButton = questPanel.Find("upDownIcon/Button").GetComponent<Button>();
+
+
 
                     #endregion
 
-                    #region Animate Toggle
+                    #region Toggle Icon
 
-                    if (!toggleMasterSub && !animate) // toggleMasterSub now true, so icon stays UP
+                    if (!quest.toggleMasterSub) // toggleMasterSub now true, so icon stays UP
                     {
-                        upButton.gameObject.SetActive(true);
-                        downButton.gameObject.SetActive(false);
+                        upButton.localScale = new Vector3(upButton.localScale.x, 1f, upButton.localScale.z);
                     }
 
-                    if (!toggleMasterSub && animate) // start position, subQuests will now collapse, change to DOWN icon
+                    else if (quest.toggleMasterSub) // toggleMasterSub now false, so icon stays DOWN 
                     {
-                        upButton.gameObject.SetActive(false);
-                        downButton.gameObject.SetActive(true);
+                        upButton.localScale = new Vector3(upButton.localScale.x, -1f, upButton.localScale.z);
                     }
 
-                    if (toggleMasterSub && !animate) // toggleMasterSub now false, so icon stays DOWN 
+
+                    if (toggle == quest.questName)
                     {
-                        upButton.gameObject.SetActive(false);
-                        downButton.gameObject.SetActive(true);
+                        Debug.Log($"Toggle working: {toggle}");
+
+                        if (!quest.toggleMasterSub && animate) // start position, subQuests will now collapse, change to DOWN icon
+                        {
+                            upButton.localScale = new Vector3(upButton.localScale.x, -1f, upButton.localScale.z);
+                        }
+
+                        if (quest.toggleMasterSub && animate) // after toggle, subQuests will now expand, change to UP icon
+                        {
+                            upButton.localScale = new Vector3(upButton.localScale.x, 1f, upButton.localScale.z);
+                        }
                     }
 
-                    if (toggleMasterSub && animate) // after toggle, subQuests will now expand, change to UP icon
-                    {
-                        upButton.gameObject.SetActive(true);
-                        downButton.gameObject.SetActive(false);
-                    }
+                    #endregion Toggle Icon
 
-                    #endregion
+                    #region UI Stuff
+
 
                     if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
                     else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
@@ -239,7 +243,10 @@ public partial class MenuManager
                     questSlider.value = quest.completedStages;
                     questTrophies.text = quest.trophiesAwarded.ToString();
                     questSlider.gameObject.SetActive(true);
+                    upDownButton.onClick.AddListener(() => SubQuestsShowing(quest));
 
+
+                    #endregion UI Stuff
                 }
 
                 // Master's Subquests - in progress
@@ -252,14 +259,10 @@ public partial class MenuManager
 
                     questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1155f);
 
-                    questPanel.SetSiblingIndex(quest.questID);
-
-                    Debug.Log($"Quest: {quest.questName} | Sibling Index: {questPanel.GetSiblingIndex()}");
 
                     #region Find UI Elements
 
-                    RectTransform upButton = questPanel.Find("upButton").GetComponent<RectTransform>();
-                    RectTransform downButton = questPanel.Find("downButton").GetComponent<RectTransform>();
+                    RectTransform upButton = questPanel.Find("upDownIcon").GetComponent<RectTransform>();
                     RectTransform buttonBox = questPanel.Find("MissionReward").GetComponent<RectTransform>();
                     RectTransform TextBox = questPanel.Find("Name").GetComponent<RectTransform>();
                     RectTransform DescriptionBox = questPanel.Find("Description").GetComponent<RectTransform>();
@@ -278,28 +281,36 @@ public partial class MenuManager
 
                     #region Animate Toggle
 
-                    if (!isExpanded)
+                    if (!quest.isExpanded)
                     {
                         questPanel.sizeDelta = new Vector3(0, 0, 1);
                         questPanel.localScale = new Vector3(0, 0, 1);
                     }
 
-                    if (animate && isExpanded) // toggle expansion, animate collapse
+                    if (toggle == quest.masterQuest.questName)
                     {
-                        questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
-                        questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 0.8f).SetEase(Ease.InCirc);
-                    }
+                        Debug.Log($"Toggle working: {toggle}");
 
-                    else if (animate && !isExpanded) // toggle collapse, animate expansion
-                    {
-                        questPanel.DOSizeDelta(new Vector3(1155, 131, 1), 0.3f).SetEase(Ease.InCirc);
-                        questPanel.DOScale(new Vector3(1, 1, 1), 0.4f).SetEase(Ease.InCirc);
+                        if (animate && quest.isExpanded) // toggle expansion, animate collapse
+                        {
+                            questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
+                            questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 0.8f).SetEase(Ease.InCirc);
+                            quest.isExpanded = false;
+                        }
+
+                        else if (animate && !quest.isExpanded) // toggle collapse, animate expansion
+                        {
+                            questPanel.DOSizeDelta(new Vector3(1155, 131, 1), 0.3f).SetEase(Ease.InCirc);
+                            questPanel.DOScale(new Vector3(1, 1, 1), 0.4f).SetEase(Ease.InCirc);
+                            quest.isExpanded = true;
+                        }
                     }
 
                     #endregion
 
+                    #region UI Stuff
+
                     upButton.gameObject.SetActive(false); // not needed on subquests
-                    downButton.gameObject.SetActive(false); // not needed on subquests
                     if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y); // graphic tidying
                     else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y); // graphic tidying
                     questName.text = quest.questName;
@@ -311,6 +322,8 @@ public partial class MenuManager
                     questSlider.gameObject.SetActive(false);
                     questContainer.color = new Color32(174, 163, 79, 255);
                     questButtonContainer.color = new Color32(20, 13, 8, 255);
+
+                    #endregion UI Stuff
                 }
 
                 // Master Quests - Completed & Claimed 
@@ -336,42 +349,48 @@ public partial class MenuManager
                         TextMeshProUGUI questName = claimedPanel.Find("Name").GetComponent<TextMeshProUGUI>();
                         TextMeshProUGUI questDescription = claimedPanel.Find("Description").GetComponent<TextMeshProUGUI>();
                         TextMeshProUGUI questTrophies = claimedPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
-                        RectTransform upButton = claimedPanel.Find("upButton").GetComponent<RectTransform>();
-                        RectTransform downButton = claimedPanel.Find("downButton").GetComponent<RectTransform>();
+                        RectTransform upButton = claimedPanel.Find("upDownIcon/Button").GetComponent<RectTransform>();
+
                         Image questImage = claimedPanel.Find("Image").GetComponent<Image>();
                         Image questRewardImage = claimedPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                         RectTransform mask = claimedPanel.Find("MissionReward/Trophies/Mask").GetComponent<RectTransform>();
+                        Button upDownButton = claimedPanel.Find("upDownIcon").GetComponent<Button>();
 
                         #endregion Find UI Elements
 
+                        #region Toggle Icon
 
-                        #region Animate Toggle
 
-                        if (!toggleMasterSub && !animate) // toggleMasterSub now true, so icon stays UP
+                        if (!quest.toggleMasterSub && !animate) // toggleMasterSub now true, so icon stays UP
                         {
-                            upButton.gameObject.SetActive(true);
-                            downButton.gameObject.SetActive(false);
+                            upButton.localScale = new Vector3(upButton.localScale.x, 1f, upButton.localScale.z);
+                            quest.toggleMasterSub = true;
                         }
 
-                        if (!toggleMasterSub && animate) // start position, subQuests will now collapse, change to DOWN icon
+                        if (quest.toggleMasterSub && !animate) // toggleMasterSub now false, so icon stays DOWN 
                         {
-                            upButton.gameObject.SetActive(false);
-                            downButton.gameObject.SetActive(true);
+                            upButton.localScale = new Vector3(upButton.localScale.x, -1f, upButton.localScale.z);
+                            quest.toggleMasterSub = false;
                         }
 
-                        if (toggleMasterSub && !animate) // toggleMasterSub now false, so icon stays DOWN 
+                        if (toggle == quest.questName)
                         {
-                            upButton.gameObject.SetActive(false);
-                            downButton.gameObject.SetActive(true);
+                            if (!quest.toggleMasterSub && animate) // start position, subQuests will now collapse, change to DOWN icon
+                            {
+                                upButton.localScale = new Vector3(upButton.localScale.x, -1f, upButton.localScale.z);
+                                quest.toggleMasterSub = true;
+                            }
+
+                            if (quest.toggleMasterSub && animate) // after toggle, subQuests will now expand, change to UP icon
+                            {
+                                upButton.localScale = new Vector3(upButton.localScale.x, 1f, upButton.localScale.z);
+                                quest.toggleMasterSub = false;
+                            }
                         }
 
-                        if (toggleMasterSub && animate) // after toggle, subQuests will now expand, change to UP icon
-                        {
-                            upButton.gameObject.SetActive(true);
-                            downButton.gameObject.SetActive(false);
-                        }
+                        #endregion Toggle Icon
 
-                        #endregion Animate Toggle
+                        #region UI Stuff
 
                         if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
                         else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
@@ -381,7 +400,9 @@ public partial class MenuManager
                         questImage.sprite = quest.questImage;
                         questRewardImage.sprite = quest.questReward;
                         questTrophies.text = quest.trophiesAwarded.ToString();
+                        upDownButton.onClick.AddListener(() => SubQuestsShowing(quest));
 
+                        #endregion UI Stuff
                     }
 
                     // Completed Master Subquests
@@ -400,8 +421,7 @@ public partial class MenuManager
 
                         #region Find UI Elements
 
-                        RectTransform upButton = claimedPanel.Find("upButton").GetComponent<RectTransform>();
-                        RectTransform downButton = claimedPanel.Find("downButton").GetComponent<RectTransform>();
+                        RectTransform upButton = claimedPanel.Find("upDownIcon").GetComponent<RectTransform>();
                         RectTransform buttonBox = claimedPanel.Find("MissionReward").GetComponent<RectTransform>();
                         RectTransform TextBox = claimedPanel.Find("Name").GetComponent<RectTransform>();
                         RectTransform DescriptionBox = claimedPanel.Find("Description").GetComponent<RectTransform>();
@@ -416,28 +436,35 @@ public partial class MenuManager
 
                         #region Animate Toggle
 
-                        if (!isExpanded)
+                        if (!quest.isExpanded)
                         {
                             claimedPanel.sizeDelta = new Vector3(0, 0, 1);
                             claimedPanel.localScale = new Vector3(0, 0, 1);
                         }
 
-                        if (animate && isExpanded) // toggle expansion, animate collapse
+                        if (toggle == quest.questName)
                         {
-                            claimedPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
-                            claimedPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 0.8f).SetEase(Ease.InCirc);
-                        }
 
-                        else if (animate && !isExpanded) // toggle collapse, animate expansion
-                        {
-                            claimedPanel.DOSizeDelta(new Vector3(1155, 131, 1), 0.3f).SetEase(Ease.InCirc);
-                            claimedPanel.DOScale(new Vector3(1, 1, 1), 0.4f).SetEase(Ease.InCirc);
+                            if (animate && quest.isExpanded) // toggle expansion, animate collapse
+                            {
+                                claimedPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
+                                claimedPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 0.8f).SetEase(Ease.InCirc);
+                                quest.isExpanded = false;
+                            }
+
+                            else if (animate && !quest.isExpanded) // toggle collapse, animate expansion
+                            {
+                                claimedPanel.DOSizeDelta(new Vector3(1155, 131, 1), 0.3f).SetEase(Ease.InCirc);
+                                claimedPanel.DOScale(new Vector3(1, 1, 1), 0.4f).SetEase(Ease.InCirc);
+                                quest.isExpanded = true;
+                            }
                         }
 
                         #endregion
 
+                        #region UI Stuff
+
                         upButton.gameObject.SetActive(false); // not needed on subquests
-                        downButton.gameObject.SetActive(false); // not needed on subquests
                         if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y); // graphic tidying
                         else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y); // graphic tidying
                         questName.text = quest.questName;
@@ -446,6 +473,7 @@ public partial class MenuManager
                         questRewardImage.sprite = quest.questReward;
                         questTrophies.text = quest.trophiesAwarded.ToString();
 
+                        #endregion UI Stuff
                     }
                 }
             }
@@ -472,8 +500,7 @@ public partial class MenuManager
                 Image questImage = questPanel.Find("Image").GetComponent<Image>();
                 Image questRewardImage = questPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                 RectTransform mask = questPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
-                RectTransform upButton = questPanel.Find("upButton").GetComponent<RectTransform>();
-                RectTransform downButton = questPanel.Find("downButton").GetComponent<RectTransform>();
+                RectTransform upButton = questPanel.Find("upDownIcon").GetComponent<RectTransform>();
                 Slider questSlider = questPanel.Find("Slider").GetComponent<Slider>();
 
                 #endregion
@@ -489,7 +516,6 @@ public partial class MenuManager
 
                 if (quest.questName == "null") questPanel.gameObject.SetActive(false);
                 questSlider.gameObject.SetActive(false);
-                downButton.gameObject.SetActive(false);
                 upButton.gameObject.SetActive(false);
 
             }
@@ -544,7 +570,7 @@ public partial class MenuManager
                 // in progress Master
                 RectTransform claimsPanel = Instantiate(pf_QuestDefault, ClaimsParent).GetComponent<RectTransform>(); // Default
 
-                claimsPanel.SetSiblingIndex(QuestManager.instance.questNumberLimit + quest.questID);
+                claimsPanel.SetSiblingIndex((QuestManager.instance.questNumberLimit) + quest.questID);
 
                 claimsPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
@@ -552,8 +578,7 @@ public partial class MenuManager
                 TextMeshProUGUI claimsDescription = claimsPanel.Find("Description").GetComponent<TextMeshProUGUI>();
                 TextMeshProUGUI claimsStage = claimsPanel.Find("Slider/Stage").GetComponent<TextMeshProUGUI>();
                 TextMeshProUGUI questTrophies = claimsPanel.Find("MissionReward/Trophies/Amount").GetComponent<TextMeshProUGUI>();
-                RectTransform upButton = claimsPanel.Find("upButton").GetComponent<RectTransform>();
-                RectTransform downButton = claimsPanel.Find("downButton").GetComponent<RectTransform>();
+                RectTransform upButton = claimsPanel.Find("upDownIcon").GetComponent<RectTransform>();
                 RectTransform mask = claimsPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
                 Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
                 Image claimsRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
@@ -572,7 +597,7 @@ public partial class MenuManager
                 claimsSlider.maxValue = quest.totalMasterStages;
                 claimsSlider.value = quest.completedStages;
                 upButton.gameObject.SetActive(false);
-                downButton.gameObject.SetActive(false);
+
             }
 
             // Master - completed but not claimed
@@ -667,6 +692,7 @@ public partial class MenuManager
             }
 
             #endregion
+
         }
 
         UpdateQuestNotifications();
@@ -692,12 +718,22 @@ public partial class MenuManager
         totalQuestNofifyText.text = totalQuestNotifications.ToString();
     }
 
-    public void SubQuestsShowing()
+    //public void SubQuestsShowing()
+    //{
+    //    animate = true;
+    //    UpdateQuestList("");
+    //    //isExpanded = !isExpanded;
+    //    //toggleMasterSub = !toggleMasterSub;
+    //    animate = false;
+    //}
+
+    public void SubQuestsShowing(Quest quest)
     {
         animate = true;
-        UpdateQuestList();
-        isExpanded = !isExpanded;
-        toggleMasterSub = !toggleMasterSub;
+        Debug.Log($"Quest name: {quest.questName}");
+        UpdateQuestList(quest.questName);
+        quest.isExpanded = !quest.isExpanded;
+        quest.toggleMasterSub = !quest.toggleMasterSub;
         animate = false;
     }
 
@@ -714,7 +750,7 @@ public partial class MenuManager
         questRewardText[1].text = (quest.trophiesAwarded + 10).ToString();
 
 
-        for (int i = 4; i < questRewardSlots.Length; i++) 
+        for (int i = 4; i < questRewardSlots.Length; i++)
         {
             questRewardSlots[i].SetActive(false);
         } // slot reset
@@ -779,7 +815,6 @@ public partial class MenuManager
 
         Thulgran.AddGold(quest.trophiesAwarded + 10);
         Thulgran.AddTrophies(quest.trophiesAwarded);
-
 
     }
 

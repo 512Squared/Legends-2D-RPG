@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        playerStats[0].gameObject.SetActive(true);
+        playerStats[0].gameObject.SetActive(true); // Thulgran
     }
 
     public void IsInterfaceOn()

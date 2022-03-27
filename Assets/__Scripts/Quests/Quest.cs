@@ -71,19 +71,20 @@ public class Quest : MonoBehaviour
     [VerticalGroup("Bools/a"), LabelWidth(90)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isSubQuest;
+
     [Space]
-    [VerticalGroup("Bools/b"), LabelWidth(100)]
+    [VerticalGroup("Bools/b"), LabelWidth(110)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isMasterQuest;
-    [VerticalGroup("Bools/b"), LabelWidth(100)]
+    [VerticalGroup("Bools/b"), LabelWidth(110)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool hasSubQuests;
-    [VerticalGroup("Bools/b"), LabelWidth(100)]
+    [VerticalGroup("Bools/b"), LabelWidth(110)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool markOnEnter;
-    [VerticalGroup("Bools/b"), LabelWidth(100)]
+    [VerticalGroup("Bools/b"), LabelWidth(110)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool markOnClick;
+    public bool activateOnEnter;
     [Space]
     [VerticalGroup("Bools/c"), LabelWidth(160)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
@@ -98,6 +99,9 @@ public class Quest : MonoBehaviour
     [VerticalGroup("Bools/c"), LabelWidth(160)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool bonusRewardItem;
+    [VerticalGroup("Bools/c"), LabelWidth(160)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool notifyOnActivate;
 
     [Space]
     [ShowInInspector]
@@ -114,7 +118,7 @@ public class Quest : MonoBehaviour
     public Quest masterQuest;
     [HideIf("isMasterQuest")]
     [GUIColor(.5f, 0.8f, 0.215f)]
-    [PropertyTooltip("drag quest item into this box from hierarchy")]
+    [PropertyTooltip("drag m into this box from hierarchy")]
     [ShowIf("isItem")]
     [SerializeField] PolygonCollider2D polyCollider;
     [ShowIf("isItem")]
@@ -133,14 +137,16 @@ public class Quest : MonoBehaviour
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public string onActivateMessage;
     [Space]
-    [InfoBox("IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.", InfoMessageType.Warning, "showWarnings")]
+    [InfoBox("IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER ON THE GAMEOBJECT SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.", InfoMessageType.Warning, "showWarnings")]
     public bool showWarnings = true;
 
-    private bool markAfterClick;
     private Quest[] childQuests;
     private ItemsManager item;
     [HideInInspector]
     public int masterStages;
+    [HideInInspector]
+    public bool isExpanded = true;
+    public bool toggleMasterSub;
 
 
 
@@ -149,7 +155,6 @@ public class Quest : MonoBehaviour
 
     private void Start()
     {
-        QuestManager.instance.AddQuests(this);
         item = GetComponent<ItemsManager>();
 
         if (isMasterQuest)
@@ -160,6 +165,7 @@ public class Quest : MonoBehaviour
 
     private void OnEnable()
     {
+        //QuestManager.instance.AddQuests(this);
         Actions.MarkQuestCompleted += ActivateSubQuests;
         Actions.MarkQuestCompleted += UpdateQuestStatus;
         Actions.OnActivateQuest += ActivateQuest;
@@ -176,41 +182,16 @@ public class Quest : MonoBehaviour
         Actions.OnClaimQuestRewards -= ClaimQuestReward;
     }
 
-    private void Update()
-    {
-        if (markAfterClick && Input.GetButtonDown("Fire1"))
-        {
-            markAfterClick = false;
-            MarkTheQuest();
-        }
-
-    }
-
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (isActive && collision.CompareTag("Player"))
-        {
-            if (markOnEnter)
-            {
-                MarkTheQuest();
-            }
-            else if (markOnClick)
-            {
-                markAfterClick = true;
-            }
-        }
-    }
-
     public void MarkTheQuest()
     {
         if (isActive && !isDone)
         {
             isDone = true;
-            
+
             if (isItem && item != null) Inventory.instance.AddItems(item);
 
             Actions.OnQuestCompleted?.Invoke(questName);
-            
+
             MenuManager.instance.notifyQuestReward++;
             MenuManager.instance.notifyActiveQuest--;
             MenuManager.instance.QuestCompletePanel(this, GetChildQuests());
@@ -232,10 +213,10 @@ public class Quest : MonoBehaviour
                     Actions.MarkQuestCompleted?.Invoke(masterQuest.questName);
                 }
             }
-                        
+
             if (spriteRenderer != null && isItem) spriteRenderer.enabled = enabledAfterDone;
             if (polyCollider != null && isItem) polyCollider.enabled = enabledAfterDone;
-              
+
 
         }
 
@@ -247,7 +228,7 @@ public class Quest : MonoBehaviour
 
     private void NotifyPlayer()
     {
-        NotificationFader.instance.CallFadeInOut($"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", questImage, messageFadeTime, 1000, 30);        
+        NotificationFader.instance.CallFadeInOut($"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", questImage, messageFadeTime, 1000, 30);
     }
 
     private void UpdateQuestStatus(string questCompleted)
@@ -278,7 +259,7 @@ public class Quest : MonoBehaviour
                 {
                     subQuests[i].isActive = true;
                 }
-            }             
+            }
         }
     }
 
@@ -307,6 +288,14 @@ public class Quest : MonoBehaviour
                 StartCoroutine(DelayedMessage());
             }
         }
+    }
+
+    public void ActivateAfterEnter()
+    {
+        ActivateQuest(questName);
+        ActivateSubQuests(questName);
+        if (notifyOnActivate)
+            NotificationFader.instance.CallFadeInOut($"You have activated a new quest: <color=#E0A515>{questName}</color>.{onActivateMessage}", questImage, 5f, 1000, 30);
     }
 
     IEnumerator DelayedMessage()
@@ -339,7 +328,7 @@ public class Quest : MonoBehaviour
         }
         else return false;
     }
-    
+
     private void ClaimQuestReward(Quest quest)
     {
         if (quest.questName == questName && !quest.questRewardClaimed)
@@ -386,9 +375,9 @@ public class Quest : MonoBehaviour
 
     public Quest[] GetChildQuests()
     {
-        if(isMasterQuest)
+        if (isMasterQuest)
         {
-            return childQuests; 
+            return childQuests;
         }
         else return null;
     }

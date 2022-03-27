@@ -71,7 +71,7 @@ public class ButtonHandler : MonoBehaviour
 
     public void ToggleSubQuestsVisible()
     {
-        MenuManager.instance.SubQuestsShowing();
+        //MenuManager.instance.SubQuestsShowing();
     }
 
     public void ChangeButtonColorToGrayscale()

@@ -3,6 +3,9 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
 using System.Collections;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine.ParticleSystemJobs;
 
 public class QuestManager : SerializedMonoBehaviour
@@ -27,6 +30,7 @@ public class QuestManager : SerializedMonoBehaviour
 
     [Space]
     public int questNumberLimit = 300;
+    private bool isInitialized;
 
 
     #endregion FIELDS
@@ -49,25 +53,17 @@ public class QuestManager : SerializedMonoBehaviour
 
     #region CALLBACKS
 
-    private void Start()
+    public void Start()
     {
-        instance = this;
+        instance = this; 
         questList = new List<Quest>();
         relicList = new List<ItemsManager>();
         questProgress = new Dictionary<string, bool>();
         questId = new Dictionary<int, string>();
+        GetAllQuests();
         StartCoroutine(InitializeQuestManager());
         rewardables = FindObjectsOfType<Rewardable<QuestRewards>>();
         Debug.Log($"IRewardable Array: {rewardables.Length}");
-    }
-
-    public IEnumerator InitializeQuestManager()
-    {
-        yield return null;
-        InitializeQuestID();
-        GetQuestList();
-        UpdateQuestProgress("");
-   
     }
 
     private void Update()
@@ -111,14 +107,29 @@ public class QuestManager : SerializedMonoBehaviour
     #endregion INVOCATIONS
 
     #region COROUTINES
-
-
+    
+    public IEnumerator InitializeQuestManager()
+    {
+        yield return null;
+        InitializeQuestID();
+        GetQuestList();
+        UpdateQuestProgress("");
+        Debug.Log($"Initialization complete");
+    }
 
     #endregion COROUTINES
 
     #region METHODS
 
-
+    private List<Quest> GetAllQuests()
+    {
+        foreach (Quest go in Resources.FindObjectsOfTypeAll(typeof(Quest)) as Quest[])
+        {
+            questList.Add(go);            
+        }       
+        
+        return questList;
+    }
     public bool CheckIfComplete(string questToCheck)
     {
         foreach (Quest quest in questList)
@@ -165,8 +176,19 @@ public class QuestManager : SerializedMonoBehaviour
 
     public List<Quest> GetQuestList()
     {
-        questList = questList.OrderBy(o => o.questID).ToList();
-        return questList;
+        //questList = questList.OrderBy(o => o.questID).ToList();
+        if (!isInitialized)
+        {
+            foreach (Quest quest in questList)
+            {
+                if (quest.isMasterQuest) quest.questID -= 500;
+                if (quest.isSubQuest) quest.questID -= 500;
+                Debug.Log($"Quest order: {quest.questName} | Quest ID: {quest.questID}");
+            }
+            isInitialized = true;
+            return questList;
+        }
+        else return questList;
     }
 
     public void AddQuests(Quest quest)
@@ -196,9 +218,11 @@ public class QuestManager : SerializedMonoBehaviour
             if (questArray[i].itemIsRelic) relicList.Add(questArray[i].GetComponent<ItemsManager>()); // useful place to build the relic list too           
         }
         questList = questArray.ToList();
+        Debug.Log($"Quest List: {questList.Count}");
         Debug.Log($"Relic List: {relicList.Count} items");
 
     }
+    
     public void HandOutReward(QuestRewards rewardType) // invoked by a specific quest only
     {
         Debug.Log($"Hand out reward: {rewardType}");
