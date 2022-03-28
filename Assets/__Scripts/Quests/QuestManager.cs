@@ -28,8 +28,6 @@ public class QuestManager : SerializedMonoBehaviour
 
     public Rewardable<QuestRewards>[] rewardables;
 
-    [Space]
-    public int questNumberLimit = 300;
     private bool isInitialized;
 
 

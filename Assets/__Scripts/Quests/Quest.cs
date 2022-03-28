@@ -99,9 +99,6 @@ public class Quest : MonoBehaviour
     [VerticalGroup("Bools/c"), LabelWidth(160)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool bonusRewardItem;
-    [VerticalGroup("Bools/c"), LabelWidth(160)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool notifyOnActivate;
 
     [Space]
     [ShowInInspector]
@@ -116,36 +113,32 @@ public class Quest : MonoBehaviour
     [ShowIf("isSubQuest"), Required]
     [GUIColor(.5f, 0.8f, 0.215f)]
     public Quest masterQuest;
-    [HideIf("isMasterQuest")]
-    [GUIColor(.5f, 0.8f, 0.215f)]
-    [PropertyTooltip("drag m into this box from hierarchy")]
-    [ShowIf("isItem")]
-    [SerializeField] PolygonCollider2D polyCollider;
-    [ShowIf("isItem")]
-    [GUIColor(.5f, 0.8f, 0.215f)]
-    [PropertyTooltip("drag quest item into this box from hierarchy")]
-    [SerializeField] SpriteRenderer spriteRenderer;
+    [Space]
     [PropertyTooltip("If this item is a relic, drag the appropriate relicBox from the Relics UI panel")]
     [GUIColor(.5f, 0.8f, 0.215f)]
     [ShowIf("itemIsRelic")]
     [SerializeField] RectTransform relicBox;
+    [ShowIf("isItem")]
+    [GUIColor(.5f, 0.8f, 0.215f)]
+    [PropertyTooltip("drag quest object into this box from hierarchy")]
+    public ItemsManager questElement;
     [Space]
-
-
 
     [TextArea(2, 15)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public string onActivateMessage;
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool notifyOnActivate;
     [Space]
     [InfoBox("IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER ON THE GAMEOBJECT SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.", InfoMessageType.Warning, "showWarnings")]
     public bool showWarnings = true;
 
     private Quest[] childQuests;
-    private ItemsManager item;
     [HideInInspector]
     public int masterStages;
-    [HideInInspector]
+    //[HideInInspector]
     public bool isExpanded = true;
+    //[HideInInspector]
     public bool toggleMasterSub;
 
 
@@ -155,8 +148,6 @@ public class Quest : MonoBehaviour
 
     private void Start()
     {
-        item = GetComponent<ItemsManager>();
-
         if (isMasterQuest)
         {
             childQuests = GetComponentsInChildren<Quest>();
@@ -187,8 +178,11 @@ public class Quest : MonoBehaviour
         if (isActive && !isDone)
         {
             isDone = true;
+            Debug.Log($"QuestID: {questID}");
+            questID -= 1000;
+            if (isMasterQuest) questID -= 500;
 
-            if (isItem && item != null) Inventory.instance.AddItems(item);
+            if (isItem && questElement != null) Inventory.instance.AddItems(questElement);
 
             Actions.OnQuestCompleted?.Invoke(questName);
 
@@ -196,11 +190,11 @@ public class Quest : MonoBehaviour
             MenuManager.instance.notifyActiveQuest--;
             MenuManager.instance.QuestCompletePanel(this, GetChildQuests());
 
-            if (item != null && item.pickUpNotice == true) NotifyPlayer();
+            if (questElement != null && questElement.pickUpNotice == true) NotifyPlayer();
 
             ActivateSubQuests(questName);
 
-            Debug.Log($"Quest Completed: {questName}");
+            Debug.Log($"Quest Completed: {questName} | QuestID: {questID}");
 
             if (!isMasterQuest && !isSubQuest) completedStages++;
 
@@ -214,8 +208,8 @@ public class Quest : MonoBehaviour
                 }
             }
 
-            if (spriteRenderer != null && isItem) spriteRenderer.enabled = enabledAfterDone;
-            if (polyCollider != null && isItem) polyCollider.enabled = enabledAfterDone;
+            if (isItem) questElement.spriteRenderer.enabled = enabledAfterDone;
+            if (isItem) questElement.polyCollider.enabled = enabledAfterDone;
 
 
         }
@@ -242,10 +236,11 @@ public class Quest : MonoBehaviour
         {
             isActive = true;
             MenuManager.instance.notifyActiveQuest++;
-            if (polyCollider != null)
-                polyCollider.enabled = true;
-            if (spriteRenderer != null)
-                spriteRenderer.enabled = true;
+            if (isItem)
+            {
+                questElement.polyCollider.enabled = true;
+                questElement.spriteRenderer.enabled = true;
+            }
         }
     }
 
@@ -333,17 +328,16 @@ public class Quest : MonoBehaviour
     {
         if (quest.questName == questName && !quest.questRewardClaimed)
         {
-            Debug.Log($"Quest Reward called: {quest.questName}");
+            Debug.Log($"Quest Reward called: {quest.questName} | questID: {quest.questID}");
             questRewardClaimed = true;
             MenuManager.instance.notifyQuestReward--;
-            questID += QuestManager.instance.questNumberLimit;
 
             QuestManager.instance.HandOutReward(rewards);
             MenuManager.instance.UpdateQuestNotifications();
 
-            if (item != null && item.isRelic)
+            if (questElement != null && questElement.isRelic)
             {
-                Debug.Log($"Item: {item.itemName} | isRelic: {item.isRelic}");
+                Debug.Log($"Item: {questElement.itemName} | isRelic: {questElement.isRelic}");
                 MenuManager.instance.notifyRelicActive++;
 
                 // DISABLE GRAYSCALE ON RELIC OBJECT IN UI

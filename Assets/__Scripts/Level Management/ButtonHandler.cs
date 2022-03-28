@@ -69,11 +69,6 @@ public class ButtonHandler : MonoBehaviour
         else if (calledTab == "armour" || calledTab == "helmet" || calledTab == "shield") buttons[2].interactable = false;
     }
 
-    public void ToggleSubQuestsVisible()
-    {
-        //MenuManager.instance.SubQuestsShowing();
-    }
-
     public void ChangeButtonColorToGrayscale()
     {
         var button = gameObject.GetComponentInChildren<TextMeshProUGUI>();

@@ -13,6 +13,7 @@ public class QuestElement : MonoBehaviour
     [SerializeField] bool disableAfterConditionsMet;
     public bool isGameObject;
     public bool isItem;
+    private bool isActive;
     
     public PolygonCollider2D polyCollider;
     public SpriteRenderer spriteRenderer;
@@ -46,7 +47,11 @@ public class QuestElement : MonoBehaviour
         {
             if (quest.isActive && quest.markOnEnter) quest.MarkTheQuest();
 
-            if (quest.activateOnEnter) quest.ActivateAfterEnter();
+            if (quest.activateOnEnter && !isActive)
+            {
+                isActive = true;
+                quest.ActivateAfterEnter();
+            }
         }
     }
 
