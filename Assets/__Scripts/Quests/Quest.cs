@@ -140,7 +140,8 @@ public class Quest : MonoBehaviour
     public bool isExpanded = true;
     //[HideInInspector]
     public bool toggleMasterSub;
-
+    [HideInInspector]
+    public bool resetChildren;
 
 
     #endregion SERIALIZATION

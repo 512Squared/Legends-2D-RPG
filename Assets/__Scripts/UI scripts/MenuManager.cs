@@ -406,7 +406,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [GUIColor(0.5f, 1f, 0.515f)]
     [SerializeField] TextMeshProUGUI focusTitle, overviewText, statsText, weaponryText;
 
-
     #endregion
 
     #region CALLBACKS

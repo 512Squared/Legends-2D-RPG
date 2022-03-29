@@ -283,7 +283,7 @@ public partial class MenuManager
 
                     if (!quest.isExpanded)
                     {
-                        questPanel.sizeDelta = new Vector3(0, 0, 1);
+                        questPanel.sizeDelta = new Vector2(0, -9);
                         questPanel.localScale = new Vector3(0, 0, 1);
                     }
 
@@ -294,7 +294,7 @@ public partial class MenuManager
                         if (animate && quest.isExpanded) // toggle expansion, animate collapse
                         {
                             questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
-                            questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 0.8f).SetEase(Ease.InCirc);
+                            questPanel.DOSizeDelta(new Vector3(0f, -9f, 0.8f), 0.8f).SetEase(Ease.InCirc);
                             quest.isExpanded = false;
                         }
 
@@ -421,9 +421,6 @@ public partial class MenuManager
 
             if (isClaimsOn && quest.isMasterQuest && quest.isDone && !quest.questRewardClaimed)
             {
-                //Debug.Log($"Completed Master: {quest.questName}");
-
-                // Completed Master
                 RectTransform claimsPanel = Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
 
                 claimsPanel.SetSiblingIndex(quest.questID);
@@ -472,16 +469,18 @@ public partial class MenuManager
                 RectTransform mask = claimsPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
                 Button claimsButton = claimsPanel.Find("Button_Claim").GetComponent<Button>();
                 Image claimsContainer = claimsPanel.GetComponent<Image>();
+                RectTransform upButton = claimsPanel.Find("upDownIcon").GetComponent<RectTransform>();
 
                 if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
                 else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
+                upButton.gameObject.SetActive(false); // not needed on subquests
                 claimsName.text = quest.questName;
                 claimsDescription.text = quest.questDescription;
                 claimsImage.sprite = quest.questImage;
                 questRewardImage.sprite = quest.questReward;
                 questTrophies.text = quest.trophiesAwarded.ToString();
-                claimsButton.onClick.AddListener(() => ClaimQuestRewards(claimsPanel, quest));
                 claimsContainer.color = new Color32(174, 163, 79, 255);
+                claimsButton.onClick.AddListener(() => ClaimQuestRewards(claimsPanel, quest));
 
             }
 
@@ -502,7 +501,9 @@ public partial class MenuManager
                 Image claimsImage = claimsPanel.Find("Image").GetComponent<Image>();
                 Image questRewardImage = claimsPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                 Button claimsButton = claimsPanel.Find("Button_Claim").GetComponent<Button>();
+                RectTransform upButton = claimsPanel.Find("upDownIcon").GetComponent<RectTransform>();
 
+                upButton.gameObject.SetActive(false); // not needed on subquests
                 claimsName.text = quest.questName;
                 claimsDescription.text = quest.questDescription;
                 claimsImage.sprite = quest.questImage;
@@ -519,7 +520,7 @@ public partial class MenuManager
 
         foreach (Quest quest in QuestManager.instance.GetQuestList())
         {
-     
+
             #region QUESTS PANEL
 
             if (isQuestsOn && quest.questRewardClaimed)
@@ -529,6 +530,8 @@ public partial class MenuManager
                 if (quest.isMasterQuest)
                 {
                     // Completed Master
+
+                    if (quest.isMasterQuest && !quest.resetChildren && quest.questRewardClaimed) ResetChildren(quest);
 
                     RectTransform claimedPanel = Instantiate(pf_QuestClaimed, QuestParent).GetComponent<RectTransform>(); // Default
 
@@ -594,17 +597,15 @@ public partial class MenuManager
                     questImage.sprite = quest.questImage;
                     questRewardImage.sprite = quest.questReward;
                     questTrophies.text = quest.trophiesAwarded.ToString();
-                    //upDownButton.onClick.AddListener(() => SubQuestsShowing(quest));
+
 
                     #endregion UI Stuff
                 }
 
                 // Completed Master Subquests
 
-                if (quest.isSubQuest && quest.masterQuest.questRewardClaimed) 
+                if (quest.isSubQuest && quest.masterQuest.questRewardClaimed)
                 {
-                    // in progress subs
-
                     RectTransform claimedPanel = Instantiate(pf_QuestClaimed, QuestParent).GetComponent<RectTransform>();  // Default
 
                     claimedPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1155f);
@@ -632,7 +633,8 @@ public partial class MenuManager
 
                     if (!quest.isExpanded)
                     {
-                        claimedPanel.sizeDelta = new Vector3(0, 0, 1);
+                        Debug.Log($"SubQuest sizing: {claimedPanel.sizeDelta}");
+                        claimedPanel.sizeDelta = new Vector2(0, -9);
                         claimedPanel.localScale = new Vector3(0, 0, 1);
                     }
 
@@ -643,8 +645,8 @@ public partial class MenuManager
                         if (animate && quest.isExpanded) // toggle expansion, animate collapse
                         {
                             claimedPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
-                            claimedPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 0.8f).SetEase(Ease.InCirc);
-                            quest.isExpanded = false;
+                            claimedPanel.DOSizeDelta(new Vector3(0f, -9f, 0.8f), 0.8f).SetEase(Ease.InCirc);
+                            quest.isExpanded = false;                            
                         }
 
                         else if (animate && !quest.isExpanded) // toggle collapse, animate expansion
@@ -692,6 +694,7 @@ public partial class MenuManager
                     Image questImage = claimedPanel.Find("Image").GetComponent<Image>();
                     Image questRewardImage = claimedPanel.Find("MissionReward/RewardImage").GetComponent<Image>();
                     RectTransform mask = claimedPanel.Find("MissionReward/Trophies/Mask").GetComponent<RectTransform>();
+                    RectTransform upButton = claimedPanel.Find("upDownIcon").GetComponent<RectTransform>();
 
                     #endregion
 
@@ -700,6 +703,7 @@ public partial class MenuManager
                     if (quest.trophiesAwarded < 9) mask.sizeDelta = new Vector2(25, mask.sizeDelta.y);
                     else if (quest.trophiesAwarded > 9) mask.sizeDelta = new Vector2(50, mask.sizeDelta.y);
 
+                    upButton.gameObject.SetActive(false);
                     questName.text = quest.questName;
                     questDescription.text = quest.questDescription;
                     questImage.sprite = quest.questImage;
@@ -712,7 +716,7 @@ public partial class MenuManager
             }
 
             #endregion
-        
+
         }
 
 
@@ -823,13 +827,26 @@ public partial class MenuManager
         canvas.DOFade(0, 2f);
         canvas.blocksRaycasts = false;
         canvas.interactable = false;
-        questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.8f).SetEase(Ease.InCirc);
-        questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.8f), 1f).SetEase(Ease.InCirc);
+        questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.4f).SetEase(Ease.InCirc);
+        questPanel.DOSizeDelta(new Vector3(0f, 0f, 0.4f), 0.5f).SetEase(Ease.InCirc);
 
         Thulgran.AddGold(quest.trophiesAwarded + 10);
         Thulgran.AddTrophies(quest.trophiesAwarded);
 
     }
 
+    public void ResetChildren(Quest quest)
+    {
+        if (!quest.resetChildren)
+        {
+            Debug.Log($"Genius in action: {quest.isExpanded}");
+            Quest[] quests = quest.GetChildQuests();
+            for (int i = 0; i < quests.Length; i++)
+            {
+                quests[i].isExpanded = quest.isExpanded;
+            }
+        }
+        quest.resetChildren = true;
+    }
 
 }

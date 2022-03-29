@@ -18,7 +18,6 @@ public class QuestElement : MonoBehaviour
     public PolygonCollider2D polyCollider;
     public SpriteRenderer spriteRenderer;
     private ItemsManager item;
-    private SceneObjectsLoad sceneObject;
     public Quest quest;
 
     private void Start()
@@ -54,7 +53,6 @@ public class QuestElement : MonoBehaviour
             }
         }
     }
-
 
 
     public void CheckForCompletion(string questCompleted)
