@@ -333,7 +333,7 @@ public class Quest : MonoBehaviour
             questRewardClaimed = true;
             MenuManager.instance.notifyQuestReward--;
 
-            QuestManager.instance.HandOutReward(rewards);
+            QuestManager.Instance.HandOutReward(rewards);
             MenuManager.instance.UpdateQuestNotifications();
 
             if (questElement != null && questElement.isRelic)

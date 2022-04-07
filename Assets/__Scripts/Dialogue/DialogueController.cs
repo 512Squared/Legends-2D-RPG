@@ -47,7 +47,7 @@ public class DialogueController : MonoBehaviour
                     if (currentSentence >= dialogueSentences.Length)
                     {
                         dialogueBox.SetActive(false);
-                        GameManager.instance.dialogueBoxOpened = false;
+                        GameManager.Instance.dialogueBoxOpened = false;
 
                         if (activatesQuest && !completesQuest)
                         {
@@ -101,7 +101,7 @@ public class DialogueController : MonoBehaviour
         dialogueBox.SetActive(true);
 
         dialogueJustStarted = true;
-        GameManager.instance.dialogueBoxOpened = true;
+        GameManager.Instance.dialogueBoxOpened = true;
     }
 
 

@@ -8,36 +8,41 @@ using DG.Tweening;
 public class Exit : MonoBehaviour
 {
 
-    [SerializeField] string sceneToLoad;
-    [SerializeField] string goingTo;
-    [SerializeField] string arrivingFrom;
+    [SerializeField]
+    private string sceneToLoad;
+    [SerializeField]
+    private string goingTo;
+    [SerializeField]
+    private string arrivingFrom;
     [Space]
-    [SerializeField] int indexTo;
-    [SerializeField] int indexFrom;
+    [SerializeField]
+    private int indexTo;
+    [SerializeField]
+    private int indexFrom;
 
-    bool isLoaded;
-    bool unloaded;
+    private bool _isLoaded;
+    private bool _unloaded;
 
-    void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        if (collision.CompareTag("Player"))
+        if (!collision.CompareTag("Player"))
         {
-            if (isLoaded) return;
-            isLoaded = true;
-             
-            SceneHandling sceneHandle = gameObject.GetComponent<SceneHandling>();
-
-            StartCoroutine(LoadSceneCoroutine(sceneHandle));
-
-            PlayerGlobalData.instance.arrivingAt = goingTo;
-
-            GameManager.instance.sceneObjects[indexTo].SetActive(true);
-            GameManager.instance.sceneObjects[indexFrom].SetActive(false);
-
-            ShopMotherFucker(sceneToLoad, sceneHandle.sceneObjectsLoad, sceneHandle.sceneObjectsUnload);
-
+            return;
         }
+
+        if (_isLoaded) return;
+        _isLoaded = true;
+             
+        SceneHandling sceneHandle = gameObject.GetComponent<SceneHandling>();
+
+        StartCoroutine(LoadSceneCoroutine(sceneHandle));
+
+        PlayerGlobalData.instance.arrivingAt = goingTo;
+
+        GameManager.Instance.sceneObjects[indexTo].SetActive(true);
+        GameManager.Instance.sceneObjects[indexFrom].SetActive(false);
+
+        ShopMotherFucker(sceneToLoad, sceneHandle.sceneObjectsLoad, sceneHandle.sceneObjectsUnload);
     }
 
     IEnumerator LoadSceneCoroutine(SceneHandling scene)
@@ -50,11 +55,11 @@ public class Exit : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
 
-            if (!unloaded)
+            if (!_unloaded)
             {
-                unloaded = true;
+                _unloaded = true;
                 AnyManager.anyManager.UnloadScene(arrivingFrom);
-                GameManager.instance.ActivateCharacters(sceneToLoad);
+                GameManager.Instance.ActivateCharacters(sceneToLoad);
                 Actions.OnSceneChange?.Invoke(sceneToLoad);
             }
 

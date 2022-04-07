@@ -69,7 +69,7 @@ public class QuestElement : MonoBehaviour
 
         else if (questCompleted == completeQuestFirst.questName)
         {
-            Debug.Log($"Quest not yet completed: {completeQuestFirst} | Quest status: {QuestManager.instance.CheckIfComplete(completeQuestFirst.questName)}");
+            Debug.Log($"Quest not yet completed: {completeQuestFirst} | Quest status: {QuestManager.Instance.CheckIfComplete(completeQuestFirst.questName)}");
         }
     }
 

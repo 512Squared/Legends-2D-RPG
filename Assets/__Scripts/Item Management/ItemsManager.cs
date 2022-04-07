@@ -1,37 +1,43 @@
 using System;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.Serialization;
 
-public class ItemsManager : MonoBehaviour
+public class ItemsManager : MonoBehaviour, ISaveable
 {
-    public static ItemsManager instance;
+    //[ItemCodeDescription]
+    [FormerlySerializedAs("_itemCode")] [SerializeField]
+    private int itemCode;
+
+    public int ItemCode { get => itemCode; set => itemCode = value; }
+
     public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food, Shield, Helmet, Relic }
+
     public ItemType itemType;
 
     public string itemName;
-    [TextArea(5,5)]
+    [TextArea(5, 5)]
     public string itemDescription;
     public int valueInCoins;
     public Sprite itemsImage;
-    public bool itemSelected = false;
+    public bool itemSelected;
     public bool isNewItem = true;
-    public bool shopItem = false;
+    public bool shopItem;
     public bool isQuestObject;
-    public bool isInstantiated;
     public bool pickUpNotice = true;
     [Space]
     [InfoBox("ALL RELICS ARE QUEST ITEMS. IF YOU TICK THIS BOX, MAKE SURE THE ITEM HAS A QUEST COMPONENT ATTACHED AND THAT 'ITEM IS RELIC' IS TICKED THERE TOO. A RELIC BOX FROM THE RELICS UI PANEL IN THE HIERARCHY MUST ALSO BE ATTACHED TO THE QUEST COMPONENT IF IT IS TO WORK CORRECTLY. ALSO, THE BUTTON ON THE UI PANEL NEEDS THE EXACT SAME ITEM NAME.", InfoMessageType.Warning, "isRelic")]
     public bool isRelic;
     [Space]
     public SpriteRenderer spriteRenderer;
-    public PolygonCollider2D polyCollider;  
-    public enum Shop { inventory, shop1, shop2, shop3 }
+    public PolygonCollider2D polyCollider;
+    public enum Shop { Inventory, Shop1, Shop2, Shop3 }
     public Shop shop; // inventory, shop1, shop2, shop3
 
 
-    public enum AffectType { HP, Mana, Defence, Attack, Perception, Speed }
+    public enum AffectType { Hp, Mana, Defence, Attack, Perception, Speed }
     public AffectType affectType;
-    public int amountOfEffect = 0;
+    public int amountOfEffect;
 
     public int itemAttack;
     public int itemDefence;
@@ -44,30 +50,33 @@ public class ItemsManager : MonoBehaviour
 
     private void Start()
     {
-        instance = this;
-
         spriteRenderer = GetComponent<SpriteRenderer>();
         polyCollider = GetComponent<PolygonCollider2D>();
 
-        // randomise item valueInCoins to ± 20% of double the bonus advantage gained
+        // randomise item valueInCoins to Â± 20% of double the bonus advantage gained
         int totalBonus = valueInCoins + amountOfEffect + itemAttack + itemDefence;
-        float totBonus = (float)totalBonus;
+        float totBonus = totalBonus;
         float valueInCoinsF = 0;
 
         valueInCoinsF += (totBonus * 2) + (totBonus * UnityEngine.Random.Range(-0.2f, 0.2f));
 
         valueInCoins = (int)Math.Round(valueInCoinsF);
 
+        if (ItemCode != 0)
+        {
+            Init(ItemCode);
+        }
+
     }
 
     public void UseItem(int characterToUseOn)
     {
 
-        PlayerStats selectedCharacter = GameManager.instance.GetPlayerStats()[characterToUseOn];
+        PlayerStats selectedCharacter = GameManager.Instance.GetPlayerStats()[characterToUseOn];
 
 
         Debug.Log("UseItem called from ItemsManager");
-        if (affectType == AffectType.HP)
+        if (affectType == AffectType.Hp)
         {
             selectedCharacter.AddHP(amountOfEffect);
             if (characterToUseOn != 0) Debug.Log(amountOfEffect + " HP given to " + selectedCharacter.playerName);
@@ -167,10 +176,53 @@ public class ItemsManager : MonoBehaviour
         }
     }
 
-    public void SelfDeactivate()
+    private void SelfDeactivate()
     {
         spriteRenderer.enabled = false;
         polyCollider.enabled = false;
     }
 
+    public void Init(int itemCodeParam)
+    {
+        if (itemCodeParam != 0)
+        {
+            ItemCode = itemCodeParam;
+
+            //ItemDetails itemDetails = InventoryManager.Instance.GetItemDetails(ItemCode);
+        }
+
+    }
+
+    public string ISaveableUniqueID { get; set; }
+    
+    public GameObjectSave GameObjectSave { get; set; }
+    public void ISaveableRegister()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ISaveableDeregister()
+    {
+        throw new NotImplementedException();
+    }
+
+    public GameObjectSave ISaveableSave()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ISaveableLoad(GameSave gameSave)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ISaveableStoreScene(string sceneName)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ISaveableRestoreScene(string sceneName)
+    {
+        throw new NotImplementedException();
+    }
 }

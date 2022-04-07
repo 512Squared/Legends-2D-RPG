@@ -499,10 +499,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         #region Bools
 
-        GameManager.instance.isItemSelected = false;
+        GameManager.Instance.isItemSelected = false;
         isInventoryOn = false;
-        GameManager.instance.isInventoryOn = false;
-        GameManager.instance.isShopUIOn = false;
+        GameManager.Instance.isInventoryOn = false;
+        GameManager.Instance.isShopUIOn = false;
 
         dayNightCycle.SetActive(true);
 
@@ -514,11 +514,11 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         PanelController();
         currentNewItems = 0;
         GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-        GameManager.instance.isItemSelected = false;
+        GameManager.Instance.isItemSelected = false;
         UpdateItemsInventory();
         UpdateQuestList("");
         isInventoryOn = false;
-        GameManager.instance.isInventoryOn = false;
+        GameManager.Instance.isInventoryOn = false;
         Debug.Log($"isInventoryOn: {isInventoryOn}");
     }
 
@@ -547,12 +547,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         #region Bools
 
-        GameManager.instance.isItemSelected = false;
-        GameManager.instance.isShopUIOn = false;
+        GameManager.Instance.isItemSelected = false;
+        GameManager.Instance.isShopUIOn = false;
 
         dayNightCycle.SetActive(true);
         isInventoryOn = false;
-        GameManager.instance.isInventoryOn = false;
+        GameManager.Instance.isInventoryOn = false;
         Debug.Log($"isInventoryOn: {isInventoryOn}");
 
         isQuestsOn = false;
@@ -633,9 +633,9 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             inventoryPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
             isInventoryOn = false;
-            GameManager.instance.isInventoryOn = false;
+            GameManager.Instance.isInventoryOn = false;
         }
-        else if (GameManager.instance.isShopUIOn == true)
+        else if (GameManager.Instance.isShopUIOn == true)
         {
             Debug.Log($"Shop is open and 'back' has been called");
 
@@ -650,7 +650,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
             ShopManager.instance.shopUIPanel.GetComponent<CanvasGroup>().alpha = 0;
 
-            GameManager.instance.isShopUIOn = false;
+            GameManager.Instance.isShopUIOn = false;
         }
 
         else if (isOverviewOn || isStatsOn || isWeaponryOn)
@@ -743,7 +743,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         Debug.Log("InventoryLeft panel animations engaged");
 
-        if (activeItem.affectType == ItemsManager.AffectType.HP)
+        if (activeItem.affectType == ItemsManager.AffectType.Hp)
         {
             playerStats[0].characterHP = Thulgran.ThulgranHP;
 
@@ -858,7 +858,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void HomeScreenStats()
     {
-        playerStats = GameManager.instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
+        playerStats = GameManager.Instance.GetPlayerStats().OrderBy(m => m.transform.position.z).ToArray();
 
         levelMain.text = playerStats[0].characterLevel.ToString();
         xpMain.text = playerStats[0].characterXP.ToString() + "/" + playerStats[0].xpLevelUp[playerStats[0].characterLevel];
@@ -869,7 +869,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void InventoryStats()
     {
-        playerStats = GameManager.instance.GetPlayerStats();
+        playerStats = GameManager.Instance.GetPlayerStats();
 
         for (int i = 0; i < playerStats.Length; i++)
         {
@@ -964,7 +964,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         TeamMembersCount(); // nofify
 
-        playerStats = GameManager.instance.GetPlayerStats();
+        playerStats = GameManager.Instance.GetPlayerStats();
 
         for (int i = 0; i < playerStats.Length; i++)
         {
@@ -1059,7 +1059,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void AddCharacterToParty(int character)
     {
-        playerStats = GameManager.instance.GetPlayerStats();
+        playerStats = GameManager.Instance.GetPlayerStats();
 
         for (int i = 0; i < playerStats.Length; i++)
         {
@@ -1097,7 +1097,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         panelStuff = selectedCharacter;
 
-        if (activeItem.affectType == ItemsManager.AffectType.HP)
+        if (activeItem.affectType == ItemsManager.AffectType.Hp)
         {
             if (selectedCharacter != 0)
             {
@@ -1331,7 +1331,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void RemoveCharacterFromParty(int character)
     {
-        playerStats = GameManager.instance.GetPlayerStats();
+        playerStats = GameManager.Instance.GetPlayerStats();
 
         for (int i = 0; i < playerStats.Length; i++)
         {
@@ -1386,7 +1386,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         {
             for (int i = 0; i < playerStats.Length; i++)
             {
-                PlayerStats activePlayer = GameManager.instance.GetPlayerStats()[i];
+                PlayerStats activePlayer = GameManager.Instance.GetPlayerStats()[i];
                 playerChoice[i].text = activePlayer.playerName;
 
                 bool activePlayerAvailable = activePlayer.gameObject.activeInHierarchy;
@@ -1481,7 +1481,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         teamNofifyCount = 0;
 
-        playerStats = GameManager.instance.GetPlayerStats();
+        playerStats = GameManager.Instance.GetPlayerStats();
 
         for (int i = 0; i < playerStats.Length; i++)
         {
@@ -1699,7 +1699,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public void turnInventoryOn()
     {
         isInventoryOn = !isInventoryOn;
-        GameManager.instance.isInventoryOn = !GameManager.instance.isInventoryOn;
+        GameManager.Instance.isInventoryOn = !GameManager.Instance.isInventoryOn;
         Debug.Log("IsInventoryOn status: " + isInventoryOn);
     }
 
@@ -1780,7 +1780,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     if (item.itemSelected == false)
                     {
                         itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
-                        GameManager.instance.isItemSelected = false;
+                        GameManager.Instance.isItemSelected = false;
 
                         if (item.isNewItem == true)
                         {
@@ -1818,7 +1818,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                         //  SORT BY POTIONS
 
-                        if (item.affectType == ItemsManager.AffectType.HP)
+                        if (item.affectType == ItemsManager.AffectType.Hp)
                         {
                             Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect}");
 
@@ -1984,7 +1984,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     newItemsText.text = currentNewItems.ToString();
                 }
 
-                GameManager.instance.currentNewItems = currentNewItems;
+                GameManager.Instance.currentNewItems = currentNewItems;
 
             }
         }

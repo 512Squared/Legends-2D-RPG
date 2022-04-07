@@ -275,7 +275,7 @@ public class CoinsManager : MonoBehaviour
 
     public void UseItem(ItemsManager item, int selectedCharacter, Vector2 target)
     {
-        if (item.affectType == ItemsManager.AffectType.HP)
+        if (item.affectType == ItemsManager.AffectType.Hp)
         {
             UpdateHPTarget();
             chosenCharacter = selectedCharacter;

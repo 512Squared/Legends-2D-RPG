@@ -163,7 +163,7 @@ public partial class MenuManager
             Destroy(claimsPanel.gameObject);
         }
 
-        foreach (Quest quest in QuestManager.instance.GetQuestList())
+        foreach (Quest quest in QuestManager.Instance.GetQuestList())
         {
 
             #region QUESTS PANEL
@@ -518,7 +518,7 @@ public partial class MenuManager
 
         // COMPLETED QUESTS
 
-        foreach (Quest quest in QuestManager.instance.GetQuestList())
+        foreach (Quest quest in QuestManager.Instance.GetQuestList())
         {
 
             #region QUESTS PANEL
@@ -804,7 +804,7 @@ public partial class MenuManager
 
     public void OpenRelicInfo(string relicName)
     {
-        List<ItemsManager> relicItems = QuestManager.instance.GetRelicList();
+        List<ItemsManager> relicItems = QuestManager.Instance.GetRelicList();
 
         foreach (ItemsManager relic in relicItems)
         {

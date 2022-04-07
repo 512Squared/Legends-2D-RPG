@@ -2,22 +2,16 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
 using TMPro;
-using System.Collections.Generic;
+
 
 
 public class GameManager : MonoBehaviour
 {
 
 
-    public static GameManager instance;
+    public static GameManager Instance;
 
     #region Serialized Fields
-
-    [Title("Management")]
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    [SerializeField] MenuManager menuManager;
-    [GUIColor(0.878f, 0.219f, 0.219f)]
-    [SerializeField] CoinsManager coinsManager;
 
     [Space]
     [GUIColor(0.447f, 0.654f, 0.996f)]
@@ -41,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
-    public bool isInterfaceOn = false, dialogueBoxOpened = false;
+    public bool isInterfaceOn, dialogueBoxOpened;
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
     public bool isInventoryOn, isPlayerInShop, isShopUIOn;
@@ -50,12 +44,12 @@ public class GameManager : MonoBehaviour
     public bool isItemSelected;
     [BoxGroup("UI Bools")]
     [GUIColor(1f, 1f, 0.215f)]
-    public bool keyboardKeyI = false;
+    public bool keyboardKeyI;
 
     [Title("Messaging")]
     [Space]
     public TextMeshProUGUI playerMessages;
-    private string firstScene;
+    private string _firstScene;
     
     #endregion
 
@@ -93,21 +87,21 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        instance = this;
+        Instance = this;
 
-        firstScene = "Homestead";
+        _firstScene = "Homestead";
 
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
 
         magicManager = FindObjectsOfType<MagicManager>().OrderBy(m => m.transform.position.z).ToArray();
 
-        ActivateCharacters(firstScene);
+        ActivateCharacters(_firstScene);
         sceneObjects[1].SetActive(true);
 
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (isInterfaceOn || dialogueBoxOpened)
         {
@@ -117,8 +111,6 @@ public class GameManager : MonoBehaviour
         {
             PlayerGlobalData.instance.deactivedMovement = false;
         }
-
-        
     }
 
     public PlayerStats[] GetPlayerStats()
@@ -133,24 +125,23 @@ public class GameManager : MonoBehaviour
 
     public void ActivateCharacters(string sceneToLoad)
     {
-
-        for (int i = 0; i < playerStats.Length; i++)
+        foreach (PlayerStats t in playerStats)
         {
-            if (sceneToLoad == playerStats[i].homeScene)
+            if (sceneToLoad == t.homeScene)
             {
-                playerStats[i].gameObject.SetActive(true);
-                UnityEngine.Debug.Log(playerStats[i].playerName + " is active in " + sceneToLoad);
+                t.gameObject.SetActive(true);
+                Debug.Log(t.playerName + " is active in " + sceneToLoad);
             }
-            else if (sceneToLoad != playerStats[i].homeScene)
+            else if (sceneToLoad != t.homeScene)
             {
-                playerStats[i].gameObject.SetActive(false);
+                t.gameObject.SetActive(false);
             }
         }
 
         playerStats[0].gameObject.SetActive(true); // Thulgran
     }
 
-    public void IsInterfaceOn()
+    private void IsInterfaceOn()
     {
         isInterfaceOn = !isInterfaceOn;        
     }

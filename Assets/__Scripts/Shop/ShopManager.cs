@@ -206,7 +206,7 @@ public class ShopManager : MonoBehaviour
 
     public void OpenShop()
     {
-        GameManager.instance.isShopUIOn = true;
+        GameManager.Instance.isShopUIOn = true;
         UpdateShopItemsInventory();
     }
 
@@ -451,7 +451,7 @@ public class ShopManager : MonoBehaviour
 
                 // Stuff to activate ONLY when inside a shop
 
-                if (GameManager.instance.isShopUIOn == true)
+                if (GameManager.Instance.isShopUIOn == true)
                 {
 
                     // Removing focus from previously selected items 
@@ -459,7 +459,7 @@ public class ShopManager : MonoBehaviour
                     if (item.itemSelected == false)
                     {
                         itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
-                        GameManager.instance.isItemSelected = false;
+                        GameManager.Instance.isItemSelected = false;
 
                         if (item.isNewItem == true)
                         {

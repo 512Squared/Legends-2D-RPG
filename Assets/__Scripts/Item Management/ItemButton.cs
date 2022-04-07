@@ -116,11 +116,11 @@ public class ItemButton : MonoBehaviour
 
 
 
-        GameManager.instance.activeItem = itemOnButton;
+        GameManager.Instance.activeItem = itemOnButton;
         MenuManager.instance.activeItem = itemOnButton;
         ShopManager.instance.activeItem = itemOnButton;
 
-        itemOnButton.itemSelected = GameManager.instance.activeItem;
+        itemOnButton.itemSelected = GameManager.Instance.activeItem;
 
         if (itemOnButton.shopItem == true)
         {

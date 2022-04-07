@@ -35,7 +35,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
         set
         {
             s_thulgranHP = value;
-            UI.instance.UpdateGoldUI(s_thulgranHP);
+            UI.instance.UpdateHPUI(s_thulgranHP);
         }
     }
 
@@ -47,7 +47,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
         set
         {
             s_thulgranMana = value;
-            UI.instance.UpdateGoldUI(s_thulgranMana);
+            UI.instance.UpdateManaUI(s_thulgranMana);
         }
     }
 
@@ -116,7 +116,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
         if (character == 0)
         {
             Debug.Log($"Use item called | Item: {item.itemName} | CharacterSlot: {character}");
-            if (item.affectType == ItemsManager.AffectType.HP)
+            if (item.affectType == ItemsManager.AffectType.Hp)
             {
                 AddHp(item);
                 UI.instance.UpdateHPUI(0);

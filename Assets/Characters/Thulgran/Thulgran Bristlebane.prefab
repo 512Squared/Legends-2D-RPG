@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 807171266}
   - component: {fileID: 1677143442}
   - component: {fileID: 920412572}
+  - component: {fileID: 7880525699793495158}
   m_Layer: 3
   m_Name: Thulgran Bristlebane
   m_TagString: Player
@@ -178,6 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa56baec31caa049a8cde5bb318d426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immuneToDragonBreath: 0
 --- !u!114 &7658590310300458551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +203,7 @@ MonoBehaviour:
   characterImage: {fileID: 21300000, guid: 41dd776a2bccc344eafb45a3dc58ef12, type: 3}
   characterMug: {fileID: 21300000, guid: 9e42d1329b457d244a4c1801f623c403, type: 3}
   characterPlain: {fileID: 21300000, guid: 40c1501ed8955a74b941601138ebd9a3, type: 3}
-  maxLevel: 5
+  maxLevel: 10
   baseLevelXP: 0
   characterXP: 1
   maxMana: 200
@@ -339,4 +341,17 @@ MonoBehaviour:
   - {x: -0.21, y: 0.06999999, z: 0}
   m_ShapePathHash: 1230505302
   m_Mesh: {fileID: 0}
-  m_InstanceId: 49186
+  m_InstanceId: -2126
+--- !u!114 &7880525699793495158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4283112051484239550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df8e19077a70654ba67388acbaee80b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gUID: 1da7cc0b-c2fc-4246-8315-665ee94f43cb
