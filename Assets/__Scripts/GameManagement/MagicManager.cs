@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class MagicManager : MonoBehaviour
 {
-   
     [SerializeField] private MagicUnit _unitPrefab;
     private MagicUnit _spawn;
 
     private List<MagicUnit> _MagicUnits = new List<MagicUnit>();
-    
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         //_spawn.magicSlots = new GameObject[7];
 
@@ -28,7 +27,7 @@ public class MagicManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         //_spawn.transform.position = Random.insideUnitSphere;
         //foreach (var unit in _MagicUnits)
@@ -39,7 +38,6 @@ public class MagicManager : MonoBehaviour
 
     public void UseMagic(int characterToUseOn)
     {
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -48,8 +46,7 @@ public class MagicManager : MonoBehaviour
         {
             print("You picked up a " + _spawn.magicName);
             SelfDestroy();
-            Inventory.instance.AddMagic(this);
-
+            Inventory.AddMagic(this);
         }
     }
 

@@ -183,7 +183,7 @@ public class Quest : MonoBehaviour
             questID -= 1000;
             if (isMasterQuest) questID -= 500;
 
-            if (isItem && questElement != null) Inventory.instance.AddItems(questElement);
+            if (isItem && questElement != null) Inventory.Instance.AddItems(questElement);
 
             Actions.OnQuestCompleted?.Invoke(questName);
 

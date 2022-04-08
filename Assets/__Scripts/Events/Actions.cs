@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.SceneManagement;
 
 public static class Actions
 {
@@ -12,8 +9,7 @@ public static class Actions
     public static Action<ItemsManager> OnSellItem;
     public static Action<ItemsManager> OnBuyItem;
     public static Action<ItemsManager, int, Vector2> OnUseItem;
-    public static Action<int> OnCoinAdd;
-
+    
     #endregion
 
     #region Stats

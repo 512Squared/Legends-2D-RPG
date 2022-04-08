@@ -1,19 +1,18 @@
 ﻿public interface ISaveable
 {
-    string ISaveableUniqueID { get; set; }
+    string SaveableUniqueID { get; set; }
 
-    GameObjectSave GameObjectSave { get; set; }
+    GameItemsSave GameItemsSave { get; set; }
 
-    void ISaveableRegister();
+    void SaveableRegister();
 
-    void ISaveableDeregister();
+    void SaveableDeregister();
 
-    GameObjectSave ISaveableSave();
+    GameItemsSave SaveableSave();
 
-    void ISaveableLoad(GameSave gameSave);
+    void SaveableLoad(GameSave gameSave);
 
-    void ISaveableStoreScene(string sceneName);
+    void SaveableStoreScene(string sceneName);
 
-    void ISaveableRestoreScene(string sceneName);
-
+    void SaveableRestoreScene(string sceneName);
 }

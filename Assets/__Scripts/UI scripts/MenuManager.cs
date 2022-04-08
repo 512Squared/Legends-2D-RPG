@@ -1086,7 +1086,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public void CallToSellItem()
     {
         isInventorySlidePanelOn = true; // not sure why this is here
-        Inventory.instance.SellItem(activeItem);
+        Inventory.Instance.SellItem(activeItem);
         UpdateItemsInventory();
         textUseEquipTake.text = "Select";
     }
@@ -1115,7 +1115,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     useButton.GetComponent<Image>().sprite = buttonGreen;
                     SetAllButtonsUninteractable();
                     activeItem.UseItem(selectedCharacter);
-                    Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+                    Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
                     UpdateItemsInventory();
                     OnPlayerButton();
                     ItemInfoReset();
@@ -1140,7 +1140,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     useButton.GetComponent<Image>().sprite = buttonGreen;
                     SetAllButtonsUninteractable();
                     activeItem.UseItem(selectedCharacter);
-                    Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+                    Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
                     UpdateItemsInventory();
                     OnPlayerButton();
                     ItemInfoReset();
@@ -1167,7 +1167,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     useButton.GetComponent<Image>().sprite = buttonGreen;
                     SetAllButtonsUninteractable();
                     activeItem.UseItem(selectedCharacter);
-                    Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+                    Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
                     UpdateItemsInventory();
                     OnPlayerButton();
                     ItemInfoReset();
@@ -1191,7 +1191,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     useButton.GetComponent<Image>().sprite = buttonGreen;
                     SetAllButtonsUninteractable();
                     activeItem.UseItem(selectedCharacter);
-                    Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+                    Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
                     UpdateItemsInventory();
                     OnPlayerButton();
                     ItemInfoReset();
@@ -1209,7 +1209,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             useButton.GetComponent<Image>().sprite = buttonGreen;
             SetAllButtonsUninteractable();
             activeItem.UseItem(selectedCharacter);
-            Inventory.instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
+            Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter, characterMugEquip[selectedCharacter].transform.position);
             UpdateItemsInventory();
             OnPlayerButton();
             ItemInfoReset();
@@ -1719,7 +1719,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         }
 
 
-        foreach (ItemsManager item in Inventory.instance.GetItemsList())
+        foreach (ItemsManager item in Inventory.Instance.GetItemsList())
         {
 
             if (item.shopItem == false)

@@ -1,46 +1,66 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System;
 
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISaveable
 {
-    public static Inventory instance; // GameManager
+    public static Inventory Instance; // GameManager
 
-    private List<ItemsManager> inventoryList;
-    private List<ItemsManager> shopList;
+    private List<ItemsManager> _inventoryList;
+    private List<ItemsManager> _shopList;
 
-    void Start()
+    public List<ItemsManager>[] itemsLists;
+
+    private Dictionary<int, ItemDetails> _itemDetailsDictionary;
+
+    [SerializeField] private SO_itemsList itemsList;
+
+
+    private void Start()
     {
-        instance = this;
-        inventoryList = new List<ItemsManager>();
-        shopList = new List<ItemsManager>();
+        Instance = this;
+        _inventoryList = new List<ItemsManager>();
+        _shopList = new List<ItemsManager>();
+
+        SaveableUniqueID = GetComponent<GenerateGUID>().GUID;
+        GameItemsSave = new GameItemsSave();
+
+        CreateItemDetailsDictionary();
+    }
+
+    private void OnEnable()
+    {
+        SaveableRegister();
+    }
+
+    private void OnDisable()
+    {
+        SaveableDeregister();
     }
 
     public void AddItems(ItemsManager item)
     {
         if (item.isStackable)
         {
-            bool itemAleadyInInventory = false;
+            bool itemAlreadyInInventory = false;
 
-            foreach (ItemsManager itemInInventory in inventoryList)
+            foreach (ItemsManager itemInInventory in _inventoryList.Where(itemInInventory =>
+                         itemInInventory.itemName == item.itemName))
             {
-                if (itemInInventory.itemName == item.itemName)
-                {
-                    itemInInventory.amount += item.amount;
-                    itemAleadyInInventory = true;
-                }
+                itemInInventory.amount += item.amount;
+                itemAlreadyInInventory = true;
             }
 
-            if (!itemAleadyInInventory)
+            if (!itemAlreadyInInventory)
             {
-                inventoryList.Add(item);
+                _inventoryList.Add(item);
             }
         }
         else
         {
-            inventoryList.Add(item);
+            _inventoryList.Add(item);
         }
     }
 
@@ -48,26 +68,24 @@ public class Inventory : MonoBehaviour
     {
         if (item.isStackable)
         {
-            bool itemAleadyInShop = false;
+            bool itemAlreadyInShop = false;
 
-            foreach (ItemsManager itemInShop in shopList)
+            foreach (ItemsManager itemInShop in _shopList.Where(itemInShop =>
+                         itemInShop.itemName == item.itemName || itemInShop.shop == item.shop))
             {
-                if (itemInShop.itemName == item.itemName && itemInShop.shop == item.shop)
-                {
-                    itemInShop.amount += item.amount;
-                    itemAleadyInShop = true;
-                }
+                itemInShop.amount += item.amount;
+                itemAlreadyInShop = true;
             }
 
-            if (!itemAleadyInShop)
+            if (!itemAlreadyInShop)
             {
-                shopList.Add(item);
+                _shopList.Add(item);
             }
         }
 
         else
         {
-            shopList.Add(item);
+            _shopList.Add(item);
         }
     }
 
@@ -79,32 +97,27 @@ public class Inventory : MonoBehaviour
         {
             ItemsManager inventoryItem = null;
 
-            foreach (ItemsManager itemInInventory in inventoryList)
-
+            foreach (ItemsManager itemInInventory in _inventoryList.Where(itemInInventory =>
+                         itemInInventory.itemName == item.itemName))
             {
-                if (itemInInventory.itemName == item.itemName)
-                {
-                    itemInInventory.amount--;
-                    inventoryItem = itemInInventory;
-                }
+                itemInInventory.amount--;
+                inventoryItem = itemInInventory;
             }
 
             if (inventoryItem != null && inventoryItem.amount <= 0)
             {
-                inventoryList.Remove(inventoryItem);
+                _inventoryList.Remove(inventoryItem);
                 Debug.Log($"stacked {item.itemName} sold and now empty");
             }
         }
 
         else
         {
-            inventoryList.Remove(item);
+            _inventoryList.Remove(item);
             Debug.Log($"{item.itemName} sold");
         }
 
-        Actions.OnSellItem?.Invoke(item);// Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
-
-        Debug.Log($"Gold before sale: {Thulgran.ThulgranGold} | InvocationList: {Actions.OnSellItem.GetInvocationList().Length} | Info: {Actions.OnSellItem.Method}");
+        Actions.OnSellItem?.Invoke(item); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
     }
 
     public void UseAndRemoveItem(ItemsManager item, int selectedCharacterUse, Vector2 target)
@@ -114,81 +127,143 @@ public class Inventory : MonoBehaviour
         if (item.isStackable)
         {
             ItemsManager inventoryItem = null;
-            foreach (ItemsManager itemInInventory in inventoryList)
+            foreach (ItemsManager itemInInventory in _inventoryList.Where(itemInInventory =>
+                         itemInInventory.itemName == item.itemName))
             {
-                if (itemInInventory.itemName == item.itemName)
-                {
-                    itemInInventory.amount--;
-                    Debug.Log("Inventory stack subtraction");
-                    inventoryItem = itemInInventory;
-                }
+                itemInInventory.amount--;
+                Debug.Log("Inventory stack subtraction");
+                inventoryItem = itemInInventory;
             }
 
             if (inventoryItem != null && inventoryItem.amount <= 0)
             {
-                inventoryList.Remove(inventoryItem);
+                _inventoryList.Remove(inventoryItem);
                 Debug.Log("Item stack empty - item removed");
             }
         }
 
         else // same code as above but for non-stackable items
         {
-            inventoryList.Remove(item);
+            _inventoryList.Remove(item);
             Debug.Log("Item removed");
         }
 
-        Actions.OnUseItem?.Invoke(item, selectedCharacterUse, target); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
-        Debug.Log($"OnUseItem has broadcasted for: {item.itemName}");
+        Actions.OnUseItem?.Invoke(item, selectedCharacterUse,
+            target); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
+        Debug.Log($"OnUseItem has broadcast for: {item.itemName}");
     }
 
     public void BuyItem(ItemsManager item)
     {
         if (item.isStackable)
         {
-            bool itemAleadyInInventory = false;
+            bool itemAlreadyInInventory = false;
 
-            foreach (ItemsManager itemInInventory in inventoryList)
+            foreach (ItemsManager itemInInventory in _inventoryList.Where(itemInInventory =>
+                         itemInInventory.itemName == item.itemName))
             {
-                if (itemInInventory.itemName == item.itemName)
-                {
-                    itemInInventory.amount += item.amount;
-                    itemAleadyInInventory = true;
-                }
+                itemInInventory.amount += item.amount;
+                itemAlreadyInInventory = true;
             }
 
-            if (!itemAleadyInInventory)
+            if (!itemAlreadyInInventory)
             {
-                inventoryList.Add(item);
+                _inventoryList.Add(item);
             }
         }
 
         else
         {
-            inventoryList.Add(item);
+            _inventoryList.Add(item);
         }
 
-        shopList.Remove(item);
+        _shopList.Remove(item);
         item.shopItem = false;
         Thulgran.ThulgranGold -= item.valueInCoins;
         Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
-
     }
 
     public List<ItemsManager> GetItemsList()
     {
-        return inventoryList;
+        return _inventoryList;
     }
 
     public List<ItemsManager> GetShopList()
     {
-        return shopList;
+        return _shopList;
     }
 
-    public void AddMagic(MagicManager selectedCharacter)
+    public static void AddMagic(MagicManager selectedCharacter)
     {
-
     }
 
+    public string SaveableUniqueID { get; set; }
+    public GameItemsSave GameItemsSave { get; set; }
+
+    public void SaveableRegister()
+    {
+        SaveLoadManager.Instance.iSaveableObjectList.Add(this);
+    }
+
+    public void SaveableDeregister()
+    {
+        SaveLoadManager.Instance.iSaveableObjectList.Remove(this);
+    }
+
+    public GameItemsSave SaveableSave()
+    {
+        // Add scene save for gameobject
+        GameItemsSave.InventoryLists = new Dictionary<ItemLists, List<ItemsManager>>
+        {
+            {ItemLists.Inventory, _inventoryList}, {ItemLists.Shop, _shopList}
+        };
+        return GameItemsSave;
+    }
+
+    public void SaveableLoad(GameSave gameSave)
+    {
+        if (!gameSave.GameItemsData.TryGetValue(SaveableUniqueID, out GameItemsSave gameItemsSave))
+        {
+            return;
+        }
+
+        GameItemsSave = gameItemsSave;
+
+        if (gameItemsSave == null)
+        {
+            return;
+        }
+
+        _shopList = GameItemsSave.InventoryLists[ItemLists.Shop];
+        _inventoryList = GameItemsSave.InventoryLists[ItemLists.Inventory];
+    }
+
+    public void SaveableStoreScene(string sceneName)
+    {
+        throw new NotImplementedException("Saveable store scene not implemented");
+    }
+
+    public void SaveableRestoreScene(string sceneName)
+    {
+        throw new NotImplementedException("Restore scene not implemented");
+    }
+
+    /// <summary>
+    /// Returns the itemDetails (from the SO_ItemList) for the itemCode, or null if the item code doesn't exist
+    /// </summary>
+    public ItemDetails GetItemDetails(int itemCode)
+    {
+        return _itemDetailsDictionary.TryGetValue(itemCode, out ItemDetails itemDetails) ? itemDetails : null;
+    }
+
+    private void CreateItemDetailsDictionary()
+    {
+        _itemDetailsDictionary = new Dictionary<int, ItemDetails>();
+
+        foreach (ItemDetails itemDetails in itemsList.itemDetail.Where(itemDetails =>
+                     !_itemDetailsDictionary.ContainsKey(itemDetails.itemCode)))
+        {
+            _itemDetailsDictionary.Add(itemDetails.itemCode, itemDetails);
+        }
+    }
 }
-
-

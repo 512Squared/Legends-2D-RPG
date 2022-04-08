@@ -6,15 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>
 {
-
     public GameSave gameSave;
     public List<ISaveable> iSaveableObjectList;
+
+    private string dataPath;
 
     protected override void Awake()
     {
         base.Awake();
 
         iSaveableObjectList = new List<ISaveable>();
+        dataPath = Path.Combine(Application.persistentDataPath + "Legends.dat");
     }
 
     public void SaveDataToFile()
@@ -24,12 +26,12 @@ public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>
         // loop through all ISaveable objects and generate save data
         foreach (ISaveable iSaveableObject in iSaveableObjectList)
         {
-            gameSave.gameObjectData.Add(iSaveableObject.ISaveableUniqueID, iSaveableObject.ISaveableSave());
+            gameSave.GameItemsData.Add(iSaveableObject.SaveableUniqueID, iSaveableObject.SaveableSave());
         }
 
         BinaryFormatter bf = new BinaryFormatter();
 
-        FileStream file = File.Open(Application.persistentDataPath + "/Legends.dat", FileMode.Create);
+        FileStream file = File.Open(dataPath, FileMode.Create);
 
         bf.Serialize(file, gameSave);
 
@@ -42,20 +44,20 @@ public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        if (File.Exists(Application.persistentDataPath + "/Legends.dat"))
+        if (File.Exists(dataPath))
         {
             gameSave = new GameSave();
 
-            FileStream file = File.Open(Application.persistentDataPath + "/Legends.dat", FileMode.Open);
+            FileStream file = File.Open(dataPath, FileMode.Open);
 
             gameSave = (GameSave)bf.Deserialize(file);
 
             // loop through all ISaveable objects and apply save data
             for (int i = iSaveableObjectList.Count - 1; i > -1; i--)
             {
-                if (gameSave.gameObjectData.ContainsKey(iSaveableObjectList[i].ISaveableUniqueID))
+                if (gameSave.GameItemsData.ContainsKey(iSaveableObjectList[i].SaveableUniqueID))
                 {
-                    iSaveableObjectList[i].ISaveableLoad(gameSave);
+                    iSaveableObjectList[i].SaveableLoad(gameSave);
                 }
                 // else if iSaveableObject unique ID is not in the game object data then destroy object
                 else
@@ -77,7 +79,7 @@ public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>
         // loop through all ISaveable objects and trigger store scene data for each
         foreach (ISaveable iSaveableObject in iSaveableObjectList)
         {
-            iSaveableObject.ISaveableStoreScene(SceneManager.GetActiveScene().name);
+            iSaveableObject.SaveableStoreScene(SceneManager.GetActiveScene().name);
         }
     }
 
@@ -86,7 +88,7 @@ public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>
         // loop through all ISaveable objects and trigger restore scene data for each
         foreach (ISaveable iSaveableObject in iSaveableObjectList)
         {
-            iSaveableObject.ISaveableRestoreScene(SceneManager.GetActiveScene().name);
+            iSaveableObject.SaveableRestoreScene(SceneManager.GetActiveScene().name);
         }
     }
 }

@@ -4,10 +4,10 @@
 public class GameSave
 {
     // string key = GUID gameobject ID
-    public Dictionary<string, GameObjectSave> gameObjectData;
+    public Dictionary<string, GameItemsSave> GameItemsData;
 
     public GameSave()
     {
-        gameObjectData = new Dictionary<string, GameObjectSave>();
+        GameItemsData = new Dictionary<string, GameItemsSave>();
     }
 }

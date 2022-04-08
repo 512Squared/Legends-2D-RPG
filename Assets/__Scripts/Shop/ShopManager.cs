@@ -121,7 +121,7 @@ public class ShopManager : MonoBehaviour
         if (activeItem.valueInCoins <= Thulgran.ThulgranGold)
         {
             Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
-            Inventory.instance.BuyItem(activeItem);
+            Inventory.Instance.BuyItem(activeItem);
             NotificationFader.instance.CallFadeInOut("You have bought a " + activeItem.itemName + " for <color=#E0A515>" + activeItem.valueInCoins + "</color> gold coins. Item has been added to your inventory.", activeItem.itemsImage, 3f, 1400f, 30);
             UpdateShopItemsInventory();
             ItemSoldAnim();
@@ -160,7 +160,7 @@ public class ShopManager : MonoBehaviour
             Destroy(itemSlot.gameObject);
         }
 
-        foreach (ItemsManager item in Inventory.instance.GetShopList())
+        foreach (ItemsManager item in Inventory.Instance.GetShopList())
         {
             if (item.shopItem == true)
             {
@@ -229,13 +229,13 @@ public class ShopManager : MonoBehaviour
                         {
                             if (item.itemType == ItemsManager.ItemType.Armour || item.itemType == ItemsManager.ItemType.Weapon || item.itemType == ItemsManager.ItemType.Spell || item.itemType == ItemsManager.ItemType.Shield || item.itemType == ItemsManager.ItemType.Helmet)
                             {
-                                Inventory.instance.AddShopItems(item);
+                                Inventory.Instance.AddShopItems(item);
                                 secretShopItemsCount++;
                             }
 
                             else if (item.itemType == ItemsManager.ItemType.Food || item.itemType == ItemsManager.ItemType.Item || item.itemType == ItemsManager.ItemType.Potion)
                             {
-                                Inventory.instance.AddShopItems(item);
+                                Inventory.Instance.AddShopItems(item);
                                 shopItemsCount++;
                             }
                         }
@@ -390,7 +390,7 @@ public class ShopManager : MonoBehaviour
             Destroy(itemSlot.gameObject);
         }
 
-        foreach (ItemsManager item in Inventory.instance.GetShopList())
+        foreach (ItemsManager item in Inventory.Instance.GetShopList())
         {
             if (item.shopItem == true)
             {
