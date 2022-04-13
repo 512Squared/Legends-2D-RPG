@@ -6,57 +6,145 @@ using Sirenix.OdinInspector;
 [ShowOdinSerializedPropertiesInInspector]
 public class ItemsManager : SerializedMonoBehaviour
 {
-    //[ItemCodeDescription]
-    [SerializeField] private int itemCode;
-
-    [SerializeField] private ItemDetails itemDetails;
-
-
-    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food, Shield, Helmet, Relic }
-
-    public ItemType itemType;
-
-    public string itemName;
-    [TextArea(5, 5)] public string itemDescription;
-    public int valueInCoins;
-    public Sprite itemsImage;
-    public bool itemSelected;
-    public bool isNewItem = true;
-    public bool shopItem;
-    public bool isQuestObject;
-    public bool pickUpNotice = true;
-
-    [Space]
-    [InfoBox(
-        "ALL RELICS ARE QUEST ITEMS. IF YOU TICK THIS BOX, MAKE SURE THE ITEM HAS A QUEST COMPONENT ATTACHED AND THAT 'ITEM IS RELIC' IS TICKED THERE TOO. A RELIC BOX FROM THE RELICS UI PANEL IN THE HIERARCHY MUST ALSO BE ATTACHED TO THE QUEST COMPONENT IF IT IS TO WORK CORRECTLY. ALSO, THE BUTTON ON THE UI PANEL NEEDS THE EXACT SAME ITEM NAME.",
-        InfoMessageType.Warning, "isRelic")]
-    public bool isRelic;
-
-    [Space] public SpriteRenderer spriteRenderer;
-    public PolygonCollider2D polyCollider;
-
-    public enum Shop { Inventory, Shop1, Shop2, Shop3 }
-
-    public Shop shop; // inventory, shop1, shop2, shop3
-
+    #region Data
 
     public enum AffectType { Hp, Mana, Defence, Attack, Perception, Speed }
 
+    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food, Shield, Helmet, Relic }
+
+    [HorizontalGroup("Main")]
+    [HorizontalGroup("Main/Data", Width = 160)]
+    [BoxGroup("Main/Data/Data")]
+    [HideLabel]
+    [GUIColor(0.058f, 0.380f, 1f)]
+    public ItemType itemType;
+
+    [HorizontalGroup("Main")]
+    [HorizontalGroup("Main/Data")]
+    [BoxGroup("Main/Data/Data")]
+    [HideLabel]
+    [GUIColor(0.058f, 0.380f, 1f)]
     public AffectType affectType;
+
+    [HorizontalGroup("Main/Data", Width = 160)] [BoxGroup("Main/Data/Data")] [HideLabel] [GUIColor(0.058f, 0.380f, 1f)]
+    public Shop shop; // inventory, shop1, shop2, shop3
+
+    [HorizontalGroup("Main/Data", Width = 160)]
+    [BoxGroup("Main/Data/Data")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
+    [SerializeField]
+    private int itemCode = 1000;
+
+    [HorizontalGroup("Main/Data", Width = 160)]
+    [BoxGroup("Main/Data/Data")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
+    public int valueInCoins;
+
+    [HorizontalGroup("Main/Data", Width = 160)]
+    [BoxGroup("Main/Data/Data")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
     public int amountOfEffect;
 
+    [HorizontalGroup("Main/Data", Width = 160)]
+    [BoxGroup("Main/Data/Data")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemAttack;
+
+    [HorizontalGroup("Main/Data", Width = 160)]
+    [BoxGroup("Main/Data/Data")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemDefence;
 
+    [HorizontalGroup("Main/Info", Width = 220)]
+    [BoxGroup("Main/Info/Info")]
+    [LabelWidth(90)]
+    [TextArea(1, 7)]
+    [GUIColor(0.4f, 0.986f, 0.380f)]
+    public string itemName;
 
+    [HorizontalGroup("Main/Info", Width = 220)]
+    [BoxGroup("Main/Info/Info")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.986f, 0.380f)]
+    [TextArea(7, 7)]
+    public string itemDescription;
+
+    [Space]
+    [HorizontalGroup("Main/Bools", Width = 120)]
+    [BoxGroup("Main/Bools/Bools")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool itemSelected;
+
+
+    [HorizontalGroup("Main/Bools", Width = 120)]
+    [BoxGroup("Main/Bools/Bools")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isNewItem = true;
+
+
+    [HorizontalGroup("Main/Bools", Width = 120)]
+    [BoxGroup("Main/Bools/Bools")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isShopItem;
+
+
+    [HorizontalGroup("Main/Bools", Width = 120)]
+    [BoxGroup("Main/Bools/Bools")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isQuestObject;
+
+
+    [HorizontalGroup("Main/Bools", Width = 120)]
+    [BoxGroup("Main/Bools/Bools")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool pickUpNotice = true;
+
+
+    [HorizontalGroup("Main/Bools", Width = 120)]
+    [BoxGroup("Main/Bools/Bools")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isRelic;
+
+
+    [HorizontalGroup("Main/Bools", Width = 120)]
+    [BoxGroup("Main/Bools/Bools")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isStackable;
 
-    public int amount;
+    [HorizontalGroup("Main/Sprite", Width = 120)]
+    [BoxGroup("Main/Sprite/Sprite")]
+    [HideLabel]
+    [Space]
+    [Space]
+    [Space]
+    [PreviewField(120, ObjectFieldAlignment.Center)]
+    [GUIColor(0.2f, 0.286f, 0.680f)]
+    public Sprite itemsImage;
+
+    #endregion Data
+
+    [Space] [Space] public int amount;
+
+    [Space] public SpriteRenderer spriteRenderer;
+
+    public PolygonCollider2D polyCollider;
 
 
     private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>(0);
         polyCollider = GetComponent<PolygonCollider2D>();
 
         // randomise item valueInCoins to ± 20% of double the bonus advantage gained

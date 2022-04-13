@@ -9,54 +9,59 @@ using Cinemachine;
 
 public class SecretShopSection : MonoBehaviour
 {
+    public static SecretShopSection Instance;
 
-
-    public static SecretShopSection instance;
-    
-    [Header("UI Tweening")]
-    [GUIColor(1f, 1f, 0.215f)]
+    [Header("UI Tweening")] [GUIColor(1f, 1f, 0.215f)]
     public RectTransform leftShopPanel, rightShopPanel;
-    [GUIColor(1f, 1f, 0.215f)]
-    public bool isSecretPanelOpen;
-    [GUIColor(1f, 1f, 0.215f)]
-    public GameObject definedButton;
-    [GUIColor(1f, 1f, 0.215f)]
-    public UnityEvent OnClick = new UnityEvent();
+
+    [GUIColor(1f, 1f, 0.215f)] public bool isSecretPanelOpen;
+    [GUIColor(1f, 1f, 0.215f)] public GameObject definedButton;
+    [GUIColor(1f, 1f, 0.215f)] public UnityEvent OnClick = new UnityEvent();
     private int hitNumber = 0;
     private bool isImageSpriteOn = false;
     public SpriteRenderer bell;
     public Sprite bellImageOn, bellImageOff;
 
-    public ItemsManager.Shop shop;
-
-
-
-
+    public Shop shopType;
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        instance = this; 
-        definedButton = this.gameObject;
+        Instance = this;
+        definedButton = gameObject;
         bell.sprite = bellImageOff;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
+        //put your point to ray function here
 
-            //put your point to ray function here
+        Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
+            Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
 
-            Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-            RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
-
-            if (hit.collider != null && hit.collider.gameObject.CompareTag("brass_bell"))
+        if (hit.collider != null && hit.collider.gameObject.CompareTag("brass_bell"))
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-
-                if (Input.GetMouseButtonDown(0))
+                Debug.Log(hit.transform.name + " has been hit with a raycast");
+                if (hitNumber < 1)
                 {
-                    Debug.Log(hit.transform.name + " has been hit with a raycast");
+                    OnClick.Invoke();
+                    StartCoroutine(ResetBell());
+                    SetImageBool();
+                    hitNumber++;
+                }
+            }
+
+            else if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                {
+                    Debug.Log(hit.transform.name);
                     if (hitNumber < 1)
                     {
                         OnClick.Invoke();
@@ -65,53 +70,36 @@ public class SecretShopSection : MonoBehaviour
                         hitNumber++;
                     }
                 }
-
-                else if (Input.touchCount > 0)
-                {
-                    Touch touch = Input.GetTouch(0);
-                    if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-                    {
-                        Debug.Log(hit.transform.name);
-                        if (hitNumber < 1)
-                        {
-                            OnClick.Invoke();
-                            StartCoroutine(ResetBell());
-                            SetImageBool();
-                            hitNumber++;
-                        }
-                    }
-                }
-
-                else
-                {
-                    return;
-                }
-
             }
 
-            else if (hit.collider != null && hit.collider.gameObject.CompareTag("settingsButton") && hitNumber < 1)
+            else
             {
-                StartCoroutine(ResetBell());
-                hitNumber++;
+                return;
             }
-     
+        }
+
+        else if (hit.collider != null && hit.collider.gameObject.CompareTag("settingsButton") && hitNumber < 1)
+        {
+            StartCoroutine(ResetBell());
+            hitNumber++;
+        }
     }
 
-    IEnumerator ResetBell()
+    private IEnumerator ResetBell()
     {
         yield return new WaitForSeconds(1f);
         hitNumber = 0;
-
     }
 
     public void OpenSecretPanel()
     {
         StartCoroutine(OpenPanels());
     }
-    IEnumerator OpenPanels()
+
+    private IEnumerator OpenPanels()
     {
         yield return null;
-        
+
         if (!isSecretPanelOpen)
         {
             leftShopPanel.DOAnchorPos(new Vector2(-18.45f, -1.84f), 1.5f);
@@ -125,16 +113,16 @@ public class SecretShopSection : MonoBehaviour
             isSecretPanelOpen = false;
         }
     }
+
     public void ShopOpenArmoury(string shoptype) // called inside shop
     {
         SetShopType(shoptype);
-        ShopManager.instance.ShopArmouryBool();
-
+        ShopManager.Instance.ShopArmouryBool();
     }
 
-    public void ShopId(ItemsManager.Shop parsed_shopType_enum)
+    public void ShopId(Shop parsed_shopType_enum)
     {
-        ShopManager.instance.ShopType(parsed_shopType_enum);
+        ShopManager.Instance.ShopType(parsed_shopType_enum);
     }
 
     public void SetImageBool()
@@ -152,11 +140,10 @@ public class SecretShopSection : MonoBehaviour
 
     public void SetShopType(string scene)
     {
-        ItemsManager.Shop _enum_shopType = (ItemsManager.Shop)System.Enum.Parse(typeof(ItemsManager.Shop), scene);
-        shop = _enum_shopType;
+        Shop _enum_shopType = (Shop)Enum.Parse(typeof(Shop), scene);
+        shopType = _enum_shopType;
         ShopId(_enum_shopType);
-        ShopManager.instance.shopType = _enum_shopType;
-        Debug.Log("Shop type now set: " + shop); // don't forget to change onclick string
+        ShopManager.Instance.shopType = _enum_shopType;
+        Debug.Log("Shop type now set: " + shopType); // don't forget to change onclick string
     }
-
 }

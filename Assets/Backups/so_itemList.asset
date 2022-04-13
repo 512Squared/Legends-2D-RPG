@@ -1,0 +1,1436 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a6b652a36663f4caeee9bc3a9debb3, type: 3}
+  m_Name: so_itemList
+  m_EditorClassIdentifier: 
+  itemsDetails:
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1001
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 21
+    itemDefence: 0
+    itemName: The Swirthian Flayer Axe
+    itemDescription: Amazing workmanship and single -edged studded Swirthian Blade
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: a3b83ecb9cbc10e4c9e1685bc2e0e22b, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1002
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 19
+    itemDefence: 0
+    itemName: The Prince's Blade
+    itemDescription: This fine Swirthian axe combines sharpness and balance in the
+      handle.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: cfeb8cf73d489da4483b69662778049e, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 0
+    itemCode: 1003
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 11
+    itemDefence: 0
+    itemName: Plain Axe
+    itemDescription: Kills zombies
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 172774604c1bee84185a69041576525b, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 3
+    itemCode: 1004
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 16
+    itemDefence: 0
+    itemName: Swirthian Slicer Axe
+    itemDescription: Fine condition, with gilded blade
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 7906717feb1a04d489505d0fb115d059, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 0
+    itemCode: 1005
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 27
+    itemDefence: 0
+    itemName: The Swirthian Mincer Axe
+    itemDescription: 'This axe is Legendary. Made of the finest gilded Swirthian
+      steel. This blade once belonged to Caspian the Great. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 9ca103023f8c20749b91ae239ec8ebb3, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 3
+    itemCode: 1006
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 9
+    itemDefence: 0
+    itemName: Swirthian Protector
+    itemDescription: World-renowned Swirthian craftsmanship in all-purpose axe
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 4f6280dc3398279449b2a48c9f069037, type: 3}
+  - itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1007
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 20
+    itemDefence: 0
+    itemName: The Swirthian King Slayer
+    itemDescription: Exceptional workmanship and condition. One of the finest Swirthian
+      double-edged axes ever made.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 451400c8dc04dbc4fb68b71db81144b6, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 0
+    itemCode: 1008
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 50
+    itemDefence: 0
+    itemName: Curved Sword
+    itemDescription: Light steel
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 049a538b7e3cd654b852d863facf7c3c, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 0
+    itemCode: 1009
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 10
+    itemDefence: 0
+    itemName: Long Woodman's Axe
+    itemDescription: You have to beg this long axe from a woodsman
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 0
+    itemCode: 1010
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 21
+    itemDefence: 0
+    itemName: Celtic Long Bow
+    itemDescription: A bow from the old world. Crafted with ash and lamb's wool
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: f049b8f6e6c70664abce7e9de8fc5a5c, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1011
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 41
+    itemDefence: 0
+    itemName: Thunder Sword
+    itemDescription: A perfectly balanced sword that weighs as much as a cart wheel
+      and has concussive power.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: d93b913835e220e4595be5c3f2cd6199, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1012
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 45
+    itemDefence: 0
+    itemName: The Mage's Brightstaff
+    itemDescription: An elven-made mage's staff
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: c0280fafa88fc374899c40a7f7982b39, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 0
+    itemCode: 1013
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 30
+    itemDefence: 0
+    itemName: Krecian Hammer of Undoing
+    itemDescription: This might hammer is as light as it is devastating
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 14b57bac88f175f41af0691664656389, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 2
+    itemCode: 1014
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 33
+    itemDefence: 0
+    itemName: Mace of Aldour
+    itemDescription: Any dwarf's favourite head pounder.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: eb979bdcd9c0bfa41811e478c6e2db73, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 0
+    itemCode: 1015
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 18
+    itemDefence: 0
+    itemName: Thorian Hammer
+    itemDescription: 'A hammer made of Thorian steel that can concuss a rhino. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 9538c1258f4ebaf4497c5c451015faae, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 3
+    itemCode: 1016
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 37
+    itemDefence: 0
+    itemName: The Thracian Spell Caster
+    itemDescription: This wand performs magical attacks, weaking enemies from the
+      inside. It lights up blue when wielded by someone with the right magical abilities
+      to wield it.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: be151b92727f6d64a86b5061ddfed2ed, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1017
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 20
+    itemDefence: 0
+    itemName: Arabian sword
+    itemDescription: Amazing workmanship from the dry peninsula.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 55039f1e30bd40d47ad9f8c1419d9d1a, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1018
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 27
+    itemDefence: 0
+    itemName: Long Sword of Sheald'r
+    itemDescription: True and straight - a sword that any soldier could rely on
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 009d4fc67f3ecc341a5229c548eea9a0, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1019
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 32
+    itemDefence: 0
+    itemName: Longsword
+    itemDescription: Celtic longsword
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: da3489a989b315644b2918cb9df15709, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1020
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Staff of Presibus
+    itemDescription: A relic from the Presibus wars . Enhanced with the magic of
+      the pharoahs
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 3fa53af4c50543b469421a6895537de8, type: 3}
+  - itemType: 2
+    affectType: 3
+    shop: 1
+    itemCode: 1021
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 47
+    itemDefence: 0
+    itemName: Thracian double-piercer
+    itemDescription: 'Just an imaculate sword. This double edged sword is both a
+      brilliant defensive weapon, but also a great piercing weapon. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 77910f6b27952934694e8b409169cf34, type: 3}
+  - itemType: 3
+    affectType: 2
+    shop: 0
+    itemCode: 1022
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 22
+    itemName: Brown Armour
+    itemDescription: Hardened Leather Armour
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 2f1eaeeaad36ee5469eff7ff158f37ba, type: 3}
+  - itemType: 3
+    affectType: 2
+    shop: 0
+    itemCode: 1023
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 13
+    itemName: Leather Chest Armour
+    itemDescription: 'Basic Leather Armour but with a bit of dwarf spit to strengthen
+      it. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
+  - itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1024
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 12
+    itemName: Soft Armour
+    itemDescription: Light steel armour
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 6e5824ed73e2743b7856c446faea1b8c, type: 3}
+  - itemType: 3
+    affectType: 2
+    shop: 3
+    itemCode: 1025
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 41
+    itemName: Shulgan Plate
+    itemDescription: This incredibly crafted plate armour is what every knight or
+      hero should have in their wardrobe.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: c720139856ac0f44d894498956e1b55f, type: 3}
+  - itemType: 3
+    affectType: 2
+    shop: 0
+    itemCode: 1026
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 30
+    itemName: Mantle of Guile
+    itemDescription: 'Magically enhanced armour that confuses enemies as to your
+      exact position in space. An excellent way to disguise your protection. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 8b44c1c64aeb7184cae04c8850adea85, type: 3}
+  - itemType: 3
+    affectType: 2
+    shop: 1
+    itemCode: 1027
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Lamellar Armour
+    itemDescription: This hardened leather armour has embedded plates of bronze to
+      withstand stabs and other weak blade attacks.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 54643ca97702907488d4dc3235192a09, type: 3}
+  - itemType: 3
+    affectType: 2
+    shop: 0
+    itemCode: 1028
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 31
+    itemName: Mantle of Disguise
+    itemDescription: This simple and beautiful mantle is magically enhanced to offer
+      both beauty and protection
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: b817779f7fb33f94a85fd94a5df90287, type: 3}
+  - itemType: 3
+    affectType: 2
+    shop: 0
+    itemCode: 1029
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 24
+    itemName: Whetstone Plate
+    itemDescription: 'Entry level plate armour. Light but able to repel arrows and
+      sword blows. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: c9d48411a39cdc9429fca1da96828e34, type: 3}
+  - itemType: 7
+    affectType: 2
+    shop: 0
+    itemCode: 1030
+    valueInCoins: 25
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 23
+    itemName: Diamond Shield
+    itemDescription: 'This beautifully crafted shield has a saphire built into its
+      heart. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 4232cf7f17ab54d2e8d61df926c68c35, type: 3}
+  - itemType: 7
+    affectType: 2
+    shop: 0
+    itemCode: 1031
+    valueInCoins: 16
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 40
+    itemName: Round Shield of Anendor
+    itemDescription: This legendary shield was used by Brian the Brave to defeat
+      the evil kind Eldador of Anendor
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 1818085f923683f4797f83bab4b165e2, type: 3}
+  - itemType: 7
+    affectType: 2
+    shop: 0
+    itemCode: 1032
+    valueInCoins: 5
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 15
+    itemName: Battle Shield
+    itemDescription: This hardwood shield is as sturdy as it is fucking heavy, but
+      if you're strong enough to hold it up, it will take some punishment, which
+      means you don't have to
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: c67f6060700f79d4f842b3632c073ff9, type: 3}
+  - itemType: 7
+    affectType: 2
+    shop: 0
+    itemCode: 1033
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 18
+    itemName: Viking Shield
+    itemDescription: This shield was manufactured in the fearsome foundaries of the
+      marauding Vikings of Stevanger
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: b97c91e8b348f3f4ebdc11f5c82182cd, type: 3}
+  - itemType: 8
+    affectType: 2
+    shop: 0
+    itemCode: 1034
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 27
+    itemName: Shulgan Helmet
+    itemDescription: 'This incredibly crafted plate armour helmet will keep only
+      but the relics. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: eddb0f61210d2f4429ae92bc08d1b3ba, type: 3}
+  - itemType: 8
+    affectType: 2
+    shop: 0
+    itemCode: 1035
+    valueInCoins: 70
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 27
+    itemName: Headress of Disguise
+    itemDescription: This magnificent headgear is woven with Dwarfen mithril to make
+      it super strong and able to magically disipate the energy of heavy weapon blows
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 1e16518344dcc984a819375fb6a17d71, type: 3}
+  - itemType: 8
+    affectType: 2
+    shop: 0
+    itemCode: 1036
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 5
+    itemName: Leather armour
+    itemDescription: Basic leather armour, but makes you sweaty
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: 6d91d533c905b47459cf4c3f1a3f618e, type: 3}
+  - itemType: 8
+    affectType: 2
+    shop: 0
+    itemCode: 1037
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 24
+    itemName: Plate Helmet
+    itemDescription: Well-crafted iron Helmet - does the job. Not as hard or as comfortable
+      as the Shulgan plate, but not shabby either.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: eddb0f61210d2f4429ae92bc08d1b3ba, type: 3}
+  - itemType: 8
+    affectType: 2
+    shop: 1
+    itemCode: 1038
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 40
+    itemName: Jade alloy helmet
+    itemDescription: 'A product of the Eastern smiths of the Elven realms. This beautiful
+      crafted helmet is a thing of legend. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: fd6e4fc32c78509458fc45ea4a478ba8, type: 3}
+  - itemType: 1
+    affectType: 0
+    shop: 3
+    itemCode: 1039
+    valueInCoins: -45
+    amountOfEffect: 50
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Red Healing Potion
+    itemDescription: 'Instantly revives even the most worm-infested battle carcass. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: b247ef8a899ae4425b46bad4a10a76b8, type: 3}
+  - itemType: 1
+    affectType: 5
+    shop: 0
+    itemCode: 1040
+    valueInCoins: 20
+    amountOfEffect: 2
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Speed Potion
+    itemDescription: Make sure you get around faster, with this ultra-tonic that
+      puts a real oomph into your legs.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: 17776f97fd7f948ea9eccfd40940c6b4, type: 3}
+  - itemType: 1
+    affectType: 1
+    shop: 1
+    itemCode: 1041
+    valueInCoins: -40
+    amountOfEffect: 100
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Mana Potion
+    itemDescription: 'Using magic drains your psychic energies. This mana potion
+      works wonders to replenish those important resources. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: 6592b916f86b19e428db6f6847c7b6dd, type: 3}
+  - itemType: 1
+    affectType: 0
+    shop: 1
+    itemCode: 1042
+    valueInCoins: -250
+    amountOfEffect: 300
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Green Healing Potion
+    itemDescription: 'This rare potion uses only the best herbs from the Thracian
+      mountains to bring about an almost complete restoration of health. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: 4e8b35477a7fb5a46870c1973a523722, type: 3}
+  - itemType: 1
+    affectType: 0
+    shop: 0
+    itemCode: 1043
+    valueInCoins: -120
+    amountOfEffect: 200
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Red Healing Potion Large
+    itemDescription: This extra special healing potion not only heals many grevious
+      wounds, but it will leaves you feeling even better than you were before.  +50
+      to max hit points
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: e52ea25af699fd445b7046374f81a5b9, type: 3}
+  - itemType: 0
+    affectType: 4
+    shop: 0
+    itemCode: 1044
+    valueInCoins: 100
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Frieshen Emerald
+    itemDescription: A rare and valuable Green Emerald
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: c4a4a3889725445dd8786804a24c10e2, type: 3}
+  - itemType: 0
+    affectType: 4
+    shop: 0
+    itemCode: 1045
+    valueInCoins: 50
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Fire Ruby of Eldor
+    itemDescription: The Fire Ruby was found in the mountains of Eldor and it is
+      fabled that is was formed from dragon breath melting the nearby rocks rick
+      in iron and manganese. It is believed to make the holder more perceptive.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 55aac4d93f232464c88cd97596839db9, type: 3}
+  - itemType: 0
+    affectType: 4
+    shop: 0
+    itemCode: 1046
+    valueInCoins: 50
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The World Sapphire
+    itemDescription: The World Sapphire is an incredibly beautiful sapphire, cut
+      in the brilliant pear style, with gives off scintillating hues of dark and
+      light blue.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: e7d29a79bc7fae248887c8a08a160303, type: 3}
+  - itemType: 0
+    affectType: 1
+    shop: 0
+    itemCode: 1047
+    valueInCoins: 50
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Celeste Emerald
+    itemDescription: The Celeste Emerald was magically enhanced so that it helps
+      the bearer recover more quickly after using magic. Mana regeneration should
+      be 20% quicker.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 38791cfff3e4ed7479deb2052eb0be4d, type: 3}
+  - itemType: 6
+    affectType: 0
+    shop: 0
+    itemCode: 1048
+    valueInCoins: -9
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Apple
+    itemDescription: An apple a day will boost your energy llevels.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: 5d9ba4e7d0964044ea54abe409d81dfd, type: 3}
+  - itemType: 6
+    affectType: 0
+    shop: 1
+    itemCode: 1049
+    valueInCoins: -23
+    amountOfEffect: 25
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Slab of meat
+    itemDescription: This side of venison will give your warriors important protein
+      to repair battle-weary muscles.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: 02965bb096d1ff24897cfbedbc22f1a7, type: 3}
+  - itemType: 0
+    affectType: 4
+    shop: 1
+    itemCode: 1050
+    valueInCoins: 0
+    amountOfEffect: 25
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Blue Clematis of Tharacia
+    itemDescription: Key ingredient in many magical potions
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: fe9206383b6d8cc40ab3685c158bf99d, type: 3}
+  - itemType: 0
+    affectType: 4
+    shop: 1
+    itemCode: 1051
+    valueInCoins: 0
+    amountOfEffect: 20
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Red Anenome of Layavar
+    itemDescription: 'This flower is a key ingredient in several magical potions '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: 707545fb132aed646bdaf12831b9aaf5, type: 3}
+  - itemType: 5
+    affectType: 3
+    shop: 3
+    itemCode: 1052
+    valueInCoins: 0
+    amountOfEffect: 25
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Jainji Book of Spells
+    itemDescription: This magical book contains 6 attack spells
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: ae496f5dad56ea645b72d374a0376368, type: 3}
+  - itemType: 5
+    affectType: 3
+    shop: 0
+    itemCode: 1053
+    valueInCoins: 0
+    amountOfEffect: 100
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Fireball Scroll Spell
+    itemDescription: Initiates a fireball that affects all enemies within range
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: db427fab3e94daf4caa704d9314a77a1, type: 3}
+  - itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1054
+    valueInCoins: 200
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Iron Bar
+    itemDescription: 'In an age where iron makes both swords and armour, it is a
+      valuable commodity. This bar will fetch a pretty penny. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 1
+    itemsImage: {fileID: 21300000, guid: b2352df64abcd62489bcc3094ec726e7, type: 3}
+  - itemType: 0
+    affectType: 0
+    shop: 3
+    itemCode: 1055
+    valueInCoins: 5
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Carrier bag
+    itemDescription: Increases dexterity thus improving defence
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: fe025e83f69d0b54f8a4fe3c7c128fd7, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1056
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Plant of Eden
+    itemDescription: 'The Plant of Eden is thought to be a fragment of one of the
+      eternal plants of Eden, created at the very beginning of the Time. Find the
+      Plant of Eden to give yourself faster health regeneration. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 1f66bc49f7fb8ff4891e5ab0b5b255f6, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1057
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Thor's Runes
+    itemDescription: Thor's Runes were used in days of old to safely traverse the
+      high seas and dark forests. They are said to light the way to safety.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: d5daf6f9136a1cb438dd7e000b4925c3, type: 3}
+  - itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1058
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Laotse's Amulet
+    itemDescription: 'This Relic is fabled to glow purple when a stranger approaches
+      who is a friend, and red when a stranger approaches who is an enemy. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: c3b37fcdb65c6b64fad17c67b4e49bdc, type: 3}
+  - itemType: 0
+    affectType: 2
+    shop: 3
+    itemCode: 1059
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 25
+    itemName: Thrace Necklace of Protection
+    itemDescription: This magical necklace adds protection against physical attacks
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 1
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 0e123cfdc54a3ca4684816a34167a566, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1060
+    valueInCoins: 0
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Eye of Baldor
+    itemDescription: The Eye of Baldor was created by the Crackar the Were Mage.
+      It is rumoured to allow it's holder to sense danger through walls of any kind.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: c07a66d5fee734d4b9b8ac5734e404e1, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1061
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Merlin's Grimoire
+    itemDescription: 'This is the most powerful spellbook in all of history. It is
+      the only grimoire that reveals the special blend of spells needed to defeat
+      the great magical dragons. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 4fa5177c439515443830b2ee91dd4f17, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1062
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Eye of Horus
+    itemDescription: 'The Judgement of Horus was said to be dismemberment and for
+      your body parts to be spread to the four winds. Bring about instant eviceration
+      to undead enemies. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 728639436e6067142aea1380566b9160, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1063
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Wheel of Vairocana
+    itemDescription: The Wheel of Vairocana once protected the Portal of the Three
+      worlds. It generated a powerful forcefield that made anyone will ill-intention
+      fall into a deep sleep. The Wheel of Vairocana can be used to create a protective
+      shield around a party for a limited time.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: d16a69530cdb5af41a4bb5a1e1f97141, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1064
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Elven Dream Catcher
+    itemDescription: The Elves were masters of magic and magical protection. This
+      Elven Dream Catcher protects is able to capture and bind evil magic so that
+      it won't harm the wearer.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: c75d463641b7b1b49970eabd5fb9cbbd, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1065
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Carved Tooth from the Sapphire Dragon
+    itemDescription: The Sapphire Dragon was a magical dragon from ancient times
+      who ruled the other magical dragons by virtue of being immune to dragon magic.
+      This Ancient Relic protects the wearer against all dragon's magical attacks.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 621a8b990afbbb6409a4f838ddcba868, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1066
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Claws of the Werebear
+    itemDescription: The Werebear threatened the village of Dreydor for decades until
+      it was finally defeated by the fabled warrior Chardis the Red. They are fabled
+      to give yourself some protection against the undead.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: d351796a6d387db47a0365d66e8564ba, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1067
+    valueInCoins: 0
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Dark Ent
+    itemDescription: The Dark Ent draws on the power of nearby trees to encapsulate
+      your enemies in a wooded web. If you are ever in danger within a forest, call
+      on the power of the Dark Ent.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 4544dbc809e66ef4faeb90cf3778c400, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1068
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Khufu Tablets
+    itemDescription: 'The Khufu Tablets hold the mystery of sound energy. In the
+      ancient temples, the tablets were used to navigate the stone mazes, using sound
+      to move the enormously heavy stone doors. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 4fa5177c439515443830b2ee91dd4f17, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1069
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Carnelian Stone
+    itemDescription: 'The Carnelian Stone is one of the original Four Stones of Destiny,
+      the others having been lost to Time. The Carnelian Stone is said to reveal
+      your destinty. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: cac2e68c9100eb14383f2f282a336018, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1070
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Hoeffre Crystal of Seeing
+    itemDescription: 'The Crystal of Seeing was once held in the Great Hall of Jereby,
+      where the rulers of that great kingtom used it to peak into the ancient mysteries.
+      It is said to have the power to unravel any puzzle. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 520668b14c4df1944a802ede89128259, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1071
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Elixir of Life Crystal
+    itemDescription: 'The Life Crystal is fabled to come from elsewhere in the galaxy
+      and has unique life-giving properties. It is said to be able to bring even
+      the dead back to life. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 5c2047efb8a1e504c9c367d026693060, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1072
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Horn of Joylander
+    itemDescription: 'Joylander was a fabled cow that lived for a thousand years,
+      and whose milk brought instance happiness. The Horn is said to bestow happiness
+      and health to all those inside its aura. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: a2b6097c50ab7c7488255ea3ba4aff31, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1073
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Jinji Necklace
+    itemDescription: The Jinji necklace is made from the skulls of the Mithrian Jins,
+      who used to feed on the undead in the olden times. The necklace will make all
+      but the most stupid of undead creatures unwilling to attack.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 12e3f829aca179545b8d8b9b274733ae, type: 3}
+  - itemType: 9
+    affectType: 4
+    shop: 0
+    itemCode: 1074
+    valueInCoins: 300
+    amountOfEffect: 10
+    itemAttack: 0
+    itemDefence: 0
+    itemName: The Emerald Staff
+    itemDescription: The Emerald Staff was used by the Warriors of Jereby to enter
+      the Underworld, where it was said that all were blinded by their own despair.
+      The Staff will light any path, however dark.
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 1
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: 8d12fc3b76ce80e47843278b4013e90a, type: 3}
+  - itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1075
+    valueInCoins: 60
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: Map of Zelesny
+    itemDescription: 'The map shows the location of two of the most valuable gems
+      every cut, the World Sapphire and the Fire Ruby. '
+    itemSelected: 0
+    isNewItem: 1
+    shopItem: 0
+    isQuestObject: 1
+    pickUpNotice: 0
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 21300000, guid: cf69688e8a3cb45768c6c3605d58cc40, type: 3}

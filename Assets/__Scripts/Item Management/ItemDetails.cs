@@ -3,103 +3,139 @@ using Sirenix.OdinInspector;
 
 
 [System.Serializable]
-    public class ItemDetails 
-    {
-        [HorizontalGroup("Info"), TableColumnWidth(200)]
-        [VerticalGroup("Info/a"), LabelWidth(90)]
-        [TextArea(1,5)]
-        [GUIColor(0.4f, 0.986f, 0.380f)]
-        public string itemName;
-        [HorizontalGroup("Info"), TableColumnWidth(200)]
-        [VerticalGroup("Info/a"), LabelWidth(90)]
-        [TextArea(7,7)]
-        [GUIColor(0.4f, 0.986f, 0.380f)]
-        public string itemDescription;
+public class ItemDetails
+{
+    [HorizontalGroup("Data")]
+    [TableColumnWidth(160)]
+    [VerticalGroup("Data/a")]
+    [HideLabel]
+    [GUIColor(0.058f, 0.380f, 1f)]
+    public ItemsManager.ItemType itemType;
 
+    [HorizontalGroup("Data")]
+    [TableColumnWidth(160)]
+    [VerticalGroup("Data/a")]
+    [HideLabel]
+    [GUIColor(0.058f, 0.380f, 1f)]
+    public ItemsManager.AffectType affectType;
 
+    [HorizontalGroup("Data")]
+    [TableColumnWidth(160)]
+    [VerticalGroup("Data/a")]
+    [HideLabel]
+    [GUIColor(0.058f, 0.380f, 1f)]
+    public Shop shop; // inventory, shop1, shop2, shop3
 
-        [HorizontalGroup("Bools"), TableColumnWidth(120)]
-        [VerticalGroup("Bools/a"), LabelWidth(90)]
-        [GUIColor(0.4f, 0.886f, 0.780f)]
-        public bool itemSelected;
+    [HorizontalGroup("Data")]
+    [TableColumnWidth(160)]
+    [VerticalGroup("Data/a")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
+    public int itemCode = 1000;
 
-        [HorizontalGroup("Bools"), TableColumnWidth(120)]
-        [VerticalGroup("Bools/a"), LabelWidth(90)]
-        [GUIColor(0.4f, 0.886f, 0.780f)]
-        public bool isNewItem = true;
+    [HorizontalGroup("Data")]
+    [TableColumnWidth(160)]
+    [VerticalGroup("Data/a")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
+    public int valueInCoins;
 
-        [HorizontalGroup("Bools"), TableColumnWidth(120)]
-        [VerticalGroup("Bools/a"), LabelWidth(90)]
-        [GUIColor(0.4f, 0.886f, 0.780f)]
-        public bool shopItem;
+    [HorizontalGroup("Data")]
+    [TableColumnWidth(160)]
+    [VerticalGroup("Data/a")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
+    public int amountOfEffect;
 
-        [HorizontalGroup("Bools"), TableColumnWidth(120)]
-        [VerticalGroup("Bools/a"), LabelWidth(90)]
-        [GUIColor(0.4f, 0.886f, 0.780f)]
-        public bool pickUpNotice = true;
+    [HorizontalGroup("Data")]
+    [TableColumnWidth(160)]
+    [VerticalGroup("Data/a")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
+    public int itemAttack;
 
-        [HorizontalGroup("Bools"), TableColumnWidth(120)]
-        [VerticalGroup("Bools/a"), LabelWidth(90)]
-        [GUIColor(0.4f, 0.886f, 0.780f)]
-        public bool isQuestObject;
+    [HorizontalGroup("Data")]
+    [TableColumnWidth(160)]
+    [VerticalGroup("Data/a")]
+    [LabelWidth(100)]
+    [GUIColor(0.8f, 0.286f, 0.780f)]
+    public int itemDefence;
 
-        [HorizontalGroup("Bools"), TableColumnWidth(120)]
-        [VerticalGroup("Bools/a"), LabelWidth(90)]
-        [GUIColor(0.4f, 0.886f, 0.780f)]
-        public bool isStackable;
+    [HorizontalGroup("Info")]
+    [TableColumnWidth(220)]
+    [VerticalGroup("Info/a")]
+    [LabelWidth(90)]
+    [TextArea(1, 5)]
+    [GUIColor(0.4f, 0.986f, 0.380f)]
+    public string itemName;
 
-        [InfoBox(
-            "ALL RELICS ARE QUEST ITEMS. IF YOU TICK THIS BOX, MAKE SURE THE ITEM HAS A QUEST COMPONENT ATTACHED AND THAT 'ITEM IS RELIC' IS TICKED THERE TOO. A RELIC BOX FROM THE RELICS UI PANEL IN THE HIERARCHY MUST ALSO BE ATTACHED TO THE QUEST COMPONENT IF IT IS TO WORK CORRECTLY. ALSO, THE BUTTON ON THE UI PANEL NEEDS THE EXACT SAME ITEM NAME.",
-            InfoMessageType.Warning, "isRelic")]
-        [HorizontalGroup("Bools"), TableColumnWidth(120)]
-        [VerticalGroup("Bools/a"), LabelWidth(90)]
-        [GUIColor(0.4f, 0.886f, 0.780f)]
-        public bool isRelic;
+    [Space]
+    [HorizontalGroup("Info")]
+    [TableColumnWidth(220)]
+    [VerticalGroup("Info/a")]
+    [LabelWidth(90)]
+    [TextArea(7, 7)]
+    [GUIColor(0.4f, 0.986f, 0.380f)]
+    public string itemDescription;
 
-        [HorizontalGroup("Values"), TableColumnWidth(140)]
-        [VerticalGroup("Values/a"), LabelWidth(100)]
-        [GUIColor(0.8f, 0.286f, 0.780f)]
-        public int itemCode;
+    [Space]
+    [HorizontalGroup("Bools")]
+    [TableColumnWidth(120)]
+    [VerticalGroup("Bools/a")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool itemSelected;
 
-        [HorizontalGroup("Values"), TableColumnWidth(140)]
-        [VerticalGroup("Values/a"), LabelWidth(100)]
-        [GUIColor(0.8f, 0.286f, 0.780f)]
-        public int valueInCoins;
+    [HorizontalGroup("Bools")]
+    [TableColumnWidth(120)]
+    [VerticalGroup("Bools/a")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isNewItem = true;
 
-        [HorizontalGroup("Values"), TableColumnWidth(140)]
-        [VerticalGroup("Values/a"), LabelWidth(100)]
-        [GUIColor(0.8f, 0.286f, 0.780f)]
-        public int amountOfEffect;
+    [HorizontalGroup("Bools")]
+    [TableColumnWidth(120)]
+    [VerticalGroup("Bools/a")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool shopItem;
 
-        [HorizontalGroup("Values"), TableColumnWidth(140)]
-        [VerticalGroup("Values/a"), LabelWidth(100)]
-        [GUIColor(0.8f, 0.286f, 0.780f)]
-        public int itemAttack;
+    [HorizontalGroup("Bools")]
+    [TableColumnWidth(120)]
+    [VerticalGroup("Bools/a")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isQuestObject;
 
-        [HorizontalGroup("Values"), TableColumnWidth(140)]
-        [VerticalGroup("Values/a"), LabelWidth(100)]
-        [GUIColor(0.8f, 0.286f, 0.780f)]
-        public int itemDefence;
+    [HorizontalGroup("Bools")]
+    [TableColumnWidth(120)]
+    [VerticalGroup("Bools/a")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool pickUpNotice = true;
 
-        [HorizontalGroup("Values"), TableColumnWidth(140)]
-        [VerticalGroup("Values/a"), LabelWidth(100)]
-        [GUIColor(0.8f, 0.286f, 0.780f)]
-        public int amount;
+    [HorizontalGroup("Bools")]
+    [TableColumnWidth(120)]
+    [VerticalGroup("Bools/a")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isRelic;
 
-        [HorizontalGroup("Types"), TableColumnWidth(90)]
-        [VerticalGroup("Types/a"), HideLabel]
-        [GUIColor(0.2f, 0.286f, 0.780f)]
-        public ItemsManager.ItemType itemType;
-        [HorizontalGroup("Types"), TableColumnWidth(90)]
-        [VerticalGroup("Types/a"), HideLabel]
-        [GUIColor(0.2f, 0.286f, 0.780f)]
-        public ItemsManager.Shop shop; // inventory, shop1, shop2, shop3
-        [HorizontalGroup("Types"), TableColumnWidth(90)]
-        [VerticalGroup("Types/a"), HideLabel]
-        [GUIColor(0.2f, 0.286f, 0.780f)]
-        public ItemsManager.AffectType affectType;
-        [HorizontalGroup("Types"), TableColumnWidth(90)]
-        [VerticalGroup("Types/a"), HideLabel]
-        [GUIColor(0.2f, 0.286f, 0.780f)]
-        public Sprite itemsImage;
-    }
+    [HorizontalGroup("Bools")]
+    [TableColumnWidth(120)]
+    [VerticalGroup("Bools/a")]
+    [LabelWidth(90)]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool isStackable;
+
+    [HorizontalGroup("Sprite")]
+    [TableColumnWidth(120)]
+    [VerticalGroup("Sprite/a")]
+    [HideLabel]
+    [Space]
+    [Space]
+    [Space]
+    [PreviewField(120, ObjectFieldAlignment.Center)]
+    [GUIColor(0.2f, 0.286f, 0.680f)]
+    public Sprite itemsImage;
+}

@@ -57,3 +57,11 @@ public enum ItemLists
     Shop,
     Count
 }
+
+public enum Shop
+{
+    Inventory,
+    shop1,
+    shop2,
+    shop3
+}

@@ -53,10 +53,12 @@ public class Inventory : MonoBehaviour, ISaveable
                 itemAlreadyInInventory = true;
             }
 
-            if (!itemAlreadyInInventory)
+            if (itemAlreadyInInventory)
             {
-                _inventoryList.Add(item);
+                return;
             }
+
+            _inventoryList.Add(item);
         }
         else
         {
@@ -178,7 +180,7 @@ public class Inventory : MonoBehaviour, ISaveable
         }
 
         _shopList.Remove(item);
-        item.shopItem = false;
+        item.isShopItem = false;
         Thulgran.ThulgranGold -= item.valueInCoins;
         Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
     }
@@ -260,7 +262,7 @@ public class Inventory : MonoBehaviour, ISaveable
     {
         _itemDetailsDictionary = new Dictionary<int, ItemDetails>();
 
-        foreach (ItemDetails itemDetails in itemsList.itemDetail.Where(itemDetails =>
+        foreach (ItemDetails itemDetails in itemsList.itemsDetails.Where(itemDetails =>
                      !_itemDetailsDictionary.ContainsKey(itemDetails.itemCode)))
         {
             _itemDetailsDictionary.Add(itemDetails.itemCode, itemDetails);

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System;
-using System.Collections;
 using UnityEngine;
 using System.Linq;
 
@@ -30,9 +29,15 @@ public static class Helpers
                 return stringArray;
             }
 
-            else return stringArray;
+            else
+            {
+                return stringArray;
+            }
         }
-        else return stringArray;
+        else
+        {
+            return stringArray;
+        }
     }
 
     /// <summary>
@@ -59,7 +64,10 @@ public static class Helpers
                 return stringArray;
             }
 
-            else return stringArray;
+            else
+            {
+                return stringArray;
+            }
         }
 
         else if (acceptDuplicates && newString != null)
@@ -70,7 +78,10 @@ public static class Helpers
             return stringArray;
         }
 
-        else return stringArray;
+        else
+        {
+            return stringArray;
+        }
     }
 
     /// <summary>
@@ -97,7 +108,10 @@ public static class Helpers
                 return intArray;
             }
 
-            else return intArray;
+            else
+            {
+                return intArray;
+            }
         }
 
         else if (acceptDuplicates)
@@ -108,8 +122,12 @@ public static class Helpers
             return intArray;
         }
 
-        else return intArray;
+        else
+        {
+            return intArray;
+        }
     }
+
     /// <summary>
     /// Returns all monobehaviours (casted to T)
     /// </summary>
@@ -118,10 +136,15 @@ public static class Helpers
     /// <returns></returns>
     public static T[] GetInterfaces<T>(this GameObject gObj)
     {
-        if (!typeof(T).IsInterface) throw new SystemException("Specified type is not an interface!");
-        var mObjs = gObj.GetComponents<MonoBehaviour>();
+        if (!typeof(T).IsInterface)
+        {
+            throw new SystemException("Specified type is not an interface!");
+        }
 
-        return (from a in mObjs where a.GetType().GetInterfaces().Any(k => k == typeof(T)) select (T)(object)a).ToArray();
+        MonoBehaviour[] mObjs = gObj.GetComponents<MonoBehaviour>();
+
+        return (from a in mObjs where a.GetType().GetInterfaces().Any(k => k == typeof(T)) select (T)(object)a)
+            .ToArray();
     }
 
     /// <summary>
@@ -132,7 +155,11 @@ public static class Helpers
     /// <returns></returns>
     public static T GetInterface<T>(this GameObject gObj)
     {
-        if (!typeof(T).IsInterface) throw new SystemException("Specified type is not an interface!");
+        if (!typeof(T).IsInterface)
+        {
+            throw new SystemException("Specified type is not an interface!");
+        }
+
         return gObj.GetInterfaces<T>().FirstOrDefault();
     }
 
@@ -144,7 +171,11 @@ public static class Helpers
     /// <returns></returns>
     public static T GetInterfaceInChildren<T>(this GameObject gObj)
     {
-        if (!typeof(T).IsInterface) throw new SystemException("Specified type is not an interface!");
+        if (!typeof(T).IsInterface)
+        {
+            throw new SystemException("Specified type is not an interface!");
+        }
+
         return gObj.GetInterfacesInChildren<T>().FirstOrDefault();
     }
 
@@ -156,11 +187,15 @@ public static class Helpers
     /// <returns></returns>
     public static T[] GetInterfacesInChildren<T>(this GameObject gObj)
     {
-        if (!typeof(T).IsInterface) throw new SystemException("Specified type is not an interface!");
+        if (!typeof(T).IsInterface)
+        {
+            throw new SystemException("Specified type is not an interface!");
+        }
 
-        var mObjs = gObj.GetComponentsInChildren<MonoBehaviour>();
+        MonoBehaviour[] mObjs = gObj.GetComponentsInChildren<MonoBehaviour>();
 
-        return (from a in mObjs where a.GetType().GetInterfaces().Any(k => k == typeof(T)) select (T)(object)a).ToArray();
+        return (from a in mObjs where a.GetType().GetInterfaces().Any(k => k == typeof(T)) select (T)(object)a)
+            .ToArray();
     }
 
     /// <summary>
@@ -176,7 +211,7 @@ public static class Helpers
 
         // Loop through all colliders to get an object of type T
 
-        T tComponent = default(T);
+        T tComponent = default;
 
         for (int i = 0; i < collider2DArray.Length; i++)
         {
@@ -206,7 +241,8 @@ public static class Helpers
     /// <summary>
     /// Gets Components of type T at box with centre point and size and angle.  Returns true if at least one found and the found components are returned in the list
     /// </summary>
-    public static bool GetComponentsAtBoxLocation<T>(out List<T> listComponentsAtBoxPosition, Vector2 point, Vector2 size, float angle)
+    public static bool GetComponentsAtBoxLocation<T>(out List<T> listComponentsAtBoxPosition, Vector2 point,
+        Vector2 size, float angle)
     {
         bool found = false;
         List<T> componentList = new List<T>();
@@ -241,13 +277,14 @@ public static class Helpers
     /// <summary>
     /// Returns array of components of type T at box with centre point and size and angle. The numberOfCollidersToTest for is passed as a parameter. Found components are returned in the array.
     /// </summary>
-    public static T[] GetComponentsAtBoxLocationNonAlloc<T>(int numberOfCollidersToTest, Vector2 point, Vector2 size, float angle)
+    public static T[] GetComponentsAtBoxLocationNonAlloc<T>(int numberOfCollidersToTest, Vector2 point, Vector2 size,
+        float angle)
     {
         Collider2D[] collider2DArray = new Collider2D[numberOfCollidersToTest];
 
         Physics2D.OverlapBoxNonAlloc(point, size, angle, collider2DArray);
 
-        T tComponent = default(T);
+        T tComponent = default;
 
         T[] componentArray = new T[collider2DArray.Length];
 
@@ -267,6 +304,11 @@ public static class Helpers
         return componentArray;
     }
 
-
+    /// <summary>
+    /// Gets a component of a child object that has siblings based on the Index number as a parameter.
+    /// </summary>
+    public static T GetComponentInChildren<T>(this GameObject gameObject, int index)
+    {
+        return gameObject.transform.GetChild(index).GetComponent<T>();
+    }
 }
-
