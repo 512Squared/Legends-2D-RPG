@@ -15,13 +15,13 @@ namespace DialogueEditor
         private const float OPTION_TEXT_BUF_Y = 10;
 
 
-        SerializedProperty BackgroundImageProperty;
-        SerializedProperty BackgroundImageSlicedProperty;
-        SerializedProperty OptionImageProperty;
-        SerializedProperty OptionImageSlicedProperty;
-        SerializedProperty ScrollTextProperty;
-        SerializedProperty ScrollTextSpeedProperty;
-        SerializedProperty AllowMouseInteractionProperty;
+        private SerializedProperty BackgroundImageProperty;
+        private SerializedProperty BackgroundImageSlicedProperty;
+        private SerializedProperty OptionImageProperty;
+        private SerializedProperty OptionImageSlicedProperty;
+        private SerializedProperty ScrollTextProperty;
+        private SerializedProperty ScrollTextSpeedProperty;
+        private SerializedProperty AllowMouseInteractionProperty;
 
         private void OnEnable()
         {
@@ -50,7 +50,7 @@ namespace DialogueEditor
             // Background image
             GUILayout.Label("Dialogue Image Options", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(BackgroundImageProperty);
-            EditorGUILayout.PropertyField(BackgroundImageSlicedProperty); 
+            EditorGUILayout.PropertyField(BackgroundImageSlicedProperty);
             EditorGUILayout.Space();
 
             // Option image
@@ -85,12 +85,12 @@ namespace DialogueEditor
             height = BOX_HEIGHT;
             if (t.BackgroundImage == null)
             {
-                boxRect = new Rect(contextRect.x + contextRect.width * 0.125f, contextRect.y + 10, width, height);
+                boxRect = new Rect(contextRect.x + (contextRect.width * 0.125f), contextRect.y + 10, width, height);
                 EditorGUI.DrawRect(boxRect, Color.black);
             }
             else
             {
-                boxRect = new Rect(contextRect.x + contextRect.width * 0.125f, contextRect.y + 10, width, height);
+                boxRect = new Rect(contextRect.x + (contextRect.width * 0.125f), contextRect.y + 10, width, height);
 
                 if (t.BackgroundImageSliced)
                 {
@@ -113,7 +113,7 @@ namespace DialogueEditor
 
             // Draw icon
             float difference = BOX_HEIGHT - ICON_SIZE;
-            Rect iconRect = new Rect(boxRect.x + BUFFER, boxRect.y + difference * 0.5f, ICON_SIZE, ICON_SIZE);
+            Rect iconRect = new Rect(boxRect.x + BUFFER, boxRect.y + (difference * 0.5f), ICON_SIZE, ICON_SIZE);
             EditorGUI.DrawRect(iconRect, Color.white);
             Rect tmpt = new Rect(iconRect);
             tmpt.x += 2f;
@@ -122,8 +122,8 @@ namespace DialogueEditor
 
             // Draw text
             float text_x, text_wid;
-            text_x = iconRect.x + iconRect.width + difference * 0.5f;
-            text_wid = ((boxRect.x + boxRect.width) - difference * 0.5f) - text_x;
+            text_x = iconRect.x + iconRect.width + (difference * 0.5f);
+            text_wid = boxRect.x + boxRect.width - (difference * 0.5f) - text_x;
             Rect textRect = new Rect(text_x, iconRect.y, text_wid, ICON_SIZE);
             GUIStyle textStyle = new GUIStyle();
             textStyle.normal.textColor = Color.white;
@@ -135,7 +135,7 @@ namespace DialogueEditor
             // Option (left)
             float option_x, option_wid;
             option_wid = boxRect.width * 0.8f;
-            option_x = boxRect.x + boxRect.width * 0.1f;
+            option_x = boxRect.x + (boxRect.width * 0.1f);
             Rect optionRect = new Rect(option_x, boxRect.y + boxRect.height + OPTION_BUFFER, option_wid, OPTION_HEIGHT);
             Rect optionTextRect = new Rect(optionRect);
             optionTextRect.x += optionRect.width * 0.4f;
@@ -163,6 +163,7 @@ namespace DialogueEditor
                     GUI.DrawTexture(optionRect, t.OptionImage.texture, ScaleMode.StretchToFill);
                 }
             }
+
             EditorGUI.LabelField(optionTextRect, "Option.", textStyle);
         }
     }

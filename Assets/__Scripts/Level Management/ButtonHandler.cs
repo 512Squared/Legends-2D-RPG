@@ -6,29 +6,27 @@ using System.Collections;
 
 public class ButtonHandler : MonoBehaviour
 {
-
     public static ButtonHandler instance;
     private GameObject useButton, sellButton;
 
 
-    void Awake()
+    private void Awake()
     {
         instance = this;
         useButton = GameObject.FindGameObjectWithTag("buttonUse");
         sellButton = GameObject.FindGameObjectWithTag("button_sell");
     }
 
-     public void UseButtonIsOn()
+    public void UseButtonIsOn()
     {
         useButton.GetComponent<Button>().interactable = true;
         sellButton.GetComponent<Button>().interactable = true;
     }
 
-    
+
     // this is to turn Inventory tab buttons into toggles, where when selected, tab is interactable
-    
-    [SerializeField]
-    private Button[] buttons;
+
+    [SerializeField] private Button[] buttons;
 
     public void SetAllButtonsInteractable()
     {
@@ -52,32 +50,38 @@ public class ButtonHandler : MonoBehaviour
         int buttonIndex = System.Array.IndexOf(buttons, clickedButton);
 
         if (buttonIndex == -1)
+        {
             return;
+        }
 
         SetAllButtonsInteractable();
 
         clickedButton.interactable = false;
-
     }
 
     public void OnButtonCalled(string calledTab)
     {
-
         SetAllButtonsInteractable();
 
-        if (calledTab == "weapon") buttons[1].interactable = false;
-        else if (calledTab == "armour" || calledTab == "helmet" || calledTab == "shield") buttons[2].interactable = false;
+        if (calledTab == "weapon")
+        {
+            buttons[1].interactable = false;
+        }
+        else if (calledTab == "armour" || calledTab == "helmet" || calledTab == "shield")
+        {
+            buttons[2].interactable = false;
+        }
     }
 
     public void ChangeButtonColorToGrayscale()
     {
-        var button = gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        button.color = new Color32(75,75,75,255);
+        TextMeshProUGUI button = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        button.color = new Color32(75, 75, 75, 255);
     }
 
     public void ChangeButtonColorToWhite()
     {
-        var button = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI button = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         button.color = new Color32(255, 255, 255, 255);
     }
 
@@ -86,9 +90,9 @@ public class ButtonHandler : MonoBehaviour
         StartCoroutine(UpdateNotifications());
     }
 
-    IEnumerator UpdateNotifications()
+    private IEnumerator UpdateNotifications()
     {
-        yield return null; 
-        MenuManager.instance.UpdateQuestNotifications();
+        yield return null;
+        MenuManager.Instance.UpdateQuestNotifications();
     }
 }

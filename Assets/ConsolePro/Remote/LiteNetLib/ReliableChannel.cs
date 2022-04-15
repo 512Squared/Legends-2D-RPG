@@ -14,7 +14,7 @@ namespace FlyingWormConsole3.LiteNetLib
 
             public NetPacket GetAndClear()
             {
-                var packet = Packet;
+                NetPacket packet = Packet;
                 Packet = null;
                 TimeStamp = null;
                 return packet;
@@ -22,10 +22,10 @@ namespace FlyingWormConsole3.LiteNetLib
         }
 
         private readonly Queue<NetPacket> _outgoingPackets;
-        private readonly bool[] _outgoingAcks;               //for send acks
-        private readonly PendingPacket[] _pendingPackets;    //for unacked packets and duplicates
-        private readonly NetPacket[] _receivedPackets;       //for order
-        private readonly bool[] _earlyReceived;              //for unordered
+        private readonly bool[] _outgoingAcks; //for send acks
+        private readonly PendingPacket[] _pendingPackets; //for unacked packets and duplicates
+        private readonly NetPacket[] _receivedPackets; //for order
+        private readonly bool[] _earlyReceived; //for unordered
 
         private int _localSeqence;
         private int _remoteSequence;
@@ -41,10 +41,7 @@ namespace FlyingWormConsole3.LiteNetLib
 
         private int _queueIndex;
 
-        public int PacketsInQueue
-        {
-            get { return _outgoingPackets.Count; }
-        }
+        public int PacketsInQueue => _outgoingPackets.Count;
 
         public ReliableChannel(NetPeer peer, bool ordered, int windowSize)
         {
@@ -62,9 +59,13 @@ namespace FlyingWormConsole3.LiteNetLib
             }
 
             if (_ordered)
+            {
                 _receivedPackets = new NetPacket[_windowSize];
+            }
             else
+            {
                 _earlyReceived = new bool[_windowSize];
+            }
 
             _localWindowStart = 0;
             _localSeqence = 0;
@@ -75,7 +76,7 @@ namespace FlyingWormConsole3.LiteNetLib
         //ProcessAck in packet
         public void ProcessAck(NetPacket packet)
         {
-            int validPacketSize = (_windowSize - 1) / BitsInByte + 1 + NetConstants.SequencedHeaderSize;
+            int validPacketSize = ((_windowSize - 1) / BitsInByte) + 1 + NetConstants.SequencedHeaderSize;
             if (packet.Size != validPacketSize)
             {
                 NetUtils.DebugWrite("[PA]Invalid acks packet size");
@@ -111,7 +112,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     continue;
                 }
 
-                int currentByte = startByte + i / BitsInByte;
+                int currentByte = startByte + (i / BitsInByte);
                 int currentBit = i % BitsInByte;
 
                 if ((acksData[currentByte] & (1 << currentBit)) == 0)
@@ -139,6 +140,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     NetUtils.DebugWrite("[PA]Removing reliableInOrder ack: {0} - false", ackSequence);
                 }
             }
+
             Monitor.Exit(_pendingPackets);
         }
 
@@ -163,6 +165,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     {
                         packet = _outgoingPackets.Dequeue();
                     }
+
                     packet.Sequence = (ushort)_localSeqence;
                     _pendingPackets[_localSeqence % _windowSize].Packet = packet;
                     _localSeqence = (_localSeqence + 1) % NetConstants.MaxSequence;
@@ -192,7 +195,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 if (currentPacket.Packet != null)
                 {
                     //check send time
-                    if(currentPacket.TimeStamp.HasValue)
+                    if (currentPacket.TimeStamp.HasValue)
                     {
                         double packetHoldTime = (currentTime - currentPacket.TimeStamp.Value).TotalMilliseconds;
                         if (packetHoldTime > _peer.ResendDelay)
@@ -216,6 +219,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 _peer.SendRawData(currentPacket.Packet);
                 NetUtils.DebugWrite("[RR]Sended");
             }
+
             Monitor.Exit(_pendingPackets);
             return packetFound;
         }
@@ -223,15 +227,18 @@ namespace FlyingWormConsole3.LiteNetLib
         public void SendAcks()
         {
             if (!_mustSendAcks)
+            {
                 return;
+            }
+
             _mustSendAcks = false;
 
             NetUtils.DebugWrite("[RR]SendAcks");
 
             //Init packet
-            int bytesCount = (_windowSize - 1) / BitsInByte + 1;
+            int bytesCount = ((_windowSize - 1) / BitsInByte) + 1;
             PacketProperty property = _ordered ? PacketProperty.AckReliableOrdered : PacketProperty.AckReliable;
-            var acksPacket = _peer.GetPacketFromPool(property, bytesCount);
+            NetPacket acksPacket = _peer.GetPacketFromPool(property, bytesCount);
 
             //For quick access
             byte[] data = acksPacket.RawData; //window start + acks size
@@ -245,7 +252,7 @@ namespace FlyingWormConsole3.LiteNetLib
             int currentAckIndex = startAckIndex;
             int currentBit = 0;
             int currentByte = NetConstants.SequencedHeaderSize;
-            do 
+            do
             {
                 if (_outgoingAcks[currentAckIndex])
                 {
@@ -258,8 +265,10 @@ namespace FlyingWormConsole3.LiteNetLib
                     currentByte++;
                     currentBit = 0;
                 }
+
                 currentAckIndex = (currentAckIndex + 1) % _windowSize;
             } while (currentAckIndex != startAckIndex);
+
             Monitor.Exit(_outgoingAcks);
 
             _peer.SendRawData(acksPacket);
@@ -285,12 +294,13 @@ namespace FlyingWormConsole3.LiteNetLib
             }
 
             //Drop bad packets
-            if(relate < 0)
+            if (relate < 0)
             {
                 //Too old packet doesn't ack
                 NetUtils.DebugWrite("[RR]ReliableInOrder too old");
                 return;
             }
+
             if (relate >= _windowSize * 2)
             {
                 //Some very new packet
@@ -338,7 +348,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 if (_ordered)
                 {
                     NetPacket p;
-                    while ( (p = _receivedPackets[_remoteSequence % _windowSize]) != null)
+                    while ((p = _receivedPackets[_remoteSequence % _windowSize]) != null)
                     {
                         //process holded packet
                         _receivedPackets[_remoteSequence % _windowSize] = null;

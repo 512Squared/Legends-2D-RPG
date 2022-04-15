@@ -35,7 +35,7 @@ namespace DialogueEditor
     [DataContract]
     public class EditableSpeechConnection : EditableConnection
     {
-        public override eConnectiontype ConnectionType { get { return eConnectiontype.Speech; } }
+        public override eConnectiontype ConnectionType => eConnectiontype.Speech;
 
         public EditableSpeechNode Speech;
 
@@ -49,7 +49,7 @@ namespace DialogueEditor
     [DataContract]
     public class EditableOptionConnection : EditableConnection
     {
-        public override eConnectiontype ConnectionType { get { return eConnectiontype.Option; } }
+        public override eConnectiontype ConnectionType => eConnectiontype.Option;
 
         public EditableOptionNode Option;
 

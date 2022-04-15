@@ -90,30 +90,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 9
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 2000
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: The Wheel of Vairocana
-  itemDescription: The Wheel of Vairocana once protected the Portal of the Three
-    worlds. It generated a powerful forcefield that made anyone will ill-intention
-    fall into a deep sleep. The Wheel of Vairocana can be used to create a protective
-    shield around a party for a limited time.
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 1
-  pickUpNotice: 0
-  isRelic: 1
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: d16a69530cdb5af41a4bb5a1e1f97141, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 6573711320976888662}
-  polyCollider: {fileID: 5276649756072764575}
 --- !u!114 &5276649756072764568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +139,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1063
-  itemDetails:
+  spriteRenderer: {fileID: 6573711320976888662}
+  polyCollider: {fileID: 5276649756072764575}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -176,7 +154,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

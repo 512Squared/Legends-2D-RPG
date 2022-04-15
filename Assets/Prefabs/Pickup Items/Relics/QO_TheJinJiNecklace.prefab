@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3622294894872155240}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -14.789997, y: 3.8800006, z: -5.13}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children:
@@ -90,29 +90,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 9
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 2000
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: The Jin Ji Necklace
-  itemDescription: The Jinji necklace is made from the skulls of the Mithrian Jins,
-    who used to feed on the undead in the olden times. The necklace will make all
-    but the most stupid of undead creatures unwilling to attack.
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 1
-  pickUpNotice: 0
-  isRelic: 1
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 12e3f829aca179545b8d8b9b274733ae, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 4181654062634510768}
-  polyCollider: {fileID: 3622294894872155243}
 --- !u!114 &3622294894872155242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +139,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1073
-  itemDetails:
+  spriteRenderer: {fileID: 4181654062634510768}
+  polyCollider: {fileID: 3622294894872155243}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -175,7 +154,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

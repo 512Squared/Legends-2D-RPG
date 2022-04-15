@@ -5,104 +5,99 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 
-[System.Serializable]
+[Serializable]
 public class Quest : MonoBehaviour
 {
-
     #region SERIALIZATION
-    [HorizontalGroup("Quests", 100)]
-    [BoxGroup("Quests/Image"), HideLabel]
-    [GUIColor(1f, 0.1f, 0.715f)]
+
+    [HorizontalGroup("Quests", 100)] [BoxGroup("Quests/Image")] [HideLabel] [GUIColor(1f, 0.1f, 0.715f)]
     public Sprite questImage;
-    [HorizontalGroup("Quests", 100)]
-    [BoxGroup("Quests/Image"), HideLabel]
-    [GUIColor(1f, 0.1f, 0.715f)]
+
+    [HorizontalGroup("Quests", 100)] [BoxGroup("Quests/Image")] [HideLabel] [GUIColor(1f, 0.1f, 0.715f)]
     public Sprite questReward;
+
     [TextArea(14, 20)]
     [HorizontalGroup("Quests", LabelWidth = 20)]
-    [BoxGroup("Quests/Name"), HideLabel]
+    [BoxGroup("Quests/Name")]
+    [HideLabel]
     [GUIColor(0.878f, 0.219f, 0.219f)]
     public string questName;
+
     [TextArea(14, 20)]
     [HorizontalGroup("Quests")]
-    [BoxGroup("Quests/Description"), HideLabel]
+    [BoxGroup("Quests/Description")]
+    [HideLabel]
     [GUIColor(0.5f, 0.4f, 0.315f)]
     public string questDescription;
+
     [TextArea(14, 20)]
     [HorizontalGroup("Quests")]
-    [BoxGroup("Quests/Done Message"), HideLabel]
+    [BoxGroup("Quests/Done Message")]
+    [HideLabel]
     [GUIColor(0.447f, 0.654f, 0.996f)]
     public string onDoneMessage;
-    [Space]
-    [HorizontalGroup("Info")]
-    [VerticalGroup("Info/a")]
-    [GUIColor(1f, 1f, 0.215f)]
+
+    [Space] [HorizontalGroup("Info")] [VerticalGroup("Info/a")] [GUIColor(1f, 1f, 0.215f)]
     public int questID;
-    [VerticalGroup("Info/a")]
-    [GUIColor(1f, 1f, 0.215f)]
+
+    [VerticalGroup("Info/a")] [GUIColor(1f, 1f, 0.215f)]
     public int trophiesAwarded = 10;
-    [VerticalGroup("Info/a")]
-    [GUIColor(1f, 1f, 0.215f)]
+
+    [VerticalGroup("Info/a")] [GUIColor(1f, 1f, 0.215f)]
     public float messageFadeTime = 5f;
-    [Space]
-    [VerticalGroup("Info/b")]
-    [GUIColor(1f, 1f, 0.215f)]
+
+    [Space] [VerticalGroup("Info/b")] [GUIColor(1f, 1f, 0.215f)]
     public int thisStage;
-    [VerticalGroup("Info/b")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [ShowIf("isMasterQuest")]
+
+    [VerticalGroup("Info/b")] [GUIColor(1f, 1f, 0.215f)] [ShowIf("isMasterQuest")]
     public int totalMasterStages = 1;
-    [VerticalGroup("Info/b")]
-    [GUIColor(1f, 1f, 0.215f)]
+
+    [VerticalGroup("Info/b")] [GUIColor(1f, 1f, 0.215f)]
     public int completedStages = 0;
 
 
     [Space]
-    [HorizontalGroup("Bools"), TableColumnWidth(1200)]
-    [VerticalGroup("Bools/a"), LabelWidth(90)]
+    [HorizontalGroup("Bools")]
+    [TableColumnWidth(1200)]
+    [VerticalGroup("Bools/a")]
+    [LabelWidth(90)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isActive;
-    [VerticalGroup("Bools/a"), LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [VerticalGroup("Bools/a")] [LabelWidth(90)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isDone;
-    [VerticalGroup("Bools/a"), LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [VerticalGroup("Bools/a")] [LabelWidth(90)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isItem;
-    [VerticalGroup("Bools/a"), LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [VerticalGroup("Bools/a")] [LabelWidth(90)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isSubQuest;
 
-    [Space]
-    [VerticalGroup("Bools/b"), LabelWidth(110)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [Space] [VerticalGroup("Bools/b")] [LabelWidth(110)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isMasterQuest;
-    [VerticalGroup("Bools/b"), LabelWidth(110)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [VerticalGroup("Bools/b")] [LabelWidth(110)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool hasSubQuests;
-    [VerticalGroup("Bools/b"), LabelWidth(110)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [VerticalGroup("Bools/b")] [LabelWidth(110)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool markOnEnter;
-    [VerticalGroup("Bools/b"), LabelWidth(110)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [VerticalGroup("Bools/b")] [LabelWidth(110)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool activateOnEnter;
-    [Space]
-    [VerticalGroup("Bools/c"), LabelWidth(160)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [Space] [VerticalGroup("Bools/c")] [LabelWidth(160)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool enabledAfterDone;
-    [VerticalGroup("Bools/c"), LabelWidth(160)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [VerticalGroup("Bools/c")] [LabelWidth(160)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool questRewardClaimed;
-    [VerticalGroup("Bools/c"), LabelWidth(160)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    [ShowIf("isItem")]
+
+    [VerticalGroup("Bools/c")] [LabelWidth(160)] [GUIColor(0.4f, 0.886f, 0.780f)] [ShowIf("isItem")]
     public bool itemIsRelic;
-    [VerticalGroup("Bools/c"), LabelWidth(160)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
+    [VerticalGroup("Bools/c")] [LabelWidth(160)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool bonusRewardItem;
 
-    [Space]
-    [ShowInInspector]
-    [GUIColor(1f, 0.886f, 0.780f)]
+    [Space] [ShowInInspector] [GUIColor(1f, 0.886f, 0.780f)]
     public QuestRewards rewards;
 
     [Space]
@@ -110,39 +105,41 @@ public class Quest : MonoBehaviour
     [PropertyTooltip("If there are no subQuests, this should be empty")]
     [ShowIf("hasSubQuests")]
     public Quest[] subQuests;
-    [ShowIf("isSubQuest"), Required]
-    [GUIColor(.5f, 0.8f, 0.215f)]
+
+    [ShowIf("isSubQuest")] [Required] [GUIColor(.5f, 0.8f, 0.215f)]
     public Quest masterQuest;
+
     [Space]
     [PropertyTooltip("If this item is a relic, drag the appropriate relicBox from the Relics UI panel")]
     [GUIColor(.5f, 0.8f, 0.215f)]
     [ShowIf("itemIsRelic")]
-    [SerializeField] RectTransform relicBox;
-    [ShowIf("isItem")]
-    [GUIColor(.5f, 0.8f, 0.215f)]
-    [PropertyTooltip("drag quest object into this box from hierarchy")]
-    public ItemsManager questElement;
-    [Space]
+    [SerializeField]
+    private RectTransform relicBox;
 
-    [TextArea(2, 15)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [ShowIf("isItem")] [GUIColor(.5f, 0.8f, 0.215f)] [PropertyTooltip("drag quest object into this box from hierarchy")]
+    public Item questElement;
+
+    [Space] [TextArea(2, 15)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public string onActivateMessage;
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool notifyOnActivate;
+
+    [GUIColor(0.4f, 0.886f, 0.780f)] public bool notifyOnActivate;
+
     [Space]
-    [InfoBox("IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER ON THE GAMEOBJECT SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.", InfoMessageType.Warning, "showWarnings")]
+    [InfoBox(
+        "IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER ON THE GAMEOBJECT SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.",
+        InfoMessageType.Warning, "showWarnings")]
     public bool showWarnings = true;
 
     private Quest[] childQuests;
-    [HideInInspector]
-    public int masterStages;
+
+    [HideInInspector] public int masterStages;
+
     //[HideInInspector]
     public bool isExpanded = true;
+
     //[HideInInspector]
     public bool toggleMasterSub;
-    [HideInInspector]
-    public bool resetChildren;
-
+    [HideInInspector] public bool resetChildren;
 
     #endregion SERIALIZATION
 
@@ -179,40 +176,54 @@ public class Quest : MonoBehaviour
         if (isActive && !isDone)
         {
             isDone = true;
-            Debug.Log($"QuestID: {questID}");
             questID -= 1000;
-            if (isMasterQuest) questID -= 500;
+            if (isMasterQuest)
+            {
+                questID -= 500;
+            }
 
-            if (isItem && questElement != null) Inventory.Instance.AddItems(questElement);
+            if (isItem && questElement != null)
+            {
+                Inventory.Instance.AddItems(questElement);
+            }
 
             Actions.OnQuestCompleted?.Invoke(questName);
 
-            MenuManager.instance.notifyQuestReward++;
-            MenuManager.instance.notifyActiveQuest--;
-            MenuManager.instance.QuestCompletePanel(this, GetChildQuests());
+            MenuManager.Instance.notifyQuestReward++;
+            MenuManager.Instance.notifyActiveQuest--;
+            MenuManager.Instance.QuestCompletePanel(this, GetChildQuests());
 
-            if (questElement != null && questElement.pickUpNotice == true) NotifyPlayer();
+            if (questElement != null && questElement.SO.pickUpNotice == true)
+            {
+                NotifyPlayer();
+            }
 
             ActivateSubQuests(questName);
 
-            Debug.Log($"Quest Completed: {questName} | QuestID: {questID}");
-
-            if (!isMasterQuest && !isSubQuest) completedStages++;
+            if (!isMasterQuest && !isSubQuest)
+            {
+                completedStages++;
+            }
 
             if (isSubQuest)
             {
                 masterQuest.completedStages++;
-                Debug.Log($"masterQuest: {masterQuest.questName} | subQuest: {questName} | Stages: {masterQuest.completedStages} / {masterQuest.totalMasterStages} ");
                 if (masterQuest.MasterQuestComplete())
                 {
                     Actions.MarkQuestCompleted?.Invoke(masterQuest.questName);
                 }
             }
 
-            if (isItem) questElement.spriteRenderer.enabled = enabledAfterDone;
-            if (isItem) questElement.polyCollider.enabled = enabledAfterDone;
+            if (isItem)
+            {
+                questElement.gameObject.GetComponentInChildren<SpriteRenderer>(0).enabled = enabledAfterDone;
+                Debug.Log($"Quest element. Renderer disabled: {questElement.SO.itemName}");
+            }
 
-
+            if (isItem)
+            {
+                questElement.gameObject.GetComponent<PolygonCollider2D>().enabled = enabledAfterDone;
+            }
         }
 
         else
@@ -223,12 +234,17 @@ public class Quest : MonoBehaviour
 
     private void NotifyPlayer()
     {
-        NotificationFader.instance.CallFadeInOut($"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", questImage, messageFadeTime, 1000, 30);
+        NotificationFader.instance.CallFadeInOut(
+            $"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", questImage,
+            messageFadeTime, 1000, 30);
     }
 
     private void UpdateQuestStatus(string questCompleted)
     {
-        if (questCompleted == questName) MarkTheQuest(); // basic but core
+        if (questCompleted == questName)
+        {
+            MarkTheQuest(); // basic but core
+        }
     }
 
     private void ActivateQuest(string questToActivate)
@@ -236,11 +252,12 @@ public class Quest : MonoBehaviour
         if (questToActivate == questName)
         {
             isActive = true;
-            MenuManager.instance.notifyActiveQuest++;
+            MenuManager.Instance.notifyActiveQuest++;
             if (isItem)
             {
                 questElement.polyCollider.enabled = true;
                 questElement.spriteRenderer.enabled = true;
+                Debug.Log($"Renderer enabled: {questElement.SO.itemName}");
             }
         }
     }
@@ -261,23 +278,27 @@ public class Quest : MonoBehaviour
 
     private void ActivateAfterDialogue(string trigger, string questToActivate, string questToComplete)
     {
-
         if (questToActivate == questName && trigger == "activate")
         {
             ActivateQuest(questToActivate);
             ActivateSubQuests(questToActivate);
-            NotificationFader.instance.CallFadeInOut($"You have activated a new quest: <color=#E0A515>{questName}</color>.{onActivateMessage}", questImage, 5f, 1000, 30);
+            NotificationFader.instance.CallFadeInOut(
+                $"You have activated a new quest: <color=#E0A515>{questName}</color>.{onActivateMessage}", questImage,
+                5f, 1000, 30);
         }
+
         if (questToComplete == questName && trigger == "complete")
         {
             MarkTheQuest();
         }
+
         if (questToComplete == questName && trigger == "both")
         {
             if (questToComplete == questName)
             {
                 MarkTheQuest();
             }
+
             if (questToActivate == questName)
             {
                 ActivateQuest(questToActivate);
@@ -291,13 +312,19 @@ public class Quest : MonoBehaviour
         ActivateQuest(questName);
         ActivateSubQuests(questName);
         if (notifyOnActivate)
-            NotificationFader.instance.CallFadeInOut($"You have activated a new quest: <color=#E0A515>{questName}</color>.{onActivateMessage}", questImage, 5f, 1000, 30);
+        {
+            NotificationFader.instance.CallFadeInOut(
+                $"You have activated a new quest: <color=#E0A515>{questName}</color>.{onActivateMessage}", questImage,
+                5f, 1000, 30);
+        }
     }
 
-    IEnumerator DelayedMessage()
+    private IEnumerator DelayedMessage()
     {
         yield return new WaitForSeconds(5.1f);
-        NotificationFader.instance.CallFadeInOut($"You have activated a new quest: <color=#E0A515>{questName}</color>.{onActivateMessage}", questImage, 5f, 1000, 30);
+        NotificationFader.instance.CallFadeInOut(
+            $"You have activated a new quest: <color=#E0A515>{questName}</color>.{onActivateMessage}", questImage, 5f,
+            1000, 30);
     }
 
     private bool MasterQuestComplete()
@@ -306,13 +333,18 @@ public class Quest : MonoBehaviour
         {
             for (int i = 1; i < childQuests.Length; i++)
             {
-                if (childQuests[i].isDone == false) return false;
+                if (childQuests[i].isDone == false)
+                {
+                    return false;
+                }
             }
 
             return true;
         }
         else
+        {
             return false;
+        }
     }
 
     public bool IsMasterComplete()
@@ -322,7 +354,10 @@ public class Quest : MonoBehaviour
             isActive = false;
             return true;
         }
-        else return false;
+        else
+        {
+            return false;
+        }
     }
 
     private void ClaimQuestReward(Quest quest)
@@ -331,15 +366,15 @@ public class Quest : MonoBehaviour
         {
             Debug.Log($"Quest Reward called: {quest.questName} | questID: {quest.questID}");
             questRewardClaimed = true;
-            MenuManager.instance.notifyQuestReward--;
+            MenuManager.Instance.notifyQuestReward--;
 
             QuestManager.Instance.HandOutReward(rewards);
-            MenuManager.instance.UpdateQuestNotifications();
+            MenuManager.Instance.UpdateQuestNotifications();
 
-            if (questElement != null && questElement.isRelic)
+            if (questElement != null && questElement.SO.isRelic)
             {
-                Debug.Log($"Item: {questElement.itemName} | isRelic: {questElement.isRelic}");
-                MenuManager.instance.notifyRelicActive++;
+                Debug.Log($"Item: {questElement.SO.itemName} | isRelic: {questElement.SO.isRelic}");
+                MenuManager.Instance.notifyRelicActive++;
 
                 // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
                 Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
@@ -348,6 +383,7 @@ public class Quest : MonoBehaviour
                     t.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
                     t.GetComponent<Image>().material = null;
                 }
+
                 relicBox.GetComponent<Image>().color = new Color32(13, 15, 41, 255);
             }
         }
@@ -359,22 +395,22 @@ public class Quest : MonoBehaviour
         {
             for (int i = 1; i < childQuests.Length; i++)
             {
-                if (childQuests[i].isDone && !childQuests[i].questRewardClaimed) return true;
+                if (childQuests[i].isDone && !childQuests[i].questRewardClaimed)
+                {
+                    return true;
+                }
             }
 
             return false;
         }
         else
+        {
             return false;
+        }
     }
 
     public Quest[] GetChildQuests()
     {
-        if (isMasterQuest)
-        {
-            return childQuests;
-        }
-        else return null;
+        return isMasterQuest ? childQuests : null;
     }
-
 }

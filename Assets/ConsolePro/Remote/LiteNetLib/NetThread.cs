@@ -29,10 +29,7 @@ namespace FlyingWormConsole3.LiteNetLib
         private bool _running;
         private readonly string _name;
 
-        public bool IsRunning
-        {
-            get { return _running; }
-        }
+        public bool IsRunning => _running;
 
         public NetThread(string name, int sleepTime, Action callback)
         {
@@ -44,17 +41,16 @@ namespace FlyingWormConsole3.LiteNetLib
         public void Start()
         {
             if (_running)
+            {
                 return;
+            }
+
             _running = true;
 #if USE_WINRT
             var thread = new PreallocatedWorkItem(ThreadLogic, WorkItemPriority.Normal, WorkItemOptions.TimeSliced);
             thread.RunAsync().AsTask();
 #else
-            _thread = new Thread(ThreadLogic)
-            {
-                Name = _name,
-                IsBackground = true
-            };
+            _thread = new Thread(ThreadLogic) {Name = _name, IsBackground = true};
             _thread.Start();
 #endif
         }
@@ -62,7 +58,10 @@ namespace FlyingWormConsole3.LiteNetLib
         public void Stop()
         {
             if (!_running)
+            {
                 return;
+            }
+
             _running = false;
 
 #if USE_WINRT

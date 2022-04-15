@@ -29,7 +29,7 @@ namespace DialogueEditor
             SpeechNode = node;
         }
 
-        public override eConnectionType ConnectionType { get { return eConnectionType.Speech; } }
+        public override eConnectionType ConnectionType => eConnectionType.Speech;
 
         public SpeechNode SpeechNode;
     }
@@ -41,7 +41,7 @@ namespace DialogueEditor
             OptionNode = node;
         }
 
-        public override eConnectionType ConnectionType { get { return eConnectionType.Option; } }
+        public override eConnectionType ConnectionType => eConnectionType.Option;
 
         public OptionNode OptionNode;
     }

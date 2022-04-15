@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6343201945600682458}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.11, y: -2.0799994, z: 2}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
@@ -139,28 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 1
-  affectType: 0
-  shop: 0
-  itemCode: 0
-  valueInCoins: -120
-  amountOfEffect: 200
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Red Healing Potion Large
-  itemDescription: 'This extra special potion not only heals, but increases total
-    hit points by 50. '
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 1
-  itemsImage: {fileID: 21300000, guid: e52ea25af699fd445b7046374f81a5b9, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 6810707137108723851}
-  polyCollider: {fileID: 3608846696803364229}
 --- !u!60 &3608846696803364229
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -485,7 +463,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1043
-  itemDetails:
+  spriteRenderer: {fileID: 6810707137108723851}
+  polyCollider: {fileID: 3608846696803364229}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -498,7 +478,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

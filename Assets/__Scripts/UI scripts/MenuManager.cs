@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -12,7 +11,7 @@ using DG.Tweening;
 
 public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 {
-    public static MenuManager instance;
+    public static MenuManager Instance;
 
     #region FIELDS
 
@@ -359,7 +358,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         newQuestRelicActiveText,
         totalQuestNofifyText;
 
-    [GUIColor(0.878f, 0.219f, 0.219f)] public ItemsManager activeItem;
+    [GUIColor(0.878f, 0.219f, 0.219f)] public Item activeItem;
 
     [GUIColor(0.878f, 0.219f, 0.219f)]
     public CanvasGroup questsTabNofify, claimsTabNofify, relicsTabNofify, totalQuestNofify;
@@ -434,7 +433,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     private void Start()
     {
-        instance = this;
+        Instance = this;
         mainEquipInfoPanel.DOAnchorPos(Vector2.zero, 0f);
         mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
     }
@@ -482,13 +481,13 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     #region INVOCATIONS
 
-    public void UpdateStats_1(ItemsManager item, int character, Vector2 position)
+    public void UpdateStats_1(Item item, int character, Vector2 position)
     {
         UpdateStats();
         UpdateItemsInventory();
     }
 
-    public void UpdateStats_2(ItemsManager item)
+    public void UpdateStats_2(Item item)
     {
         UpdateStats(); //hook into Actions without all the Args
         UpdateItemsInventory();
@@ -768,7 +767,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         Debug.Log("InventoryLeft panel animations engaged");
 
-        if (activeItem.affectType == ItemsManager.AffectType.Hp)
+        if (activeItem.SO.affectType == AffectType.Hp)
         {
             playerStats[0].characterHP = Thulgran.ThulgranHP;
 
@@ -785,7 +784,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
                 .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
                 .Join(hpEquipSlider[panelStuff]
-                    .DOValue(playerStats[panelStuff].characterHP + activeItem.amountOfEffect, 1.8f));
+                    .DOValue(playerStats[panelStuff].characterHP + activeItem.SO.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
 
 
@@ -796,7 +795,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             Debug.Log("Slider HP fill scale enacted");
         }
 
-        else if (activeItem.affectType == ItemsManager.AffectType.Mana)
+        else if (activeItem.SO.affectType == AffectType.Mana)
         {
             playerStats[0].characterMana = Thulgran.ThulgranMana;
 
@@ -813,7 +812,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
                 .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
                 .Join(manaEquipSlider[panelStuff]
-                    .DOValue(playerStats[panelStuff].characterMana + activeItem.amountOfEffect, 1.8f));
+                    .DOValue(playerStats[panelStuff].characterMana + activeItem.SO.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
 
             yield return new WaitForSecondsRealtime(1.8f);
@@ -822,12 +821,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
             Debug.Log("Slider Mana fill expand and slide");
         }
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour ||
-                 activeItem.itemType == ItemsManager.ItemType.Weapon ||
-                 activeItem.itemType == ItemsManager.ItemType.Helmet ||
-                 activeItem.itemType == ItemsManager.ItemType.Shield)
+        else if (activeItem.SO.itemType == ItemType.Armour ||
+                 activeItem.SO.itemType == ItemType.Weapon ||
+                 activeItem.SO.itemType == ItemType.Helmet ||
+                 activeItem.SO.itemType == ItemType.Shield)
         {
-            if (activeItem.itemType == ItemsManager.ItemType.Armour)
+            if (activeItem.SO.itemType == ItemType.Armour)
             {
                 InventoryStats();
                 Sequence sequence = DOTween.Sequence()
@@ -835,7 +834,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
-            else if (activeItem.itemType == ItemsManager.ItemType.Weapon)
+            else if (activeItem.SO.itemType == ItemType.Weapon)
             {
                 InventoryStats();
                 Sequence sequence = DOTween.Sequence()
@@ -844,7 +843,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
 
-            else if (activeItem.itemType == ItemsManager.ItemType.Helmet)
+            else if (activeItem.SO.itemType == ItemType.Helmet)
             {
                 InventoryStats();
                 Sequence sequence = DOTween.Sequence()
@@ -853,7 +852,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
 
-            else if (activeItem.itemType == ItemsManager.ItemType.Shield)
+            else if (activeItem.SO.itemType == ItemType.Shield)
             {
                 InventoryStats();
                 Sequence sequence = DOTween.Sequence()
@@ -936,19 +935,19 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                 equippedWeaponName[i].text = playerStats[i].characterWeaponName;
                 equippedWeaponImage[i].sprite = playerStats[i].characterWeaponImage;
-                equippedWeaponBonus[i].text = "+" + playerStats[i].characterWeapon.itemAttack.ToString();
+                equippedWeaponBonus[i].text = "+" + playerStats[i].characterWeapon.SO.itemAttack.ToString();
 
                 equippedArmourName[i].text = playerStats[i].characterArmourName;
                 equippedArmourImage[i].sprite = playerStats[i].characterArmourImage;
-                equippedArmourBonus[i].text = "+" + playerStats[i].characterArmour.itemDefence.ToString();
+                equippedArmourBonus[i].text = "+" + playerStats[i].characterArmour.SO.itemDefence.ToString();
 
                 equippedHelmetName[i].text = playerStats[i].characterHelmetName;
                 equippedHelmetImage[i].sprite = playerStats[i].characterHelmetImage;
-                equippedHelmetBonus[i].text = "+" + playerStats[i].characterHelmet.itemDefence.ToString();
+                equippedHelmetBonus[i].text = "+" + playerStats[i].characterHelmet.SO.itemDefence.ToString();
 
                 equippedShieldName[i].text = playerStats[i].characterShieldName;
                 equippedShieldImage[i].sprite = playerStats[i].characterShieldImage;
-                equippedShieldBonus[i].text = "+" + playerStats[i].characterShield.itemDefence.ToString();
+                equippedShieldBonus[i].text = "+" + playerStats[i].characterShield.SO.itemDefence.ToString();
 
 
                 // this assigns a basic weapon and armour if none are set so that UI doesn't return blanks
@@ -1067,10 +1066,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     teamInventoryAttackTotal[i].text =
                         $"<color=#CFCFCF>{playerStats[i].characterBaseAttack}</color> +{(playerStats[i].characterAttackTotal - playerStats[i].characterBaseAttack).ToString()}";
 
-                    teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmour.itemDefence.ToString();
-                    teamItemHelmetBonus[i].text = "+" + playerStats[i].characterHelmet.itemDefence.ToString();
-                    teamItemShieldBonus[i].text = "+" + playerStats[i].characterShield.itemDefence.ToString();
-                    teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeapon.itemAttack.ToString();
+                    teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmour.SO.itemDefence.ToString();
+                    teamItemHelmetBonus[i].text = "+" + playerStats[i].characterHelmet.SO.itemDefence.ToString();
+                    teamItemShieldBonus[i].text = "+" + playerStats[i].characterShield.SO.itemDefence.ToString();
+                    teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeapon.SO.itemAttack.ToString();
                 }
 
                 // these are the references for the Team Overview (add to party)
@@ -1121,11 +1120,11 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public void CallToUseItem(int selectedCharacter)
     {
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " +
-                  "Item: " + activeItem.itemName);
+                  "Item: " + activeItem.SO.itemName);
 
         panelStuff = selectedCharacter;
 
-        if (activeItem.affectType == ItemsManager.AffectType.Hp)
+        if (activeItem.SO.affectType == AffectType.Hp)
         {
             if (selectedCharacter != 0)
             {
@@ -1151,7 +1150,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     OnPlayerButton();
                     ItemInfoReset();
 
-                    Debug.Log(activeItem.amountOfEffect + " HP given to " + playerStats[selectedCharacter].playerName);
+                    Debug.Log(activeItem.SO.amountOfEffect + " HP given to " + playerStats[selectedCharacter]
+                        .playerName);
                 }
             }
 
@@ -1178,13 +1178,14 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     UpdateItemsInventory();
                     OnPlayerButton();
                     ItemInfoReset();
-                    Debug.Log($"CallToUseItem completed | {activeItem.amountOfEffect} HP should have been given to " +
-                              playerStats[selectedCharacter].playerName);
+                    Debug.Log(
+                        $"CallToUseItem completed | {activeItem.SO.amountOfEffect} HP should have been given to " +
+                        playerStats[selectedCharacter].playerName);
                 }
             }
         }
 
-        else if (activeItem.affectType == ItemsManager.AffectType.Mana)
+        else if (activeItem.SO.affectType == AffectType.Mana)
         {
             if (selectedCharacter != 0)
             {
@@ -1208,7 +1209,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     UpdateItemsInventory();
                     OnPlayerButton();
                     ItemInfoReset();
-                    Debug.Log(activeItem.amountOfEffect + " mana given to " +
+                    Debug.Log(activeItem.SO.amountOfEffect + " mana given to " +
                               playerStats[selectedCharacter].playerName);
                 }
             }
@@ -1236,16 +1237,16 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     OnPlayerButton();
                     ItemInfoReset();
 
-                    Debug.Log(activeItem.amountOfEffect + " mana given to " +
+                    Debug.Log(activeItem.SO.amountOfEffect + " mana given to " +
                               playerStats[selectedCharacter].playerName);
                 }
             }
         }
 
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour ||
-                 activeItem.itemType == ItemsManager.ItemType.Weapon ||
-                 activeItem.itemType == ItemsManager.ItemType.Helmet ||
-                 activeItem.itemType == ItemsManager.ItemType.Shield)
+        else if (activeItem.SO.itemType == ItemType.Armour ||
+                 activeItem.SO.itemType == ItemType.Weapon ||
+                 activeItem.SO.itemType == ItemType.Helmet ||
+                 activeItem.SO.itemType == ItemType.Shield)
         {
             cancelButton.SetActive(false);
             useButton.GetComponent<Button>().interactable = false;
@@ -1317,7 +1318,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         itemName.text = "Select an item";
         itemDescription.text = "";
         itemImage.sprite = masking;
-        instance.itemValue.text = "";
+        Instance.itemValue.text = "";
         effectText.text = "0";
         itemDamage.text = "";
         itemDamageBox.SetActive(false);
@@ -1353,15 +1354,15 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         mainEquipInfoPanel.DOAnchorPos(new Vector2(-750, 0), 1f);
 
-        if (activeItem.itemType == ItemsManager.ItemType.Potion || activeItem.itemType == ItemsManager.ItemType.Food)
+        if (activeItem.SO.itemType == ItemType.Potion || activeItem.SO.itemType == ItemType.Food)
         {
             characterChoicePanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
 
-        else if (activeItem.itemType == ItemsManager.ItemType.Armour ||
-                 activeItem.itemType == ItemsManager.ItemType.Weapon ||
-                 activeItem.itemType == ItemsManager.ItemType.Helmet ||
-                 activeItem.itemType == ItemsManager.ItemType.Shield)
+        else if (activeItem.SO.itemType == ItemType.Armour ||
+                 activeItem.SO.itemType == ItemType.Weapon ||
+                 activeItem.SO.itemType == ItemType.Helmet ||
+                 activeItem.SO.itemType == ItemType.Shield)
         {
             characterWeaponryPanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
@@ -1707,7 +1708,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterWeaponImage;
             teamPopWeaponryName.text = playerStats[selectedCharacter].characterWeaponName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterWeaponDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeapon.itemAttack.ToString();
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeapon.SO.itemAttack.ToString();
             teamPopWeaponryBonusText.text = "Weapon Power:";
         }
         else if (itemType == "armour")
@@ -1715,7 +1716,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterArmourImage;
             teamPopWeaponryName.text = playerStats[selectedCharacter].characterArmourName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterArmourDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmour.itemDefence.ToString();
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmour.SO.itemDefence.ToString();
             teamPopWeaponryBonusText.text = "Armour Defence:";
         }
 
@@ -1725,7 +1726,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterHelmetImage;
             teamPopWeaponryName.text = playerStats[selectedCharacter].characterHelmetName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterHelmetDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterHelmet.itemDefence.ToString();
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterHelmet.SO.itemDefence.ToString();
             teamPopWeaponryBonusText.text = "Helmet Defence:";
         }
 
@@ -1734,7 +1735,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterShieldImage;
             teamPopWeaponryName.text = playerStats[selectedCharacter].characterShieldName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterShieldDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterShield.itemDefence.ToString();
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterShield.SO.itemDefence.ToString();
             teamPopWeaponryBonusText.text = "Shield Defence:";
         }
     }
@@ -1762,21 +1763,22 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         }
 
 
-        foreach (ItemsManager item in Inventory.Instance.GetItemsList())
+        foreach (Item item in Inventory.Instance.GetItemsList())
         {
-            if (item.isShopItem == false)
+            if (item.SO.isShopItem == false)
             {
                 RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
 
                 // show item image
 
                 Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
-                itemImage.sprite = item.itemsImage;
+                // itemImage.sprite = item.itemsImage; original
+                itemImage.sprite = item.SO.itemsImage;
 
                 TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
-                if (item.amount > 1)
+                if (item.quantity > 1)
                 {
-                    itemsAmountText.text = item.amount.ToString();
+                    itemsAmountText.text = item.quantity.ToString();
                 }
                 else
                 {
@@ -1785,28 +1787,22 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                 itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
 
-                switch (item.itemType)
+                int i = -1;
+                i = item.SO.itemType switch
                 {
-                    case ItemsManager.ItemType.Food:
-                        foodItems++;
-                        break;
-                    case ItemsManager.ItemType.Potion:
-                        potionItems++;
-                        break;
-                    case ItemsManager.ItemType.Item:
-                        itemItems++;
-                        break;
-                    case ItemsManager.ItemType.Weapon:
-                        weaponItems++;
-                        break;
-                    case ItemsManager.ItemType.Armour:
-                        armourItems++;
-                        break;
-                }
+                    ItemType.Food => foodItems++,
+                    ItemType.Potion => potionItems++,
+                    ItemType.Item => itemItems++,
+                    ItemType.Weapon => weaponItems++,
+                    ItemType.Armour => armourItems++,
+                    ItemType.Helmet => armourItems++,
+                    ItemType.Shield => armourItems++,
+                    _ => i
+                };
 
                 // new items - needs to run here to count how many new items
 
-                if (item.isNewItem == true)
+                if (item.SO.isNewItem == true)
                 {
                     GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
                     currentNewItems++;
@@ -1818,18 +1814,18 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 {
                     // Removing focus from previously selected items 
 
-                    if (item.itemSelected == false)
+                    if (item.SO.itemSelected == false)
                     {
                         itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
                         GameManager.Instance.isItemSelected = false;
 
-                        if (item.isNewItem == true)
+                        if (item.SO.isNewItem == true)
                         {
                             itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
                         }
                         // new items - set red marker; count item
 
-                        if (item.isNewItem == false)
+                        if (item.SO.isNewItem == false)
                         {
                             itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
                         }
@@ -1837,9 +1833,9 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                     // ITEM SORTING FOR SELECTED ITEM
 
-                    else if (item.itemSelected == true) // if item has been selected
+                    else if (item.SO.itemSelected == true) // if item has been selected
                     {
-                        item.itemSelected = false;
+                        item.SO.itemSelected = false;
                         itemSlot.GetComponent<ButtonBounce>().AnimateItemSelection(); // button bounce
                         itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
 
@@ -1849,7 +1845,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                         // NEW ITEM tagging
 
-                        item.isNewItem = false; // switch off new item tag after selection
+                        item.SO.isNewItem = false; // switch off new item tag after selection
                         itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
 
                         // SORTING BY ITEM TYPE
@@ -1859,26 +1855,28 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                         //  SORT BY POTIONS
 
-                        if (item.affectType == ItemsManager.AffectType.Hp)
+                        if (item.SO.affectType == AffectType.Hp)
                         {
-                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect}");
+                            Debug.Log(
+                                $"Type: {item.SO.itemType} | Name: {item.SO.itemName} | Effect: {item.SO.amountOfEffect}");
 
                             textUseEquipTake.text = "Give";
 
 
                             // EFFECT MODIFIER (on item info)
 
-                            if (item.itemName == "Mana Potion")
+                            if (item.SO.itemName == "Mana Potion")
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                                effectText.text = "+" + item.amountOfEffect.ToString();
+                                effectText.text = "+" + item.SO.amountOfEffect.ToString();
                             }
 
-                            else if (item.itemName == "Red Healing Potion" || item.itemName == "Green Healing Potion" ||
-                                     item.itemName == "Red Healing Potion Large")
+                            else if (item.SO.itemName == "Red Healing Potion" ||
+                                     item.SO.itemName == "Green Healing Potion" ||
+                                     item.SO.itemName == "Red Healing Potion Large")
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                                effectText.text = "+" + item.amountOfEffect.ToString();
+                                effectText.text = "+" + item.SO.amountOfEffect.ToString();
                             }
 
                             else
@@ -1887,52 +1885,53 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                             }
                         }
 
-                        if (item.affectType == ItemsManager.AffectType.Speed)
+                        if (item.SO.affectType == AffectType.Speed)
                         {
-                            Debug.Log($"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect}");
+                            Debug.Log(
+                                $"Type: {item.SO.itemType} | Name: {item.SO.itemName} | Effect: {item.SO.amountOfEffect}");
                             effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            effectText.text = "x" + item.amountOfEffect.ToString();
+                            effectText.text = "x" + item.SO.amountOfEffect.ToString();
                         }
 
                         // EFFECT - FOOD
 
-                        if (item.itemType == ItemsManager.ItemType.Food)
+                        if (item.SO.itemType == ItemType.Food)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            effectText.text = "+" + item.amountOfEffect.ToString();
-                            Debug.Log("Food: " + item.amountOfEffect + " | " + "Alpha status: " +
+                            effectText.text = "+" + item.SO.amountOfEffect.ToString();
+                            Debug.Log("Food: " + item.SO.amountOfEffect + " | " + "Alpha status: " +
                                       GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
                         }
 
                         // SORT BY ARMOUR
 
-                        if (item.itemType == ItemsManager.ItemType.Armour ||
-                            item.itemType == ItemsManager.ItemType.Helmet ||
-                            item.itemType == ItemsManager.ItemType.Shield)
+                        if (item.SO.itemType == ItemType.Armour ||
+                            item.SO.itemType == ItemType.Helmet ||
+                            item.SO.itemType == ItemType.Shield)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
                             Debug.Log(
-                                $"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect} | Power: {item.itemAttack} | Defence: {item.itemDefence}");
+                                $"Type: {item.SO.itemType} | Name: {item.SO.itemName} | Effect: {item.SO.amountOfEffect} | Power: {item.SO.itemAttack} | Defence: {item.SO.itemDefence}");
                             textUseEquipTake.text = "Equip";
                         }
 
                         // SORT BY WEAPON
 
-                        if (item.itemType == ItemsManager.ItemType.Weapon)
+                        if (item.SO.itemType == ItemType.Weapon)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
                             Debug.Log(
-                                $"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect} | Weapon Power: {item.itemAttack} | Armour Defence: {item.itemDefence}");
+                                $"Type: {item.SO.itemType} | Name: {item.SO.itemName} | Effect: {item.SO.amountOfEffect} | Weapon Power: {item.SO.itemAttack} | Armour Defence: {item.SO.itemDefence}");
                             textUseEquipTake.text = "Equip";
                         }
 
                         // SORT BY NORMAL ITEMS
 
-                        if (item.itemType == ItemsManager.ItemType.Item)
+                        if (item.SO.itemType == ItemType.Item)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
                             Debug.Log(
-                                $"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect} | Weapon Power: {item.itemAttack} | Armour Defence: {item.itemDefence}");
+                                $"Type: {item.SO.itemType} | Name: {item.SO.itemName} | Effect: {item.SO.amountOfEffect} | Weapon Power: {item.SO.itemAttack} | Armour Defence: {item.SO.itemDefence}");
                             textUseEquipTake.text = "Use";
                         }
                     }
@@ -1942,18 +1941,18 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 if (weaponBool == true)
 
                 {
-                    if (item.itemType == ItemsManager.ItemType.Weapon)
+                    if (item.SO.itemType == ItemType.Weapon)
                     {
                         itemSlot.gameObject.SetActive(true);
                     }
-                    else if (item.itemType == ItemsManager.ItemType.Potion ||
-                             item.itemType == ItemsManager.ItemType.Armour ||
-                             item.itemType == ItemsManager.ItemType.Item ||
-                             item.itemType == ItemsManager.ItemType.Skill ||
-                             item.itemType == ItemsManager.ItemType.Food ||
-                             item.itemType == ItemsManager.ItemType.Helmet ||
-                             item.itemType == ItemsManager.ItemType.Shield ||
-                             item.itemType == ItemsManager.ItemType.Relic)
+                    else if (item.SO.itemType == ItemType.Potion ||
+                             item.SO.itemType == ItemType.Armour ||
+                             item.SO.itemType == ItemType.Item ||
+                             item.SO.itemType == ItemType.Skill ||
+                             item.SO.itemType == ItemType.Food ||
+                             item.SO.itemType == ItemType.Helmet ||
+                             item.SO.itemType == ItemType.Shield ||
+                             item.SO.itemType == ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -1961,17 +1960,17 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 else if (armourBool == true)
 
                 {
-                    if (item.itemType == ItemsManager.ItemType.Armour)
+                    if (item.SO.itemType == ItemType.Armour)
                     {
                         itemSlot.gameObject.SetActive(true);
                     }
 
-                    if (item.itemType == ItemsManager.ItemType.Potion ||
-                        item.itemType == ItemsManager.ItemType.Weapon ||
-                        item.itemType == ItemsManager.ItemType.Item ||
-                        item.itemType == ItemsManager.ItemType.Spell ||
-                        item.itemType == ItemsManager.ItemType.Food ||
-                        item.itemType == ItemsManager.ItemType.Relic)
+                    if (item.SO.itemType == ItemType.Potion ||
+                        item.SO.itemType == ItemType.Weapon ||
+                        item.SO.itemType == ItemType.Item ||
+                        item.SO.itemType == ItemType.Spell ||
+                        item.SO.itemType == ItemType.Food ||
+                        item.SO.itemType == ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -1979,18 +1978,18 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 else if (itemBool == true)
 
                 {
-                    if (item.itemType == ItemsManager.ItemType.Item ||
-                        item.itemType == ItemsManager.ItemType.Relic)
+                    if (item.SO.itemType == ItemType.Item ||
+                        item.SO.itemType == ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(true);
                     }
 
-                    if (item.itemType == ItemsManager.ItemType.Potion ||
-                        item.itemType == ItemsManager.ItemType.Armour ||
-                        item.itemType == ItemsManager.ItemType.Weapon ||
-                        item.itemType == ItemsManager.ItemType.Spell ||
-                        item.itemType == ItemsManager.ItemType.Helmet ||
-                        item.itemType == ItemsManager.ItemType.Shield)
+                    if (item.SO.itemType == ItemType.Potion ||
+                        item.SO.itemType == ItemType.Armour ||
+                        item.SO.itemType == ItemType.Weapon ||
+                        item.SO.itemType == ItemType.Spell ||
+                        item.SO.itemType == ItemType.Helmet ||
+                        item.SO.itemType == ItemType.Shield)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -1998,18 +1997,18 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 else if (spellBool == true)
 
                 {
-                    if (item.itemType == ItemsManager.ItemType.Spell)
+                    if (item.SO.itemType == ItemType.Spell)
                     {
                         itemSlot.gameObject.SetActive(true);
                     }
 
-                    if (item.itemType == ItemsManager.ItemType.Potion ||
-                        item.itemType == ItemsManager.ItemType.Armour ||
-                        item.itemType == ItemsManager.ItemType.Item ||
-                        item.itemType == ItemsManager.ItemType.Weapon ||
-                        item.itemType == ItemsManager.ItemType.Helmet ||
-                        item.itemType == ItemsManager.ItemType.Shield ||
-                        item.itemType == ItemsManager.ItemType.Relic)
+                    if (item.SO.itemType == ItemType.Potion ||
+                        item.SO.itemType == ItemType.Armour ||
+                        item.SO.itemType == ItemType.Item ||
+                        item.SO.itemType == ItemType.Weapon ||
+                        item.SO.itemType == ItemType.Helmet ||
+                        item.SO.itemType == ItemType.Shield ||
+                        item.SO.itemType == ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -2017,19 +2016,19 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 else if (potionBool == true)
 
                 {
-                    if (item.itemType == ItemsManager.ItemType.Potion)
+                    if (item.SO.itemType == ItemType.Potion)
                     {
                         itemSlot.gameObject.SetActive(true);
                     }
 
-                    if (item.itemType == ItemsManager.ItemType.Weapon ||
-                        item.itemType == ItemsManager.ItemType.Armour ||
-                        item.itemType == ItemsManager.ItemType.Item ||
-                        item.itemType == ItemsManager.ItemType.Spell ||
-                        item.itemType == ItemsManager.ItemType.Food ||
-                        item.itemType == ItemsManager.ItemType.Helmet ||
-                        item.itemType == ItemsManager.ItemType.Shield ||
-                        item.itemType == ItemsManager.ItemType.Relic)
+                    if (item.SO.itemType == ItemType.Weapon ||
+                        item.SO.itemType == ItemType.Armour ||
+                        item.SO.itemType == ItemType.Item ||
+                        item.SO.itemType == ItemType.Spell ||
+                        item.SO.itemType == ItemType.Food ||
+                        item.SO.itemType == ItemType.Helmet ||
+                        item.SO.itemType == ItemType.Shield ||
+                        item.SO.itemType == ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }

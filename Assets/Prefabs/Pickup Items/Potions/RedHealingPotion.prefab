@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4493424781893218027}
-  m_LocalRotation: {x: -0, y: -0, z: -0.47693765, w: 0.8789371}
+  m_LocalRotation: {x: 0, y: 0, z: -0.47693634, w: 0.87893784}
   m_LocalPosition: {x: -9.23, y: -5.25, z: -5.13}
   m_LocalScale: {x: 0.70000005, y: 0.70000005, z: 1}
   m_Children:
@@ -139,27 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 1
-  affectType: 0
-  shop: 3
-  itemCode: 0
-  valueInCoins: -40
-  amountOfEffect: 50
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Red Healing Potion
-  itemDescription: Healing vial
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 1
-  itemsImage: {fileID: 21300000, guid: b247ef8a899ae4425b46bad4a10a76b8, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 7374143234025316578}
-  polyCollider: {fileID: 2532410841087230137}
 --- !u!60 &2532410841087230137
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -217,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1039
-  itemDetails:
+  spriteRenderer: {fileID: 7374143234025316578}
+  polyCollider: {fileID: 2532410841087230137}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -230,7 +211,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

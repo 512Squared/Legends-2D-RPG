@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TeamWeaponryPopup : MonoBehaviour
 {
-
     private string weaponryType;
     public CanvasGroup fadeImage;
     public CanvasGroup fadeImage2;
 
-    void Start()
+    private void Start()
     {
         transform.localScale = Vector3.zero;
     }
@@ -27,7 +24,7 @@ public class TeamWeaponryPopup : MonoBehaviour
         fadeImage.blocksRaycasts = true;
         fadeImage.interactable = true;
 
-        MenuManager.instance.TeamWeaponryPopup(chosenPlayer, weaponryType);
+        MenuManager.Instance.TeamWeaponryPopup(chosenPlayer, weaponryType);
         transform.LeanScale(Vector3.one, 0.6f).setEaseOutBack();
     }
 
@@ -39,15 +36,15 @@ public class TeamWeaponryPopup : MonoBehaviour
         fadeImage.blocksRaycasts = false;
         fadeImage.interactable = false;
     }
-    
+
     public void Change()
     {
-        MenuManager.instance.SortByItemType(weaponryType);
+        MenuManager.Instance.SortByItemType(weaponryType);
         transform.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
         fadeImage.LeanAlpha(0, 0.5f);
         fadeImage2.LeanAlpha(0f, 0.5f);
-        
     }
+
     public void OpenRelicInfo(string relicName)
     {
         Debug.Log($"Popup called: {relicName}");
@@ -57,7 +54,7 @@ public class TeamWeaponryPopup : MonoBehaviour
         fadeImage.blocksRaycasts = true;
         fadeImage.interactable = true;
         transform.LeanScale(Vector3.one, 0.6f).setEaseOutBack();
-        MenuManager.instance.OpenRelicInfo(relicName);
+        MenuManager.Instance.OpenRelicInfo(relicName);
     }
 
 
@@ -66,5 +63,5 @@ public class TeamWeaponryPopup : MonoBehaviour
         transform.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
         fadeImage.LeanAlpha(0, 0.5f);
         fadeImage2.LeanAlpha(0f, 0.5f);
-    }    
+    }
 }

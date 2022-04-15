@@ -92,7 +92,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6637303381616704348}
-  - component: {fileID: 6637303381616704350}
   - component: {fileID: 6637303381616704351}
   - component: {fileID: 8733900456571827629}
   - component: {fileID: 6637303381616704344}
@@ -111,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6637303381616703651}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.3799999, y: -0.8, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -119,32 +118,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6637303381616704350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6637303381616703651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 1
-  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c201fa2079d019040cd
-  m_ShapePath:
-  - {x: -1.28, y: -1.28, z: 0}
-  - {x: -1.28, y: 1.28, z: 0}
-  - {x: 1.28, y: 1.28, z: 0}
-  - {x: 1.28, y: -1.28, z: 0}
-  m_ShapePathHash: 0
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 24786
 --- !u!114 &6637303381616704351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,28 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 1
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 32
-  itemDefence: 0
-  itemName: Longsword of Idris
-  itemDescription: Celtic longsword, fabled to be forged in the mountain caves of
-    Idris
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: da3489a989b315644b2918cb9df15709, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 7679015206284368105}
-  polyCollider: {fileID: 8733900456571827629}
 --- !u!60 &8733900456571827629
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -245,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1019
-  itemDetails:
+  spriteRenderer: {fileID: 7679015206284368105}
+  polyCollider: {fileID: 8733900456571827629}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -258,7 +211,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

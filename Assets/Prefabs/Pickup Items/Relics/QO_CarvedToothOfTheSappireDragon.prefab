@@ -95,29 +95,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 9
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 80
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Carved Tooth from the Sapphire Dragon
-  itemDescription: The Sapphire Dragon was a magical dragon from ancient times who
-    ruled the other magical dragons by virtue of being immune to dragon magic. This
-    Ancient Relic protects the wearer against all dragon's magical attacks.
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 1
-  pickUpNotice: 0
-  isRelic: 1
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 621a8b990afbbb6409a4f838ddcba868, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 8935466162386419957}
-  polyCollider: {fileID: 775267174409634164}
 --- !u!114 &775267174409634167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +144,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1065
-  itemDetails:
+  spriteRenderer: {fileID: 8935466162386419957}
+  polyCollider: {fileID: 775267174409634164}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -180,7 +159,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

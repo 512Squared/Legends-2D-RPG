@@ -10,7 +10,7 @@ namespace DialogueEditor
             idleOff,
             animatingOn,
             idleOn,
-            animatingOff,
+            animatingOff
         }
 
         public enum eButtonType
@@ -21,7 +21,7 @@ namespace DialogueEditor
         }
 
         // Getters
-        public eButtonType ButtonType { get { return m_buttonType; } }
+        public eButtonType ButtonType => m_buttonType;
 
         // UI Elements
         [SerializeField] private TMPro.TextMeshProUGUI TextMesh = null;
@@ -30,13 +30,13 @@ namespace DialogueEditor
 
         // Node data
         private eButtonType m_buttonType;
-        private ConversationNode m_node;    
+        private ConversationNode m_node;
 
         // Hovering 
         private float m_hoverT = 0.0f;
         private eHoverState m_hoverState;
-        private bool Hovering { get { return (m_hoverState == eHoverState.animatingOn || m_hoverState == eHoverState.animatingOff); } }
-        private Vector3 BigSize { get { return Vector3.one * 1.2f; } }
+        private bool Hovering => m_hoverState == eHoverState.animatingOn || m_hoverState == eHoverState.animatingOff;
+        private Vector3 BigSize => Vector3.one * 1.2f;
 
 
         //--------------------------------------
@@ -60,9 +60,10 @@ namespace DialogueEditor
                     normalised = 1;
                     done = true;
                 }
+
                 Vector3 size = Vector3.one;
                 float ease = EaseOutQuart(normalised);
-                
+
 
                 switch (m_hoverState)
                 {
@@ -78,12 +79,10 @@ namespace DialogueEditor
 
                 if (done)
                 {
-                    m_hoverState = (m_hoverState == eHoverState.animatingOn) ? eHoverState.idleOn : eHoverState.idleOff;
+                    m_hoverState = m_hoverState == eHoverState.animatingOn ? eHoverState.idleOn : eHoverState.idleOff;
                 }
             }
         }
-
-
 
 
         //--------------------------------------
@@ -117,8 +116,6 @@ namespace DialogueEditor
         }
 
 
-
-
         //--------------------------------------
         // Public calls
         //--------------------------------------
@@ -126,7 +123,11 @@ namespace DialogueEditor
         public void SetHovering(bool selected)
         {
             if (selected && (m_hoverState == eHoverState.animatingOn || m_hoverState == eHoverState.idleOn)) { return; }
-            if (!selected && (m_hoverState == eHoverState.animatingOff || m_hoverState == eHoverState.idleOff)) { return; }
+
+            if (!selected && (m_hoverState == eHoverState.animatingOff || m_hoverState == eHoverState.idleOff))
+            {
+                return;
+            }
 
             if (selected)
                 m_hoverState = eHoverState.animatingOn;
@@ -171,7 +172,8 @@ namespace DialogueEditor
             TextMesh.color = c_text;
         }
 
-        public void SetupButton(eButtonType buttonType, ConversationNode node, TMPro.TMP_FontAsset continueFont = null, TMPro.TMP_FontAsset endFont = null)
+        public void SetupButton(eButtonType buttonType, ConversationNode node, TMPro.TMP_FontAsset continueFont = null,
+            TMPro.TMP_FontAsset endFont = null)
         {
             m_buttonType = buttonType;
             m_node = node;
@@ -202,8 +204,6 @@ namespace DialogueEditor
         }
 
 
-
-
         //--------------------------------------
         // Private logic
         //--------------------------------------
@@ -227,15 +227,13 @@ namespace DialogueEditor
         }
 
 
-
-
         //--------------------------------------
         // Util
         //--------------------------------------
 
         private static float EaseOutQuart(float normalized)
         {
-            return (1 - Mathf.Pow(1 - normalized, 4));
+            return 1 - Mathf.Pow(1 - normalized, 4);
         }
     }
 }

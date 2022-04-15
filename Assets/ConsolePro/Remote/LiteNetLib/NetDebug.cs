@@ -1,5 +1,5 @@
 #if DEBUG && !UNITY_WP_8_1 && !UNITY_WSA
-﻿using System;
+using System;
 
 namespace FlyingWormConsole3.LiteNetLib
 {

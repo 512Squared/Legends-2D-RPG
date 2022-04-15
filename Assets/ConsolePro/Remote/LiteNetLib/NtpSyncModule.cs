@@ -27,11 +27,13 @@ namespace FlyingWormConsole3.LiteNetLib
                 return;
             }
 
-            ulong intPart = (ulong)data[40] << 24 | (ulong)data[41] << 16 | (ulong)data[42] << 8 | (ulong)data[43];
-            ulong fractPart = (ulong)data[44] << 24 | (ulong)data[45] << 16 | (ulong)data[46] << 8 | (ulong)data[47];
+            ulong intPart = ((ulong)data[40] << 24) | ((ulong)data[41] << 16) | ((ulong)data[42] << 8) |
+                            (ulong)data[43];
+            ulong fractPart = ((ulong)data[44] << 24) | ((ulong)data[45] << 16) | ((ulong)data[46] << 8) |
+                              (ulong)data[47];
 
-            var milliseconds = (intPart * 1000) + ((fractPart * 1000) / 0x100000000L);
-            SyncedTime = (new DateTime(1900, 1, 1)).AddMilliseconds((long)milliseconds);
+            ulong milliseconds = (intPart * 1000) + (fractPart * 1000 / 0x100000000L);
+            SyncedTime = new DateTime(1900, 1, 1).AddMilliseconds((long)milliseconds);
 
             _waiter.Set();
         }
@@ -39,9 +41,11 @@ namespace FlyingWormConsole3.LiteNetLib
         public void GetNetworkTime()
         {
             if (SyncedTime != null)
+            {
                 return;
+            }
 
-            var ntpData = new byte[48];
+            byte[] ntpData = new byte[48];
             //LeapIndicator = 0 (no warning)
             //VersionNum = 3
             //Mode = 3 (Client Mode)
@@ -51,8 +55,10 @@ namespace FlyingWormConsole3.LiteNetLib
             int errorCode = 0;
             _socket.SendTo(ntpData, 0, ntpData.Length, _ntpEndPoint, ref errorCode);
 
-            if(errorCode == 0)
+            if (errorCode == 0)
+            {
                 _waiter.WaitOne(1000);
+            }
         }
     }
 }

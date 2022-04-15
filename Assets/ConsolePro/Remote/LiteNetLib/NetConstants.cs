@@ -21,7 +21,7 @@ namespace FlyingWormConsole3.LiteNetLib
         //socket
         public const string MulticastGroupIPv4 = "224.0.0.1";
         public const string MulticastGroupIPv6 = "FF02:0:0:0:0:0:0:1";
-        public const int SocketBufferSize = 1024*1024; //2mb
+        public const int SocketBufferSize = 1024 * 1024; //2mb
         public const int SocketTTL = 255;
 
         //protocol
@@ -34,12 +34,12 @@ namespace FlyingWormConsole3.LiteNetLib
 
         public static readonly int[] PossibleMtu =
         {
-            576 - MaxUdpHeaderSize,  //Internet Path MTU for X.25 (RFC 879)
+            576 - MaxUdpHeaderSize, //Internet Path MTU for X.25 (RFC 879)
             1492 - MaxUdpHeaderSize, //Ethernet with LLC and SNAP, PPPoE (RFC 1042)
             1500 - MaxUdpHeaderSize, //Ethernet II (RFC 1191)
             4352 - MaxUdpHeaderSize, //FDDI
             4464 - MaxUdpHeaderSize, //Token ring
-            7981 - MaxUdpHeaderSize  //WLAN
+            7981 - MaxUdpHeaderSize //WLAN
         };
 
         public static int MaxPacketSize = PossibleMtu[PossibleMtu.Length - 1];

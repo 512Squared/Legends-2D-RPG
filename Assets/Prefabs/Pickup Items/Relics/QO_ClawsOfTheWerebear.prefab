@@ -173,29 +173,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 9
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 2000
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Claws of the Werebear
-  itemDescription: The Werebear threatened the village of Dreydor for decades until
-    it was finally defeated by the fabled warrior Chardis the Red. They are fabled
-    to give yourself some protection against the undead.
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 1
-  pickUpNotice: 0
-  isRelic: 1
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: d351796a6d387db47a0365d66e8564ba, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 6070839152009715307}
-  polyCollider: {fileID: 4723371325951483400}
 --- !u!114 &4723371325951483407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,7 +222,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1066
-  itemDetails:
+  spriteRenderer: {fileID: 6070839152009715307}
+  polyCollider: {fileID: 4723371325951483400}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -258,7 +237,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

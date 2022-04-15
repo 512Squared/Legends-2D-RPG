@@ -31,20 +31,31 @@ namespace DialogueEditor
             for (int i = 0; i < SpeechNodes.Count; i++)
             {
                 if (SpeechNodes[i].EditorInfo.isRoot)
+                {
                     return SpeechNodes[i];
+                }
             }
+
             return null;
         }
 
         public EditableConversationNode GetNodeByUID(int uid)
         {
             for (int i = 0; i < SpeechNodes.Count; i++)
+            {
                 if (SpeechNodes[i].ID == uid)
+                {
                     return SpeechNodes[i];
+                }
+            }
 
             for (int i = 0; i < Options.Count; i++)
+            {
                 if (Options[i].ID == uid)
+                {
                     return Options[i];
+                }
+            }
 
             return null;
         }
@@ -52,8 +63,12 @@ namespace DialogueEditor
         public EditableSpeechNode GetSpeechByUID(int uid)
         {
             for (int i = 0; i < SpeechNodes.Count; i++)
+            {
                 if (SpeechNodes[i].ID == uid)
+                {
                     return SpeechNodes[i];
+                }
+            }
 
             return null;
         }
@@ -61,8 +76,12 @@ namespace DialogueEditor
         public EditableOptionNode GetOptionByUID(int uid)
         {
             for (int i = 0; i < Options.Count; i++)
+            {
                 if (Options[i].ID == uid)
+                {
                     return Options[i];
+                }
+            }
 
             return null;
         }

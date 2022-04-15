@@ -14,7 +14,7 @@ namespace DialogueEditor
 
         public EditableSetParamAction(string paramName)
         {
-            this.ParameterName = paramName;
+            ParameterName = paramName;
         }
 
         public abstract eParamActionType ParamActionType { get; }
@@ -27,7 +27,7 @@ namespace DialogueEditor
     {
         public EditableSetIntParamAction(string paramName) : base(paramName) { }
 
-        public override eParamActionType ParamActionType { get { return eParamActionType.Int; } }
+        public override eParamActionType ParamActionType => eParamActionType.Int;
 
         [DataMember] public int Value;
     }
@@ -37,7 +37,7 @@ namespace DialogueEditor
     {
         public EditableSetBoolParamAction(string paramName) : base(paramName) { }
 
-        public override eParamActionType ParamActionType { get { return eParamActionType.Bool; } }
+        public override eParamActionType ParamActionType => eParamActionType.Bool;
 
         [DataMember] public bool Value;
     }

@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 214918776272254957}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.19, y: -3.0999997, z: 2}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
@@ -56,28 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 3
-  affectType: 2
-  shop: 0
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 0
-  itemDefence: 13
-  itemName: Elven Leather Armour
-  itemDescription: 'Basic Leather Armour but with a bit of dwarf spit to strengthen
-    it. '
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 1
-  itemsImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
-  amount: 0
-  spriteRenderer: {fileID: 3071500027934836204}
-  polyCollider: {fileID: 8001462553517145189}
 --- !u!60 &8001462553517145189
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -174,7 +152,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1023
-  itemDetails:
+  spriteRenderer: {fileID: 3071500027934836204}
+  polyCollider: {fileID: 8001462553517145189}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -187,7 +167,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

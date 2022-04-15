@@ -5,7 +5,6 @@ using System;
 
 public class Thulgran : Rewardable<QuestRewards>, IDamageable
 {
-
     #region Singleton
 
     public static Thulgran instance;
@@ -16,10 +15,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
     #region Core stats
 
     private static int s_thulgranGold = 10;
+
     [ShowInInspector]
     public static int ThulgranGold
     {
-        get { return s_thulgranGold; }
+        get => s_thulgranGold;
         set
         {
             s_thulgranGold = value;
@@ -28,10 +28,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
     }
 
     private static int s_thulgranHP = 10;
+
     [ShowInInspector]
     public static int ThulgranHP
     {
-        get { return s_thulgranHP; }
+        get => s_thulgranHP;
         set
         {
             s_thulgranHP = value;
@@ -40,10 +41,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
     }
 
     private static int s_thulgranMana = 10;
+
     [ShowInInspector]
     public static int ThulgranMana
     {
-        get { return s_thulgranMana; }
+        get => s_thulgranMana;
         set
         {
             s_thulgranMana = value;
@@ -52,10 +54,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
     }
 
     private static int s_thulgranTrophies = 0;
+
     [ShowInInspector]
     public static int ThulgranTrophies
     {
-        get { return s_thulgranTrophies; }
+        get => s_thulgranTrophies;
         set
         {
             s_thulgranTrophies = value;
@@ -64,15 +67,16 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
     }
 
 
-
     public static int maxThulgranHP { get; private set; } = 300;
     public static int maxThulgranMana { get; private set; } = 200;
 
     public bool immuneToDragonBreath;
+
     #endregion
 
     #region Callbacks
-    void Start()
+
+    private void Start()
     {
         instance = this;
     }
@@ -94,52 +98,64 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
 
     public override void Reward(QuestRewards rewards)
     {
-        if (rewards.playerClass == QuestRewards.PlayerClasses.Thulgran || rewards.playerClass == QuestRewards.PlayerClasses.all)
+        if (rewards.playerClass == QuestRewards.PlayerClasses.Thulgran ||
+            rewards.playerClass == QuestRewards.PlayerClasses.all)
         {
             Debug.Log($"Player class: {rewards.playerClass} | Reward called {rewards.rewardType}");
-            if (rewards.rewardType == QuestRewards.RewardTypes.gold) ThulgranGold += rewards.rewardAmount;
-            if (rewards.rewardType == QuestRewards.RewardTypes.hp) ThulgranHP += rewards.rewardAmount;
-            if (rewards.rewardType == QuestRewards.RewardTypes.immuneToDragonBreath) immuneToDragonBreath = true;
-        }
+            if (rewards.rewardType == QuestRewards.RewardTypes.gold)
+            {
+                ThulgranGold += rewards.rewardAmount;
+            }
 
+            if (rewards.rewardType == QuestRewards.RewardTypes.hp)
+            {
+                ThulgranHP += rewards.rewardAmount;
+            }
+
+            if (rewards.rewardType == QuestRewards.RewardTypes.immuneToDragonBreath)
+            {
+                immuneToDragonBreath = true;
+            }
+        }
     }
 
-    public void SellItem(ItemsManager item)
+    public void SellItem(Item item)
     {
         //AddGold(item);
         Debug.Log($"Thulgran's purse: {ThulgranGold}");
     }
 
-    public void UseItem(ItemsManager item, int character, Vector2 target)
+    public void UseItem(Item item, int character, Vector2 target)
     {
-
         if (character == 0)
         {
-            Debug.Log($"Use item called | Item: {item.itemName} | CharacterSlot: {character}");
-            if (item.affectType == ItemsManager.AffectType.Hp)
+            Debug.Log($"Use item called | Item: {item.SO.itemName} | CharacterSlot: {character}");
+            if (item.SO.affectType == AffectType.Hp)
             {
                 AddHp(item);
                 UI.instance.UpdateHPUI(0);
             }
-            else if (item.affectType == ItemsManager.AffectType.Mana)
+            else if (item.SO.affectType == AffectType.Mana)
             {
                 AddMana(item);
                 UI.instance.UpdateManaUI(0);
             }
-
         }
     }
 
-    public void AddGold(ItemsManager item)
+    public void AddGold(Item item)
     {
-        ThulgranGold += item.valueInCoins;
+        ThulgranGold += item.SO.valueInCoins;
 
         for (int i = 0; i < UI.instance.goldStats.Length; i++)
         {
             if (i != 0)
+            {
                 UI.instance.goldStats[i].text = ThulgranGold.ToString();
+            }
         }
-        Debug.Log($"Add Gold | Value: {item.valueInCoins}");
+
+        Debug.Log($"Add Gold | Value: {item.SO.valueInCoins}");
     }
 
     public static void AddGold(int amountToAdd)
@@ -149,8 +165,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
         for (int i = 0; i < UI.instance.goldStats.Length; i++)
         {
             if (i != 0)
+            {
                 UI.instance.goldStats[i].text = ThulgranGold.ToString();
+            }
         }
+
         Debug.Log($"Add Gold | Value: {amountToAdd}");
     }
 
@@ -171,33 +190,33 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
         Debug.Log($"Add Trophies | Value: {trophiesToAdd}");
     }
 
-    public void AddHp(ItemsManager item)
+    public void AddHp(Item item)
     {
-        ThulgranHP += item.amountOfEffect;
+        ThulgranHP += item.SO.amountOfEffect;
         if (ThulgranHP > maxThulgranHP)
         {
             ThulgranHP = maxThulgranHP;
-            NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
+            NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!",
+                Sprites.instance.hpSprite,
                 2f,
                 1400, 30);
         }
-        Debug.Log($"Added HP | Amount: {item.amountOfEffect}");
+
+        Debug.Log($"Added HP | Amount: {item.SO.amountOfEffect}");
     }
 
-    public void AddMana(ItemsManager item)
+    public void AddMana(Item item)
     {
-        ThulgranMana += item.amountOfEffect;
+        ThulgranMana += item.SO.amountOfEffect;
         if (ThulgranMana > maxThulgranMana)
         {
             ThulgranMana = maxThulgranMana;
-            NotificationFader.instance.CallFadeInOut("Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
+            NotificationFader.instance.CallFadeInOut(
+                "Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
                 2f,
                 1400, 30);
         }
-        Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
+
+        Debug.Log($"Added Mana: | Amount: {item.SO.amountOfEffect}");
     }
-
-
 }
-
-

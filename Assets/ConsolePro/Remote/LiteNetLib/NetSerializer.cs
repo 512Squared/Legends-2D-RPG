@@ -1,5 +1,5 @@
 #if DEBUG && !UNITY_WP_8_1 && !UNITY_WSA
-﻿using System;
+using System;
 using System.Reflection;
 using System.Collections.Generic;
 #if WINRT || NETCORE
@@ -33,14 +33,16 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             {
                 return hash;
             }
+
             hash = 14695981039346656037UL; //offset
             int len = type.Length;
             type.CopyTo(0, _hashBuffer, 0, len);
-            for (var i = 0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
                 hash = hash ^ _hashBuffer[i];
                 hash *= 1099511628211UL; //prime
             }
+
             _hashCache.Add(type, hash);
             return hash;
         }
@@ -71,6 +73,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         }
 
         private delegate void CustomTypeWrite(NetDataWriter writer, object customObj);
+
         private delegate object CustomTypeRead(NetDataReader reader);
 
         private sealed class StructInfo
@@ -148,20 +151,20 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
 
         private bool RegisterCustomTypeInternal<T>(Func<T> constructor) where T : INetSerializable
         {
-            var t = typeof(T);
+            Type t = typeof(T);
             if (_registeredCustomTypes.ContainsKey(t))
             {
                 return false;
             }
 
-            var rwDelegates = new CustomType(
+            CustomType rwDelegates = new CustomType(
                 (writer, obj) =>
                 {
                     ((T)obj).Serialize(writer);
                 },
                 reader =>
                 {
-                    var instance = constructor();
+                    T instance = constructor();
                     instance.Desereialize(reader);
                     return instance;
                 });
@@ -197,13 +200,13 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <returns>True - if register successful, false - if type already registered</returns>
         public bool RegisterCustomType<T>(Action<NetDataWriter, T> writeDelegate, Func<NetDataReader, T> readDelegate)
         {
-            var t = typeof(T);
+            Type t = typeof(T);
             if (BasicTypes.Contains(t) || _registeredCustomTypes.ContainsKey(t))
             {
                 return false;
             }
 
-            var rwDelegates = new CustomType(
+            CustomType rwDelegates = new CustomType(
                 (writer, obj) => writeDelegate(writer, (T)obj),
                 reader => readDelegate(reader));
 
@@ -245,7 +248,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             var props = t.GetRuntimeProperties().ToArray();
             int propsCount = props.Count();
 #else
-            var props = t.GetProperties(
+            PropertyInfo[] props = t.GetProperties(
                 BindingFlags.Instance |
                 BindingFlags.Public |
                 BindingFlags.GetProperty |
@@ -260,8 +263,8 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             info = new StructInfo(nameHash, propsCount);
             for (int i = 0; i < props.Length; i++)
             {
-                var property = props[i];
-                var propertyType = property.PropertyType;
+                PropertyInfo property = props[i];
+                Type propertyType = property.PropertyType;
 
                 //Set field type
                 info.FieldTypes[i] = propertyType.IsArray ? propertyType.GetElementType() : propertyType;
@@ -271,12 +274,12 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 var setMethod = property.SetMethod;
 #else
                 bool isEnum = propertyType.IsEnum;
-                var getMethod = property.GetGetMethod();
-                var setMethod = property.GetSetMethod();
+                MethodInfo getMethod = property.GetGetMethod();
+                MethodInfo setMethod = property.GetSetMethod();
 #endif
                 if (isEnum)
                 {
-                    var underlyingType = Enum.GetUnderlyingType(propertyType);
+                    Type underlyingType = Enum.GetUnderlyingType(propertyType);
                     if (underlyingType == typeof(byte))
                     {
                         info.ReadDelegate[i] = reader =>
@@ -306,156 +309,157 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 }
                 else if (propertyType == typeof(string))
                 {
-                    var setDelegate = ExtractSetDelegate<T, string>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, string>(getMethod);
+                    Action<T, string> setDelegate = ExtractSetDelegate<T, string>(setMethod);
+                    Func<T, string> getDelegate = ExtractGetDelegate<T, string>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetString(MaxStringLenght));
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference), MaxStringLenght);
                 }
                 else if (propertyType == typeof(bool))
                 {
-                    var setDelegate = ExtractSetDelegate<T, bool>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, bool>(getMethod);
+                    Action<T, bool> setDelegate = ExtractSetDelegate<T, bool>(setMethod);
+                    Func<T, bool> getDelegate = ExtractGetDelegate<T, bool>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetBool());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(byte))
                 {
-                    var setDelegate = ExtractSetDelegate<T, byte>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, byte>(getMethod);
+                    Action<T, byte> setDelegate = ExtractSetDelegate<T, byte>(setMethod);
+                    Func<T, byte> getDelegate = ExtractGetDelegate<T, byte>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetByte());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(sbyte))
                 {
-                    var setDelegate = ExtractSetDelegate<T, sbyte>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, sbyte>(getMethod);
+                    Action<T, sbyte> setDelegate = ExtractSetDelegate<T, sbyte>(setMethod);
+                    Func<T, sbyte> getDelegate = ExtractGetDelegate<T, sbyte>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetSByte());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(short))
                 {
-                    var setDelegate = ExtractSetDelegate<T, short>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, short>(getMethod);
+                    Action<T, short> setDelegate = ExtractSetDelegate<T, short>(setMethod);
+                    Func<T, short> getDelegate = ExtractGetDelegate<T, short>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetShort());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(ushort))
                 {
-                    var setDelegate = ExtractSetDelegate<T, ushort>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, ushort>(getMethod);
+                    Action<T, ushort> setDelegate = ExtractSetDelegate<T, ushort>(setMethod);
+                    Func<T, ushort> getDelegate = ExtractGetDelegate<T, ushort>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetUShort());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(int))
                 {
-                    var setDelegate = ExtractSetDelegate<T, int>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, int>(getMethod);
+                    Action<T, int> setDelegate = ExtractSetDelegate<T, int>(setMethod);
+                    Func<T, int> getDelegate = ExtractGetDelegate<T, int>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetInt());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(uint))
                 {
-                    var setDelegate = ExtractSetDelegate<T, uint>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, uint>(getMethod);
+                    Action<T, uint> setDelegate = ExtractSetDelegate<T, uint>(setMethod);
+                    Func<T, uint> getDelegate = ExtractGetDelegate<T, uint>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetUInt());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(long))
                 {
-                    var setDelegate = ExtractSetDelegate<T, long>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, long>(getMethod);
+                    Action<T, long> setDelegate = ExtractSetDelegate<T, long>(setMethod);
+                    Func<T, long> getDelegate = ExtractGetDelegate<T, long>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetLong());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(ulong))
                 {
-                    var setDelegate = ExtractSetDelegate<T, ulong>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, ulong>(getMethod);
+                    Action<T, ulong> setDelegate = ExtractSetDelegate<T, ulong>(setMethod);
+                    Func<T, ulong> getDelegate = ExtractGetDelegate<T, ulong>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetULong());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(float))
                 {
-                    var setDelegate = ExtractSetDelegate<T, float>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, float>(getMethod);
+                    Action<T, float> setDelegate = ExtractSetDelegate<T, float>(setMethod);
+                    Func<T, float> getDelegate = ExtractGetDelegate<T, float>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetFloat());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(double))
                 {
-                    var setDelegate = ExtractSetDelegate<T, double>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, double>(getMethod);
+                    Action<T, double> setDelegate = ExtractSetDelegate<T, double>(setMethod);
+                    Func<T, double> getDelegate = ExtractGetDelegate<T, double>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetDouble());
                     info.WriteDelegate[i] = writer => writer.Put(getDelegate((T)info.Reference));
                 }
                 // Array types
                 else if (propertyType == typeof(string[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, string[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, string[]>(getMethod);
-                    info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetStringArray(MaxStringLenght));
+                    Action<T, string[]> setDelegate = ExtractSetDelegate<T, string[]>(setMethod);
+                    Func<T, string[]> getDelegate = ExtractGetDelegate<T, string[]>(getMethod);
+                    info.ReadDelegate[i] = reader =>
+                        setDelegate((T)info.Reference, reader.GetStringArray(MaxStringLenght));
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference), MaxStringLenght);
                 }
                 else if (propertyType == typeof(byte[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, byte[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, byte[]>(getMethod);
+                    Action<T, byte[]> setDelegate = ExtractSetDelegate<T, byte[]>(setMethod);
+                    Func<T, byte[]> getDelegate = ExtractGetDelegate<T, byte[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetBytesWithLength());
                     info.WriteDelegate[i] = writer => writer.PutBytesWithLength(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(short[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, short[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, short[]>(getMethod);
+                    Action<T, short[]> setDelegate = ExtractSetDelegate<T, short[]>(setMethod);
+                    Func<T, short[]> getDelegate = ExtractGetDelegate<T, short[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetShortArray());
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(ushort[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, ushort[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, ushort[]>(getMethod);
+                    Action<T, ushort[]> setDelegate = ExtractSetDelegate<T, ushort[]>(setMethod);
+                    Func<T, ushort[]> getDelegate = ExtractGetDelegate<T, ushort[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetUShortArray());
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(int[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, int[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, int[]>(getMethod);
+                    Action<T, int[]> setDelegate = ExtractSetDelegate<T, int[]>(setMethod);
+                    Func<T, int[]> getDelegate = ExtractGetDelegate<T, int[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetIntArray());
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(uint[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, uint[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, uint[]>(getMethod);
+                    Action<T, uint[]> setDelegate = ExtractSetDelegate<T, uint[]>(setMethod);
+                    Func<T, uint[]> getDelegate = ExtractGetDelegate<T, uint[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetUIntArray());
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(long[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, long[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, long[]>(getMethod);
+                    Action<T, long[]> setDelegate = ExtractSetDelegate<T, long[]>(setMethod);
+                    Func<T, long[]> getDelegate = ExtractGetDelegate<T, long[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetLongArray());
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(ulong[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, ulong[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, ulong[]>(getMethod);
+                    Action<T, ulong[]> setDelegate = ExtractSetDelegate<T, ulong[]>(setMethod);
+                    Func<T, ulong[]> getDelegate = ExtractGetDelegate<T, ulong[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetULongArray());
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(float[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, float[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, float[]>(getMethod);
+                    Action<T, float[]> setDelegate = ExtractSetDelegate<T, float[]>(setMethod);
+                    Func<T, float[]> getDelegate = ExtractGetDelegate<T, float[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetFloatArray());
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference));
                 }
                 else if (propertyType == typeof(double[]))
                 {
-                    var setDelegate = ExtractSetDelegate<T, double[]>(setMethod);
-                    var getDelegate = ExtractGetDelegate<T, double[]>(getMethod);
+                    Action<T, double[]> setDelegate = ExtractSetDelegate<T, double[]>(setMethod);
+                    Func<T, double[]> getDelegate = ExtractGetDelegate<T, double[]>(getMethod);
                     info.ReadDelegate[i] = reader => setDelegate((T)info.Reference, reader.GetDoubleArray());
                     info.WriteDelegate[i] = writer => writer.PutArray(getDelegate((T)info.Reference));
                 }
@@ -515,6 +519,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                     }
                 }
             }
+
             _cache.Add(nameHash, info);
 
             return info;
@@ -562,6 +567,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             {
                 throw new Exception("Undefined packet received");
             }
+
             return info;
         }
 
@@ -572,12 +578,13 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <returns>Returns packet if packet in reader is matched type</returns>
         public T ReadKnownPacket<T>(NetDataReader reader) where T : class, new()
         {
-            var info = ReadInfo(reader);
+            StructInfo info = ReadInfo(reader);
             ulong typeHash = _hasher.GetHash(typeof(T).Name);
             if (typeHash != info.Hash)
             {
                 return null;
             }
+
             info.Reference = info.CreatorFunc != null ? info.CreatorFunc() : Activator.CreateInstance<T>();
             info.Read(reader);
             return (T)info.Reference;
@@ -591,7 +598,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <returns>Returns true if packet in reader is matched type</returns>
         public bool ReadKnownPacket<T>(NetDataReader reader, T target) where T : class, new()
         {
-            var info = ReadInfo(reader);
+            StructInfo info = ReadInfo(reader);
             ulong typeHash = _hasher.GetHash(typeof(T).Name);
             if (typeHash != info.Hash)
             {
@@ -610,11 +617,12 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <param name="userData">Argument that passed to OnReceivedEvent</param>
         public void ReadPacket(NetDataReader reader, object userData)
         {
-            var info = ReadInfo(reader);
+            StructInfo info = ReadInfo(reader);
             if (info.CreatorFunc != null)
             {
                 info.Reference = info.CreatorFunc();
             }
+
             info.Read(reader);
             info.OnReceive(info.Reference, userData);
         }
@@ -626,7 +634,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <param name="packetConstructor">Method that constructs packet intead of slow Activator.CreateInstance</param>
         public void Subscribe<T>(Action<T> onReceive, Func<T> packetConstructor) where T : class, new()
         {
-            var info = RegisterInternal<T>();
+            StructInfo info = RegisterInternal<T>();
             info.CreatorFunc = () => packetConstructor();
             info.OnReceive = (o, userData) => { onReceive((T)o); };
         }
@@ -637,11 +645,12 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <param name="packetConstructor">Method that constructs packet intead of slow Activator.CreateInstance</param>
         public void Register<T>(Func<T> packetConstructor = null) where T : class, new()
         {
-            var info = RegisterInternal<T>();
+            StructInfo info = RegisterInternal<T>();
             if (packetConstructor != null)
             {
                 info.CreatorFunc = () => packetConstructor();
             }
+
             info.OnReceive = (o, userData) => { };
         }
 
@@ -650,9 +659,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// </summary>
         /// <param name="onReceive">event that will be called when packet deserialized with ReadPacket method</param>
         /// <param name="packetConstructor">Method that constructs packet intead of slow Activator.CreateInstance</param>
-        public void Subscribe<T, TUserData>(Action<T, TUserData> onReceive, Func<T> packetConstructor) where T : class, new()
+        public void Subscribe<T, TUserData>(Action<T, TUserData> onReceive, Func<T> packetConstructor)
+            where T : class, new()
         {
-            var info = RegisterInternal<T>();
+            StructInfo info = RegisterInternal<T>();
             info.CreatorFunc = () => packetConstructor();
             info.OnReceive = (o, userData) => { onReceive((T)o, (TUserData)userData); };
         }
@@ -664,7 +674,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <param name="onReceive">event that will be called when packet deserialized with ReadPacket method</param>
         public void SubscribeReusable<T>(Action<T> onReceive) where T : class, new()
         {
-            var info = RegisterInternal<T>();
+            StructInfo info = RegisterInternal<T>();
             info.Reference = new T();
             info.OnReceive = (o, userData) => { onReceive((T)o); };
         }
@@ -676,7 +686,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <param name="onReceive">event that will be called when packet deserialized with ReadPacket method</param>
         public void SubscribeReusable<T, TUserData>(Action<T, TUserData> onReceive) where T : class, new()
         {
-            var info = RegisterInternal<T>();
+            StructInfo info = RegisterInternal<T>();
             info.Reference = new T();
             info.OnReceive = (o, userData) => { onReceive((T)o, (TUserData)userData); };
         }
@@ -688,7 +698,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <param name="obj">Struct to serialize</param>
         public void Serialize<T>(NetDataWriter writer, T obj) where T : class, new()
         {
-            var info = RegisterInternal<T>();
+            StructInfo info = RegisterInternal<T>();
             _hasher.WriteHash(info.Hash, writer);
             info.Write(writer, obj);
         }

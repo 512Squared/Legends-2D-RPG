@@ -19,14 +19,14 @@ namespace DialogueEditor
 
     public class SetIntParamAction : SetParamAction
     {
-        public override eParamActionType ParamActionType { get { return eParamActionType.Int; } }
+        public override eParamActionType ParamActionType => eParamActionType.Int;
 
         public int Value;
     }
 
     public class SetBoolParamAction : SetParamAction
     {
-        public override eParamActionType ParamActionType { get { return eParamActionType.Bool; } }
+        public override eParamActionType ParamActionType => eParamActionType.Bool;
 
         public bool Value;
     }

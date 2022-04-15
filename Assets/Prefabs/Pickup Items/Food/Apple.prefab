@@ -186,27 +186,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 6
-  affectType: 0
-  shop: 0
-  itemCode: 0
-  valueInCoins: -9
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Apple
-  itemDescription: food. can help restore hp
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 1
-  itemsImage: {fileID: 21300000, guid: 5d9ba4e7d0964044ea54abe409d81dfd, type: 3}
-  amount: 5
-  spriteRenderer: {fileID: 4049936279192337162}
-  polyCollider: {fileID: 6416487419469564160}
 --- !u!114 &4835315568615219773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,3 +213,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1048
+  spriteRenderer: {fileID: 4049936279192337162}
+  polyCollider: {fileID: 6416487419469564160}
+  _so:
+    itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1000
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: 
+    itemDescription: 
+    itemSelected: 0
+    isNewItem: 1
+    isShopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 0}

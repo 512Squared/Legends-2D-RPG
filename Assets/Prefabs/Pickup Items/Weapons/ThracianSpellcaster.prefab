@@ -56,29 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 3
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 37
-  itemDefence: 0
-  itemName: The Thracian Spellcaster
-  itemDescription: This wand performs magical attacks, weaking enemies from the inside.
-    It lights up blue when wielded by someone with the right magical abilities to
-    wield it.
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: be151b92727f6d64a86b5061ddfed2ed, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 7107490117355835110}
-  polyCollider: {fileID: 8279449001248347141}
 --- !u!60 &8279449001248347141
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -136,7 +113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1016
-  itemDetails:
+  spriteRenderer: {fileID: 7107490117355835110}
+  polyCollider: {fileID: 8279449001248347141}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -149,7 +128,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

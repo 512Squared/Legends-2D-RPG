@@ -15,37 +15,30 @@ public class QuestManager : SerializedMonoBehaviour
 
     #endregion SINGLETON
 
-   
+
     #region FIELDS
 
-    [InlineEditor]
-    public List<Quest> questList;
+    [InlineEditor] public List<Quest> questList;
     private Dictionary<string, bool> _questProgress;
     private Dictionary<int, string> _questId;
-    [HideInInspector]
-    public Quest[] questArray;
-    private List<ItemsManager> _relicList;
+    [HideInInspector] public Quest[] questArray;
+    private List<Item> _relicList;
 
     public Rewardable<QuestRewards>[] rewardables;
 
     private bool _isInitialized;
 
-
     #endregion FIELDS
 
     #region PROPERTIES
-
-
 
     #endregion PROPERTIES
 
     #region SERIALIZATION
 
-
     // each quest also has its own bool for completed - this is the array for the manager to keep track
 
-    [Space]
-    public ParticleSystem pSystem;
+    [Space] public ParticleSystem pSystem;
 
     #endregion SERIALIZATION
 
@@ -55,7 +48,7 @@ public class QuestManager : SerializedMonoBehaviour
     {
         Instance = this;
         questList = new List<Quest>();
-        _relicList = new List<ItemsManager>();
+        _relicList = new List<Item>();
         _questProgress = new Dictionary<string, bool>();
         _questId = new Dictionary<int, string>();
         GetAllQuests();
@@ -75,10 +68,12 @@ public class QuestManager : SerializedMonoBehaviour
     #endregion CALLBACKS
 
     #region SUBSCRIBERS
+
     private void OnEnable()
     {
         Actions.OnQuestCompleted += UpdateQuestProgress;
     }
+
     private void OnDisable()
     {
         Actions.OnQuestCompleted -= UpdateQuestProgress;
@@ -87,8 +82,6 @@ public class QuestManager : SerializedMonoBehaviour
     #endregion SUBSCRIBERS
 
     #region INVOCATIONS
-
-
 
     #endregion INVOCATIONS
 
@@ -109,19 +102,22 @@ public class QuestManager : SerializedMonoBehaviour
 
     private List<Quest> GetAllQuests()
     {
-        foreach (Quest go in (Quest[]) Resources.FindObjectsOfTypeAll(typeof(Quest)))
+        foreach (Quest go in (Quest[])Resources.FindObjectsOfTypeAll(typeof(Quest)))
         {
             questList.Add(go);
         }
 
         return questList;
     }
+
     public bool CheckIfComplete(string questToCheck)
     {
         foreach (Quest quest in questList)
         {
             if (quest.questName == questToCheck && quest.isDone)
+            {
                 return true;
+            }
         }
 
         return false;
@@ -154,7 +150,6 @@ public class QuestManager : SerializedMonoBehaviour
             keyToUse = "QuestReward_" + quest.questName;
 
             quest.questRewardClaimed = valueToSet != 0;
-
         }
     }
 
@@ -165,13 +160,24 @@ public class QuestManager : SerializedMonoBehaviour
         {
             foreach (Quest quest in questList)
             {
-                if (quest.isMasterQuest) quest.questID -= 500;
-                if (quest.isSubQuest) quest.questID -= 500;
+                if (quest.isMasterQuest)
+                {
+                    quest.questID -= 500;
+                }
+
+                if (quest.isSubQuest)
+                {
+                    quest.questID -= 500;
+                }
             }
+
             _isInitialized = true;
             return questList;
         }
-        else return questList;
+        else
+        {
+            return questList;
+        }
     }
 
     public void AddQuests(Quest quest)
@@ -197,30 +203,36 @@ public class QuestManager : SerializedMonoBehaviour
         for (int i = 0; i < questArray.Length; i++)
         {
             questArray[i].questID = i + 1001;
-            if (questArray[i].isActive) MenuManager.instance.notifyActiveQuest++;
-            if (questArray[i].itemIsRelic) _relicList.Add(questArray[i].GetComponent<ItemsManager>()); // useful place to build the relic list too           
+            if (questArray[i].isActive)
+            {
+                MenuManager.Instance.notifyActiveQuest++;
+            }
+
+            if (questArray[i].itemIsRelic)
+            {
+                _relicList.Add(questArray[i]
+                    .GetComponent<Item>()); // useful place to build the relic list too           
+            }
         }
+
         questList = questArray.ToList();
         Debug.Log($"Quest List: {questList.Count}");
         Debug.Log($"Relic List: {_relicList.Count} items");
-
     }
 
     public void HandOutReward(QuestRewards rewardType) // invoked by a specific quest only
     {
         Debug.Log($"Hand out reward: {rewardType}");
-        foreach (var t in rewardables)
+        foreach (Rewardable<QuestRewards> t in rewardables)
         {
             t.Reward(rewardType);
         }
     }
 
-    public List<ItemsManager> GetRelicList()
+    public List<Item> GetRelicList()
     {
         return _relicList;
     }
 
-
     #endregion METHODS
 }
-

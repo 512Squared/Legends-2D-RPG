@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class Free_GM : MonoBehaviour {
 
+public class Free_GM : MonoBehaviour
+{
     public GameObject[] WearGroup;
 
 
@@ -19,9 +20,9 @@ public class Free_GM : MonoBehaviour {
 
     public int CurrAnimPage = 0;
 
-	// Use this for initialization
-	void Start () {
-
+    // Use this for initialization
+    private void Start()
+    {
         tmptrans = transform.position;
         string tmpstring = CurrPage.ToString() + "/" + MaxPage.ToString();
         Text_Page.text = tmpstring;
@@ -29,37 +30,34 @@ public class Free_GM : MonoBehaviour {
         for (int i = 0; i < anim.Length; i++)
         {
             anim[i].Play(AnimName[0]);
-
         }
-
-       
-
     }
-    Vector3 tmptrans;
-    // Update is called once per frame
-    void FixedUpdate () {
 
-       
+    private Vector3 tmptrans;
+
+    // Update is called once per frame
+    private void FixedUpdate()
+    {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (CurrPage <= 1)
             {
-               // tmptrans = new Vector3(this.transform.position.x, MaxHeight, this.transform.position.z);
+                // tmptrans = new Vector3(this.transform.position.x, MaxHeight, this.transform.position.z);
                 return;
             }
+
             CurrPage--;
             string tmpstring = CurrPage.ToString() + "/" + MaxPage.ToString();
             Text_Page.text = tmpstring;
-            tmptrans = new Vector3(this.transform.position.x, CurrPage *MoveSpeed, this.transform.position.z);
+            tmptrans = new Vector3(transform.position.x, CurrPage * MoveSpeed, transform.position.z);
 
             Debug.Log("위");
-
         }
-         if (Input.GetKeyDown(KeyCode.DownArrow))
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (CurrPage >= MaxPage)
             {
-              
                 return;
             }
 
@@ -67,52 +65,46 @@ public class Free_GM : MonoBehaviour {
             string tmpstring = CurrPage.ToString() + "/" + MaxPage.ToString();
             Text_Page.text = tmpstring;
 
-            tmptrans = new Vector3(this.transform.position.x, CurrPage * MoveSpeed, this.transform.position.z);
+            tmptrans = new Vector3(transform.position.x, CurrPage * MoveSpeed, transform.position.z);
 
             Debug.Log("아래");
-
-
-
         }
 
-    
 
-        this.transform.position =Vector3.Lerp(this.transform.position,tmptrans,Time.deltaTime*clampPower);
+        transform.position = Vector3.Lerp(transform.position, tmptrans, Time.deltaTime * clampPower);
 
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-
-            if (CurrAnimPage >= AnimName.Length-1)
+            if (CurrAnimPage >= AnimName.Length - 1)
+            {
                 return;
+            }
 
             Debug.Log("RightArrow");
             CurrAnimPage++;
             for (int i = 0; i < anim.Length; i++)
             {
                 anim[i].Play(AnimName[CurrAnimPage]);
-                Text_AnimState.text = AnimName[CurrAnimPage ];
+                Text_AnimState.text = AnimName[CurrAnimPage];
             }
         }
+
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (CurrAnimPage <=0)
+            if (CurrAnimPage <= 0)
+            {
                 return;
+            }
 
             Debug.Log("LeftArrow");
             CurrAnimPage--;
             for (int i = 0; i < anim.Length; i++)
             {
-          
                 anim[i].Play(AnimName[CurrAnimPage]);
                 Text_AnimState.text = AnimName[CurrAnimPage];
             }
-
-          
-       
         }
-
-
     }
 
     private bool b_takeoff = false;
@@ -121,7 +113,6 @@ public class Free_GM : MonoBehaviour {
 
     public void TakeOff()
     {
-
         Debug.Log("TakeOff");
 
 
@@ -131,7 +122,6 @@ public class Free_GM : MonoBehaviour {
             {
                 WearGroup[i].SetActive(false);
                 Text_Takeoff.text = "Take ON";
-
             }
         }
         else
@@ -140,13 +130,9 @@ public class Free_GM : MonoBehaviour {
             {
                 WearGroup[i].SetActive(true);
                 Text_Takeoff.text = "Take OFF";
-
             }
-
-
         }
 
         b_takeoff = !b_takeoff;
-
     }
 }

@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3387095152731555926}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.87, y: 22.15, z: -5.13}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children:
@@ -90,29 +90,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 9
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 2000
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: The Hoeffre Crystal of Seeing
-  itemDescription: 'The Crystal of Seeing was once held in the Great Hall of Jereby,
-    where the rulers of that great kingtom used it to peak into the ancient mysteries.
-    It is said to have the power to unravel any puzzle. '
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 1
-  pickUpNotice: 0
-  isRelic: 1
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 520668b14c4df1944a802ede89128259, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 8459888000725705970}
-  polyCollider: {fileID: 3387095152731555915}
 --- !u!114 &3387095152731555912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +139,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1070
-  itemDetails:
+  spriteRenderer: {fileID: 8459888000725705970}
+  polyCollider: {fileID: 3387095152731555915}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -175,7 +154,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

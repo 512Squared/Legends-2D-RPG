@@ -6,11 +6,7 @@ using Sirenix.OdinInspector;
 [ShowOdinSerializedPropertiesInInspector]
 public class ItemsManager : SerializedMonoBehaviour
 {
-    #region Data
-
-    public enum AffectType { Hp, Mana, Defence, Attack, Perception, Speed }
-
-    public enum ItemType { Item, Potion, Weapon, Armour, Skill, Spell, Food, Shield, Helmet, Relic }
+    /*#region Data
 
     [HorizontalGroup("Main")]
     [HorizontalGroup("Main/Data", Width = 160)]
@@ -181,11 +177,11 @@ public class ItemsManager : SerializedMonoBehaviour
 
         else if (itemType == ItemType.Armour)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterArmour.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterArmour.SO.itemDefence;
 
             if (selectedCharacter.characterArmourName != "")
             {
-                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterArmour.itemName +
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterArmour.SO.itemName +
                           " has been added back into the Inventory");
                 Inventory.Instance.AddItems(selectedCharacter.characterArmour);
 
@@ -199,11 +195,11 @@ public class ItemsManager : SerializedMonoBehaviour
 
         else if (itemType == ItemType.Shield)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterShield.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterShield.SO.itemDefence;
 
             if (selectedCharacter.characterShieldName != "")
             {
-                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterShield.itemName +
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterShield.SO.itemName +
                           " has been added back into the Inventory");
                 Inventory.Instance.AddItems(selectedCharacter.characterShield);
 
@@ -217,11 +213,11 @@ public class ItemsManager : SerializedMonoBehaviour
 
         else if (itemType == ItemType.Helmet)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterHelmet.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterHelmet.SO.itemDefence;
 
             if (selectedCharacter.characterHelmetName != "")
             {
-                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterHelmet.itemName +
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterHelmet.SO.itemName +
                           " has been added back into the Inventory");
                 Inventory.Instance.AddItems(selectedCharacter.characterHelmet);
 
@@ -236,11 +232,11 @@ public class ItemsManager : SerializedMonoBehaviour
 
         else if (itemType == ItemType.Weapon)
         {
-            selectedCharacter.characterAttackTotal -= selectedCharacter.characterWeapon.itemAttack;
+            selectedCharacter.characterAttackTotal -= selectedCharacter.characterWeapon.SO.itemAttack;
 
             if (selectedCharacter.characterWeaponName != "")
             {
-                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterWeapon.itemName +
+                Debug.Log(selectedCharacter.playerName + "'s equipped " + selectedCharacter.characterWeapon.SO.itemName +
                           " has been added back into the Inventory");
                 Inventory.Instance.AddItems(selectedCharacter.characterWeapon);
 
@@ -264,7 +260,7 @@ public class ItemsManager : SerializedMonoBehaviour
                 NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage, 3f, 1000f, 30);
             }
 
-            Inventory.Instance.AddItems(this);
+            //Inventory.Instance.AddItems(this);
         }
     }
 
@@ -272,5 +268,5 @@ public class ItemsManager : SerializedMonoBehaviour
     {
         spriteRenderer.enabled = false;
         polyCollider.enabled = false;
-    }
+    }*/
 }

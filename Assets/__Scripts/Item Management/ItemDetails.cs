@@ -10,14 +10,14 @@ public class ItemDetails
     [VerticalGroup("Data/a")]
     [HideLabel]
     [GUIColor(0.058f, 0.380f, 1f)]
-    public ItemsManager.ItemType itemType;
+    public ItemType itemType;
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
     [VerticalGroup("Data/a")]
     [HideLabel]
     [GUIColor(0.058f, 0.380f, 1f)]
-    public ItemsManager.AffectType affectType;
+    public AffectType affectType;
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
@@ -98,7 +98,7 @@ public class ItemDetails
     [VerticalGroup("Bools/a")]
     [LabelWidth(90)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool shopItem;
+    public bool isShopItem;
 
     [HorizontalGroup("Bools")]
     [TableColumnWidth(120)]

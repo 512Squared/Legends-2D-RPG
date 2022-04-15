@@ -23,11 +23,17 @@ namespace DialogueEditor
             if (ConversationManager.Instance.IsConversationActive)
             {
                 if (Input.GetKeyDown(m_UpKey))
+                {
                     ConversationManager.Instance.SelectPreviousOption();
+                }
                 else if (Input.GetKeyDown(m_DownKey))
+                {
                     ConversationManager.Instance.SelectNextOption();
+                }
                 else if (Input.GetKeyDown(m_SelectKey))
+                {
                     ConversationManager.Instance.PressSelectedOption();
+                }
             }
         }
     }

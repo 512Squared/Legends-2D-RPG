@@ -16,7 +16,7 @@ namespace DialogueEditor
             TransitioningOptionsOff,
             TransitioningDialogueOff,
             Off,
-            NONE,
+            NONE
         }
 
         private const float TRANSITION_TIME = 0.2f; // Transition time for fades
@@ -24,6 +24,7 @@ namespace DialogueEditor
         public static ConversationManager Instance { get; private set; }
 
         public delegate void ConversationStartEvent();
+
         public delegate void ConversationEndEvent();
 
         public static ConversationStartEvent OnConversationStarted;
@@ -44,27 +45,27 @@ namespace DialogueEditor
         // 
         // Base panels
         public RectTransform DialoguePanel;
+
         public RectTransform OptionsPanel;
+
         // Dialogue UI
         public Image DialogueBackground;
         public Image NpcIcon;
         public TMPro.TextMeshProUGUI NameText;
+
         public TMPro.TextMeshProUGUI DialogueText;
+
         // Components
         public AudioSource AudioPlayer;
+
         // Prefabs
         public UIConversationButton ButtonPrefab;
+
         // Default values
         public Sprite BlankSprite;
 
         // Getter properties
-        public bool IsConversationActive
-        {
-            get
-            {
-                return m_state != eState.NONE && m_state != eState.Off;
-            }
-        }
+        public bool IsConversationActive => m_state != eState.NONE && m_state != eState.Off;
 
         // Private
         private float m_elapsedScrollTime;
@@ -72,7 +73,7 @@ namespace DialogueEditor
         public int m_targetScrollTextCount;
         private eState m_state;
         private float m_stateTime;
-        
+
         private Conversation m_conversation;
         private SpeechNode m_currentSpeech;
         private OptionNode m_selectedOption;
@@ -91,8 +92,9 @@ namespace DialogueEditor
             // Destroy myself if I am not the singleton
             if (Instance != null && Instance != this)
             {
-                GameObject.Destroy(this.gameObject);
+                Destroy(gameObject);
             }
+
             Instance = this;
 
             m_uiOptions = new List<UIConversationButton>();
@@ -138,7 +140,6 @@ namespace DialogueEditor
         }
 
 
-
         //--------------------------------------
         // Public functions
         //--------------------------------------
@@ -169,6 +170,7 @@ namespace DialogueEditor
             {
                 next = 0;
             }
+
             SetSelectedOption(next);
         }
 
@@ -179,14 +181,18 @@ namespace DialogueEditor
             {
                 previous = m_uiOptions.Count - 1;
             }
+
             SetSelectedOption(previous);
         }
 
         public void PressSelectedOption()
         {
             if (m_state != eState.Idle) { return; }
+
             if (m_currentSelectedIndex < 0) { return; }
+
             if (m_currentSelectedIndex >= m_uiOptions.Count) { return; }
+
             if (m_uiOptions.Count == 0) { return; }
 
             UIConversationButton button = m_uiOptions[m_currentSelectedIndex];
@@ -218,7 +224,7 @@ namespace DialogueEditor
                 LogWarning("parameter \'" + paramName + "\' does not exist.");
             }
         }
-        
+
         public void SetBool(string paramName, bool value)
         {
             eParamStatus status;
@@ -314,8 +320,6 @@ namespace DialogueEditor
         }
 
 
-
-
         //--------------------------------------
         // Update
         //--------------------------------------
@@ -339,7 +343,7 @@ namespace DialogueEditor
         private void ScrollingText_Update()
         {
             const float charactersPerSecond = 1500;
-            float timePerChar = (60.0f / charactersPerSecond);
+            float timePerChar = 60.0f / charactersPerSecond;
             timePerChar *= ScrollSpeed;
 
             m_elapsedScrollTime += Time.deltaTime;
@@ -380,7 +384,8 @@ namespace DialogueEditor
 
             if (m_currentSpeech.AutomaticallyAdvance)
             {
-                if (m_currentSpeech.ConnectionType == Connection.eConnectionType.None || m_currentSpeech.ConnectionType == Connection.eConnectionType.Speech)
+                if (m_currentSpeech.ConnectionType == Connection.eConnectionType.None ||
+                    m_currentSpeech.ConnectionType == Connection.eConnectionType.Speech)
                 {
                     if (m_stateTime > m_currentSpeech.TimeUntilAdvance)
                     {
@@ -420,6 +425,7 @@ namespace DialogueEditor
                 {
                     SetupSpeech(nextSpeech);
                 }
+
                 return;
             }
 
@@ -445,8 +451,6 @@ namespace DialogueEditor
             SetColorAlpha(NpcIcon, 1 - t);
             SetColorAlpha(NameText, 1 - t);
         }
-
-
 
 
         //--------------------------------------
@@ -542,8 +546,6 @@ namespace DialogueEditor
         }
 
 
-
-
         //--------------------------------------
         // Option Selected
         //--------------------------------------
@@ -569,8 +571,6 @@ namespace DialogueEditor
         }
 
 
-
-
         //--------------------------------------
         // Util
         //--------------------------------------
@@ -591,6 +591,7 @@ namespace DialogueEditor
                 EndConversation();
                 return true;
             }
+
             return false;
         }
 
@@ -598,6 +599,7 @@ namespace DialogueEditor
         private SpeechNode GetValidSpeechOfNode(ConversationNode parentNode)
         {
             if (parentNode.ConnectionType != Connection.eConnectionType.Speech) { return null; }
+
             if (parentNode.Connections.Count == 0) { return null; }
 
             // Loop through connections, until a valid connection is found.
@@ -662,7 +664,8 @@ namespace DialogueEditor
             else
             {
                 bool notAutoAdvance = !m_currentSpeech.AutomaticallyAdvance;
-                bool allowVisibleOptionWithAuto = (m_currentSpeech.AutomaticallyAdvance && m_currentSpeech.AutoAdvanceShouldDisplayOption);
+                bool allowVisibleOptionWithAuto = m_currentSpeech.AutomaticallyAdvance &&
+                                                  m_currentSpeech.AutoAdvanceShouldDisplayOption;
 
                 if (notAutoAdvance || allowVisibleOptionWithAuto)
                 {
@@ -674,23 +677,25 @@ namespace DialogueEditor
                         // If there was no valid speech node (due to no conditions being met) this becomes a None button type
                         if (next == null)
                         {
-                            uiOption.SetupButton(UIConversationButton.eButtonType.End, null, endFont: m_conversation.EndConversationFont);
+                            uiOption.SetupButton(UIConversationButton.eButtonType.End, null,
+                                endFont: m_conversation.EndConversationFont);
                         }
                         // Else, valid speech node found
                         else
                         {
-                            uiOption.SetupButton(UIConversationButton.eButtonType.Speech, next, continueFont: m_conversation.ContinueFont);
+                            uiOption.SetupButton(UIConversationButton.eButtonType.Speech, next,
+                                m_conversation.ContinueFont);
                         }
-                        
                     }
                     else if (m_currentSpeech.ConnectionType == Connection.eConnectionType.None)
                     {
                         UIConversationButton uiOption = CreateButton();
-                        uiOption.SetupButton(UIConversationButton.eButtonType.End, null, endFont: m_conversation.EndConversationFont);
+                        uiOption.SetupButton(UIConversationButton.eButtonType.End, null,
+                            endFont: m_conversation.EndConversationFont);
                     }
                 }
-
             }
+
             SetSelectedOption(0);
 
             // Set the button sprite and alpha
@@ -706,7 +711,7 @@ namespace DialogueEditor
         {
             while (m_uiOptions.Count != 0)
             {
-                GameObject.Destroy(m_uiOptions[0].gameObject);
+                Destroy(m_uiOptions[0].gameObject);
                 m_uiOptions.RemoveAt(0);
             }
         }
@@ -743,7 +748,7 @@ namespace DialogueEditor
 
         private UIConversationButton CreateButton()
         {
-            UIConversationButton button = GameObject.Instantiate(ButtonPrefab, OptionsPanel);
+            UIConversationButton button = Instantiate(ButtonPrefab, OptionsPanel);
             m_uiOptions.Add(button);
             return button;
         }
@@ -768,18 +773,19 @@ namespace DialogueEditor
                     switch (condition.CheckType)
                     {
                         case IntCondition.eCheckType.equal:
-                            conditionMet = (currentValue == requiredValue);
+                            conditionMet = currentValue == requiredValue;
                             break;
 
                         case IntCondition.eCheckType.greaterThan:
-                            conditionMet = (currentValue > requiredValue);
+                            conditionMet = currentValue > requiredValue;
                             break;
 
                         case IntCondition.eCheckType.lessThan:
-                            conditionMet = (currentValue < requiredValue);
+                            conditionMet = currentValue < requiredValue;
                             break;
                     }
                 }
+
                 // Bool condition
                 if (conditions[i].ConditionType == Condition.eConditionType.BoolCondition)
                 {
@@ -793,11 +799,11 @@ namespace DialogueEditor
                     switch (condition.CheckType)
                     {
                         case BoolCondition.eCheckType.equal:
-                            conditionMet = (currentValue == requiredValue);
+                            conditionMet = currentValue == requiredValue;
                             break;
 
                         case BoolCondition.eCheckType.notEqual:
-                            conditionMet = (currentValue != requiredValue);
+                            conditionMet = currentValue != requiredValue;
                             break;
                     }
                 }

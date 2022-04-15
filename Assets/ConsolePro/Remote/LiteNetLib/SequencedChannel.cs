@@ -30,9 +30,13 @@ namespace FlyingWormConsole3.LiteNetLib
             lock (_outgoingPackets)
             {
                 if (_outgoingPackets.Count == 0)
+                {
                     return false;
+                }
+
                 packet = _outgoingPackets.Dequeue();
             }
+
             _localSequence++;
             packet.Sequence = _localSequence;
             _peer.SendRawData(packet);

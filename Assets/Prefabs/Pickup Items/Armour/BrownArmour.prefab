@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147687330772214625}
-  m_LocalRotation: {x: -0, y: -0, z: 0.4184087, w: 0.9082589}
+  m_LocalRotation: {x: 0, y: 0, z: 0.41840613, w: 0.90826005}
   m_LocalPosition: {x: -6.94, y: -2.9299996, z: -1.1399999}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
@@ -56,27 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 3
-  affectType: 2
-  shop: 0
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 0
-  itemDefence: 22
-  itemName: Brown Armour
-  itemDescription: Hardened Leather Armour
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 2f1eaeeaad36ee5469eff7ff158f37ba, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 6742632524119719000}
-  polyCollider: {fileID: 1147687330772214621}
 --- !u!60 &1147687330772214621
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -195,6 +174,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1022
+  spriteRenderer: {fileID: 6742632524119719000}
+  polyCollider: {fileID: 1147687330772214621}
+  _so:
+    itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1000
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: 
+    itemDescription: 
+    itemSelected: 0
+    isNewItem: 1
+    isShopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 0}
 --- !u!1 &7678557606232887581
 GameObject:
   m_ObjectHideFlags: 0

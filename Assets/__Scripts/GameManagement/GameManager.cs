@@ -4,53 +4,43 @@ using System.Linq;
 using TMPro;
 
 
-
 public class GameManager : MonoBehaviour
 {
-
-
     public static GameManager Instance;
 
     #region Serialized Fields
 
-    [Space]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    public ItemsManager activeItem;
-    [Space]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
+    [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
+    public Item activeItem;
+
+    [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
     public int currentNewItems;
-    [Space]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
+
+    [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
     public int shopCurrentNewItems;
 
 
-
-
     // this is probably going to get called later. It's an array to hold the player stats
-    [Space]
-    public PlayerStats[] playerStats;
+    [Space] public PlayerStats[] playerStats;
     public MagicManager[] magicManager;
     public GameObject[] sceneObjects;
 
 
-    [BoxGroup("UI Bools")]
-    [GUIColor(1f, 1f, 0.215f)]
+    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool isInterfaceOn, dialogueBoxOpened;
-    [BoxGroup("UI Bools")]
-    [GUIColor(1f, 1f, 0.215f)]
+
+    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool isInventoryOn, isPlayerInShop, isShopUIOn;
-    [BoxGroup("UI Bools")]
-    [GUIColor(1f, 1f, 0.215f)]
+
+    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool isItemSelected;
-    [BoxGroup("UI Bools")]
-    [GUIColor(1f, 1f, 0.215f)]
+
+    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool keyboardKeyI;
 
-    [Title("Messaging")]
-    [Space]
-    public TextMeshProUGUI playerMessages;
+    [Title("Messaging")] [Space] public TextMeshProUGUI playerMessages;
     private string _firstScene;
-    
+
     #endregion
 
 
@@ -73,10 +63,12 @@ public class GameManager : MonoBehaviour
     {
         IsInterfaceOn();
     }
+
     private void HomeButton()
     {
         IsInterfaceOn();
     }
+
     private void MainMenuButton()
     {
         IsInterfaceOn();
@@ -84,9 +76,8 @@ public class GameManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-
         Instance = this;
 
         _firstScene = "Homestead";
@@ -97,7 +88,6 @@ public class GameManager : MonoBehaviour
 
         ActivateCharacters(_firstScene);
         sceneObjects[1].SetActive(true);
-
     }
 
     // Update is called once per frame
@@ -143,8 +133,6 @@ public class GameManager : MonoBehaviour
 
     private void IsInterfaceOn()
     {
-        isInterfaceOn = !isInterfaceOn;        
+        isInterfaceOn = !isInterfaceOn;
     }
-
-
 }

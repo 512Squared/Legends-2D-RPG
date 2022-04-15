@@ -41,6 +41,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 {
                     _maxLength *= 2;
                 }
+
                 Array.Resize(ref _data, _maxLength);
             }
         }
@@ -63,20 +64,17 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             return resultData;
         }
 
-        public byte[] Data
-        {
-            get { return _data; }
-        }
+        public byte[] Data => _data;
 
-        public int Length
-        {
-            get { return _position; }
-        }
+        public int Length => _position;
 
         public void Put(float value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 4);
+            }
+
             FastBitConverter.GetBytes(_data, _position, value);
             _position += 4;
         }
@@ -84,7 +82,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(double value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 8);
+            }
+
             FastBitConverter.GetBytes(_data, _position, value);
             _position += 8;
         }
@@ -92,7 +93,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(long value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 8);
+            }
+
             FastBitConverter.GetBytes(_data, _position, value);
             _position += 8;
         }
@@ -100,7 +104,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(ulong value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 8);
+            }
+
             FastBitConverter.GetBytes(_data, _position, value);
             _position += 8;
         }
@@ -108,7 +115,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(int value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 4);
+            }
+
             FastBitConverter.GetBytes(_data, _position, value);
             _position += 4;
         }
@@ -116,7 +126,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(uint value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 4);
+            }
+
             FastBitConverter.GetBytes(_data, _position, value);
             _position += 4;
         }
@@ -124,7 +137,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(ushort value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 2);
+            }
+
             FastBitConverter.GetBytes(_data, _position, value);
             _position += 2;
         }
@@ -132,7 +148,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(short value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 2);
+            }
+
             FastBitConverter.GetBytes(_data, _position, value);
             _position += 2;
         }
@@ -140,7 +159,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(sbyte value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 1);
+            }
+
             _data[_position] = (byte)value;
             _position++;
         }
@@ -148,7 +170,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(byte value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 1);
+            }
+
             _data[_position] = value;
             _position++;
         }
@@ -156,7 +181,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(byte[] data, int offset, int length)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + length);
+            }
+
             Buffer.BlockCopy(data, offset, _data, _position, length);
             _position += length;
         }
@@ -164,7 +192,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(byte[] data)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + data.Length);
+            }
+
             Buffer.BlockCopy(data, 0, _data, _position, data.Length);
             _position += data.Length;
         }
@@ -172,7 +203,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void PutBytesWithLength(byte[] data, int offset, int length)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + length);
+            }
+
             Put(length);
             Buffer.BlockCopy(data, offset, _data, _position, length);
             _position += length;
@@ -181,7 +215,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void PutBytesWithLength(byte[] data)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + data.Length);
+            }
+
             Put(data.Length);
             Buffer.BlockCopy(data, 0, _data, _position, data.Length);
             _position += data.Length;
@@ -190,7 +227,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public void Put(bool value)
         {
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + 1);
+            }
+
             _data[_position] = (byte)(value ? 1 : 0);
             _position++;
         }
@@ -199,7 +239,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
-                ResizeIfNeed(_position + len * 4 + 2);
+            {
+                ResizeIfNeed(_position + (len * 4) + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -211,7 +254,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
-                ResizeIfNeed(_position + len * 8 + 2);
+            {
+                ResizeIfNeed(_position + (len * 8) + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -223,7 +269,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
-                ResizeIfNeed(_position + len * 8 + 2);
+            {
+                ResizeIfNeed(_position + (len * 8) + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -235,7 +284,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
-                ResizeIfNeed(_position + len * 8 + 2);
+            {
+                ResizeIfNeed(_position + (len * 8) + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -247,7 +299,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
-                ResizeIfNeed(_position + len * 4 + 2);
+            {
+                ResizeIfNeed(_position + (len * 4) + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -259,7 +314,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
-                ResizeIfNeed(_position + len * 4 + 2);
+            {
+                ResizeIfNeed(_position + (len * 4) + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -271,7 +329,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
-                ResizeIfNeed(_position + len * 2 + 2);
+            {
+                ResizeIfNeed(_position + (len * 2) + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -283,7 +344,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
-                ResizeIfNeed(_position + len * 2 + 2);
+            {
+                ResizeIfNeed(_position + (len * 2) + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -295,7 +359,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             ushort len = value == null ? (ushort)0 : (ushort)value.Length;
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + len + 2);
+            }
+
             Put(len);
             for (int i = 0; i < len; i++)
             {
@@ -340,7 +407,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             //put bytes count
             int bytesCount = Encoding.UTF8.GetByteCount(value);
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + bytesCount + 4);
+            }
+
             Put(bytesCount);
 
             //put string
@@ -360,7 +430,9 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             //calculate max count
             int bytesCount = Encoding.UTF8.GetByteCount(value);
             if (_autoResize)
+            {
                 ResizeIfNeed(_position + bytesCount + 4);
+            }
 
             //put bytes count
             Put(bytesCount);

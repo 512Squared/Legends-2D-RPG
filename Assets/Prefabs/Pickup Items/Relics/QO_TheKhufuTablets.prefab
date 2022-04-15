@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7828905762357870235}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.26, y: 8.05, z: -5.13}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children:
@@ -90,29 +90,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 9
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 2000
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: The Khufu Tablets
-  itemDescription: 'The Khufu Tablets hold the mystery of sound energy. In the ancient
-    temples, the tablets were used to navigate the stone mazes, using sound to move
-    the enormously heavy stone doors. '
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 1
-  pickUpNotice: 0
-  isRelic: 1
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 1d3a270fd62ca4d48a865fef6258a2ae, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 7189812691032209434}
-  polyCollider: {fileID: 7828905762357870238}
 --- !u!114 &7828905762357870237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +139,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1068
-  itemDetails:
+  spriteRenderer: {fileID: 7189812691032209434}
+  polyCollider: {fileID: 7828905762357870238}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -175,7 +154,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

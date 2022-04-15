@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6740536990887392100}
-  m_LocalRotation: {x: -0.0059863776, y: 0.0031633913, z: -0.46720007, w: 0.88412577}
+  m_LocalRotation: {x: -0.0059852456, y: 0.0031638553, z: -0.4671983, w: 0.88412666}
   m_LocalPosition: {x: -6.94, y: -2.9299996, z: -1.1399999}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
@@ -139,27 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 0
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 100
-  amountOfEffect: 0
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Frieshen Emerald
-  itemDescription: rare Green Emerald
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 1
-  itemsImage: {fileID: 21300000, guid: 6283e42aeda234c33a78c0dae5a3fe11, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 5777475947855876332}
-  polyCollider: {fileID: 6740536990887392096}
 --- !u!60 &6740536990887392096
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -221,7 +200,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1044
-  itemDetails:
+  spriteRenderer: {fileID: 5777475947855876332}
+  polyCollider: {fileID: 6740536990887392096}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -234,7 +215,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] RectTransform scrollMask;
+    [SerializeField] private RectTransform scrollMask;
     public Position position;
     public float scrollSpeed = 1f;
     public int activePlayers = 0;
     public Vector2 boxSize;
     public bool isSingleRect = false;
-    
-    [SerializeField] ScrollRect[] container;
+
+    [SerializeField] private ScrollRect[] container;
 
     private Vector2 m_NextScrollPosition;
     public bool isMouseOver = false;
@@ -28,7 +28,8 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             {
                 for (int i = 0; i < container.Length; i++)
                 {
-                    container[i].horizontalNormalizedPosition = Mathf.Lerp(container[i].horizontalNormalizedPosition, m_NextScrollPosition.x, scrollSpeed * Time.unscaledDeltaTime);
+                    container[i].horizontalNormalizedPosition = Mathf.Lerp(container[i].horizontalNormalizedPosition,
+                        m_NextScrollPosition.x, scrollSpeed * Time.unscaledDeltaTime);
                 }
             }
 
@@ -36,7 +37,8 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             {
                 for (int i = 0; i < container.Length; i++)
                 {
-                    container[i].verticalNormalizedPosition = Mathf.Lerp(container[i].verticalNormalizedPosition, m_NextScrollPosition.y, scrollSpeed * Time.unscaledDeltaTime);
+                    container[i].verticalNormalizedPosition = Mathf.Lerp(container[i].verticalNormalizedPosition,
+                        m_NextScrollPosition.y, scrollSpeed * Time.unscaledDeltaTime);
                 }
             }
         }
@@ -49,7 +51,10 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         for (int i = 0; i < container.Length; i++)
         {
-            if (container[i].gameObject.activeInHierarchy == true) activePlayers++;
+            if (container[i].gameObject.activeInHierarchy == true)
+            {
+                activePlayers++;
+            }
         }
 
         if (position == Position.Left || position == Position.Right)
@@ -67,7 +72,6 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         else if (position == Position.Top || position == Position.Bottom)
         {
-
             if (!isSingleRect)
             {
                 scrollMask.sizeDelta = new Vector2(boxSize.x * activePlayers, scrollMask.sizeDelta.y);
@@ -89,31 +93,15 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         Debug.Log($"Mouse over on exit: {isMouseOver}");
     }
 
-    public void ScrollToSelected()
+    private void ScrollToSelected()
     {
-        if (position == Position.Left)
+        m_NextScrollPosition = position switch
         {
-            m_NextScrollPosition = new Vector2(-1, 0);
-            Debug.Log("Do left stuff");
-        }
-        else if (position == Position.Right)
-        {
-            m_NextScrollPosition = new Vector2(1.5f, 0);
-            Debug.Log("Do right stuff");
-        }
-        else if (position == Position.Bottom)
-        {
-            m_NextScrollPosition = new Vector2(0, -1f);
-            Debug.Log("Do bottom stuff");
-        }
-        else if (position == Position.Top)
-        {
-            m_NextScrollPosition = new Vector2(0, 1.5f);
-            Debug.Log("Do top stuff");
-        }
-
+            Position.Left => new Vector2(-1, 0),
+            Position.Right => new Vector2(1.5f, 0),
+            Position.Bottom => new Vector2(0, -1f),
+            Position.Top => new Vector2(0, 1.5f),
+            _ => m_NextScrollPosition
+        };
     }
-
-
-
 }

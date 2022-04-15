@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7643609316305855307}
-  m_LocalRotation: {x: -0, y: -0, z: 0.38038766, w: 0.92482716}
+  m_LocalRotation: {x: 0, y: 0, z: 0.38038447, w: 0.92482847}
   m_LocalPosition: {x: -6.870001, y: -3.03, z: -1.1400001}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
@@ -139,27 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 1
-  affectType: 5
-  shop: 0
-  itemCode: 0
-  valueInCoins: 20
-  amountOfEffect: 2
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Speed Potion
-  itemDescription: speed potion x 2
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 1
-  itemsImage: {fileID: 21300000, guid: 17776f97fd7f948ea9eccfd40940c6b4, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 6468965276435716990}
-  polyCollider: {fileID: 7643609316305855415}
 --- !u!60 &7643609316305855415
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -230,7 +209,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1040
-  itemDetails:
+  spriteRenderer: {fileID: 6468965276435716990}
+  polyCollider: {fileID: 7643609316305855415}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -243,7 +224,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

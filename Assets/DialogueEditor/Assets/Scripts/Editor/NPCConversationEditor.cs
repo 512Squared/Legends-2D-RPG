@@ -11,7 +11,7 @@ namespace DialogueEditor
         private static GUIStyle boldStyle;
         private static GUIStyle regularStyle;
 
-        void OnEnable()
+        private void OnEnable()
         {
             boldStyle = new GUIStyle();
             boldStyle.alignment = TextAnchor.MiddleLeft;
@@ -48,9 +48,9 @@ namespace DialogueEditor
     {
         private NodeEventHolder n;
 
-        void OnEnable()
+        private void OnEnable()
         {
-            n = (base.target as NodeEventHolder);
+            n = target as NodeEventHolder;
         }
 
         public override void OnInspectorGUI()

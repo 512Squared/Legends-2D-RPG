@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8042194414035555238}
   - component: {fileID: 6590821628886842839}
+  - component: {fileID: 7921144497339931376}
   - component: {fileID: 1111442392044107167}
   - component: {fileID: 1111442392044107164}
-  - component: {fileID: 7921144497339931376}
   m_Layer: 0
   m_Name: PrincesBladeAxe
   m_TagString: Untagged
@@ -56,55 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 3
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 19
-  itemDefence: 0
-  itemName: The Prince's Blade Axe
-  itemDescription: This fine Swirthian axe combines sharpness and balance in the
-    handle.
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: cfeb8cf73d489da4483b69662778049e, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 5193626397504647416}
-  polyCollider: {fileID: 7921144497339931376}
---- !u!114 &1111442392044107167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1111442392044107166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df8e19077a70654ba67388acbaee80b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gUID: d85d1846-f3cc-4c0f-9a91-e08b241410de
---- !u!114 &1111442392044107164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1111442392044107166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00fd35994bc35234995a2305f7a9d612, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  quantity: 1
-  itemCode: 1002
 --- !u!60 &7921144497339931376
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -135,6 +86,54 @@ PolygonCollider2D:
       - {x: -0.5877852, y: -0.80901706}
       - {x: 0.58778536, y: -0.80901694}
       - {x: 0.9510565, y: 0.30901712}
+--- !u!114 &1111442392044107167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111442392044107166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df8e19077a70654ba67388acbaee80b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gUID: d85d1846-f3cc-4c0f-9a91-e08b241410de
+--- !u!114 &1111442392044107164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111442392044107166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00fd35994bc35234995a2305f7a9d612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quantity: 1
+  itemCode: 1002
+  spriteRenderer: {fileID: 5193626397504647416}
+  polyCollider: {fileID: 7921144497339931376}
+  _so:
+    itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1000
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: 
+    itemDescription: 
+    itemSelected: 0
+    isNewItem: 1
+    isShopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 0}
 --- !u!1 &4887012892090521858
 GameObject:
   m_ObjectHideFlags: 0

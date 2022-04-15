@@ -90,28 +90,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 9
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 2000
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: The Eye of Baldor
-  itemDescription: The Eye of Baldor was created by the Crackar the Were Mage. It
-    is rumoured to allow it's holder to sense danger through walls of any kind.
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 1
-  pickUpNotice: 0
-  isRelic: 1
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: c07a66d5fee734d4b9b8ac5734e404e1, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 36424839121913564}
-  polyCollider: {fileID: 2654625689390537923}
 --- !u!114 &2654625689390537932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +139,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1060
-  itemDetails:
+  spriteRenderer: {fileID: 36424839121913564}
+  polyCollider: {fileID: 2654625689390537923}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -174,7 +154,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

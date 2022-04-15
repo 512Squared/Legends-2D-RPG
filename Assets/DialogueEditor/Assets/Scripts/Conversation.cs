@@ -11,7 +11,7 @@ namespace DialogueEditor
     public enum eParamStatus
     {
         OK = 0,
-        NoParamFound = 1,
+        NoParamFound = 1
     }
 
     public class Conversation
@@ -75,6 +75,7 @@ namespace DialogueEditor
             {
                 status = eParamStatus.NoParamFound;
             }
+
             return 0;
         }
 
@@ -85,12 +86,12 @@ namespace DialogueEditor
             {
                 status = eParamStatus.OK;
                 return param.BoolValue;
-                
             }
             else
             {
                 status = eParamStatus.NoParamFound;
             }
+
             return false;
         }
 
@@ -99,8 +100,11 @@ namespace DialogueEditor
             for (int i = 0; i < Parameters.Count; i++)
             {
                 if (Parameters[i].ParameterName == name)
+                {
                     return Parameters[i];
+                }
             }
+
             return null;
         }
     }

@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9107481933106518822}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.44, y: -1.6, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
@@ -139,28 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 7
-  affectType: 2
-  shop: 3
-  itemCode: 0
-  valueInCoins: 200
-  amountOfEffect: 0
-  itemAttack: 0
-  itemDefence: 40
-  itemName: Round Shield of Anendor
-  itemDescription: This legendary shield was used by Brian the Brave to defeat the
-    evil kind Eldador of Anendor
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 1818085f923683f4797f83bab4b165e2, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 3282637126567075294}
-  polyCollider: {fileID: 2416293948764296662}
 --- !u!60 &2416293948764296662
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -218,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1031
-  itemDetails:
+  spriteRenderer: {fileID: 3282637126567075294}
+  polyCollider: {fileID: 2416293948764296662}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -231,7 +211,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

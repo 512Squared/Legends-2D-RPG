@@ -92,7 +92,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5396075363986048533}
-  - component: {fileID: 5396075363986048535}
   - component: {fileID: 5396075363986048528}
   - component: {fileID: 8503481204576024799}
   - component: {fileID: 5396075363986048529}
@@ -111,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5396075363986048532}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.4299998, y: -1.72, z: 8}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
@@ -119,32 +118,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5396075363986048535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5396075363986048532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 1
-  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c201fa2079d019040cd
-  m_ShapePath:
-  - {x: -6.001295, y: -4.2009335, z: 0}
-  - {x: -6.001295, y: 4.2009335, z: 0}
-  - {x: 6.001295, y: 4.2009335, z: 0}
-  - {x: 6.001295, y: -4.2009335, z: 0}
-  m_ShapePathHash: 0
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 27444
 --- !u!114 &5396075363986048528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,28 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 1
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 41
-  itemDefence: 0
-  itemName: Thunder Sword
-  itemDescription: ' A perfectly balanced sword that weighs as much as a cart wheel
-    and has concussive power.'
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: d93b913835e220e4595be5c3f2cd6199, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 5640063349529094020}
-  polyCollider: {fileID: 8503481204576024799}
 --- !u!60 &8503481204576024799
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -245,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1011
-  itemDetails:
+  spriteRenderer: {fileID: 5640063349529094020}
+  polyCollider: {fileID: 8503481204576024799}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -258,7 +211,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

@@ -92,7 +92,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7468830715668380223}
-  - component: {fileID: 7468830715668380217}
   - component: {fileID: 7468830715668380216}
   - component: {fileID: 4693032471987637424}
   - component: {fileID: 7468830715668380219}
@@ -111,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7468830715668380220}
-  m_LocalRotation: {x: -0, y: -0, z: -0.38268343, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: 0, z: -0.38268343, w: 0.92387956}
   m_LocalPosition: {x: -6.47, y: -1.13, z: 8}
   m_LocalScale: {x: 0.8000001, y: 0.8000001, z: 1}
   m_Children:
@@ -119,32 +118,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45}
---- !u!114 &7468830715668380217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7468830715668380220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 1
-  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c201fa2079d019040cd
-  m_ShapePath:
-  - {x: -1.810194, y: -1.8101931, z: 0}
-  - {x: -1.810194, y: 1.8101933, z: 0}
-  - {x: 1.8101931, y: 1.8101933, z: 0}
-  - {x: 1.8101931, y: -1.8101931, z: 0}
-  m_ShapePathHash: 0
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 24572
 --- !u!114 &7468830715668380216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,28 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 1
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 31
-  itemDefence: 0
-  itemName: The Staff of Presibus
-  itemDescription: A relic from the Presibus wars . Enhanced with the magic of the
-    pharoahs
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 3fa53af4c50543b469421a6895537de8, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 4345071247564636593}
-  polyCollider: {fileID: 4693032471987637424}
 --- !u!60 &4693032471987637424
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -245,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1020
-  itemDetails:
+  spriteRenderer: {fileID: 4345071247564636593}
+  polyCollider: {fileID: 4693032471987637424}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -258,7 +211,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

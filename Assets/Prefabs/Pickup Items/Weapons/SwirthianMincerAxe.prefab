@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7253042859946283272}
-  m_LocalRotation: {x: -0, y: -0, z: -0.1253333, w: 0.9921148}
+  m_LocalRotation: {x: 0, y: 0, z: -0.1253333, w: 0.9921148}
   m_LocalPosition: {x: -7.27, y: 0.029999956, z: -5.13}
   m_LocalScale: {x: 1.2000004, y: 1.2000004, z: 1}
   m_Children:
@@ -139,28 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 3
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 27
-  itemDefence: 0
-  itemName: The Swirthian Mincer Axe
-  itemDescription: 'This axe is Legendary. Made of the finest gilded Swirthian steel.
-    This blade once belonged to Caspian the Great. '
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 9ca103023f8c20749b91ae239ec8ebb3, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 4534149919890015562}
-  polyCollider: {fileID: 5523064158256057264}
 --- !u!60 &5523064158256057264
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -218,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1005
-  itemDetails:
+  spriteRenderer: {fileID: 4534149919890015562}
+  polyCollider: {fileID: 5523064158256057264}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -231,7 +211,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

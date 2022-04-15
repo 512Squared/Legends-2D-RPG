@@ -43,7 +43,8 @@ namespace FlyingWormConsole3.LiteNetLib
     {
         internal static int RelativeSequenceNumber(int number, int expected)
         {
-            return (number - expected + NetConstants.MaxSequence + NetConstants.HalfMaxSequence) % NetConstants.MaxSequence - NetConstants.HalfMaxSequence;
+            return ((number - expected + NetConstants.MaxSequence + NetConstants.HalfMaxSequence) %
+                    NetConstants.MaxSequence) - NetConstants.HalfMaxSequence;
         }
 
         internal static int GetDividedPacketsCount(int size, int mtu)
@@ -103,20 +104,26 @@ namespace FlyingWormConsole3.LiteNetLib
                 {
                     //Skip loopback
                     if (ni.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+                    {
                         continue;
+                    }
 
-                    var ipProps = ni.GetIPProperties();
+                    IPInterfaceProperties ipProps = ni.GetIPProperties();
 
                     //Skip address without gateway
                     if (ipProps.GatewayAddresses.Count == 0)
+                    {
                         continue;
+                    }
 
                     foreach (UnicastIPAddressInformation ip in ipProps.UnicastAddresses)
                     {
-                        var address = ip.Address;
+                        IPAddress address = ip.Address;
                         if ((ipv4 && address.AddressFamily == AddressFamily.InterNetwork) ||
                             (ipv6 && address.AddressFamily == AddressFamily.InterNetworkV6))
+                        {
                             targetList.Add(address.ToString());
+                        }
                     }
                 }
             }
@@ -133,26 +140,34 @@ namespace FlyingWormConsole3.LiteNetLib
                 hostTask.Wait();
                 var host = hostTask.Result;
 #else
-                var host = Dns.GetHostEntry(Dns.GetHostName());
+                IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 #endif
                 foreach (IPAddress ip in host.AddressList)
                 {
-                    if((ipv4 && ip.AddressFamily == AddressFamily.InterNetwork) ||
-                       (ipv6 && ip.AddressFamily == AddressFamily.InterNetworkV6))
+                    if ((ipv4 && ip.AddressFamily == AddressFamily.InterNetwork) ||
+                        (ipv6 && ip.AddressFamily == AddressFamily.InterNetworkV6))
+                    {
                         targetList.Add(ip.ToString());
+                    }
                 }
             }
 #endif
             if (targetList.Count == 0)
             {
-                if(ipv4)
+                if (ipv4)
+                {
                     targetList.Add("127.0.0.1");
-                if(ipv6)
+                }
+
+                if (ipv6)
+                {
                     targetList.Add("::1");
+                }
             }
         }
 
         private static readonly List<string> IpList = new List<string>();
+
         public static string GetLocalIp(LocalAddrType addrType)
         {
             lock (IpList)
@@ -169,7 +184,6 @@ namespace FlyingWormConsole3.LiteNetLib
         {
             lock (DebugLogLock)
             {
-
                 if (NetDebug.Logger == null)
                 {
 #if UNITY
@@ -203,13 +217,15 @@ namespace FlyingWormConsole3.LiteNetLib
             DebugWriteLogic(color, str, args);
         }
 
-        [Conditional("DEBUG_MESSAGES"), Conditional("DEBUG")]
+        [Conditional("DEBUG_MESSAGES")]
+        [Conditional("DEBUG")]
         internal static void DebugWriteForce(ConsoleColor color, string str, params object[] args)
         {
             DebugWriteLogic(color, str, args);
         }
 
-        [Conditional("DEBUG_MESSAGES"), Conditional("DEBUG")]
+        [Conditional("DEBUG_MESSAGES")]
+        [Conditional("DEBUG")]
         internal static void DebugWriteError(string str, params object[] args)
         {
             DebugWriteLogic(ConsoleColor.Red, str, args);

@@ -44,7 +44,7 @@ public class SceneItemsManager : SingletonMonobehaviour<SceneItemsManager>, ISav
     private void DestroySceneItems()
     {
         // Get all items in the scene
-        ItemsManager[] itemsInScene = FindObjectsOfType<ItemsManager>();
+        Item[] itemsInScene = FindObjectsOfType<Item>();
 
         // Loop through all scene items and destroy them
         for (int i = itemsInScene.Length - 1; i > -1; i--)

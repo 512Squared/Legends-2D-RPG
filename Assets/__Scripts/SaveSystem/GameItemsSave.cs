@@ -4,14 +4,14 @@
 public class GameItemsSave
 {
     // string key = enum item list type (shop, inventory)
-    public Dictionary<ItemLists, List<ItemsManager>> InventoryLists;
+    public Dictionary<ItemLists, List<Item>> InventoryLists;
 
     public GameItemsSave()
     {
-        InventoryLists = new Dictionary<ItemLists, List<ItemsManager>>();
+        InventoryLists = new Dictionary<ItemLists, List<Item>>();
     }
 
-    public GameItemsSave(Dictionary<ItemLists, List<ItemsManager>> inventoryLists)
+    public GameItemsSave(Dictionary<ItemLists, List<Item>> inventoryLists)
     {
         InventoryLists = inventoryLists;
     }

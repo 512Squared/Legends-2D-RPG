@@ -65,3 +65,27 @@ public enum Shop
     shop2,
     shop3
 }
+
+public enum AffectType
+{
+    Hp,
+    Mana,
+    Defence,
+    Attack,
+    Perception,
+    Speed
+}
+
+public enum ItemType
+{
+    Item,
+    Potion,
+    Weapon,
+    Armour,
+    Skill,
+    Spell,
+    Food,
+    Shield,
+    Helmet,
+    Relic
+}

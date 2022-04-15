@@ -34,7 +34,7 @@ namespace DialogueEditor
 
         public EditableIntCondition(string name) : base(name) { }
 
-        public override eConditionType ConditionType { get { return eConditionType.IntCondition; } }
+        public override eConditionType ConditionType => eConditionType.IntCondition;
 
         [DataMember] public eCheckType CheckType;
         [DataMember] public int RequiredValue;
@@ -51,7 +51,7 @@ namespace DialogueEditor
 
         public EditableBoolCondition(string name) : base(name) { }
 
-        public override eConditionType ConditionType { get { return eConditionType.BoolCondition; } }
+        public override eConditionType ConditionType => eConditionType.BoolCondition;
 
         [DataMember] public eCheckType CheckType;
         [DataMember] public bool RequiredValue;

@@ -56,28 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 3
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 20
-  itemDefence: 0
-  itemName: The Swirthian King Slayer
-  itemDescription: Exceptional workmanship and condition. One of the finest Swirthian
-    double-edged axes ever made.
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 451400c8dc04dbc4fb68b71db81144b6, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 1999073709747619449}
-  polyCollider: {fileID: 4435194230356058750}
 --- !u!60 &4435194230356058750
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -135,7 +113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1007
-  itemDetails:
+  spriteRenderer: {fileID: 1999073709747619449}
+  polyCollider: {fileID: 4435194230356058750}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -148,7 +128,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

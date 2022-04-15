@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3101503475175048493}
-  m_LocalRotation: {x: -0, y: -0, z: -0.17364825, w: 0.9848078}
+  m_LocalRotation: {x: 0, y: 0, z: -0.17364825, w: 0.9848078}
   m_LocalPosition: {x: -1.99, y: -2.08, z: -5.99}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_Children:
@@ -139,27 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 0
-  shop: 3
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 18
-  itemDefence: 0
-  itemName: Thorian Hammer
-  itemDescription: 'A hammer made of Thorian steel that can concuss a rhino. '
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 9538c1258f4ebaf4497c5c451015faae, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 3101503473686590970}
-  polyCollider: {fileID: 3101503475175048481}
 --- !u!60 &3101503475175048481
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -217,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1015
-  itemDetails:
+  spriteRenderer: {fileID: 3101503473686590970}
+  polyCollider: {fileID: 3101503475175048481}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -230,7 +211,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

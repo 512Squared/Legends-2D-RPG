@@ -9,10 +9,10 @@ namespace DialogueEditor
 {
     public enum eSaveVersion
     {
-        V1_03 = 103,    // Initial save data
-        V1_10 = 110,    // Parameters
+        V1_03 = 103, // Initial save data
+        V1_10 = 110 // Parameters
     }
-    
+
 
     //--------------------------------------
     // Conversation Monobehaviour (Serialized)
@@ -25,10 +25,11 @@ namespace DialogueEditor
         // Consts
         /// <summary> Version 1.10 </summary>
         public const int CurrentVersion = (int)eSaveVersion.V1_10;
+
         private readonly string CHILD_NAME = "ConversationEventInfo";
 
         // Getters
-        public int Version { get { return saveVersion; } }
+        public int Version => saveVersion;
 
         // Serialized data
         [SerializeField] public int CurrentIDCounter = 1;
@@ -37,16 +38,16 @@ namespace DialogueEditor
         [SerializeField] public string DefaultName;
         [SerializeField] public Sprite DefaultSprite;
         [SerializeField] public TMPro.TMP_FontAsset DefaultFont;
-        [FormerlySerializedAs("Events")]
-        [SerializeField] private List<NodeEventHolder> NodeSerializedDataList;
+
+        [FormerlySerializedAs("Events")] [SerializeField]
+        private List<NodeEventHolder> NodeSerializedDataList;
+
         [SerializeField] public TMPro.TMP_FontAsset ContinueFont;
         [SerializeField] public TMPro.TMP_FontAsset EndConversationFont;
 
         // Runtime vars
         public UnityEngine.Events.UnityEvent Event;
         public List<EditableParameter> ParameterList; // Serialized into the json string
-
-        
 
 
         //--------------------------------------
@@ -65,13 +66,14 @@ namespace DialogueEditor
                     return NodeSerializedDataList[i];
 
             // If none exist, create a new GameObject
-            Transform EventInfo = this.transform.Find(CHILD_NAME);
+            Transform EventInfo = transform.Find(CHILD_NAME);
             if (EventInfo == null)
             {
                 GameObject obj = new GameObject(CHILD_NAME);
-                obj.transform.SetParent(this.transform);
+                obj.transform.SetParent(transform);
             }
-            EventInfo = this.transform.Find(CHILD_NAME);
+
+            EventInfo = transform.Find(CHILD_NAME);
 
             // Add a new Component for this node
             NodeEventHolder h = EventInfo.gameObject.AddComponent<NodeEventHolder>();
@@ -90,7 +92,7 @@ namespace DialogueEditor
             {
                 if (NodeSerializedDataList[i].NodeID == id)
                 {
-                    GameObject.DestroyImmediate(NodeSerializedDataList[i]);
+                    DestroyImmediate(NodeSerializedDataList[i]);
                     NodeSerializedDataList.RemoveAt(i);
                 }
             }
@@ -98,17 +100,16 @@ namespace DialogueEditor
 
         public EditableParameter GetParameter(string name)
         {
-            for (int i = 0; i < this.ParameterList.Count; i++)
+            for (int i = 0; i < ParameterList.Count; i++)
             {
                 if (ParameterList[i].ParameterName == name)
                 {
                     return ParameterList[i];
                 }
             }
+
             return null;
         }
-
-
 
 
         //--------------------------------------
@@ -119,7 +120,7 @@ namespace DialogueEditor
         {
             saveVersion = CurrentVersion;
 
-            conversation.Parameters = this.ParameterList;
+            conversation.Parameters = ParameterList;
             json = Jsonify(conversation);
         }
 
@@ -127,7 +128,7 @@ namespace DialogueEditor
         {
             // Deserialize an editor-version (containing all info) that 
             // we will use to construct the user-facing Conversation data structure. 
-            EditableConversation ec = this.DeserializeForEditor();
+            EditableConversation ec = DeserializeForEditor();
 
             return ConstructConversationObject(ec);
         }
@@ -136,11 +137,11 @@ namespace DialogueEditor
         {
             // Dejsonify 
             EditableConversation conversation = Dejsonify();
-            
+
             if (conversation != null)
             {
                 // Copy the param list
-                this.ParameterList = conversation.Parameters;
+                ParameterList = conversation.Parameters;
 
                 // Deserialize the indivudual nodes
                 {
@@ -158,7 +159,7 @@ namespace DialogueEditor
                 conversation = new EditableConversation();
             }
 
-            conversation.SaveVersion = this.saveVersion;
+            conversation.SaveVersion = saveVersion;
 
             // Clear our dummy event
             Event = new UnityEngine.Events.UnityEvent();
@@ -319,8 +320,6 @@ namespace DialogueEditor
         }
 
 
-
-
         //--------------------------------------
         // Construct User-Facing Conversation Object and Nodes
         //--------------------------------------
@@ -334,8 +333,8 @@ namespace DialogueEditor
             CreateParameters(ec, conversation);
 
             // Construct the Conversation-Based variables (not node-based)
-            conversation.ContinueFont = this.ContinueFont;
-            conversation.EndConversationFont = this.EndConversationFont;
+            conversation.ContinueFont = ContinueFont;
+            conversation.EndConversationFont = EndConversationFont;
 
             // Create a dictionary to store our created nodes by UID
             Dictionary<int, SpeechNode> speechByID = new Dictionary<int, SpeechNode>();
@@ -396,7 +395,7 @@ namespace DialogueEditor
 
             CopyParamActions(editableNode, speech);
 
-            NodeEventHolder holder = this.GetNodeData(editableNode.ID);
+            NodeEventHolder holder = GetNodeData(editableNode.ID);
             if (holder != null)
             {
                 speech.Event = holder.Event;
@@ -413,7 +412,7 @@ namespace DialogueEditor
 
             CopyParamActions(editableNode, option);
 
-            NodeEventHolder holder = this.GetNodeData(editableNode.ID);
+            NodeEventHolder holder = GetNodeData(editableNode.ID);
             if (holder != null)
             {
                 option.Event = holder.Event;
@@ -449,7 +448,8 @@ namespace DialogueEditor
             }
         }
 
-        private void ReconstructTree(EditableConversation ec, Conversation conversation, Dictionary<int, SpeechNode> dialogues, Dictionary<int, OptionNode> options)
+        private void ReconstructTree(EditableConversation ec, Conversation conversation,
+            Dictionary<int, SpeechNode> dialogues, Dictionary<int, OptionNode> options)
         {
             // Speech nodes
             List<EditableSpeechNode> editableSpeechNodes = ec.SpeechNodes;
@@ -462,7 +462,6 @@ namespace DialogueEditor
                 List<EditableConnection> editableConnections = editableNode.Connections;
                 for (int j = 0; j < editableConnections.Count; j++)
                 {
-
                     int childID = editableConnections[j].NodeUID;
 
                     // Construct node->Speech
@@ -533,6 +532,7 @@ namespace DialogueEditor
                             bc.CheckType = BoolCondition.eCheckType.notEqual;
                             break;
                     }
+
                     bc.RequiredValue = ebc.RequiredValue;
 
                     connection.Conditions.Add(bc);
@@ -555,6 +555,7 @@ namespace DialogueEditor
                             ic.CheckType = IntCondition.eCheckType.lessThan;
                             break;
                     }
+
                     ic.RequiredValue = eic.RequiredValue;
 
                     connection.Conditions.Add(ic);

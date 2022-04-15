@@ -29,7 +29,7 @@ namespace DialogueEditor
     {
         public EditableBoolParameter(string name) : base(name) { }
 
-        public override eParamType ParameterType { get { return eParamType.Bool; } }
+        public override eParamType ParameterType => eParamType.Bool;
 
         [DataMember] public bool BoolValue;
     }
@@ -39,7 +39,7 @@ namespace DialogueEditor
     {
         public EditableIntParameter(string name) : base(name) { }
 
-        public override eParamType ParameterType { get { return eParamType.Int; } }
+        public override eParamType ParameterType => eParamType.Int;
 
         [DataMember] public int IntValue;
     }

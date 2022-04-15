@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8190601534928101165}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.92, y: -2.15, z: 3.99}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children:
@@ -139,28 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 7
-  affectType: 2
-  shop: 0
-  itemCode: 0
-  valueInCoins: 16
-  amountOfEffect: 0
-  itemAttack: 0
-  itemDefence: 18
-  itemName: Viking Shield
-  itemDescription: This shield was manufactured in the fearsome foundaries of the
-    marauding Vikings of Stevanger
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: b97c91e8b348f3f4ebdc11f5c82182cd, type: 3}
-  amount: 0
-  spriteRenderer: {fileID: 6711281406271274700}
-  polyCollider: {fileID: 1646177105300263010}
 --- !u!60 &1646177105300263010
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -218,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1033
-  itemDetails:
+  spriteRenderer: {fileID: 6711281406271274700}
+  polyCollider: {fileID: 1646177105300263010}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -231,7 +211,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

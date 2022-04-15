@@ -8,8 +8,8 @@ namespace FlyingWormConsole3.LiteNetLib
 {
     public sealed class NetEndPoint
     {
-        public string Host { get { return EndPoint.Address.ToString(); } }
-        public int Port { get { return EndPoint.Port; } }
+        public string Host => EndPoint.Address.ToString();
+        public int Port => EndPoint.Port;
 
         internal readonly IPEndPoint EndPoint;
 
@@ -24,6 +24,7 @@ namespace FlyingWormConsole3.LiteNetLib
             {
                 return false;
             }
+
             return EndPoint.Equals(((NetEndPoint)obj).EndPoint);
         }
 
@@ -53,15 +54,18 @@ namespace FlyingWormConsole3.LiteNetLib
                         ipAddress = ResolveAddress(hostStr, AddressFamily.InterNetworkV6);
                     }
                 }
+
                 if (ipAddress == null)
                 {
                     ipAddress = ResolveAddress(hostStr, AddressFamily.InterNetwork);
                 }
             }
+
             if (ipAddress == null)
             {
                 throw new Exception("Invalid address: " + hostStr);
             }
+
             EndPoint = new IPEndPoint(ipAddress, port);
         }
 
@@ -72,7 +76,7 @@ namespace FlyingWormConsole3.LiteNetLib
             hostTask.Wait();
             var host = hostTask.Result;
 #else
-            var host = Dns.GetHostEntry(hostStr);
+            IPHostEntry host = Dns.GetHostEntry(hostStr);
 #endif
             foreach (IPAddress ip in host.AddressList)
             {
@@ -81,6 +85,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     return ip;
                 }
             }
+
             return null;
         }
 

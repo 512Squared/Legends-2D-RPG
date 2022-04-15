@@ -4,14 +4,13 @@ using UnityEngine;
 using TMPro;
 
 
-
 public class PlayerGlobalData : MonoBehaviour
 {
     public static PlayerGlobalData instance;
 
-    [SerializeField] Rigidbody2D playerRigidBody;
-    [SerializeField] int moveSpeed = 1;
-    [SerializeField] Animator playerAnimator;
+    [SerializeField] private Rigidbody2D playerRigidBody;
+    [SerializeField] private int moveSpeed = 1;
+    [SerializeField] private Animator playerAnimator;
 
     public string arrivingAt;
 
@@ -22,8 +21,8 @@ public class PlayerGlobalData : MonoBehaviour
 
     public bool controllerSwitch = false;
 
-    float horizontalMovement;
-    float verticalMovement;
+    private float horizontalMovement;
+    private float verticalMovement;
 
     private _DateTime date;
     private Continental cont;
@@ -31,17 +30,16 @@ public class PlayerGlobalData : MonoBehaviour
     private int characterParty = 0;
 
 
-
     // Start is called before the first frame update
 
 
-    void Start()
+    private void Start()
     {
         instance = this;
     }
+
     public void AndroidController()
     {
-
         if (controllerSwitch == false)
         {
             horizontalMovement = Input.GetAxisRaw("Horizontal");
@@ -55,10 +53,9 @@ public class PlayerGlobalData : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
-
-        controllerSwitch = MenuManager.instance.controlSwitch;
+        controllerSwitch = MenuManager.Instance.controlSwitch;
 
         AndroidController();
 
@@ -76,13 +73,11 @@ public class PlayerGlobalData : MonoBehaviour
 
         if (horizontalMovement == 1 || horizontalMovement == -1 || verticalMovement == 1 || verticalMovement == -1)
         {
-
             if (!deactivedMovement)
             {
                 playerAnimator.SetFloat("lastX", horizontalMovement);
                 playerAnimator.SetFloat("lastY", verticalMovement);
             }
-
         }
 
         transform.position = new Vector3(
@@ -91,10 +86,9 @@ public class PlayerGlobalData : MonoBehaviour
             Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)
         );
 
-        MenuManager.instance.HomeScreenStats();
+        MenuManager.Instance.HomeScreenStats();
 
         PlayerTestInput(date, cont);
-
     }
 
     public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
@@ -111,21 +105,28 @@ public class PlayerGlobalData : MonoBehaviour
             {
                 Debug.Log(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
                 collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
-                MenuManager.instance.UpdateItemsInventory();
-                NotificationFader.instance.CallFadeInOut(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available to add to your character party!",
-                collision.gameObject.GetComponent<PlayerStats>().characterPlain,
-                3.4f,
-                1000, 30);
-                if(characterParty < 3) characterParty++;
-                if (characterParty == 2) Actions.MarkQuestCompleted?.Invoke("Add two people to your character party");
-            }
+                MenuManager.Instance.UpdateItemsInventory();
+                NotificationFader.instance.CallFadeInOut(
+                    collision.gameObject.GetComponent<PlayerStats>().playerName +
+                    " is now available to add to your character party!",
+                    collision.gameObject.GetComponent<PlayerStats>().characterPlain,
+                    3.4f,
+                    1000, 30);
+                if (characterParty < 3)
+                {
+                    characterParty++;
+                }
 
+                if (characterParty == 2)
+                {
+                    Actions.MarkQuestCompleted?.Invoke("Add two people to your character party");
+                }
+            }
         }
     }
 
     private void PlayerTestInput(_DateTime dateTime, Continental railwayTime)
     {
-
         // Trigger Advance Time
         if (Input.GetKey(KeyCode.T))
         {
@@ -138,8 +139,4 @@ public class PlayerGlobalData : MonoBehaviour
             dateTime.AdvanceDayKey();
         }
     }
-
-
 }
-
-

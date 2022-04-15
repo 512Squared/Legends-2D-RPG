@@ -11,93 +11,89 @@ using System;
 
 public class CoinsManager : MonoBehaviour
 {
-
     #region Serialisation
-
-
 
     public static CoinsManager instance;
 
-    [Header("Main connectors")]
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] GameObject animatedCoinPrefab;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] GameObject animatedHPPrefab;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] GameObject animatedManaPrefab;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] Transform targetCoin;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] Transform targetHP;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] Transform targetMana;
+    [Header("Main connectors")] [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private GameObject animatedCoinPrefab;
 
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] private Transform sourceTransformCoin;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] private Transform sourceTransformHP;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] private Transform sourceTransformMana;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI coinUIText;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI hpUIText;
-    [TabGroup("UI references")]
-    [GUIColor(1f, 1f, 0.215f)]
-    [SerializeField] TextMeshProUGUI manaUIText;
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private GameObject animatedHPPrefab;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private GameObject animatedManaPrefab;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private Transform targetCoin;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private Transform targetHP;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private Transform targetMana;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private Transform sourceTransformCoin;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private Transform sourceTransformHP;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private Transform sourceTransformMana;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private TextMeshProUGUI coinUIText;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private TextMeshProUGUI hpUIText;
+
+    [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
+    private TextMeshProUGUI manaUIText;
 
 
     private Vector2 sourceCoins;
     private Vector2 sourceHP;
     private Vector2 sourceMana;
 
-    Vector2 targetPositionCoins;
-    Vector2 targetPositionHP;
-    Vector2 targetPositionMana;
+    private Vector2 targetPositionCoins;
+    private Vector2 targetPositionHP;
+    private Vector2 targetPositionMana;
 
 
     [Header("Available coins : (coins to pool)")]
     [TabGroup("Miscellaneous")]
     [GUIColor(0.670f, 1, 0.560f)]
-    [SerializeField] int maxCoins;
-    [TabGroup("Miscellaneous")]
-    [GUIColor(0.670f, 1, 0.560f)]
-    [SerializeField] int maxHP;
-    [TabGroup("Miscellaneous")]
-    [GUIColor(0.670f, 1, 0.560f)]
-    [SerializeField] int maxMana;
-    [TabGroup("Miscellaneous")]
-    [GUIColor(0.670f, 1, 0.560f)]
+    [SerializeField]
+    private int maxCoins;
 
+    [TabGroup("Miscellaneous")] [GUIColor(0.670f, 1, 0.560f)] [SerializeField]
+    private int maxHP;
 
-    Queue<GameObject> coinsQueue = new Queue<GameObject>();
-    Queue<GameObject> hpQueue = new Queue<GameObject>();
-    Queue<GameObject> manaQueue = new Queue<GameObject>();
+    [TabGroup("Miscellaneous")] [GUIColor(0.670f, 1, 0.560f)] [SerializeField]
+    private int maxMana;
+
+    [TabGroup("Miscellaneous")] [GUIColor(0.670f, 1, 0.560f)]
+    private Queue<GameObject> coinsQueue = new Queue<GameObject>();
+
+    private Queue<GameObject> hpQueue = new Queue<GameObject>();
+    private Queue<GameObject> manaQueue = new Queue<GameObject>();
 
     [Header("Animation settings")]
     [TabGroup("New Group", "Animation settings")]
     [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] [Range(0.5f, 0.9f)] float minAnimDuration;
-    [TabGroup("New Group", "Animation settings")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] [Range(0.9f, 2f)] float maxAnimDuration;
-    [TabGroup("New Group", "Animation settings")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] Ease easeType;
-    [TabGroup("New Group", "Animation settings")]
-    [GUIColor(0.447f, 0.654f, 0.996f)]
-    [SerializeField] float spread;
+    [SerializeField]
+    [Range(0.5f, 0.9f)]
+    private float minAnimDuration;
+
+    [TabGroup("New Group", "Animation settings")] [GUIColor(0.447f, 0.654f, 0.996f)] [SerializeField] [Range(0.9f, 2f)]
+    private float maxAnimDuration;
+
+    [TabGroup("New Group", "Animation settings")] [GUIColor(0.447f, 0.654f, 0.996f)] [SerializeField]
+    private Ease easeType;
+
+    [TabGroup("New Group", "Animation settings")] [GUIColor(0.447f, 0.654f, 0.996f)] [SerializeField]
+    private float spread;
 
     #endregion
 
@@ -126,7 +122,7 @@ public class CoinsManager : MonoBehaviour
         PrepareMana();
     }
 
-    void PrepareCoins()
+    private void PrepareCoins()
     {
         for (int i = 0; i < maxCoins; i++)
         {
@@ -138,7 +134,7 @@ public class CoinsManager : MonoBehaviour
         }
     }
 
-    void PrepareHP()
+    private void PrepareHP()
     {
         for (int i = 0; i < maxHP; i++)
         {
@@ -150,7 +146,7 @@ public class CoinsManager : MonoBehaviour
         }
     }
 
-    void PrepareMana()
+    private void PrepareMana()
     {
         for (int i = 0; i < maxMana; i++)
         {
@@ -166,7 +162,7 @@ public class CoinsManager : MonoBehaviour
     {
         if (maxCoins < valueInCoins)
         {
-            for (int j = 0; j < (valueInCoins - maxCoins + 1); j++)
+            for (int j = 0; j < valueInCoins - maxCoins + 1; j++)
             {
                 GameObject coin;
                 coin = Instantiate(animatedCoinPrefab);
@@ -174,6 +170,7 @@ public class CoinsManager : MonoBehaviour
                 coin.SetActive(false);
                 coinsQueue.Enqueue(coin);
             }
+
             maxCoins = valueInCoins;
         }
 
@@ -202,12 +199,10 @@ public class CoinsManager : MonoBehaviour
                     });
             }
         }
-
     }
 
     public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget)
     {
-
         // trying to assign a target position to player image
 
         targetPositionHP = receivedTarget;
@@ -273,29 +268,29 @@ public class CoinsManager : MonoBehaviour
     }
 
 
-    public void UseItem(ItemsManager item, int selectedCharacter, Vector2 target)
+    public void UseItem(Item item, int selectedCharacter, Vector2 target)
     {
-        if (item.affectType == ItemsManager.AffectType.Hp)
+        if (item.SO.affectType == AffectType.Hp)
         {
             UpdateHPTarget();
             chosenCharacter = selectedCharacter;
-            AnimateHP(sourceHP, item.amountOfEffect, target);
+            AnimateHP(sourceHP, item.SO.amountOfEffect, target);
             Debug.Log("UIAddHP called from CoinsManager");
         }
 
-        if (item.affectType == ItemsManager.AffectType.Mana)
+        if (item.SO.affectType == AffectType.Mana)
         {
             UpdateManaTarget();
             chosenCharacter = selectedCharacter;
-            AnimateMana(sourceMana, item.amountOfEffect, target);
+            AnimateMana(sourceMana, item.SO.amountOfEffect, target);
             Debug.Log("UIAddMana called from CoinsManager");
         }
     }
 
-    public void SellItem(ItemsManager item)
+    public void SellItem(Item item)
     {
         UpdateCoins();
-        AnimateCoins(sourceCoins, item.valueInCoins);
+        AnimateCoins(sourceCoins, item.SO.valueInCoins);
     }
 
     public void UpdateCoins()
@@ -316,8 +311,8 @@ public class CoinsManager : MonoBehaviour
         sourceMana = sourceTransformMana.position;
     }
 
-    public void CoinUpdate(ItemsManager item)
+    public void CoinUpdate(Item item)
     {
-        Thulgran.ThulgranGold -= item.valueInCoins;
+        Thulgran.ThulgranGold -= item.SO.valueInCoins;
     }
 }

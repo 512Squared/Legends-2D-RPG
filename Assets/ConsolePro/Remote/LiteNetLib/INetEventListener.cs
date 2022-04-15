@@ -62,7 +62,8 @@ namespace FlyingWormConsole3.LiteNetLib
         /// <param name="remoteEndPoint">From address (IP and Port)</param>
         /// <param name="reader">Message data</param>
         /// <param name="messageType">Message type (simple, discovery request or responce)</param>
-        void OnNetworkReceiveUnconnected(NetEndPoint remoteEndPoint, NetDataReader reader, UnconnectedMessageType messageType);
+        void OnNetworkReceiveUnconnected(NetEndPoint remoteEndPoint, NetDataReader reader,
+            UnconnectedMessageType messageType);
 
         /// <summary>
         /// Latency information updated
@@ -75,10 +76,16 @@ namespace FlyingWormConsole3.LiteNetLib
     public class EventBasedNetListener : INetEventListener
     {
         public delegate void OnPeerConnected(NetPeer peer);
+
         public delegate void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo);
+
         public delegate void OnNetworkError(NetEndPoint endPoint, int socketErrorCode);
+
         public delegate void OnNetworkReceive(NetPeer peer, NetDataReader reader);
-        public delegate void OnNetworkReceiveUnconnected(NetEndPoint remoteEndPoint, NetDataReader reader, UnconnectedMessageType messageType);
+
+        public delegate void OnNetworkReceiveUnconnected(NetEndPoint remoteEndPoint, NetDataReader reader,
+            UnconnectedMessageType messageType);
+
         public delegate void OnNetworkLatencyUpdate(NetPeer peer, int latency);
 
         public event OnPeerConnected PeerConnectedEvent;
@@ -86,42 +93,55 @@ namespace FlyingWormConsole3.LiteNetLib
         public event OnNetworkError NetworkErrorEvent;
         public event OnNetworkReceive NetworkReceiveEvent;
         public event OnNetworkReceiveUnconnected NetworkReceiveUnconnectedEvent;
-        public event OnNetworkLatencyUpdate NetworkLatencyUpdateEvent; 
-         
+        public event OnNetworkLatencyUpdate NetworkLatencyUpdateEvent;
+
         void INetEventListener.OnPeerConnected(NetPeer peer)
         {
             if (PeerConnectedEvent != null)
+            {
                 PeerConnectedEvent(peer);
+            }
         }
 
         void INetEventListener.OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
         {
             if (PeerDisconnectedEvent != null)
+            {
                 PeerDisconnectedEvent(peer, disconnectInfo);
+            }
         }
 
         void INetEventListener.OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
         {
             if (NetworkErrorEvent != null)
+            {
                 NetworkErrorEvent(endPoint, socketErrorCode);
+            }
         }
 
         void INetEventListener.OnNetworkReceive(NetPeer peer, NetDataReader reader)
         {
             if (NetworkReceiveEvent != null)
+            {
                 NetworkReceiveEvent(peer, reader);
+            }
         }
 
-        void INetEventListener.OnNetworkReceiveUnconnected(NetEndPoint remoteEndPoint, NetDataReader reader, UnconnectedMessageType messageType)
+        void INetEventListener.OnNetworkReceiveUnconnected(NetEndPoint remoteEndPoint, NetDataReader reader,
+            UnconnectedMessageType messageType)
         {
             if (NetworkReceiveUnconnectedEvent != null)
+            {
                 NetworkReceiveUnconnectedEvent(remoteEndPoint, reader, messageType);
+            }
         }
 
         void INetEventListener.OnNetworkLatencyUpdate(NetPeer peer, int latency)
         {
             if (NetworkLatencyUpdateEvent != null)
+            {
                 NetworkLatencyUpdateEvent(peer, latency);
+            }
         }
     }
 }

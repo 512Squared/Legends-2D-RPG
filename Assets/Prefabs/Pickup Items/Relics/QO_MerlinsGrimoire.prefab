@@ -173,29 +173,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 9
-  affectType: 4
-  shop: 0
-  itemCode: 0
-  valueInCoins: 2000
-  amountOfEffect: 10
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Merlin's Grimoire
-  itemDescription: 'This is the most powerful spellbook in all of history. It is
-    the only grimoire that reveals the special blend of spells needed to defeat the
-    great magical dragons. '
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 1
-  pickUpNotice: 0
-  isRelic: 1
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 4fa5177c439515443830b2ee91dd4f17, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 7068261778932892270}
-  polyCollider: {fileID: 4208142096635502821}
 --- !u!114 &4208142096635502820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,7 +222,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1061
-  itemDetails:
+  spriteRenderer: {fileID: 7068261778932892270}
+  polyCollider: {fileID: 4208142096635502821}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -258,7 +237,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

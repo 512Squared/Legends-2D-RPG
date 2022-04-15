@@ -23,12 +23,16 @@ namespace DialogueEditor
         }
 
         public abstract eNodeType NodeType { get; }
+
         public Connection.eConnectionType ConnectionType
         {
             get
             {
                 if (Connections.Count > 0)
+                {
                     return Connections[0].ConnectionType;
+                }
+
                 return Connection.eConnectionType.None;
             }
         }
@@ -49,7 +53,7 @@ namespace DialogueEditor
 
     public class SpeechNode : ConversationNode
     {
-        public override eNodeType NodeType { get { return eNodeType.Speech; } }
+        public override eNodeType NodeType => eNodeType.Speech;
 
         /// <summary> The name of the NPC who is speaking. </summary>
         public string Name;
@@ -77,7 +81,7 @@ namespace DialogueEditor
 
     public class OptionNode : ConversationNode
     {
-        public override eNodeType NodeType { get { return eNodeType.Option; } }
+        public override eNodeType NodeType => eNodeType.Option;
 
         /// <summary> UnityEvent, to betriggered when this Option is chosen. </summary>
         public UnityEngine.Events.UnityEvent Event;

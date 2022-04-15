@@ -14,7 +14,7 @@ using UnityEngine;
 public class CustomRangePlugin : ABSTweenPlugin<CustomRange, CustomRange, NoOptions>
 {
     // Leave this empty
-	public override void Reset(TweenerCore<CustomRange, CustomRange, NoOptions> t) {}
+    public override void Reset(TweenerCore<CustomRange, CustomRange, NoOptions> t) { }
 
     // Sets the values in case of a From tween
     public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, bool isRelative)
@@ -26,14 +26,16 @@ public class CustomRangePlugin : ABSTweenPlugin<CustomRange, CustomRange, NoOpti
     }
 
     // Sets the values in case of a From tween with a specific from value
-    public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, CustomRange fromValue, bool setImmediately, bool isRelative)
+    public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, CustomRange fromValue,
+        bool setImmediately, bool isRelative)
     {
         t.startValue = fromValue;
         if (setImmediately) t.setter(fromValue);
     }
 
     // Used by special plugins, just let it return the given value
-    public override CustomRange ConvertToStartValue(TweenerCore<CustomRange, CustomRange, NoOptions> t, CustomRange value)
+    public override CustomRange ConvertToStartValue(TweenerCore<CustomRange, CustomRange, NoOptions> t,
+        CustomRange value)
     {
         return value;
     }
@@ -58,7 +60,9 @@ public class CustomRangePlugin : ABSTweenPlugin<CustomRange, CustomRange, NoOpti
     }
 
     // Calculates the value based on the given time and ease
-    public override void EvaluateAndApply(NoOptions options, Tween t, bool isRelative, DOGetter<CustomRange> getter, DOSetter<CustomRange> setter, float elapsed, CustomRange startValue, CustomRange changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
+    public override void EvaluateAndApply(NoOptions options, Tween t, bool isRelative, DOGetter<CustomRange> getter,
+        DOSetter<CustomRange> setter, float elapsed, CustomRange startValue, CustomRange changeValue, float duration,
+        bool usingInversePosition, UpdateNotice updateNotice)
     {
         float easeVal = EaseManager.Evaluate(t, elapsed, duration, t.easeOvershootOrAmplitude, t.easePeriod);
 

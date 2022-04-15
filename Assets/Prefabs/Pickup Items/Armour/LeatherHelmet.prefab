@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5738545975745691258}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.16, y: -2.01, z: 3.99}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children:
@@ -139,27 +139,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 8
-  affectType: 2
-  shop: 0
-  itemCode: 0
-  valueInCoins: 3
-  amountOfEffect: 0
-  itemAttack: 0
-  itemDefence: 5
-  itemName: Leather armour
-  itemDescription: Basic leather armour, but makes you sweaty
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 1
-  itemsImage: {fileID: 21300000, guid: 6d91d533c905b47459cf4c3f1a3f618e, type: 3}
-  amount: 0
-  spriteRenderer: {fileID: 2306688995407801726}
-  polyCollider: {fileID: 8193090981810930701}
 --- !u!60 &8193090981810930701
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -254,7 +233,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1036
-  itemDetails:
+  spriteRenderer: {fileID: 2306688995407801726}
+  polyCollider: {fileID: 8193090981810930701}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -267,7 +248,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

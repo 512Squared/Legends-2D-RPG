@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5075897320864451058}
-  - component: {fileID: 5075897320864451059}
   - component: {fileID: 5075897320864450956}
   - component: {fileID: 3706496019310691448}
   - component: {fileID: 5075897320864450957}
@@ -28,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5075897320864451056}
-  m_LocalRotation: {x: -0, y: -0, z: 0.92387956, w: 0.38268343}
+  m_LocalRotation: {x: 0, y: 0, z: 0.92387956, w: 0.38268343}
   m_LocalPosition: {x: -6.4639997, y: -2.6, z: 8}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
@@ -36,32 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 135}
---- !u!114 &5075897320864451059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5075897320864451056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_HasRenderer: 0
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 1
-  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c201fa2079d019040cd
-  m_ShapePath:
-  - {x: -5.254999, y: -0.6650009, z: 0}
-  - {x: -5.254999, y: 0.6650009, z: 0}
-  - {x: 5.255, y: 0.6650009, z: 0}
-  - {x: 5.255, y: -0.6650009, z: 0}
-  m_ShapePathHash: 0
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 902626
 --- !u!114 &5075897320864450956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,27 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 1
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 20
-  itemDefence: 0
-  itemName: Arban sword
-  itemDescription: Arban sword
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 55039f1e30bd40d47ad9f8c1419d9d1a, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 3214232838706732640}
-  polyCollider: {fileID: 3706496019310691448}
 --- !u!60 &3706496019310691448
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -189,7 +141,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1017
-  itemDetails:
+  spriteRenderer: {fileID: 3214232838706732640}
+  polyCollider: {fileID: 3706496019310691448}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -202,7 +156,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

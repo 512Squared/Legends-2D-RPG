@@ -56,27 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 3
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 9
-  itemDefence: 0
-  itemName: Swirthian Protector
-  itemDescription: World-renowned Swirthian craftsmanship in all-purpose axe
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: 4f6280dc3398279449b2a48c9f069037, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 5218741539300929755}
-  polyCollider: {fileID: 1245267252717179490}
 --- !u!60 &1245267252717179490
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -134,7 +113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1006
-  itemDetails:
+  spriteRenderer: {fileID: 5218741539300929755}
+  polyCollider: {fileID: 1245267252717179490}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -147,7 +128,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

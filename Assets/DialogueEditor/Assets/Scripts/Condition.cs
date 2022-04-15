@@ -22,7 +22,7 @@
             greaterThan
         }
 
-        public override eConditionType ConditionType { get { return eConditionType.IntCondition; } }
+        public override eConditionType ConditionType => eConditionType.IntCondition;
 
         public eCheckType CheckType;
         public int RequiredValue;
@@ -36,7 +36,7 @@
             notEqual
         }
 
-        public override eConditionType ConditionType { get { return eConditionType.BoolCondition; } }
+        public override eConditionType ConditionType => eConditionType.BoolCondition;
 
         public eCheckType CheckType;
         public bool RequiredValue;

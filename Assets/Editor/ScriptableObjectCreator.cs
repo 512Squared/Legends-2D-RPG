@@ -7,22 +7,23 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class ScriptableObjectCreator : OdinMenuEditorWindow
 {
-    static HashSet<Type> scriptableObjectTypes = AssemblyUtilities.GetTypes(AssemblyTypeFlags.CustomTypes)
+    private static HashSet<Type> scriptableObjectTypes = AssemblyUtilities.GetTypes(AssemblyTypeFlags.CustomTypes)
         .Where(t =>
             t.IsClass &&
             typeof(ScriptableObject).IsAssignableFrom(t) &&
             !typeof(EditorWindow).IsAssignableFrom(t) &&
             !typeof(Editor).IsAssignableFrom(t))
-       .ToHashSet();
+        .ToHashSet();
 
     [MenuItem("Assets/Create Scriptable Object", priority = -1000)]
     private static void ShowDialog()
     {
-        var path = "Assets";
-        var obj = Selection.activeObject;
+        string path = "Assets";
+        Object obj = Selection.activeObject;
         if (obj && AssetDatabase.Contains(obj))
         {
             path = AssetDatabase.GetAssetPath(obj);
@@ -32,7 +33,7 @@ public class ScriptableObjectCreator : OdinMenuEditorWindow
             }
         }
 
-        var window = CreateInstance<ScriptableObjectCreator>();
+        ScriptableObjectCreator window = CreateInstance<ScriptableObjectCreator>();
         window.ShowUtility();
         window.position = GUIHelper.GetEditorWindowRect().AlignCenter(800, 500);
         window.titleContent = new GUIContent(path);
@@ -47,27 +48,27 @@ public class ScriptableObjectCreator : OdinMenuEditorWindow
     {
         get
         {
-            var m = this.MenuTree.Selection.LastOrDefault();
+            OdinMenuItem m = MenuTree.Selection.LastOrDefault();
             return m == null ? null : m.Value as Type;
         }
     }
 
     protected override OdinMenuTree BuildMenuTree()
     {
-        this.MenuWidth = 270;
-        this.WindowPadding = Vector4.zero;
+        MenuWidth = 270;
+        WindowPadding = Vector4.zero;
 
         OdinMenuTree tree = new OdinMenuTree(false);
         tree.Config.DrawSearchToolbar = true;
         tree.DefaultMenuStyle = OdinMenuStyle.TreeViewStyle;
         tree.AddRange(scriptableObjectTypes.Where(x => !x.IsAbstract), GetMenuPathForType).AddThumbnailIcons();
         tree.SortMenuItemsByName();
-        tree.Selection.SelectionConfirmed += x => this.CreateAsset();
+        tree.Selection.SelectionConfirmed += x => CreateAsset();
         tree.Selection.SelectionChanged += e =>
         {
-            if (this.previewObject && !AssetDatabase.Contains(this.previewObject))
+            if (previewObject && !AssetDatabase.Contains(previewObject))
             {
-                DestroyImmediate(this.previewObject);
+                DestroyImmediate(previewObject);
             }
 
             if (e != SelectionChangedType.ItemAdded)
@@ -75,10 +76,10 @@ public class ScriptableObjectCreator : OdinMenuEditorWindow
                 return;
             }
 
-            var t = this.SelectedType;
+            Type t = SelectedType;
             if (t != null && !t.IsAbstract)
             {
-                this.previewObject = CreateInstance(t) as ScriptableObject;
+                previewObject = CreateInstance(t) as ScriptableObject;
             }
         };
 
@@ -89,7 +90,7 @@ public class ScriptableObjectCreator : OdinMenuEditorWindow
     {
         if (t != null && scriptableObjectTypes.Contains(t))
         {
-            var name = t.Name.Split('`').First().SplitPascalCase();
+            string name = t.Name.Split('`').First().SplitPascalCase();
             return GetMenuPathForType(t.BaseType) + "/" + name;
         }
 
@@ -98,38 +99,38 @@ public class ScriptableObjectCreator : OdinMenuEditorWindow
 
     protected override IEnumerable<object> GetTargets()
     {
-        yield return this.previewObject;
+        yield return previewObject;
     }
 
     protected override void DrawEditor(int index)
     {
-        this.scroll = GUILayout.BeginScrollView(this.scroll);
+        scroll = GUILayout.BeginScrollView(scroll);
         {
             base.DrawEditor(index);
         }
         GUILayout.EndScrollView();
 
-        if (this.previewObject)
+        if (previewObject)
         {
             GUILayout.FlexibleSpace();
             SirenixEditorGUI.HorizontalLineSeparator(1);
             if (GUILayout.Button("Create Asset", GUILayoutOptions.Height(30)))
             {
-                this.CreateAsset();
+                CreateAsset();
             }
         }
     }
 
     private void CreateAsset()
     {
-        if (this.previewObject)
+        if (previewObject)
         {
-            var dest = this.targetFolder + "/new " + this.MenuTree.Selection.First().Name.ToLower() + ".asset";
+            string dest = targetFolder + "/new " + MenuTree.Selection.First().Name.ToLower() + ".asset";
             dest = AssetDatabase.GenerateUniqueAssetPath(dest);
-            AssetDatabase.CreateAsset(this.previewObject, dest);
+            AssetDatabase.CreateAsset(previewObject, dest);
             AssetDatabase.Refresh();
-            Selection.activeObject = this.previewObject;
-            EditorApplication.delayCall += this.Close;
+            Selection.activeObject = previewObject;
+            EditorApplication.delayCall += Close;
         }
     }
 }

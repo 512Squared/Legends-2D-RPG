@@ -6,11 +6,10 @@ using TMPro;
 
 public class DialogueController : MonoBehaviour
 {
-
     public static DialogueController instance;
 
-    [SerializeField] TextMeshProUGUI dialogueText, nameText;
-    [SerializeField] GameObject dialogueBox, nameBox;
+    [SerializeField] private TextMeshProUGUI dialogueText, nameText;
+    [SerializeField] private GameObject dialogueBox, nameBox;
 
     public bool activatesQuest;
     public string questToActivate;
@@ -19,31 +18,30 @@ public class DialogueController : MonoBehaviour
     public string emptyArg = string.Empty;
     private int turn = 0;
 
-    [SerializeField] string[] dialogueSentences;
-    [SerializeField] int currentSentence;
+    [SerializeField] private string[] dialogueSentences;
+    [SerializeField] private int currentSentence;
 
     public bool dialogueJustStarted;
     public bool activatedOnEnter = false;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         dialogueText.text = dialogueSentences[currentSentence];
         instance = this;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (dialogueBox.activeInHierarchy)
         {
             if (Input.GetButtonUp("Fire1"))
             {
-
                 if (!dialogueJustStarted)
                 {
                     currentSentence++;
-                    
+
                     if (currentSentence >= dialogueSentences.Length)
                     {
                         dialogueBox.SetActive(false);
@@ -53,39 +51,35 @@ public class DialogueController : MonoBehaviour
                         {
                             Actions.OnDoQuestStuffAfterDialogue?.Invoke("activate", questToActivate, emptyArg);
                             Actions.OnActivateQuest?.Invoke(questToActivate);
-                            Debug.Log($"Dialogue complete. 'Activate' quest: {questToActivate}");
-                            activatesQuest = false; 
+                            Debug.Log($"OnActivateQuest called: {questToActivate}");
+                            activatesQuest = false;
                         }
 
                         else if (completesQuest && !activatesQuest)
                         {
-                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete", emptyArg, questYouHaveJustCompleted);
-                            Debug.Log($"Dialogue complete. 'Complete' event called {questYouHaveJustCompleted}");
+                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete", emptyArg,
+                                questYouHaveJustCompleted);
                             completesQuest = false;
                         }
                         else if (completesQuest && activatesQuest)
                         {
-                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("both", questToActivate, questYouHaveJustCompleted);
-                            Debug.Log($"Dialogue complete. 'Both' event called: {questYouHaveJustCompleted} | {questToActivate}");
+                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("both", questToActivate,
+                                questYouHaveJustCompleted);
                             completesQuest = false;
                             activatesQuest = false;
                         }
                         // disable trigger after dialogue
-
-
                     }
                     else
                     {
                         CheckForName();
                         dialogueText.text = dialogueSentences[currentSentence];
                     }
-                    
                 }
                 else
                 {
                     dialogueJustStarted = false;
                 }
-
             }
         }
     }
@@ -105,8 +99,8 @@ public class DialogueController : MonoBehaviour
     }
 
 
-    void CheckForName()
-    {   
+    private void CheckForName()
+    {
         if (dialogueSentences[currentSentence].StartsWith("#"))
         {
             nameText.text = dialogueSentences[currentSentence].Replace("#", "");
@@ -129,5 +123,4 @@ public class DialogueController : MonoBehaviour
     {
         return dialogueBox.activeInHierarchy;
     }
-
 }

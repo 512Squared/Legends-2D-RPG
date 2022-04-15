@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1365398773652133289}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.28, y: -3.94, z: 3.99}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children:
@@ -56,27 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 8
-  affectType: 2
-  shop: 0
-  itemCode: 0
-  valueInCoins: 50
-  amountOfEffect: 0
-  itemAttack: 0
-  itemDefence: 24
-  itemName: Plate Helmet
-  itemDescription: Iron Helmet - does the job
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 0
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: eddb0f61210d2f4429ae92bc08d1b3ba, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 7167723283132726073}
-  polyCollider: {fileID: 1365398773652133293}
 --- !u!60 &1365398773652133293
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -165,7 +144,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1037
-  itemDetails:
+  spriteRenderer: {fileID: 7167723283132726073}
+  polyCollider: {fileID: 1365398773652133293}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -178,7 +159,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

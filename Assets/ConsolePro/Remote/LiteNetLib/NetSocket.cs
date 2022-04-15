@@ -17,15 +17,12 @@ namespace FlyingWormConsole3.LiteNetLib
         private bool _running;
         private readonly NetManager.OnMessageReceived _onMessageReceived;
 
-        private static readonly IPAddress MulticastAddressV6 = IPAddress.Parse (NetConstants.MulticastGroupIPv6);
+        private static readonly IPAddress MulticastAddressV6 = IPAddress.Parse(NetConstants.MulticastGroupIPv6);
         private static readonly bool IPv6Support;
         private const int SocketReceivePollTime = 100000;
         private const int SocketSendPollTime = 5000;
 
-        public NetEndPoint LocalEndPoint
-        {
-            get { return _localEndPoint; }
-        }
+        public NetEndPoint LocalEndPoint => _localEndPoint;
 
         static NetSocket()
         {
@@ -35,7 +32,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 // IPv6Support = Socket.OSSupportsIPv6;
                 IPv6Support = false;
             }
-            catch 
+            catch
             {
                 IPv6Support = false;
             }
@@ -49,7 +46,9 @@ namespace FlyingWormConsole3.LiteNetLib
         private void ReceiveLogic(object state)
         {
             Socket socket = (Socket)state;
-            EndPoint bufferEndPoint = new IPEndPoint(socket.AddressFamily == AddressFamily.InterNetwork ? IPAddress.Any : IPAddress.IPv6Any, 0);
+            EndPoint bufferEndPoint =
+                new IPEndPoint(socket.AddressFamily == AddressFamily.InterNetwork ? IPAddress.Any : IPAddress.IPv6Any,
+                    0);
             NetEndPoint bufferNetEndPoint = new NetEndPoint((IPEndPoint)bufferEndPoint);
             byte[] receiveBuffer = new byte[NetConstants.PacketSizeLimit];
 
@@ -66,7 +65,8 @@ namespace FlyingWormConsole3.LiteNetLib
                 //Reading data
                 try
                 {
-                    result = socket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref bufferEndPoint);
+                    result = socket.ReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None,
+                        ref bufferEndPoint);
                     if (!bufferNetEndPoint.EndPoint.Equals(bufferEndPoint))
                     {
                         bufferNetEndPoint = new NetEndPoint((IPEndPoint)bufferEndPoint);
@@ -80,16 +80,19 @@ namespace FlyingWormConsole3.LiteNetLib
                         //10040 - message too long
                         //10054 - remote close (not error)
                         //Just UDP
-                        NetUtils.DebugWrite(ConsoleColor.DarkRed, "[R] Ingored error: {0} - {1}", (int)ex.SocketErrorCode, ex.ToString() );
+                        NetUtils.DebugWrite(ConsoleColor.DarkRed, "[R] Ingored error: {0} - {1}",
+                            (int)ex.SocketErrorCode, ex.ToString());
                         continue;
                     }
+
                     NetUtils.DebugWriteError("[R]Error code: {0} - {1}", (int)ex.SocketErrorCode, ex.ToString());
                     _onMessageReceived(null, 0, (int)ex.SocketErrorCode, bufferNetEndPoint);
                     continue;
                 }
 
                 //All ok!
-                NetUtils.DebugWrite(ConsoleColor.Blue, "[R]Recieved data from {0}, result: {1}", bufferNetEndPoint.ToString(), result);
+                NetUtils.DebugWrite(ConsoleColor.Blue, "[R]Recieved data from {0}, result: {1}",
+                    bufferNetEndPoint.ToString(), result);
                 _onMessageReceived(receiveBuffer, result, 0, bufferNetEndPoint);
             }
         }
@@ -101,8 +104,10 @@ namespace FlyingWormConsole3.LiteNetLib
             _udpSocketv4.ReceiveBufferSize = NetConstants.SocketBufferSize;
             _udpSocketv4.SendBufferSize = NetConstants.SocketBufferSize;
             _udpSocketv4.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, NetConstants.SocketTTL);
-            if(reuseAddress)
+            if (reuseAddress)
+            {
                 _udpSocketv4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            }
 #if !NETCORE
             _udpSocketv4.DontFragment = true;
 #endif
@@ -120,6 +125,7 @@ namespace FlyingWormConsole3.LiteNetLib
             {
                 return false;
             }
+
             _localEndPoint = new NetEndPoint((IPEndPoint)_udpSocketv4.LocalEndPoint);
 
             _running = true;
@@ -130,7 +136,9 @@ namespace FlyingWormConsole3.LiteNetLib
 
             //Check IPv6 support
             if (!IPv6Support)
+            {
                 return true;
+            }
 
             //Use one port for two sockets
             port = _localEndPoint.Port;
@@ -140,7 +148,9 @@ namespace FlyingWormConsole3.LiteNetLib
             _udpSocketv6.ReceiveBufferSize = NetConstants.SocketBufferSize;
             _udpSocketv6.SendBufferSize = NetConstants.SocketBufferSize;
             if (reuseAddress)
+            {
                 _udpSocketv6.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            }
 
             if (BindSocket(_udpSocketv6, new IPEndPoint(IPAddress.IPv6Any, port)))
             {
@@ -149,11 +159,11 @@ namespace FlyingWormConsole3.LiteNetLib
                 try
                 {
                     _udpSocketv6.SetSocketOption(
-                        SocketOptionLevel.IPv6, 
+                        SocketOptionLevel.IPv6,
                         SocketOptionName.AddMembership,
                         new IPv6MulticastOption(MulticastAddressV6));
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // Unity3d throws exception - ignored
                 }
@@ -172,7 +182,8 @@ namespace FlyingWormConsole3.LiteNetLib
             try
             {
                 socket.Bind(ep);
-                NetUtils.DebugWrite(ConsoleColor.Blue, "[B]Succesfully binded to port: {0}", ((IPEndPoint)socket.LocalEndPoint).Port);
+                NetUtils.DebugWrite(ConsoleColor.Blue, "[B]Succesfully binded to port: {0}",
+                    ((IPEndPoint)socket.LocalEndPoint).Port);
             }
             catch (SocketException ex)
             {
@@ -182,8 +193,10 @@ namespace FlyingWormConsole3.LiteNetLib
                 {
                     return true;
                 }
+
                 return false;
             }
+
             return true;
         }
 
@@ -191,14 +204,21 @@ namespace FlyingWormConsole3.LiteNetLib
         {
             try
             {
-                int result = _udpSocketv4.SendTo(data, offset, size, SocketFlags.None, new IPEndPoint(IPAddress.Broadcast, port));
+                int result = _udpSocketv4.SendTo(data, offset, size, SocketFlags.None,
+                    new IPEndPoint(IPAddress.Broadcast, port));
                 if (result <= 0)
+                {
                     return false;
+                }
+
                 if (IPv6Support)
                 {
-                    result = _udpSocketv6.SendTo(data, offset, size, SocketFlags.None, new IPEndPoint(MulticastAddressV6, port));
+                    result = _udpSocketv6.SendTo(data, offset, size, SocketFlags.None,
+                        new IPEndPoint(MulticastAddressV6, port));
                     if (result <= 0)
+                    {
                         return false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -206,6 +226,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 NetUtils.DebugWriteError("[S][MCAST]" + ex);
                 return false;
             }
+
             return true;
         }
 
@@ -217,17 +238,24 @@ namespace FlyingWormConsole3.LiteNetLib
                 if (remoteEndPoint.EndPoint.AddressFamily == AddressFamily.InterNetwork)
                 {
                     if (!_udpSocketv4.Poll(SocketSendPollTime, SelectMode.SelectWrite))
+                    {
                         return -1;
+                    }
+
                     result = _udpSocketv4.SendTo(data, offset, size, SocketFlags.None, remoteEndPoint.EndPoint);
                 }
-                else if(IPv6Support)
+                else if (IPv6Support)
                 {
                     if (!_udpSocketv6.Poll(SocketSendPollTime, SelectMode.SelectWrite))
+                    {
                         return -1;
+                    }
+
                     result = _udpSocketv6.SendTo(data, offset, size, SocketFlags.None, remoteEndPoint.EndPoint);
                 }
 
-                NetUtils.DebugWrite(ConsoleColor.Blue, "[S]Send packet to {0}, result: {1}", remoteEndPoint.EndPoint, result);
+                NetUtils.DebugWrite(ConsoleColor.Blue, "[S]Send packet to {0}, result: {1}", remoteEndPoint.EndPoint,
+                    result);
                 return result;
             }
             catch (SocketException ex)
@@ -236,7 +264,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 {
                     NetUtils.DebugWriteError("[S]" + ex);
                 }
-                
+
                 errorCode = (int)ex.SocketErrorCode;
                 return -1;
             }
@@ -265,6 +293,7 @@ namespace FlyingWormConsole3.LiteNetLib
             {
                 _threadv4.Join();
             }
+
             _threadv4 = null;
             if (_udpSocketv4 != null)
             {
@@ -274,13 +303,16 @@ namespace FlyingWormConsole3.LiteNetLib
 
             //No ipv6
             if (_udpSocketv6 == null)
+            {
                 return;
+            }
 
             //Close IPv6
             if (Thread.CurrentThread != _threadv6)
             {
                 _threadv6.Join();
             }
+
             _threadv6 = null;
             if (_udpSocketv6 != null)
             {
@@ -328,7 +360,8 @@ namespace FlyingWormConsole3.LiteNetLib
         
         private void OnMessageReceived(DatagramSocket sender, DatagramSocketMessageReceivedEventArgs args)
         {
-            var result = args.GetDataStream().ReadAsync(_buffer, _buffer.Capacity, InputStreamOptions.None).AsTask().Result;
+            var result =
+ args.GetDataStream().ReadAsync(_buffer, _buffer.Capacity, InputStreamOptions.None).AsTask().Result;
             int length = (int)result.Length;
             if (length <= 0)
                 return;
@@ -354,7 +387,8 @@ namespace FlyingWormConsole3.LiteNetLib
             {
                 _datagramSocket.BindServiceNameAsync(port.ToString()).AsTask().Wait();
                 _datagramSocket.JoinMulticastGroup(MulticastAddressV6);
-                _localEndPoint = new NetEndPoint(_datagramSocket.Information.LocalAddress, _datagramSocket.Information.LocalPort);
+                _localEndPoint =
+ new NetEndPoint(_datagramSocket.Information.LocalAddress, _datagramSocket.Information.LocalPort);
             }
             catch (Exception ex)
             {

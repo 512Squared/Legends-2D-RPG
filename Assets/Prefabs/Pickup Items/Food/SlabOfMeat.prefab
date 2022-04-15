@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7200773682273178913}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.05, y: -5.97, z: -5.99}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children:
@@ -56,27 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 6
-  affectType: 0
-  shop: 3
-  itemCode: 0
-  valueInCoins: -23
-  amountOfEffect: 25
-  itemAttack: 0
-  itemDefence: 0
-  itemName: Slab of meat
-  itemDescription: Restores some HP
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 1
-  itemsImage: {fileID: 21300000, guid: 02965bb096d1ff24897cfbedbc22f1a7, type: 3}
-  amount: 2
-  spriteRenderer: {fileID: 8406793936993171016}
-  polyCollider: {fileID: 7692597938736727357}
 --- !u!60 &7692597938736727357
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -133,8 +112,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quantity: 1
-  itemCode: 1000
-  itemDetails:
+  itemCode: 1049
+  spriteRenderer: {fileID: 8406793936993171016}
+  polyCollider: {fileID: 7692597938736727357}
+  _so:
     itemType: 0
     affectType: 0
     shop: 0
@@ -147,7 +128,7 @@ MonoBehaviour:
     itemDescription: 
     itemSelected: 0
     isNewItem: 1
-    shopItem: 0
+    isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

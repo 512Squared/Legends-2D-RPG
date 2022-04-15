@@ -56,27 +56,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  itemType: 2
-  affectType: 3
-  shop: 3
-  itemCode: 0
-  valueInCoins: 0
-  amountOfEffect: 0
-  itemAttack: 21
-  itemDefence: 0
-  itemName: The Swirthian Flayer Axe
-  itemDescription: Amazing workmanship and single -edged studded Swirthian Blade
-  itemSelected: 0
-  isNewItem: 1
-  shopItem: 1
-  isQuestObject: 0
-  pickUpNotice: 1
-  isRelic: 0
-  isStackable: 0
-  itemsImage: {fileID: 21300000, guid: a3b83ecb9cbc10e4c9e1685bc2e0e22b, type: 3}
-  amount: 1
-  spriteRenderer: {fileID: 4445278713417176203}
-  polyCollider: {fileID: 5133018546001765556}
 --- !u!60 &5133018546001765556
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -134,6 +113,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1001
+  spriteRenderer: {fileID: 4445278713417176203}
+  polyCollider: {fileID: 5133018546001765556}
+  _so:
+    itemType: 0
+    affectType: 0
+    shop: 0
+    itemCode: 1000
+    valueInCoins: 0
+    amountOfEffect: 0
+    itemAttack: 0
+    itemDefence: 0
+    itemName: 
+    itemDescription: 
+    itemSelected: 0
+    isNewItem: 1
+    isShopItem: 0
+    isQuestObject: 0
+    pickUpNotice: 1
+    isRelic: 0
+    isStackable: 0
+    itemsImage: {fileID: 0}
 --- !u!1 &8231126107716404552
 GameObject:
   m_ObjectHideFlags: 0

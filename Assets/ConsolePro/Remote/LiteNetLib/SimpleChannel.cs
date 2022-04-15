@@ -28,9 +28,13 @@ namespace FlyingWormConsole3.LiteNetLib
             lock (_outgoingPackets)
             {
                 if (_outgoingPackets.Count == 0)
+                {
                     return false;
+                }
+
                 packet = _outgoingPackets.Dequeue();
             }
+
             _peer.SendRawData(packet);
             _peer.Recycle(packet);
             return true;
