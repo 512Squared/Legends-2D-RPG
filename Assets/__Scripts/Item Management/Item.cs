@@ -44,7 +44,6 @@ public class Item : MonoBehaviour
 
         ItemCode = itemCodeParam;
         SO = Inventory.Instance.GetItemDetails(ItemCode);
-        Debug.Log($"Details: {SO.itemName}");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -61,7 +60,6 @@ public class Item : MonoBehaviour
             }
 
             Inventory.Instance.AddItems(this);
-            Debug.Log($"Item added: {SO.itemName}");
         }
     }
 

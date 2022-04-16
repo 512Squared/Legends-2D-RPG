@@ -889,19 +889,20 @@ public partial class MenuManager
         DoPunch(menuPanels[15].gameObject, new Vector3(0.15f, 0.15f, 0), 0.4f);
     }
 
-    public void OpenRelicInfo(string relicName)
+    public void OpenRelicInfo(int itemCode)
     {
-        List<Item> relicItems = QuestManager.Instance.GetRelicList();
-
-        foreach (Item relic in relicItems)
+        foreach (Item relic in QuestManager.Instance.GetRelicList())
         {
-            if (relic.SO.itemName == relicName) // add a bool check before string, less 
+            if (relic.ItemCode != itemCode)
             {
-                questRelicName.text = relic.SO.itemName;
-                questRelicDescription.text = relic.SO.itemDescription;
-                questRelicImage.sprite = relic.SO.itemsImage;
-                break;
+                continue;
             }
+
+            ItemDetails item = Inventory.Instance.GetItemDetails(itemCode);
+            questRelicName.text = item.itemName;
+            questRelicDescription.text = item.itemDescription;
+            questRelicImage.sprite = item.itemsImage;
+            break;
         }
     }
 

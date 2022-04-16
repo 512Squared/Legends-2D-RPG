@@ -1,9 +1,9 @@
 // Uncomment to use in Editor
-// #define USECONSOLEPROREMOTESERVERINEDITOR
+#define USECONSOLEPROREMOTESERVERINEDITOR
 
-#if (UNITY_WP_8_1 || UNITY_WSA)
-	#define UNSUPPORTEDCONSOLEPROREMOTESERVER
-#endif
+// #if (UNITY_WP_8_1 || UNITY_WSA)
+	// #define UNSUPPORTEDCONSOLEPROREMOTESERVER
+// #endif
 
 #if (!UNITY_EDITOR && DEBUG) || (UNITY_EDITOR && USECONSOLEPROREMOTESERVERINEDITOR)
 	#if !UNSUPPORTEDCONSOLEPROREMOTESERVER
@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 #endif
 
+using System.Net;
+using System.Net.Sockets;
 using UnityEngine;
 
 #if USECONSOLEPROREMOTESERVER
@@ -28,30 +30,33 @@ using FlyingWormConsole3.LiteNetLib.Utils;
 
 namespace FlyingWormConsole3
 {
-#if USECONSOLEPROREMOTESERVER
+	#if USECONSOLEPROREMOTESERVER
 public class ConsoleProRemoteServer : MonoBehaviour, INetEventListener
-#else
-    public class ConsoleProRemoteServer : MonoBehaviour
-#endif
-    {
-        public bool useNATPunch = false;
-        public int port = 51000;
+	#else
+public class ConsoleProRemoteServer : MonoBehaviour
+	#endif
+{
+	public bool useNATPunch = false;
+	public int port = 51000;
 
-#if UNITY_EDITOR && !USECONSOLEPROREMOTESERVER
-#elif UNSUPPORTEDCONSOLEPROREMOTESERVER
+	#if UNITY_EDITOR && !USECONSOLEPROREMOTESERVER
+
+	#elif UNSUPPORTEDCONSOLEPROREMOTESERVER
+
 	public void Awake()
 	{
 		Debug.Log("Console Pro Remote Server is not supported on this platform");
 	}
 
-#elif !USECONSOLEPROREMOTESERVER
-        public void Awake()
-        {
-            Debug.Log(
-                "Console Pro Remote Server is disabled in release mode, please use a Development build or define DEBUG to use it");
-        }
+	#elif !USECONSOLEPROREMOTESERVER
+	
+	public void Awake()
+	{
+		Debug.Log("Console Pro Remote Server is disabled in release mode, please use a Development build or define DEBUG to use it");
+	}
 
-#else
+	#else
+
 	private NetManager _netServer;
 	private NetPeer _ourPeer;
 	private NetDataWriter _dataWriter;
@@ -80,14 +85,13 @@ public class ConsoleProRemoteServer : MonoBehaviour, INetEventListener
 		
 		DontDestroyOnLoad(gameObject);
 
-		Debug.Log("Starting Console Pro Server on port : " + port);
+		Debug.Log("#Remote# Starting Console Pro Server on port : " + port);
 
 		_dataWriter = new NetDataWriter();
-		_netServer = new NetManager(this, 100, "ConsolePro");
+		_netServer = new NetManager(this);
 		_netServer.Start(port);
-		_netServer.DiscoveryEnabled = true;
+		_netServer.BroadcastReceiveEnabled = true;
 		_netServer.UpdateTime = 15;
-		_netServer.MergeEnabled = true;
 		_netServer.NatPunchEnabled = useNATPunch;
 	}
 
@@ -101,45 +105,52 @@ public class ConsoleProRemoteServer : MonoBehaviour, INetEventListener
 
 	public void OnPeerConnected(NetPeer peer)
 	{
-		Debug.Log("Connected to " + peer.EndPoint);
+		Debug.Log("#Remote# Connected to " + peer.EndPoint);
 		_ourPeer = peer;
 	}
 
 	public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
 	{
-		Debug.Log("Disconnected from " + peer.EndPoint + ", info: " + disconnectInfo.Reason);
+		Debug.Log("#Remote# Disconnected from " + peer.EndPoint + ", info: " + disconnectInfo.Reason);
 		if (peer == _ourPeer)
 		{
 			_ourPeer = null;
 		}
 	}
 
-	public void OnNetworkReceive(NetPeer peer, NetDataReader reader)
+	public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
 	{
-	
+		// throw new NotImplementedException();
 	}
 
+	public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
+	{
+		// throw new NotImplementedException();
+	}
+
+	public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
+	{
+		if(messageType == UnconnectedMessageType.Broadcast)
+		{
+			// Debug.Log("#Remote# Received discovery request. Send discovery response");
+			_netServer.SendUnconnectedMessage(new byte[] {1}, remoteEndPoint);
+		}
+	}
+	
 	public void OnPeerDisconnected(NetPeer peer, DisconnectReason reason, int socketErrorCode)
 	{
 
 	}
 
-	public void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
-	{
-	}
-
-	public void OnNetworkReceiveUnconnected(NetEndPoint remoteEndPoint, NetDataReader reader, UnconnectedMessageType messageType)
-	{
-		if (messageType == UnconnectedMessageType.DiscoveryRequest)
-		{
-			// Debug.Log("[SERVER] Received discovery request. Send discovery response");
-			_netServer.SendDiscoveryResponse(new byte[] {1}, remoteEndPoint);
-		}
-	}
-
 	public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
 	{
 		
+	}
+
+	public void OnConnectionRequest(ConnectionRequest request)
+	{
+		// Debug.Log("#Remote# Connection requested, accepting");
+		request.AcceptIfKey("Console Pro");
 	}
 
 
@@ -194,12 +205,10 @@ public class ConsoleProRemoteServer : MonoBehaviour, INetEventListener
 
 		#if CSHARP_7_3_OR_NEWER
 			logString = $"{logString}\n{stackTrace}\n";
-			logs.Add(new QueuedLog() { message = logString, logType = type.ToString(), timestamp =
- $"[{DateTime.Now.ToString("HH:mm:ss")}]" } );
+			logs.Add(new QueuedLog() { message = logString, logType = type.ToString(), timestamp = $"[{DateTime.Now.ToString("HH:mm:ss")}]" } );
 		#else
 			logString = logString + "\n" + stackTrace + "\n";
-			logs.Add(new QueuedLog() { message = logString, logType = type.ToString(), timestamp =
- "[" + DateTime.Now.ToString("HH:mm:ss") + "]" } );
+			logs.Add(new QueuedLog() { message = logString, logType = type.ToString(), timestamp = "[" + DateTime.Now.ToString("HH:mm:ss") + "]" } );
 		#endif
 	}
 	
@@ -229,12 +238,12 @@ public class ConsoleProRemoteServer : MonoBehaviour, INetEventListener
 			cMessage = JsonUtility.ToJson(cLog);
 			_dataWriter.Reset();
 			_dataWriter.Put(cMessage);
-			_ourPeer.Send(_dataWriter, SendOptions.ReliableOrdered);
+			_ourPeer.Send(_dataWriter, DeliveryMethod.ReliableOrdered);
 		}
 
 		logs.Clear();
 	}
 
-#endif
-    }
+	#endif
+}
 }

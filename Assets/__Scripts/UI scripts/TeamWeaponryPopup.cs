@@ -45,16 +45,16 @@ public class TeamWeaponryPopup : MonoBehaviour
         fadeImage2.LeanAlpha(0f, 0.5f);
     }
 
-    public void OpenRelicInfo(string relicName)
+    public void OpenRelicInfo(int itemCode)
     {
-        Debug.Log($"Popup called: {relicName}");
+        Debug.Log($"Popup called: {itemCode}");
         fadeImage.alpha = 0;
         fadeImage.LeanAlpha(1, 0.3f);
         fadeImage2.LeanAlpha(0.1f, 0.3f);
         fadeImage.blocksRaycasts = true;
         fadeImage.interactable = true;
         transform.LeanScale(Vector3.one, 0.6f).setEaseOutBack();
-        MenuManager.Instance.OpenRelicInfo(relicName);
+        MenuManager.Instance.OpenRelicInfo(itemCode);
     }
 
 

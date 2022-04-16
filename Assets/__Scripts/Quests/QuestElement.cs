@@ -15,8 +15,6 @@ public class QuestElement : MonoBehaviour
     public bool isItem;
     private bool _isActive;
 
-    public PolygonCollider2D polyCollider;
-    public SpriteRenderer spriteRenderer;
     private Item item;
     public Quest quest;
 
@@ -78,14 +76,14 @@ public class QuestElement : MonoBehaviour
         {
             quest.isActive = true;
 
-            if (spriteRenderer != null)
+            if (item.spriteRenderer.enabled != null)
             {
-                spriteRenderer.enabled = enableAfterConditionMet; // is now visible
+                item.spriteRenderer.enabled = enableAfterConditionMet; // is now visible
             }
 
-            if (polyCollider != null)
+            if (item.polyCollider != null)
             {
-                polyCollider.enabled = enableAfterConditionMet; // can now be picked up   
+                item.polyCollider.enabled = enableAfterConditionMet; // can now be picked up   
             }
             //QuestManager.instance.pSystem.Play();            
         }
@@ -105,14 +103,14 @@ public class QuestElement : MonoBehaviour
             {
                 quest.isActive = true;
                 Debug.Log($"Quest activated: {quest.questName}");
-                spriteRenderer.enabled = enableAfterConditionMet; // is now visible
-                polyCollider.enabled = enableAfterConditionMet; // can now be picked up   
+                item.spriteRenderer.enabled = enableAfterConditionMet; // is now visible
+                GetComponent<Item>().polyCollider.enabled = enableAfterConditionMet; // can now be picked up   
             }
 
             if (disableAfterConditionsMet)
             {
                 //polyCollider.isTrigger = true;
-                spriteRenderer.enabled = false;
+                GetComponent<Item>().spriteRenderer.enabled = false;
 
                 if (questElement.GetComponent<FadeObject>() != null)
                 {

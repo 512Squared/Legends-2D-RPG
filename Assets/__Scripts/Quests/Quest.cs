@@ -216,13 +216,13 @@ public class Quest : MonoBehaviour
 
             if (isItem)
             {
-                questElement.gameObject.GetComponentInChildren<SpriteRenderer>(0).enabled = enabledAfterDone;
+                questElement.spriteRenderer.enabled = enabledAfterDone;
                 Debug.Log($"Quest element. Renderer disabled: {questElement.SO.itemName}");
             }
 
             if (isItem)
             {
-                questElement.gameObject.GetComponent<PolygonCollider2D>().enabled = enabledAfterDone;
+                questElement.polyCollider.enabled = enabledAfterDone;
             }
         }
 

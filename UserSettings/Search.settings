@@ -19,6 +19,9 @@ scopes = {
 	"last_search.7F95D817" = "ref:\"Assets/__Scripts/Item Management/ItemsManager.cs\""
 	"InspectorPreview.7F95D817" = "0"
 	"currentGroup.7F95D817" = "all"
+	"last_search.8788AF05" = "ref:\"Assets/__Scripts/Item Management/Item.cs\""
+	"OpenInspectorPreview.8788AF05" = "0"
+	"currentGroup.8788AF05" = "scene"
 }
 providers = {
 	asset = {
@@ -56,8 +59,20 @@ providers = {
 		priority = 100
 		defaultAction = null
 	}
+	adb = {
+		active = false
+		priority = 2500
+		defaultAction = null
+	}
+	performance = {
+		active = false
+		priority = 100
+		defaultAction = null
+	}
 }
 recentSearches = [
+	"ref:\"Assets/__Scripts/Item Management/Item.cs\""
+	"shadowcaster"
 	"ref:\"Assets/__Scripts/Item Management/ItemsManager.cs\""
 	"total"
 	"Thul_"
@@ -66,4 +81,9 @@ recentSearches = [
 searchItemFavorites = [
 ]
 savedSearchesSortOrder = 0
-showSavedSearchPanel = false
+showSavedSearchPanel = true
+expandedQueries = [961552606]
+queryBuilder = false
+ignoredProperties = "id;name;classname;imagecontentshash"
+helperWidgetCurrentArea = "all"
+disabledIndexers = ""

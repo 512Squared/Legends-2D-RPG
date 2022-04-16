@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 
 
@@ -36,7 +36,7 @@ public class Flicker : MonoBehaviour
     /************************************************************/
     #region Class Functions
 
-    private Light2D LightSource => GetComponent<Light2D>();
+    private UnityEngine.Rendering.Universal.Light2D LightSource => GetComponent<UnityEngine.Rendering.Universal.Light2D>();
 
     #endregion
     /************************************************************/

@@ -208,9 +208,14 @@ public class QuestManager : SerializedMonoBehaviour
                 MenuManager.Instance.notifyActiveQuest++;
             }
 
-            if (questArray[i].itemIsRelic)
+            if (!questArray[i].itemIsRelic)
             {
-                _relicList.Add(questArray[i]
+                continue;
+            }
+
+            if (questArray[i].questElement != null)
+            {
+                _relicList.Add(questArray[i].questElement
                     .GetComponent<Item>()); // useful place to build the relic list too           
             }
         }

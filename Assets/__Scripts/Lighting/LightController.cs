@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 using UnityEngine.Tilemaps;
 
 
@@ -10,7 +10,7 @@ public class LightController : MonoBehaviour
     [Header ("LIGHT CONTROLS")]
     [Space]
     [Space]
-    [SerializeField] Light2D[] nearbyLights;
+    [SerializeField] UnityEngine.Rendering.Universal.Light2D[] nearbyLights;
     [Space]
     public bool isShadowOn = true;
 
