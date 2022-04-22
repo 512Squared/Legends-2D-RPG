@@ -1,85 +1,82 @@
-using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
 
-public class Thulgran : Rewardable<QuestRewards>, IDamageable
+
+public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
 {
-    #region Singleton
-
-    public static Thulgran instance;
-
-    #endregion
-
-
     #region Core stats
 
-    private static int s_thulgranGold = 10;
+    private static int _thulgranGold = 10;
 
     [ShowInInspector]
     public static int ThulgranGold
     {
-        get => s_thulgranGold;
+        get => _thulgranGold;
         set
         {
-            s_thulgranGold = value;
-            UI.instance.UpdateGoldUI(s_thulgranGold);
+            _thulgranGold = value;
+            UI.instance.UpdateGoldUI(_thulgranGold);
         }
     }
 
-    private static int s_thulgranHP = 10;
+    private static int _thulgranHp = 10;
 
     [ShowInInspector]
-    public static int ThulgranHP
+    public static int ThulgranHp
     {
-        get => s_thulgranHP;
+        get => _thulgranHp;
         set
         {
-            s_thulgranHP = value;
-            UI.instance.UpdateHPUI(s_thulgranHP);
+            _thulgranHp = value;
+            UI.instance.UpdateHPUI(_thulgranHp);
         }
     }
 
-    private static int s_thulgranMana = 10;
+    private static int _thulgranMana = 10;
 
     [ShowInInspector]
     public static int ThulgranMana
     {
-        get => s_thulgranMana;
+        get => _thulgranMana;
         set
         {
-            s_thulgranMana = value;
-            UI.instance.UpdateManaUI(s_thulgranMana);
+            _thulgranMana = value;
+            UI.instance.UpdateManaUI(_thulgranMana);
         }
     }
 
-    private static int s_thulgranTrophies = 0;
+    private static int _thulgranTrophies;
 
     [ShowInInspector]
     public static int ThulgranTrophies
     {
-        get => s_thulgranTrophies;
+        get => _thulgranTrophies;
         set
         {
-            s_thulgranTrophies = value;
-            UI.instance.UpdateGoldUI(s_thulgranMana);
+            _thulgranTrophies = value;
+            UI.instance.UpdateGoldUI(_thulgranMana);
         }
     }
 
 
-    public static int maxThulgranHP { get; private set; } = 300;
-    public static int maxThulgranMana { get; private set; } = 200;
+    private static Vector3 _thulgranPosition;
+
+    public static Vector3 ThulgranPosition
+    {
+        get => _thulgranPosition;
+        set => _thulgranPosition = value;
+    }
+
+    public static int MaxThulgranHp { get; private set; } = 300;
+
+    public static int MaxThulgranMana { get; private set; } = 200;
 
     public bool immuneToDragonBreath;
 
     #endregion
 
     #region Callbacks
-
-    private void Start()
-    {
-        instance = this;
-    }
 
     private void OnEnable()
     {
@@ -98,48 +95,52 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
 
     public override void Reward(QuestRewards rewards)
     {
-        if (rewards.playerClass == QuestRewards.PlayerClasses.Thulgran ||
-            rewards.playerClass == QuestRewards.PlayerClasses.all)
+        if (rewards.playerClass != QuestRewards.PlayerClasses.Thulgran &&
+            rewards.playerClass != QuestRewards.PlayerClasses.all) { return; }
+
+        Debug.Log($"Player class: {rewards.playerClass} | Reward called {rewards.rewardType}");
+        if (rewards.rewardType == QuestRewards.RewardTypes.gold)
         {
-            Debug.Log($"Player class: {rewards.playerClass} | Reward called {rewards.rewardType}");
-            if (rewards.rewardType == QuestRewards.RewardTypes.gold)
-            {
-                ThulgranGold += rewards.rewardAmount;
-            }
+            ThulgranGold += rewards.rewardAmount;
+        }
 
-            if (rewards.rewardType == QuestRewards.RewardTypes.hp)
-            {
-                ThulgranHP += rewards.rewardAmount;
-            }
+        if (rewards.rewardType == QuestRewards.RewardTypes.hp)
+        {
+            ThulgranHp += rewards.rewardAmount;
+        }
 
-            if (rewards.rewardType == QuestRewards.RewardTypes.immuneToDragonBreath)
-            {
-                immuneToDragonBreath = true;
-            }
+        if (rewards.rewardType == QuestRewards.RewardTypes.immuneToDragonBreath)
+        {
+            immuneToDragonBreath = true;
         }
     }
 
-    public void SellItem(Item item)
+    private static void SellItem(Item item)
     {
         //AddGold(item);
         Debug.Log($"Thulgran's purse: {ThulgranGold}");
     }
 
-    public void UseItem(Item item, int character, Vector2 target)
+    private static void UseItem(Item item, int character, Vector2 target)
     {
-        if (character == 0)
+        if (character != 0) { return; }
+
+        Debug.Log($"Use item called | Item: {item.SO.itemName} | CharacterSlot: {character}");
+        switch (item.SO.affectType)
         {
-            Debug.Log($"Use item called | Item: {item.SO.itemName} | CharacterSlot: {character}");
-            if (item.SO.affectType == AffectType.Hp)
-            {
+            case AffectType.Hp:
                 AddHp(item);
                 UI.instance.UpdateHPUI(0);
-            }
-            else if (item.SO.affectType == AffectType.Mana)
-            {
+                break;
+            case AffectType.Mana:
                 AddMana(item);
                 UI.instance.UpdateManaUI(0);
-            }
+                break;
+            case AffectType.Defence:
+            case AffectType.Attack:
+            case AffectType.Perception:
+            case AffectType.Speed:
+            default: throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -190,12 +191,12 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
         Debug.Log($"Add Trophies | Value: {trophiesToAdd}");
     }
 
-    public void AddHp(Item item)
+    private static void AddHp(Item item)
     {
-        ThulgranHP += item.SO.amountOfEffect;
-        if (ThulgranHP > maxThulgranHP)
+        ThulgranHp += item.SO.amountOfEffect;
+        if (ThulgranHp > MaxThulgranHp)
         {
-            ThulgranHP = maxThulgranHP;
+            ThulgranHp = MaxThulgranHp;
             NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!",
                 Sprites.instance.hpSprite,
                 2f,
@@ -205,12 +206,12 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
         Debug.Log($"Added HP | Amount: {item.SO.amountOfEffect}");
     }
 
-    public void AddMana(Item item)
+    private static void AddMana(Item item)
     {
         ThulgranMana += item.SO.amountOfEffect;
-        if (ThulgranMana > maxThulgranMana)
+        if (ThulgranMana > MaxThulgranMana)
         {
-            ThulgranMana = maxThulgranMana;
+            ThulgranMana = MaxThulgranMana;
             NotificationFader.instance.CallFadeInOut(
                 "Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
                 2f,
@@ -219,4 +220,23 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable
 
         Debug.Log($"Added Mana: | Amount: {item.SO.amountOfEffect}");
     }
+
+    #region Implementation of ISaveable
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        Debug.Log($"Thulgran data loaded | hitpoints: {_thulgranHp} | position {_thulgranPosition}");
+        a_SaveData.thulgranData.hitPoints = ThulgranHp; // Twinning
+        a_SaveData.thulgranData.position = ThulgranPosition;
+    }
+
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        ThulgranHp = a_SaveData.thulgranData.hitPoints;
+        ThulgranPosition = a_SaveData.thulgranData.position;
+        transform.position = _thulgranPosition;
+    }
+
+    #endregion
 }

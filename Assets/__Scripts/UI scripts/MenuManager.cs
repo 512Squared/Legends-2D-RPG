@@ -769,7 +769,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         if (activeItem.SO.affectType == AffectType.Hp)
         {
-            playerStats[0].characterHP = Thulgran.ThulgranHP;
+            playerStats[0].characterHP = Thulgran.ThulgranHp;
 
             if (panelStuff != 0)
             {
@@ -777,7 +777,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             }
             else if (panelStuff == 0) // Thulgran is controlled by Thulgran.cs
             {
-                hpEquipToString[panelStuff].text = Thulgran.ThulgranHP.ToString();
+                hpEquipToString[panelStuff].text = Thulgran.ThulgranHp.ToString();
             }
 
             Sequence sequence = DOTween.Sequence()
@@ -912,9 +912,9 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                 else if (i == 0)
                 {
-                    hpEquipToString[i].text = Thulgran.ThulgranHP.ToString(); // characterChoice Panel
+                    hpEquipToString[i].text = Thulgran.ThulgranHp.ToString(); // characterChoice Panel
                     manaEquipToString[i].text = Thulgran.ThulgranMana.ToString();
-                    hpEquipSlider[i].value = Thulgran.ThulgranHP;
+                    hpEquipSlider[i].value = Thulgran.ThulgranHp;
                     manaEquipSlider[i].value = Thulgran.ThulgranMana;
                 }
 
@@ -1026,9 +1026,9 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                     if (i == 0) // Thulgran
                     {
-                        health[i].text = Thulgran.ThulgranHP.ToString();
+                        health[i].text = Thulgran.ThulgranHp.ToString();
                         mana[i].text = Thulgran.ThulgranMana.ToString();
-                        healthS[i].value = Thulgran.ThulgranHP;
+                        healthS[i].value = Thulgran.ThulgranHp;
                         manaS[i].value = Thulgran.ThulgranMana;
                         characterName[i].text = playerStats[i].playerName;
                         description[i].text = playerStats[i].playerDesc;
@@ -1157,7 +1157,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
             else if (selectedCharacter == 0)
             {
-                if (Thulgran.ThulgranHP == Thulgran.maxThulgranHP)
+                if (Thulgran.ThulgranHp == Thulgran.MaxThulgranHp)
                 {
                     NotificationFader.instance.CallFadeInOut(
                         $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
@@ -1165,7 +1165,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     Debug.Log($"Yo");
                 }
 
-                else if (Thulgran.ThulgranHP < Thulgran.maxThulgranHP)
+                else if (Thulgran.ThulgranHp < Thulgran.MaxThulgranHp)
                 {
                     cancelButton.SetActive(false);
                     useButton.GetComponent<Button>().interactable = false;
@@ -1216,14 +1216,14 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
             else if (selectedCharacter == 0)
             {
-                if (Thulgran.ThulgranMana == Thulgran.maxThulgranMana)
+                if (Thulgran.ThulgranMana == Thulgran.MaxThulgranMana)
                 {
                     NotificationFader.instance.CallFadeInOut(
                         $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?",
                         Sprites.instance.manaSprite, 1.5f, 1400, 30);
                 }
 
-                else if (Thulgran.ThulgranMana < Thulgran.maxThulgranMana)
+                else if (Thulgran.ThulgranMana < Thulgran.MaxThulgranMana)
                 {
                     cancelButton.SetActive(false);
                     useButton.GetComponent<Button>().interactable = false;

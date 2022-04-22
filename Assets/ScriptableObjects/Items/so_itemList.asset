@@ -25,7 +25,7 @@ MonoBehaviour:
     itemDescription: Amazing workmanship and single -edged studded Swirthian Blade
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: a3b83ecb9cbc10e4c9e1685bc2e0e22b, type: 3}
   - itemType: 2
     affectType: 3
-    shop: 1
+    shop: 3
     itemCode: 1002
     valueInCoins: 0
     amountOfEffect: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
       handle.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
     itemDescription: Fine condition, with gilded blade
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -88,7 +88,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: 7906717feb1a04d489505d0fb115d059, type: 3}
   - itemType: 2
     affectType: 3
-    shop: 0
+    shop: 3
     itemCode: 1005
     valueInCoins: 0
     amountOfEffect: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
       steel. This blade once belonged to Caspian the Great. '
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -117,15 +117,15 @@ MonoBehaviour:
     itemDescription: World-renowned Swirthian craftsmanship in all-purpose axe
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
     isStackable: 0
     itemsImage: {fileID: 21300000, guid: 4f6280dc3398279449b2a48c9f069037, type: 3}
-  - itemType: 0
-    affectType: 0
-    shop: 0
+  - itemType: 2
+    affectType: 3
+    shop: 3
     itemCode: 1007
     valueInCoins: 0
     amountOfEffect: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
       double-edged axes ever made.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
       and has concussive power.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
     itemDescription: An elven-made mage's staff
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -236,7 +236,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: c0280fafa88fc374899c40a7f7982b39, type: 3}
   - itemType: 2
     affectType: 3
-    shop: 0
+    shop: 3
     itemCode: 1013
     valueInCoins: 0
     amountOfEffect: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
     itemDescription: This might hammer is as light as it is devastating
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -264,7 +264,7 @@ MonoBehaviour:
     itemDescription: Any dwarf's favourite head pounder.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -302,7 +302,7 @@ MonoBehaviour:
       to wield it.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -320,7 +320,7 @@ MonoBehaviour:
     itemDescription: Amazing workmanship from the dry peninsula.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -338,7 +338,7 @@ MonoBehaviour:
     itemDescription: True and straight - a sword that any soldier could rely on
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -357,7 +357,7 @@ MonoBehaviour:
       of Idris
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -376,7 +376,7 @@ MonoBehaviour:
       the pharoahs
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
       brilliant defensive weapon, but also a great piercing weapon. '
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
       hero should have in their wardrobe.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -478,7 +478,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: c720139856ac0f44d894498956e1b55f, type: 3}
   - itemType: 3
     affectType: 2
-    shop: 0
+    shop: 3
     itemCode: 1026
     valueInCoins: 0
     amountOfEffect: 0
@@ -489,7 +489,7 @@ MonoBehaviour:
       exact position in space. An excellent way to disguise your protection. '
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -497,7 +497,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: 8b44c1c64aeb7184cae04c8850adea85, type: 3}
   - itemType: 3
     affectType: 2
-    shop: 1
+    shop: 3
     itemCode: 1027
     valueInCoins: 0
     amountOfEffect: 0
@@ -508,7 +508,7 @@ MonoBehaviour:
       withstand stabs and other weak blade attacks.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -516,7 +516,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: 54643ca97702907488d4dc3235192a09, type: 3}
   - itemType: 3
     affectType: 2
-    shop: 0
+    shop: 3
     itemCode: 1028
     valueInCoins: 0
     amountOfEffect: 0
@@ -527,7 +527,7 @@ MonoBehaviour:
       both beauty and protection
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -535,7 +535,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: b817779f7fb33f94a85fd94a5df90287, type: 3}
   - itemType: 3
     affectType: 2
-    shop: 0
+    shop: 3
     itemCode: 1029
     valueInCoins: 0
     amountOfEffect: 0
@@ -546,7 +546,7 @@ MonoBehaviour:
       sword blows. '
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -554,7 +554,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: c9d48411a39cdc9429fca1da96828e34, type: 3}
   - itemType: 7
     affectType: 2
-    shop: 0
+    shop: 3
     itemCode: 1031
     valueInCoins: 16
     amountOfEffect: 0
@@ -565,7 +565,7 @@ MonoBehaviour:
       the evil kind Eldador of Anendor
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -631,7 +631,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: eddb0f61210d2f4429ae92bc08d1b3ba, type: 3}
   - itemType: 8
     affectType: 2
-    shop: 0
+    shop: 3
     itemCode: 1035
     valueInCoins: 70
     amountOfEffect: 0
@@ -642,7 +642,7 @@ MonoBehaviour:
       it super strong and able to magically disipate the energy of heavy weapon blows
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -679,7 +679,7 @@ MonoBehaviour:
     itemDescription: Well-crafted iron Helmet - does the job. Not as hard or as comfortable
       as the Shulgan plate, but not shabby either.
     itemSelected: 0
-    isNewItem: 0
+    isNewItem: 1
     isShopItem: 0
     isQuestObject: 0
     pickUpNotice: 1
@@ -699,7 +699,7 @@ MonoBehaviour:
       crafted helmet is a thing of legend. '
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -716,8 +716,8 @@ MonoBehaviour:
     itemName: Red Healing Potion
     itemDescription: 'Instantly revives even the most worm-infested battle carcass. '
     itemSelected: 0
-    isNewItem: 1
-    isShopItem: 0
+    isNewItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -755,7 +755,7 @@ MonoBehaviour:
       works wonders to replenish those important resources. '
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -763,7 +763,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: 6592b916f86b19e428db6f6847c7b6dd, type: 3}
   - itemType: 1
     affectType: 0
-    shop: 1
+    shop: 3
     itemCode: 1042
     valueInCoins: -250
     amountOfEffect: 300
@@ -774,7 +774,7 @@ MonoBehaviour:
       mountains to bring about an almost complete restoration of health. '
     itemSelected: 0
     isNewItem: 0
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -898,7 +898,7 @@ MonoBehaviour:
     itemsImage: {fileID: 21300000, guid: 5d9ba4e7d0964044ea54abe409d81dfd, type: 3}
   - itemType: 6
     affectType: 0
-    shop: 1
+    shop: 3
     itemCode: 1049
     valueInCoins: -23
     amountOfEffect: 25
@@ -909,7 +909,7 @@ MonoBehaviour:
       to repair battle-weary muscles.
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -952,7 +952,7 @@ MonoBehaviour:
     isRelic: 0
     isStackable: 1
     itemsImage: {fileID: 21300000, guid: 707545fb132aed646bdaf12831b9aaf5, type: 3}
-  - itemType: 5
+  - itemType: 0
     affectType: 3
     shop: 3
     itemCode: 1052
@@ -964,7 +964,7 @@ MonoBehaviour:
     itemDescription: This magical book contains 6 attack spells
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -1019,7 +1019,7 @@ MonoBehaviour:
     itemDescription: Increases dexterity thus improving defence
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0
@@ -1095,7 +1095,7 @@ MonoBehaviour:
     itemDescription: This magical necklace adds protection against physical attacks
     itemSelected: 0
     isNewItem: 1
-    isShopItem: 0
+    isShopItem: 1
     isQuestObject: 0
     pickUpNotice: 1
     isRelic: 0

@@ -1,18 +1,8 @@
 ﻿public interface ISaveable
 {
-    string SaveableUniqueID { get; set; }
+    void PopulateSaveData(SaveData a_SaveData);
+    void LoadFromSaveData(SaveData a_SaveData);
 
-    GameItemsSave GameItemsSave { get; set; }
-
-    void SaveableRegister();
-
-    void SaveableDeregister();
-
-    GameItemsSave SaveableSave();
-
-    void SaveableLoad(GameSave gameSave);
-
-    void SaveableStoreScene(string sceneName);
-
-    void SaveableRestoreScene(string sceneName);
+    // this is different from the SaveJsonData and LoadJsonData that sits on the GameManager - that writes to file
+    // these two interface methods write the data to Json
 }

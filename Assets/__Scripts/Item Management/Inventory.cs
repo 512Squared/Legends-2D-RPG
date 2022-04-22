@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
 
-public class Inventory : MonoBehaviour, ISaveable
+public class Inventory : MonoBehaviour
 {
     public static Inventory Instance; // GameManager
 
@@ -24,20 +23,9 @@ public class Inventory : MonoBehaviour, ISaveable
         _inventoryList = new List<Item>();
         _shopList = new List<Item>();
 
-        SaveableUniqueID = GetComponent<GenerateGUID>().GUID;
-        GameItemsSave = new GameItemsSave();
         CreateItemDetailsDictionary();
     }
 
-    private void OnEnable()
-    {
-        SaveableRegister();
-    }
-
-    private void OnDisable()
-    {
-        SaveableDeregister();
-    }
 
     public void AddItems(Item item)
     {
@@ -198,59 +186,6 @@ public class Inventory : MonoBehaviour, ISaveable
     {
     }
 
-    #region SAVE
-
-    public string SaveableUniqueID { get; set; }
-    public GameItemsSave GameItemsSave { get; set; }
-
-    public void SaveableRegister()
-    {
-        SaveLoadManager.Instance.iSaveableObjectList.Add(this);
-    }
-
-    public void SaveableDeregister()
-    {
-        SaveLoadManager.Instance.iSaveableObjectList.Remove(this);
-    }
-
-    public GameItemsSave SaveableSave()
-    {
-        // Add scene save for gameobject
-        GameItemsSave.InventoryLists = new Dictionary<ItemLists, List<Item>>
-        {
-            {ItemLists.Inventory, _inventoryList}, {ItemLists.Shop, _shopList}
-        };
-        return GameItemsSave;
-    }
-
-    public void SaveableLoad(GameSave gameSave)
-    {
-        if (!gameSave.GameItemsData.TryGetValue(SaveableUniqueID, out GameItemsSave gameItemsSave))
-        {
-            return;
-        }
-
-        GameItemsSave = gameItemsSave;
-
-        if (gameItemsSave == null)
-        {
-            return;
-        }
-
-        _shopList = GameItemsSave.InventoryLists[ItemLists.Shop];
-        _inventoryList = GameItemsSave.InventoryLists[ItemLists.Inventory];
-    }
-
-    public void SaveableStoreScene(string sceneName)
-    {
-        throw new NotImplementedException("Saveable store scene not implemented");
-    }
-
-    public void SaveableRestoreScene(string sceneName)
-    {
-        throw new NotImplementedException("Restore scene not implemented");
-    }
-
     /// <summary>
     /// Returns the itemDetails (from the SO_ItemList) for the itemCode, or null if the item code doesn't exist
     /// </summary>
@@ -270,9 +205,11 @@ public class Inventory : MonoBehaviour, ISaveable
         }
 
         Debug.Log($"Item dictionary: {_itemDetailsDictionary.Count} items");
-        Debug.Log($"Item Details test (code 1054) | Item name: {GetItemDetails(1054).itemName}");
-        Debug.Log($"Item Details test (code 1054): {GetItemDetails(1054)}");
     }
+
+    #region SAVE
+
+    private string SaveableUniqueID { get; set; }
 
     #endregion SAVE
 }

@@ -7,7 +7,7 @@ using System.Collections;
 
 //using UnityEngine.ParticleSystemJobs;
 
-public class QuestManager : SerializedMonoBehaviour
+public class QuestManager : SerializedMonoBehaviour, ISaveable
 {
     #region SINGLETON
 
@@ -215,7 +215,8 @@ public class QuestManager : SerializedMonoBehaviour
 
             if (questArray[i].questElement != null)
             {
-                _relicList.Add(questArray[i].questElement
+                _relicList.Add(questArray[i]
+                    .questElement
                     .GetComponent<Item>()); // useful place to build the relic list too           
             }
         }
@@ -240,4 +241,22 @@ public class QuestManager : SerializedMonoBehaviour
     }
 
     #endregion METHODS
+
+    #region Implementation of ISaveable
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        Debug.Log($"QuestManager: save data populated");
+        foreach (Quest quest in questList)
+        {
+            quest.PopulateSaveData(a_SaveData);
+        }
+    }
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        Debug.Log($"QuestManager: save data loaded");
+    }
+
+    #endregion
 }

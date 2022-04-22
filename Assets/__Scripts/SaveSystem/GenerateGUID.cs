@@ -8,19 +8,17 @@ public class GenerateGUID : MonoBehaviour
 
     public string GUID { get => _gUID; set => _gUID = value; }
 
-    private void Awake()
+    private void OnValidate()
     {
         // Only populate in the editor
-        if (Application.IsPlaying(gameObject))
+        if (!Application.IsPlaying(gameObject))
         {
-            return;
-        }
-
-        // Ensure the object has a guaranteed unique id
-        if (_gUID == "")
-        {
-            //Assign GUID
-            _gUID = System.Guid.NewGuid().ToString();
+            // Ensure the object has a guaranteed unique id
+            if (_gUID == "")
+            {
+                //Assign GUID
+                _gUID = System.Guid.NewGuid().ToString();
+            }
         }
     }
 }

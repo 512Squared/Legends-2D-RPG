@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine.UI;
 
 [Serializable]
-public class Quest : MonoBehaviour
+public class Quest : MonoBehaviour, ISaveable
 {
     #region SERIALIZATION
 
@@ -412,5 +412,15 @@ public class Quest : MonoBehaviour
     public Quest[] GetChildQuests()
     {
         return isMasterQuest ? childQuests : null;
+    }
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        //Debug.Log($"SaveData saved: {questName}");
+    }
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        //Debug.Log($"SaveData loaded: {questName}");
     }
 }

@@ -28,6 +28,10 @@ public class PlayerGlobalData : MonoBehaviour
     private Continental cont;
 
     private int characterParty = 0;
+    private static readonly int LastX = Animator.StringToHash("lastX");
+    private static readonly int LastY = Animator.StringToHash("lastY");
+    private static readonly int MovementX = Animator.StringToHash("movementX");
+    private static readonly int MovementY = Animator.StringToHash("movementY");
 
 
     // Start is called before the first frame update
@@ -68,27 +72,31 @@ public class PlayerGlobalData : MonoBehaviour
             playerRigidBody.velocity = new Vector2(horizontalMovement, verticalMovement) * moveSpeed;
         }
 
-        playerAnimator.SetFloat("movementX", playerRigidBody.velocity.x);
-        playerAnimator.SetFloat("movementY", playerRigidBody.velocity.y);
+        playerAnimator.SetFloat(MovementX, playerRigidBody.velocity.x);
+        playerAnimator.SetFloat(MovementY, playerRigidBody.velocity.y);
 
-        if (horizontalMovement == 1 || horizontalMovement == -1 || verticalMovement == 1 || verticalMovement == -1)
+        if (horizontalMovement is 1 or -1 || verticalMovement is 1 or -1)
         {
             if (!deactivedMovement)
             {
-                playerAnimator.SetFloat("lastX", horizontalMovement);
-                playerAnimator.SetFloat("lastY", verticalMovement);
+                playerAnimator.SetFloat(LastX, horizontalMovement);
+                playerAnimator.SetFloat(LastY, verticalMovement);
             }
         }
 
-        transform.position = new Vector3(
-            Mathf.Clamp(transform.position.x, bottomLeftEdge.x, topRightEdge.x),
-            Mathf.Clamp(transform.position.y, bottomLeftEdge.y, topRightEdge.y),
-            Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)
+        Vector3 position = transform.position;
+        position = new Vector3(
+            Mathf.Clamp(position.x, bottomLeftEdge.x, topRightEdge.x),
+            Mathf.Clamp(position.y, bottomLeftEdge.y, topRightEdge.y),
+            Mathf.Clamp(position.z, bottomLeftEdge.z, topRightEdge.z)
         );
+        transform.position = position;
 
         MenuManager.Instance.HomeScreenStats();
 
         PlayerTestInput(date, cont);
+
+        Thulgran.ThulgranPosition = position;
     }
 
     public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)

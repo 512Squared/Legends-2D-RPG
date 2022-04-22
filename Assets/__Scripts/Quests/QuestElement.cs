@@ -56,7 +56,7 @@ public class QuestElement : MonoBehaviour
             quest.MarkTheQuest();
         }
 
-        if (quest.activateOnEnter)
+        if (!_isActive && quest.activateOnEnter)
         {
             _isActive = true;
             Debug.Log($"Quest activate called: {quest.questName}");
