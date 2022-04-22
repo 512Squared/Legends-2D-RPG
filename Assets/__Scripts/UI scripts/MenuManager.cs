@@ -1370,12 +1370,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         isInventorySlidePanelOn = true;
     }
 
-    public void QuitGame()
-    {
-        Debug.Log("Game was quit!");
-        Application.Quit();
-    }
-
     public void RemoveCharacterFromParty(int character)
     {
         playerStats = GameManager.Instance.GetPlayerStats();

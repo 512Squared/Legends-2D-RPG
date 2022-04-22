@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 
 public class PlayerGlobalData : MonoBehaviour
 {
-    public static PlayerGlobalData instance;
+    public static PlayerGlobalData Instance;
 
     [SerializeField] private Rigidbody2D playerRigidBody;
     [SerializeField] private int moveSpeed = 1;
@@ -14,20 +11,18 @@ public class PlayerGlobalData : MonoBehaviour
 
     public string arrivingAt;
 
-    public bool deactivedMovement = false;
+    public bool deactivedMovement;
 
-    private Vector3 bottomLeftEdge;
-    private Vector3 topRightEdge;
+    private Vector3 _bottomLeftEdge;
+    private Vector3 _topRightEdge;
 
-    public bool controllerSwitch = false;
+    public bool controllerSwitch;
 
-    private float horizontalMovement;
-    private float verticalMovement;
+    private float _horizontalMovement;
+    private float _verticalMovement;
 
-    private _DateTime date;
-    private Continental cont;
+    private int _characterParty;
 
-    private int characterParty = 0;
     private static readonly int LastX = Animator.StringToHash("lastX");
     private static readonly int LastY = Animator.StringToHash("lastY");
     private static readonly int MovementX = Animator.StringToHash("movementX");
@@ -39,21 +34,21 @@ public class PlayerGlobalData : MonoBehaviour
 
     private void Start()
     {
-        instance = this;
+        Instance = this;
     }
 
-    public void AndroidController()
+    private void AndroidController()
     {
-        if (controllerSwitch == false)
+        switch (controllerSwitch)
         {
-            horizontalMovement = Input.GetAxisRaw("Horizontal");
-            verticalMovement = Input.GetAxisRaw("Vertical");
-        }
-
-        if (controllerSwitch == true)
-        {
-            horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
-            verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
+            case false:
+                _horizontalMovement = Input.GetAxisRaw("Horizontal");
+                _verticalMovement = Input.GetAxisRaw("Vertical");
+                break;
+            case true:
+                _horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
+                _verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
+                break;
         }
     }
 
@@ -63,88 +58,65 @@ public class PlayerGlobalData : MonoBehaviour
 
         AndroidController();
 
-        if (deactivedMovement == true)
+        if (deactivedMovement)
         {
             playerRigidBody.velocity = Vector2.zero;
         }
         else
         {
-            playerRigidBody.velocity = new Vector2(horizontalMovement, verticalMovement) * moveSpeed;
+            playerRigidBody.velocity = new Vector2(_horizontalMovement, _verticalMovement) * moveSpeed;
         }
 
         playerAnimator.SetFloat(MovementX, playerRigidBody.velocity.x);
         playerAnimator.SetFloat(MovementY, playerRigidBody.velocity.y);
 
-        if (horizontalMovement is 1 or -1 || verticalMovement is 1 or -1)
+        if (_horizontalMovement is 1 or -1 || _verticalMovement is 1 or -1)
         {
             if (!deactivedMovement)
             {
-                playerAnimator.SetFloat(LastX, horizontalMovement);
-                playerAnimator.SetFloat(LastY, verticalMovement);
+                playerAnimator.SetFloat(LastX, _horizontalMovement);
+                playerAnimator.SetFloat(LastY, _verticalMovement);
             }
         }
 
-        Vector3 position = transform.position;
-        position = new Vector3(
-            Mathf.Clamp(position.x, bottomLeftEdge.x, topRightEdge.x),
-            Mathf.Clamp(position.y, bottomLeftEdge.y, topRightEdge.y),
-            Mathf.Clamp(position.z, bottomLeftEdge.z, topRightEdge.z)
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x, _bottomLeftEdge.x, _topRightEdge.x),
+            Mathf.Clamp(transform.position.y, _bottomLeftEdge.y, _topRightEdge.y),
+            Mathf.Clamp(transform.position.z, _bottomLeftEdge.z, _topRightEdge.z)
         );
-        transform.position = position;
 
         MenuManager.Instance.HomeScreenStats();
-
-        PlayerTestInput(date, cont);
-
-        Thulgran.ThulgranPosition = position;
     }
 
     public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
     {
-        bottomLeftEdge = bottomEdgeToSet;
-        topRightEdge = topEdgeToSet;
+        _bottomLeftEdge = bottomEdgeToSet;
+        _topRightEdge = topEdgeToSet;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Character"))
-        {
-            if (collision.gameObject.GetComponent<PlayerStats>().isAvailable == false)
-            {
-                Debug.Log(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
-                collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
-                MenuManager.Instance.UpdateItemsInventory();
-                NotificationFader.instance.CallFadeInOut(
-                    collision.gameObject.GetComponent<PlayerStats>().playerName +
-                    " is now available to add to your character party!",
-                    collision.gameObject.GetComponent<PlayerStats>().characterPlain,
-                    3.4f,
-                    1000, 30);
-                if (characterParty < 3)
-                {
-                    characterParty++;
-                }
+        if (!collision.gameObject.CompareTag("Character")) { return; }
 
-                if (characterParty == 2)
-                {
-                    Actions.MarkQuestCompleted?.Invoke("Add two people to your character party");
-                }
-            }
-        }
-    }
+        if (collision.gameObject.GetComponent<PlayerStats>().isAvailable != false) { return; }
 
-    private void PlayerTestInput(_DateTime dateTime, Continental railwayTime)
-    {
-        // Trigger Advance Time
-        if (Input.GetKey(KeyCode.T))
+        Debug.Log(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
+        collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
+        MenuManager.Instance.UpdateItemsInventory();
+        NotificationFader.instance.CallFadeInOut(
+            collision.gameObject.GetComponent<PlayerStats>().playerName +
+            " is now available to add to your character party!",
+            collision.gameObject.GetComponent<PlayerStats>().characterPlain,
+            3.4f,
+            1000, 30);
+        if (_characterParty < 3)
         {
-            dateTime.AdvanceHourKey();
+            _characterParty++;
         }
 
-        // Trigger Advance Day
-        if (Input.GetKeyDown(KeyCode.G))
+        if (_characterParty == 2)
         {
-            dateTime.AdvanceDayKey();
+            Actions.MarkQuestCompleted?.Invoke("Add two people to your character party");
         }
     }
 }

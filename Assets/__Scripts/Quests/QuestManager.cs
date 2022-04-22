@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
@@ -123,36 +122,6 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
         return false;
     }
 
-    public void SaveQuestData()
-    {
-        foreach (Quest quest in questList)
-        {
-            PlayerPrefs.SetInt("QuestMarker_" + quest.questName, quest.isDone ? 1 : 0);
-
-            PlayerPrefs.SetInt("QuestReward_" + quest.questName, quest.questRewardClaimed ? 1 : 0);
-        }
-    }
-
-    public void LoadQuestData(string keyToUse)
-    {
-        foreach (Quest quest in questList)
-        {
-            int valueToSet = 0;
-            keyToUse = "QuestMarker_" + quest.questName;
-
-            if (PlayerPrefs.HasKey(keyToUse))
-            {
-                valueToSet = PlayerPrefs.GetInt(keyToUse);
-            }
-
-            quest.isDone = valueToSet != 0; //  if valueToSet == 0, quest.isDone = true + inverse
-
-            keyToUse = "QuestReward_" + quest.questName;
-
-            quest.questRewardClaimed = valueToSet != 0;
-        }
-    }
-
     public List<Quest> GetQuestList()
     {
         //questList = questList.OrderBy(o => o.questID).ToList();
@@ -246,7 +215,6 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        Debug.Log($"QuestManager: save data populated");
         foreach (Quest quest in questList)
         {
             quest.PopulateSaveData(a_SaveData);
@@ -255,7 +223,6 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        Debug.Log($"QuestManager: save data loaded");
     }
 
     #endregion

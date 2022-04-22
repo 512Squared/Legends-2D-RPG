@@ -30,14 +30,8 @@ public class Exit : MonoBehaviour
         _isLoaded = true;
 
         SceneHandling sceneHandle = gameObject.GetComponent<SceneHandling>();
-
         StartCoroutine(LoadSceneCoroutine());
-
-        PlayerGlobalData.instance.arrivingAt = goingTo;
-
-        GameManager.Instance.sceneObjects[indexTo].SetActive(true);
-        GameManager.Instance.sceneObjects[indexFrom].SetActive(false);
-
+        PlayerGlobalData.Instance.arrivingAt = goingTo;
         ShopMotherFucker(sceneToLoad, sceneHandle.sceneObjectsLoad, sceneHandle.sceneObjectsUnload);
     }
 
@@ -57,9 +51,8 @@ public class Exit : MonoBehaviour
             }
 
             _unloaded = true;
-            AnyManager.anyManager.UnloadScene(arrivingFrom);
-            GameManager.Instance.ActivateCharacters(sceneToLoad);
-            Actions.OnSceneChange?.Invoke(sceneToLoad);
+            SceneManager.UnloadSceneAsync(arrivingFrom);
+            Actions.OnSceneChange?.Invoke(sceneToLoad, indexFrom, indexTo);
         }
     }
 
@@ -72,8 +65,7 @@ public class Exit : MonoBehaviour
     private void ShopMotherFucker(string scene, SceneObjectsLoad sceneObjectsLoad,
         SceneObjectsUnload sceneObjectsUnload)
     {
-        if (sceneObjectsLoad == SceneObjectsLoad.shop1 || sceneObjectsLoad == SceneObjectsLoad.shop2 ||
-            sceneObjectsLoad == SceneObjectsLoad.shop3)
+        if (sceneObjectsLoad is SceneObjectsLoad.shop1 or SceneObjectsLoad.shop2 or SceneObjectsLoad.shop3)
         {
             ShopManager.Instance.isPlayerInsideShop = true;
             Debug.Log($"Scene Name: {scene}");
@@ -84,8 +76,7 @@ public class Exit : MonoBehaviour
             ShopManager.Instance.UpdateShopItemsInventory();
         }
 
-        else if (sceneObjectsUnload == SceneObjectsUnload.shop1 || sceneObjectsUnload == SceneObjectsUnload.shop2 ||
-                 sceneObjectsUnload == SceneObjectsUnload.shop3)
+        else if (sceneObjectsUnload is SceneObjectsUnload.shop1 or SceneObjectsUnload.shop2 or SceneObjectsUnload.shop3)
         {
             ShopManager.Instance.isShopArmouryOpen = false;
             ShopManager.Instance.isPlayerInsideShop = false;

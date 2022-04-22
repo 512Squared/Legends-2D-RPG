@@ -2,7 +2,6 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
 
-
 public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
 {
     #region Core stats
@@ -60,14 +59,6 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     }
 
 
-    private static Vector3 _thulgranPosition;
-
-    public static Vector3 ThulgranPosition
-    {
-        get => _thulgranPosition;
-        set => _thulgranPosition = value;
-    }
-
     public static int MaxThulgranHp { get; private set; } = 300;
 
     public static int MaxThulgranMana { get; private set; } = 200;
@@ -75,6 +66,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     public bool immuneToDragonBreath;
 
     #endregion
+
 
     #region Callbacks
 
@@ -92,6 +84,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
 
     #endregion
 
+    #region Methods
 
     public override void Reward(QuestRewards rewards)
     {
@@ -115,9 +108,9 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         }
     }
 
-    private static void SellItem(Item item)
+    private void SellItem(Item item)
     {
-        //AddGold(item);
+        AddGold(item);
         Debug.Log($"Thulgran's purse: {ThulgranGold}");
     }
 
@@ -144,7 +137,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         }
     }
 
-    public void AddGold(Item item)
+    public static void AddGold(Item item)
     {
         ThulgranGold += item.SO.valueInCoins;
 
@@ -221,21 +214,22 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         Debug.Log($"Added Mana: | Amount: {item.SO.amountOfEffect}");
     }
 
+    #endregion
+
     #region Implementation of ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        Debug.Log($"Thulgran data loaded | hitpoints: {_thulgranHp} | position {_thulgranPosition}");
-        a_SaveData.thulgranData.hitPoints = ThulgranHp; // Twinning
-        a_SaveData.thulgranData.position = ThulgranPosition;
+        a_SaveData.thulgranData.hitPoints = ThulgranHp;
+        a_SaveData.thulgranData.position = transform.position;
     }
 
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
         ThulgranHp = a_SaveData.thulgranData.hitPoints;
-        ThulgranPosition = a_SaveData.thulgranData.position;
-        transform.position = _thulgranPosition;
+        transform.position = a_SaveData.thulgranData.position;
+        Debug.Log($"Thulgran position set: {a_SaveData.thulgranData.position}");
     }
 
     #endregion

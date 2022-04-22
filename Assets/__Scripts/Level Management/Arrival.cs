@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class Arrival : MonoBehaviour
 {
-
     public string arrivalStation;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
-        if (arrivalStation == PlayerGlobalData.instance.arrivingAt)
+        if (arrivalStation == PlayerGlobalData.Instance.arrivingAt)
         {
-            PlayerGlobalData.instance.transform.position = transform.position;
+            PlayerGlobalData.Instance.transform.position = transform.position;
         }
-
     }
-
-
 }

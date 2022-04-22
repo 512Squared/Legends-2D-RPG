@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public static class FileManager
@@ -12,7 +11,6 @@ public static class FileManager
         try
         {
             File.WriteAllText(fullPath, a_FileContents);
-            Debug.Log($"File path: {fullPath}");
             return true;
         }
         catch (Exception e)
@@ -20,7 +18,6 @@ public static class FileManager
             Debug.LogError($"Failed to write to {fullPath} with exception {e}");
             return false;
         }
-
     }
 
     public static bool LoadFromFile(string a_FileName, out string result)
@@ -30,14 +27,14 @@ public static class FileManager
         try
         {
             result = File.ReadAllText(fullPath);
-            Debug.Log($"File path: {fullPath}");
             return true;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Debug.LogError($"Failed to read from {fullPath} with exception {e}");
-            result = "";
-            return false;
+            SaveDataManager.GetInitialData();
+            WriteToFile("SaveData.dat", SaveDataManager.InitialData);
+            result = File.ReadAllText(fullPath);
+            return true;
         }
     }
 }

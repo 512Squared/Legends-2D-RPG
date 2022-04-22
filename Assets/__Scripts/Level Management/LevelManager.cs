@@ -1,22 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
+    private Vector3 _bottomLeftEdge;
+    private Vector3 _topRightEdge;
 
-    private Vector3 bottomLeftEdge;
-    private Vector3 topRightEdge;
 
-    [SerializeField] Tilemap tilemap;
+    [SerializeField] private Tilemap tilemap;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        topRightEdge = tilemap.localBounds.max + new Vector3(-0.2f, -1.1f, 0f);
-        bottomLeftEdge = tilemap.localBounds.min + new Vector3(1.5f, 1f, 0f);
-        PlayerGlobalData.instance.SetLimit(bottomLeftEdge, topRightEdge);
+        Bounds localBounds = tilemap.localBounds;
+        _topRightEdge = localBounds.max + new Vector3(-0.2f, -1.1f, 0f);
+        _bottomLeftEdge = localBounds.min + new Vector3(1.5f, 1f, 0f);
+        PlayerGlobalData.Instance.SetLimit(_bottomLeftEdge, _topRightEdge);
     }
-
 }
