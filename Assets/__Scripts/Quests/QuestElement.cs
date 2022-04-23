@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
 
 
-public class QuestElement : MonoBehaviour
+public class QuestElement : MonoBehaviour, ISaveable
 {
     [SerializeField] private GameObject questElement;
     [SerializeField] private Quest completeQuestFirst; // quest to be completed first
@@ -15,14 +12,14 @@ public class QuestElement : MonoBehaviour
     public bool isItem;
     private bool _isActive;
 
-    private Item item;
+    private Item _item;
     public Quest quest;
 
     private void Start()
     {
         if (isItem)
         {
-            item = gameObject.GetComponent<Item>();
+            _item = gameObject.GetComponent<Item>();
         }
     }
 
@@ -56,12 +53,11 @@ public class QuestElement : MonoBehaviour
             quest.MarkTheQuest();
         }
 
-        if (!_isActive && quest.activateOnEnter)
-        {
-            _isActive = true;
-            Debug.Log($"Quest activate called: {quest.questName}");
-            quest.ActivateAfterEnter();
-        }
+        if (_isActive || !quest.activateOnEnter) { return; }
+
+        _isActive = true;
+        Debug.Log($"Quest activate called: {quest.questName}");
+        quest.ActivateAfterEnter();
     }
 
 
@@ -76,15 +72,10 @@ public class QuestElement : MonoBehaviour
         {
             quest.isActive = true;
 
-            if (item.spriteRenderer.enabled != null)
-            {
-                item.spriteRenderer.enabled = enableAfterConditionMet; // is now visible
-            }
+            _item.spriteRenderer.enabled = enableAfterConditionMet; // is now visible
 
-            if (item.polyCollider != null)
-            {
-                item.polyCollider.enabled = enableAfterConditionMet; // can now be picked up   
-            }
+
+            _item.polyCollider.enabled = enableAfterConditionMet; // can now be picked up   
             //QuestManager.instance.pSystem.Play();            
         }
 
@@ -97,26 +88,44 @@ public class QuestElement : MonoBehaviour
 
     public void ActivateElement(string onQuestActivated) // activates from dialogue controller
     {
-        if (activateQuestFirst != null)
+        if (activateQuestFirst == null) { return; }
+
+        if (enableAfterConditionMet && onQuestActivated == activateQuestFirst.questName)
         {
-            if (enableAfterConditionMet && onQuestActivated == activateQuestFirst.questName)
-            {
-                quest.isActive = true;
-                Debug.Log($"Quest activated: {quest.questName}");
-                item.spriteRenderer.enabled = enableAfterConditionMet; // is now visible
-                GetComponent<Item>().polyCollider.enabled = enableAfterConditionMet; // can now be picked up   
-            }
+            quest.isActive = true;
+            Debug.Log($"Quest activated: {quest.questName}");
+            _item.spriteRenderer.enabled = enableAfterConditionMet; // is now visible
+            GetComponent<Item>().polyCollider.enabled = enableAfterConditionMet; // can now be picked up   
+        }
 
-            if (disableAfterConditionsMet)
-            {
-                //polyCollider.isTrigger = true;
-                GetComponent<Item>().spriteRenderer.enabled = false;
-
-                if (questElement.GetComponent<FadeObject>() != null)
+        switch (disableAfterConditionsMet)
+        {
+            case true:
                 {
-                    questElement.GetComponent<FadeObject>().SpriteFade();
+                    //polyCollider.isTrigger = true;
+                    GetComponent<Item>().spriteRenderer.enabled = false;
+
+                    if (questElement.GetComponent<FadeObject>() != null)
+                    {
+                        questElement.GetComponent<FadeObject>().SpriteFade();
+                    }
+
+                    break;
                 }
-            }
         }
     }
+
+    #region Implementation of ISaveable
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        // a_SaveData.questData.isActiveElement = _isActive;
+    }
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        // _isActive = a_SaveData.questData.isActiveElement;
+    }
+
+    #endregion
 }

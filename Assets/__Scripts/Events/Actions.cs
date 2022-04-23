@@ -30,7 +30,6 @@ public static class Actions
     #region Scene managament
 
     public static Action<string, int, int> OnSceneChange;
-    public static Action OnGameExit;
 
     #endregion
 

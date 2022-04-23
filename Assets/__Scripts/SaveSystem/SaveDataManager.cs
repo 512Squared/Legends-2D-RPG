@@ -45,11 +45,28 @@ public static class SaveDataManager
             characterData = default,
             thulgranData = default
         };
-        _initialData.sceneData.currentScene = "Homestead";
         _initialData.thulgranData.position = new Vector3(-8.25f, -3.25f, 0.75f);
+        _initialData.thulgranData.trophies = 0;
         _initialData.thulgranData.hitPoints = 10;
+        _initialData.thulgranData.gold = 10;
+        _initialData.thulgranData.moveSpeed = 3;
+        _initialData.thulgranData.maxHp = 300;
+        _initialData.thulgranData.maxMana = 200;
+
+        _initialData.sceneData.currentScene = "Homestead";
         _initialData.sceneData.sceneObjects = 1;
+
+
         InitialData = _initialData.ToJson();
         return InitialData;
+    }
+
+    public static void DeleteJsonData(IEnumerable<ISaveable> saveables)
+    {
+        if (!FileManager.DeleteFile("SaveData.dat")) { return; }
+
+        LoadJsonData(saveables);
+
+        Debug.Log("Delete complete");
     }
 }

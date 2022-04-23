@@ -37,4 +37,20 @@ public static class FileManager
             return true;
         }
     }
+
+    public static bool DeleteFile(string a_Filename)
+    {
+        string fullPath = Path.Combine(Application.persistentDataPath, a_Filename);
+
+        try
+        {
+            File.Delete(fullPath);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
 }

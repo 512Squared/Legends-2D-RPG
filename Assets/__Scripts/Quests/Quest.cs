@@ -130,7 +130,7 @@ public class Quest : MonoBehaviour, ISaveable
         InfoMessageType.Warning, "showWarnings")]
     public bool showWarnings = true;
 
-    private Quest[] childQuests;
+    private Quest[] _childQuests; // child quests are all the Master's subquests
 
     [HideInInspector] public int masterStages;
 
@@ -139,16 +139,19 @@ public class Quest : MonoBehaviour, ISaveable
 
     //[HideInInspector]
     public bool toggleMasterSub;
-    [HideInInspector] public bool resetChildren;
+
+    [HideInInspector]
+    public bool resetChildren; // when Master Quest reward is claimed, all toggle settings in children are reset
 
     #endregion SERIALIZATION
 
+    #region Methods
 
     private void Start()
     {
         if (isMasterQuest)
         {
-            childQuests = GetComponentsInChildren<Quest>();
+            _childQuests = GetComponentsInChildren<Quest>();
         }
     }
 
@@ -264,15 +267,13 @@ public class Quest : MonoBehaviour, ISaveable
 
     private void ActivateSubQuests(string activator)
     {
-        if (activator == questName)
+        if (activator != questName) { return; }
+
+        if (subQuests.Length <= 0) { return; }
+
+        foreach (Quest q in subQuests)
         {
-            if (subQuests.Length > 0)
-            {
-                for (int i = 0; i < subQuests.Length; i++)
-                {
-                    subQuests[i].isActive = true;
-                }
-            }
+            q.isActive = true;
         }
     }
 
@@ -292,18 +293,17 @@ public class Quest : MonoBehaviour, ISaveable
             MarkTheQuest();
         }
 
-        if (questToComplete == questName && trigger == "both")
-        {
-            if (questToComplete == questName)
-            {
-                MarkTheQuest();
-            }
+        if (questToComplete != questName || trigger != "both") { return; }
 
-            if (questToActivate == questName)
-            {
-                ActivateQuest(questToActivate);
-                StartCoroutine(DelayedMessage());
-            }
+        if (questToComplete == questName)
+        {
+            MarkTheQuest();
+        }
+
+        if (questToActivate == questName)
+        {
+            ActivateQuest(questToActivate);
+            StartCoroutine(DelayedMessage());
         }
     }
 
@@ -331,9 +331,9 @@ public class Quest : MonoBehaviour, ISaveable
     {
         if (isMasterQuest)
         {
-            for (int i = 1; i < childQuests.Length; i++)
+            for (int i = 1; i < _childQuests.Length; i++)
             {
-                if (childQuests[i].isDone == false)
+                if (_childQuests[i].isDone == false)
                 {
                     return false;
                 }
@@ -362,40 +362,38 @@ public class Quest : MonoBehaviour, ISaveable
 
     private void ClaimQuestReward(Quest quest)
     {
-        if (quest.questName == questName && !quest.questRewardClaimed)
+        if (quest.questName != questName || quest.questRewardClaimed) { return; }
+
+        Debug.Log($"Quest Reward called: {quest.questName} | questID: {quest.questID}");
+        questRewardClaimed = true;
+        MenuManager.Instance.notifyQuestReward--;
+
+        QuestManager.Instance.HandOutReward(rewards);
+        MenuManager.Instance.UpdateQuestNotifications();
+
+        if (questElement == null || !questElement.SO.isRelic) { return; }
+
+        Debug.Log($"Item: {questElement.SO.itemName} | isRelic: {questElement.SO.isRelic}");
+        MenuManager.Instance.notifyRelicActive++;
+
+        // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
+        Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
+        foreach (Transform t in relicTransforms)
         {
-            Debug.Log($"Quest Reward called: {quest.questName} | questID: {quest.questID}");
-            questRewardClaimed = true;
-            MenuManager.Instance.notifyQuestReward--;
-
-            QuestManager.Instance.HandOutReward(rewards);
-            MenuManager.Instance.UpdateQuestNotifications();
-
-            if (questElement != null && questElement.SO.isRelic)
-            {
-                Debug.Log($"Item: {questElement.SO.itemName} | isRelic: {questElement.SO.isRelic}");
-                MenuManager.Instance.notifyRelicActive++;
-
-                // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
-                Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
-                foreach (Transform t in relicTransforms)
-                {
-                    t.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
-                    t.GetComponent<Image>().material = null;
-                }
-
-                relicBox.GetComponent<Image>().color = new Color32(13, 15, 41, 255);
-            }
+            t.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            t.GetComponent<Image>().material = null;
         }
+
+        relicBox.GetComponent<Image>().color = new Color32(13, 15, 41, 255);
     }
 
     public bool MasterHasUnclaimedSubs()
     {
         if (isMasterQuest)
         {
-            for (int i = 1; i < childQuests.Length; i++)
+            for (int i = 1; i < _childQuests.Length; i++)
             {
-                if (childQuests[i].isDone && !childQuests[i].questRewardClaimed)
+                if (_childQuests[i].isDone && !_childQuests[i].questRewardClaimed)
                 {
                     return true;
                 }
@@ -411,16 +409,30 @@ public class Quest : MonoBehaviour, ISaveable
 
     public Quest[] GetChildQuests()
     {
-        return isMasterQuest ? childQuests : null;
+        return isMasterQuest ? _childQuests : null;
     }
+
+    #endregion
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        //Debug.Log($"SaveData saved: {questName}");
+        a_SaveData.questData.questName = questName;
+        a_SaveData.questData.completedStages = completedStages;
+        a_SaveData.questData.questRewardClaimed = questRewardClaimed;
+        a_SaveData.questData.isExpanded = isExpanded;
+        a_SaveData.questData.toggleSub = toggleMasterSub;
+        a_SaveData.questData.isActive = isActive;
+        a_SaveData.questData.isDone = isDone;
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        //Debug.Log($"SaveData loaded: {questName}");
+        questName = a_SaveData.questData.questName;
+        completedStages = a_SaveData.questData.completedStages;
+        questRewardClaimed = a_SaveData.questData.questRewardClaimed;
+        isExpanded = a_SaveData.questData.isExpanded;
+        toggleMasterSub = a_SaveData.questData.toggleSub;
+        isActive = a_SaveData.questData.isActive;
+        isDone = a_SaveData.questData.isDone;
     }
 }

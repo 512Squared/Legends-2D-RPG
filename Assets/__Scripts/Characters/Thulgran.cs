@@ -222,6 +222,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     {
         a_SaveData.thulgranData.hitPoints = ThulgranHp;
         a_SaveData.thulgranData.position = transform.position;
+        a_SaveData.thulgranData.gold = ThulgranGold;
+        a_SaveData.thulgranData.mana = ThulgranMana;
+        a_SaveData.thulgranData.trophies = ThulgranTrophies;
+        a_SaveData.thulgranData.maxMana = MaxThulgranMana;
+        a_SaveData.thulgranData.maxHp = MaxThulgranHp;
     }
 
 
@@ -229,7 +234,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     {
         ThulgranHp = a_SaveData.thulgranData.hitPoints;
         transform.position = a_SaveData.thulgranData.position;
-        Debug.Log($"Thulgran position set: {a_SaveData.thulgranData.position}");
+        ThulgranGold = a_SaveData.thulgranData.gold;
+        ThulgranMana = a_SaveData.thulgranData.mana;
+        ThulgranTrophies = a_SaveData.thulgranData.trophies;
+        MaxThulgranMana = a_SaveData.thulgranData.maxMana;
+        MaxThulgranHp = a_SaveData.thulgranData.maxHp;
     }
 
     #endregion

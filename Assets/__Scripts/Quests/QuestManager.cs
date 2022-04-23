@@ -217,12 +217,17 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
     {
         foreach (Quest quest in questList)
         {
+            Debug.Log($"Quest Saved: {quest.questName}");
             quest.PopulateSaveData(a_SaveData);
         }
+
+        Debug.Log($"questList Count: {questList.Count}");
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
+        
+        
     }
 
     #endregion

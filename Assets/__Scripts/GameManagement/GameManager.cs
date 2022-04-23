@@ -61,7 +61,6 @@ public class GameManager : MonoBehaviour, ISaveable
         Actions.OnHomeButton += HomeButton;
         Actions.OnMainMenuButton += MainMenuButton;
         Actions.OnResumeButton += ResumeButton;
-        Actions.OnGameExit += SaveGame;
         Actions.OnSceneChange += SceneChange;
     }
 
@@ -70,7 +69,6 @@ public class GameManager : MonoBehaviour, ISaveable
         Actions.OnHomeButton -= HomeButton;
         Actions.OnMainMenuButton -= MainMenuButton;
         Actions.OnResumeButton -= ResumeButton;
-        Actions.OnGameExit -= SaveGame;
         Actions.OnSceneChange -= SceneChange;
     }
 
@@ -94,6 +92,7 @@ public class GameManager : MonoBehaviour, ISaveable
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
         magicManager = FindObjectsOfType<MagicManager>().OrderBy(m => m.transform.position.z).ToArray();
         _saveables = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>().ToList();
+        Debug.Log($"Save items count: {_saveables.Count}");
 
         StartCoroutine(Initialize());
     }
@@ -128,6 +127,12 @@ public class GameManager : MonoBehaviour, ISaveable
 
     #region Methods
 
+    public void ResetGame()
+    {
+        SceneManager.UnloadSceneAsync(_firstScene);
+        SaveDataManager.DeleteJsonData(_saveables);
+    }
+
     public void SaveGame()
     {
         SaveDataManager.SaveJsonData(_saveables);
@@ -135,7 +140,7 @@ public class GameManager : MonoBehaviour, ISaveable
 
     public void QuitGame()
     {
-        Actions.OnGameExit?.Invoke();
+        SaveDataManager.SaveJsonData(_saveables);
         Application.Quit();
     }
 
@@ -186,26 +191,6 @@ public class GameManager : MonoBehaviour, ISaveable
         isInterfaceOn = !isInterfaceOn;
     }
 
-    #endregion
-
-    #region Implementation of ISaveable
-
-    public void PopulateSaveData(SaveData a_SaveData)
-    {
-        a_SaveData.sceneData.currentScene = _firstScene;
-        a_SaveData.sceneData.sceneObjects = objectInt;
-    }
-
-    public void LoadFromSaveData(SaveData a_SaveData)
-    {
-        _firstScene = a_SaveData.sceneData.currentScene;
-        SceneManager.LoadScene(_firstScene, LoadSceneMode.Additive);
-        _sceneHandler.SetSceneObjects(a_SaveData.sceneData.currentScene);
-        sceneObjects[SceneHandling.SceneObjectsInt(_sceneHandler.sceneObjectsLoad)].SetActive(true);
-        Shop(_firstScene, _sceneHandler.sceneObjectsLoad);
-        ActivateCharacters(_firstScene);
-        Debug.Log($"Scene loaded from save: {_firstScene}");
-    }
 
     private static void Shop(string scene, SceneObjectsLoad sceneObjectsLoad)
     {
@@ -231,6 +216,37 @@ public class GameManager : MonoBehaviour, ISaveable
             GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size =
                 new Vector2(1.12f, 1.31f);
         }
+    }
+
+    #endregion
+
+    #region Implementation of ISaveable
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        a_SaveData.sceneData.currentScene = _firstScene;
+        a_SaveData.sceneData.sceneObjects = objectInt;
+    }
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        _firstScene = a_SaveData.sceneData.currentScene;
+        // Load saved Scene
+        SceneManager.LoadScene(_firstScene, LoadSceneMode.Additive);
+
+        // Assign saved object data
+        _sceneHandler.SetSceneObjects(a_SaveData.sceneData.currentScene);
+
+        // Load scene objects
+        sceneObjects[SceneHandling.SceneObjectsInt(_sceneHandler.sceneObjectsLoad)].SetActive(true);
+
+        // Initialise shop
+        Shop(_firstScene, _sceneHandler.sceneObjectsLoad);
+
+        // Initialise NPCs
+        ActivateCharacters(_firstScene);
+
+        Debug.Log($"Scene loaded from save: {_firstScene}");
     }
 
     #endregion

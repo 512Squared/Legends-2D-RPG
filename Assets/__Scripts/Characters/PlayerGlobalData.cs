@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 
-public class PlayerGlobalData : MonoBehaviour
+public class PlayerGlobalData : MonoBehaviour, ISaveable
 {
     public static PlayerGlobalData Instance;
 
@@ -10,6 +11,8 @@ public class PlayerGlobalData : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
 
     public string arrivingAt;
+
+    private Toggle _toggle;
 
     public bool deactivedMovement;
 
@@ -35,27 +38,11 @@ public class PlayerGlobalData : MonoBehaviour
     private void Start()
     {
         Instance = this;
-    }
-
-    private void AndroidController()
-    {
-        switch (controllerSwitch)
-        {
-            case false:
-                _horizontalMovement = Input.GetAxisRaw("Horizontal");
-                _verticalMovement = Input.GetAxisRaw("Vertical");
-                break;
-            case true:
-                _horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
-                _verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
-                break;
-        }
+        _toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
     }
 
     private void Update()
     {
-        controllerSwitch = MenuManager.Instance.controlSwitch;
-
         AndroidController();
 
         if (deactivedMovement)
@@ -88,6 +75,21 @@ public class PlayerGlobalData : MonoBehaviour
         MenuManager.Instance.HomeScreenStats();
     }
 
+    private void AndroidController()
+    {
+        switch (controllerSwitch)
+        {
+            case false:
+                _horizontalMovement = Input.GetAxisRaw("Horizontal");
+                _verticalMovement = Input.GetAxisRaw("Vertical");
+                break;
+            case true:
+                _horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
+                _verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
+                break;
+        }
+    }
+
     public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
     {
         _bottomLeftEdge = bottomEdgeToSet;
@@ -98,8 +100,14 @@ public class PlayerGlobalData : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Character")) { return; }
 
-        if (collision.gameObject.GetComponent<PlayerStats>().isAvailable != false) { return; }
+        if (collision.gameObject.GetComponent<PlayerStats>().isAvailable) { return; }
 
+        AddToParty(collision);
+        AddTwoToPartyQuest();
+    }
+
+    private static void AddToParty(Collision2D collision)
+    {
         Debug.Log(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
         collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
         MenuManager.Instance.UpdateItemsInventory();
@@ -109,6 +117,10 @@ public class PlayerGlobalData : MonoBehaviour
             collision.gameObject.GetComponent<PlayerStats>().characterPlain,
             3.4f,
             1000, 30);
+    }
+
+    private void AddTwoToPartyQuest()
+    {
         if (_characterParty < 3)
         {
             _characterParty++;
@@ -119,4 +131,20 @@ public class PlayerGlobalData : MonoBehaviour
             Actions.MarkQuestCompleted?.Invoke("Add two people to your character party");
         }
     }
+
+    #region Implementation of ISaveable
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        a_SaveData.thulgranData.controllerSwitch = controllerSwitch;
+        a_SaveData.thulgranData.moveSpeed = moveSpeed;
+    }
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        _toggle.isOn = a_SaveData.thulgranData.controllerSwitch;
+        moveSpeed = a_SaveData.thulgranData.moveSpeed;
+    }
+
+    #endregion
 }

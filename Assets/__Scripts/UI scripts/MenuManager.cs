@@ -371,12 +371,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public bool isInventoryOn = false;
 
     [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool keyboardKeyI = false;
-
-    [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool controlSwitch;
-
-    [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool weaponBool, armourBool, itemBool, potionBool, spellBool;
 
     [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)]
@@ -1106,7 +1100,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void AndroidControls()
     {
-        controlSwitch = !controlSwitch;
+        PlayerGlobalData.Instance.controllerSwitch = !PlayerGlobalData.Instance.controllerSwitch;
     }
 
     public void CallToSellItem()
