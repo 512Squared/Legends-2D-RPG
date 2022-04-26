@@ -72,13 +72,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
 
     private void OnEnable()
     {
-        Actions.OnSellItem += SellItem;
         Actions.OnUseItem += UseItem;
     }
 
     private void OnDisable()
     {
-        Actions.OnSellItem -= SellItem;
         Actions.OnUseItem -= UseItem;
     }
 
@@ -108,18 +106,12 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         }
     }
 
-    private void SellItem(Item item)
-    {
-        AddGold(item);
-        Debug.Log($"Thulgran's purse: {ThulgranGold}");
-    }
-
     private static void UseItem(Item item, int character, Vector2 target)
     {
         if (character != 0) { return; }
 
-        Debug.Log($"Use item called | Item: {item.SO.itemName} | CharacterSlot: {character}");
-        switch (item.SO.affectType)
+        Debug.Log($"Use item called | Item: {item.itemName} | CharacterSlot: {character}");
+        switch (item.affectType)
         {
             case AffectType.Hp:
                 AddHp(item);
@@ -129,17 +121,12 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
                 AddMana(item);
                 UI.instance.UpdateManaUI(0);
                 break;
-            case AffectType.Defence:
-            case AffectType.Attack:
-            case AffectType.Perception:
-            case AffectType.Speed:
-            default: throw new ArgumentOutOfRangeException();
         }
     }
 
     public static void AddGold(Item item)
     {
-        ThulgranGold += item.SO.valueInCoins;
+        ThulgranGold += item.valueInCoins;
 
         for (int i = 0; i < UI.instance.goldStats.Length; i++)
         {
@@ -149,7 +136,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
             }
         }
 
-        Debug.Log($"Add Gold | Value: {item.SO.valueInCoins}");
+        Debug.Log($"Add Gold | Value: {item.valueInCoins}");
     }
 
     public static void AddGold(int amountToAdd)
@@ -186,7 +173,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
 
     private static void AddHp(Item item)
     {
-        ThulgranHp += item.SO.amountOfEffect;
+        ThulgranHp += item.amountOfEffect;
         if (ThulgranHp > MaxThulgranHp)
         {
             ThulgranHp = MaxThulgranHp;
@@ -196,12 +183,12 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
                 1400, 30);
         }
 
-        Debug.Log($"Added HP | Amount: {item.SO.amountOfEffect}");
+        Debug.Log($"Added HP | Amount: {item.amountOfEffect}");
     }
 
     private static void AddMana(Item item)
     {
-        ThulgranMana += item.SO.amountOfEffect;
+        ThulgranMana += item.amountOfEffect;
         if (ThulgranMana > MaxThulgranMana)
         {
             ThulgranMana = MaxThulgranMana;
@@ -211,7 +198,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
                 1400, 30);
         }
 
-        Debug.Log($"Added Mana: | Amount: {item.SO.amountOfEffect}");
+        Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
     }
 
     #endregion

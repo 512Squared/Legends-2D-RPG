@@ -3,14 +3,14 @@ using UnityEngine;
 using System.Linq;
 
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISaveable
 {
     public static Inventory Instance; // GameManager
 
     private List<Item> _inventoryList;
-    private List<Item> _shopList;
+    public List<Item> shopList;
+    private List<Item> _initializeShop;
 
-    public List<Item>[] itemsLists;
 
     private Dictionary<int, ItemDetails> _itemDetailsDictionary;
 
@@ -21,20 +21,20 @@ public class Inventory : MonoBehaviour
     {
         Instance = this;
         _inventoryList = new List<Item>();
-        _shopList = new List<Item>();
-
+        _initializeShop = new List<Item>();
+        shopList = new List<Item>();
         CreateItemDetailsDictionary();
     }
 
 
     public void AddItems(Item item)
     {
-        if (item.SO.isStackable)
+        if (item.isStackable)
         {
             bool itemAlreadyInInventory = false;
 
             foreach (Item itemInInventory in _inventoryList.Where(itemInInventory =>
-                         itemInInventory.SO.itemName == item.SO.itemName))
+                         itemInInventory.itemName == item.itemName))
             {
                 itemInInventory.quantity += item.quantity;
                 itemAlreadyInInventory = true;
@@ -55,12 +55,12 @@ public class Inventory : MonoBehaviour
 
     public void AddShopItems(Item item)
     {
-        if (item.SO.isStackable)
+        if (item.isStackable)
         {
             bool itemAlreadyInShop = false;
 
-            foreach (Item itemInShop in _shopList.Where(itemInShop =>
-                         itemInShop.SO.itemName == item.SO.itemName || itemInShop.SO.shop == item.SO.shop))
+            foreach (Item itemInShop in shopList.Where(itemInShop =>
+                         itemInShop.itemName == item.itemName || itemInShop.shop == item.shop))
             {
                 itemInShop.quantity += item.quantity;
                 itemAlreadyInShop = true;
@@ -68,13 +68,38 @@ public class Inventory : MonoBehaviour
 
             if (!itemAlreadyInShop)
             {
-                _shopList.Add(item);
+                shopList.Add(item);
             }
         }
 
         else
         {
-            _shopList.Add(item);
+            shopList.Add(item);
+        }
+    }
+
+    public void InitializeShop(Item item)
+    {
+        if (item.isStackable)
+        {
+            bool itemAlreadyInShop = false;
+
+            foreach (Item itemInShop in shopList.Where(itemInShop =>
+                         itemInShop.itemName == item.itemName || itemInShop.shop == item.shop))
+            {
+                itemInShop.quantity += item.quantity;
+                itemAlreadyInShop = true;
+            }
+
+            if (!itemAlreadyInShop)
+            {
+                _initializeShop.Add(item);
+            }
+        }
+
+        else
+        {
+            _initializeShop.Add(item);
         }
     }
 
@@ -82,12 +107,12 @@ public class Inventory : MonoBehaviour
     {
         Debug.Log($"OnSellItem invoked for {GetItemDetails(item.ItemCode).itemName}");
 
-        if (item.SO.isStackable)
+        if (item.isStackable)
         {
             Item inventoryItem = null;
 
-            foreach (Item itemInInventory in _inventoryList.Where(itemInInventory => itemInInventory.SO.itemName ==
-                         item.SO.itemName))
+            foreach (Item itemInInventory in _inventoryList.Where(itemInInventory => itemInInventory.itemName ==
+                         item.itemName))
             {
                 itemInInventory.quantity--;
                 inventoryItem = itemInInventory;
@@ -96,14 +121,14 @@ public class Inventory : MonoBehaviour
             if (inventoryItem != null && inventoryItem.quantity <= 0)
             {
                 _inventoryList.Remove(inventoryItem);
-                Debug.Log($"stacked {item.SO.itemName} sold and now empty");
+                Debug.Log($"stacked {item.itemName} sold and now empty");
             }
         }
 
         else
         {
             _inventoryList.Remove(item);
-            Debug.Log($"{item.SO.itemName} sold");
+            Debug.Log($"{item.itemName} sold");
         }
 
         Actions.OnSellItem?.Invoke(item); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
@@ -113,11 +138,11 @@ public class Inventory : MonoBehaviour
     {
         Debug.Log("Use & Remove initiated");
 
-        if (item.SO.isStackable)
+        if (item.isStackable)
         {
             Item inventoryItem = null;
-            foreach (Item itemInInventory in _inventoryList.Where(itemInInventory => itemInInventory.SO.itemName ==
-                         item.SO.itemName))
+            foreach (Item itemInInventory in _inventoryList.Where(itemInInventory => itemInInventory.itemName ==
+                         item.itemName))
             {
                 itemInInventory.quantity--;
                 Debug.Log("Inventory stack subtraction");
@@ -144,12 +169,12 @@ public class Inventory : MonoBehaviour
 
     public void BuyItem(Item item)
     {
-        if (GetItemDetails(item.ItemCode).isStackable)
+        if (item.isStackable)
         {
             bool itemAlreadyInInventory = false;
 
             foreach (Item itemInInventory in _inventoryList.Where(itemInInventory =>
-                         itemInInventory.SO.itemName == GetItemDetails(item.ItemCode).itemName))
+                         itemInInventory.itemName == GetItemDetails(item.ItemCode).itemName))
             {
                 itemInInventory.quantity += item.quantity;
                 itemAlreadyInInventory = true;
@@ -166,10 +191,10 @@ public class Inventory : MonoBehaviour
             _inventoryList.Add(item);
         }
 
-        _shopList.Remove(item);
-        item.SO.isShopItem = false;
-        Thulgran.ThulgranGold -= item.SO.valueInCoins;
-        Debug.Log("stackable item " + item.SO.itemName + " removed from shop and added to Inventory");
+        shopList.Remove(item);
+        item.isShopItem = false;
+        Thulgran.ThulgranGold -= item.valueInCoins;
+        Debug.Log("stackable item " + item.itemName + " removed from shop and added to Inventory");
     }
 
     public List<Item> GetItemsList()
@@ -179,7 +204,12 @@ public class Inventory : MonoBehaviour
 
     public List<Item> GetShopList()
     {
-        return _shopList;
+        return shopList;
+    }
+
+    public List<Item> GetInitialShopList()
+    {
+        return _initializeShop;
     }
 
     public static void AddMagic(MagicManager selectedCharacter)
@@ -207,9 +237,24 @@ public class Inventory : MonoBehaviour
         Debug.Log($"Item dictionary: {_itemDetailsDictionary.Count} items");
     }
 
-    #region SAVE
+    #region Implementation of ISaveable
 
-    private string SaveableUniqueID { get; set; }
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        a_SaveData.inventoryDatas.inventoryItemsList = _inventoryList;
+        a_SaveData.inventoryDatas.shopsItemsList = shopList;
+    }
 
-    #endregion SAVE
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        _inventoryList = a_SaveData.inventoryDatas.inventoryItemsList;
+        foreach (Item item in _inventoryList)
+        {
+            item.GetItemDetailsFromScriptObject(item);
+        }
+
+        shopList = a_SaveData.inventoryDatas.shopsItemsList;
+    }
+
+    #endregion
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Sirenix.OdinInspector;
 
 [ExecuteAlways]
 public class GenerateGUID : MonoBehaviour
@@ -11,14 +12,20 @@ public class GenerateGUID : MonoBehaviour
     private void OnValidate()
     {
         // Only populate in the editor
-        if (!Application.IsPlaying(gameObject))
+        if (Application.IsPlaying(gameObject)) { return; }
+
+        // Ensure the object has a guaranteed unique id
+        if (_gUID == "")
         {
-            // Ensure the object has a guaranteed unique id
-            if (_gUID == "")
-            {
-                //Assign GUID
-                _gUID = System.Guid.NewGuid().ToString();
-            }
+            //Assign GUID
+            _gUID = System.Guid.NewGuid().ToString();
         }
+    }
+
+
+    [Button(ButtonSizes.Large)] [GUIColor(0.682f, 0.686f, 0.156f)]
+    public void CreateNewGUID()
+    {
+        _gUID = System.Guid.NewGuid().ToString();
     }
 }

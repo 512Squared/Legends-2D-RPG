@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6740536990887392099}
   m_RootOrder: 0
@@ -113,6 +114,7 @@ Transform:
   m_LocalRotation: {x: -0.0059852456, y: 0.0031638553, z: -0.4671983, w: 0.88412666}
   m_LocalPosition: {x: -6.94, y: -2.9299996, z: -1.1399999}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6034288727317226341}
   m_Father: {fileID: 0}
@@ -221,3 +223,5 @@ MonoBehaviour:
     isRelic: 0
     isStackable: 0
     itemsImage: {fileID: 0}
+  isPickedUp: 0
+  isNewItem: 1

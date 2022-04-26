@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
@@ -13,8 +12,7 @@ public class ShopManager : MonoBehaviour
 
     #region SERIALIZATION
 
-    [SerializeField] private PlayerStats playerStats;
-    private SecretShopSection secretShop;
+    private SecretShopSection _secretShop;
 
     public CanvasGroup shopUIPanel;
 
@@ -78,26 +76,44 @@ public class ShopManager : MonoBehaviour
 
 
     public Item activeItem;
-    private int shopCurrentNewItems = 0;
+    private int _shopCurrentNewItems;
 
     [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isPlayerInsideShop = false;
+    public bool isPlayerInsideShop;
 
     [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool shopWeaponBool, shopArmourBool, shopItemBool, shopSpellBool, shopPotionBool;
 
     [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isShopArmouryOpen = false;
+    public bool isShopArmouryOpen;
 
     [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isShopInstantiated = false;
+    public bool isShopInstantiated;
 
-    private readonly Tween fadeText;
+    private readonly Tween _fadeText;
 
     public Shop shopType;
-    private int foodItems, weaponItems, potionItems, itemItems, armourItems, helmetItems, shieldItems;
+    private int _foodItems, _weaponItems, _potionItems, _itemItems, _armourItems, _helmetItems, _shieldItems;
 
-    private int shop1NormalItems, shop1SecretItems, shop2NormalItems, shop2SecretItems;
+    private int _shop1NormalItems, _shop1SecretItems, _shop2NormalItems, _shop2SecretItems;
+
+    public ShopManager(SecretShopSection secretShop)
+    {
+        _secretShop = secretShop;
+    }
+
+    #endregion
+
+
+    #region CALLBACKS
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        Instance = this;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        InitializeShopAndArmoury();
+    }
 
     #endregion
 
@@ -128,24 +144,24 @@ public class ShopManager : MonoBehaviour
 
     public void CallToBuyItem()
     {
-        if (activeItem.SO.valueInCoins <= Thulgran.ThulgranGold)
+        if (activeItem.valueInCoins <= Thulgran.ThulgranGold)
         {
-            Debug.Log("Buy item initiated | Item: " + activeItem.SO.itemName);
+            Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
             Inventory.Instance.BuyItem(activeItem);
             NotificationFader.instance.CallFadeInOut(
-                "You have bought a " + activeItem.SO.itemName + " for <color=#E0A515>" + activeItem.SO.valueInCoins +
-                "</color> gold coins. Item has been added to your inventory.", activeItem.SO.itemsImage, 3f, 1400f, 30);
+                "You have bought a " + activeItem.itemName + " for <color=#E0A515>" + activeItem.valueInCoins +
+                "</color> gold coins. Item has been added to your inventory.", activeItem.itemsImage, 3f, 1400f, 30);
             UpdateShopItemsInventory();
             ItemSoldAnim();
             activeItem.GetComponent<SpriteRenderer>().sprite = null;
         }
 
-        else if (activeItem.SO.valueInCoins > Thulgran.ThulgranGold)
+        else if (activeItem.valueInCoins > Thulgran.ThulgranGold)
         {
             NotificationFader.instance.CallFadeInOut(
-                "<color=#C60B0B>You're too poor!</color> The item costs <color=#E0A515>" + activeItem.SO.valueInCoins +
+                "<color=#C60B0B>You're too poor!</color> The item costs <color=#E0A515>" + activeItem.valueInCoins +
                 " </color>and you have <color=#E0A515>" + Thulgran.ThulgranGold + "</color> gold coins.",
-                activeItem.SO.itemsImage, 3f, 1400f, 30);
+                activeItem.itemsImage, 3f, 1400f, 30);
             ItemNotSoldAnim();
         }
     }
@@ -162,12 +178,12 @@ public class ShopManager : MonoBehaviour
 
     public void NofifyOnly()
     {
-        shopCurrentNewItems = 0;
-        foodItems = 0; // debug stuff
-        potionItems = 0;
-        weaponItems = 0;
-        itemItems = 0;
-        armourItems = 0;
+        _shopCurrentNewItems = 0;
+        _foodItems = 0; // debug stuff
+        _potionItems = 0;
+        _weaponItems = 0;
+        _itemItems = 0;
+        _armourItems = 0;
 
         foreach (Transform itemSlot in shopItemBoxParent)
         {
@@ -176,40 +192,39 @@ public class ShopManager : MonoBehaviour
 
         foreach (Item item in Inventory.Instance.GetShopList())
         {
-            if (item.SO.isShopItem == true)
+            if (item.isShopItem)
             {
-                if (item.SO.isNewItem == true)
+                if (item.isNewItem)
                 {
                     GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                    shopCurrentNewItems++;
+                    _shopCurrentNewItems++;
                 }
 
 
-                if (item.SO.shop != shopType && item.SO.isNewItem == true)
+                if (item.shop != shopType && item.isNewItem)
                 {
-                    shopCurrentNewItems--;
-                    shopNewItemsText.text = shopCurrentNewItems.ToString();
+                    _shopCurrentNewItems--;
+                    shopNewItemsText.text = _shopCurrentNewItems.ToString();
                 }
 
-                if (isShopArmouryOpen == false && item.SO.shop == shopType && item.SO.isNewItem)
+                if (isShopArmouryOpen == false && item.shop == shopType && item.isNewItem)
                 {
-                    if (item.SO.itemType == ItemType.Weapon ||
-                        item.SO.itemType == ItemType.Armour || item.SO.itemType == ItemType.Spell ||
-                        item.SO.itemType == ItemType.Shield || item.SO.itemType == ItemType.Helmet)
+                    if (item.itemType is ItemType.Weapon or ItemType.Armour or ItemType.Spell or ItemType.Shield
+                        or ItemType.Helmet)
                     {
-                        shopCurrentNewItems--;
+                        _shopCurrentNewItems--;
                     }
 
-                    shopNewItemsText.text = shopCurrentNewItems.ToString();
+                    shopNewItemsText.text = _shopCurrentNewItems.ToString();
                 }
 
-                else if (isShopArmouryOpen && item.SO.shop == shopType)
+                else if (isShopArmouryOpen && item.shop == shopType)
                 {
                     GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                    shopNewItemsText.text = shopCurrentNewItems.ToString();
+                    shopNewItemsText.text = _shopCurrentNewItems.ToString();
                 }
 
-                if (shopCurrentNewItems == 0)
+                if (_shopCurrentNewItems == 0)
                 {
                     GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
                 }
@@ -224,76 +239,70 @@ public class ShopManager : MonoBehaviour
 
     public void OpenShop()
     {
+        Debug.Log($"OpenShop called");
         GameManager.Instance.isShopUIOn = true;
         UpdateShopItemsInventory();
     }
 
     [SuppressMessage("ReSharper", "Unity.NoNullPropagation")]
-    public void ShopArmoury()
+    public void InitializeShopAndArmoury()
     {
         if (isShopInstantiated == false)
         {
-            Item item;
-
             secretShopItemsCount = 0;
 
             for (int i = 0; i < shops.Length; i++)
             {
                 foreach (Transform child in shops[i]) // one armoury, but sorted by shop1, shop2 etc
                 {
-                    item = child?.GetComponent<Item>();
-                    if (child != null && child.GetComponent<Item>() != null)
-                    {
-                        if (isShopInstantiated == false)
-                        {
-                            if (item.SO.itemType == ItemType.Armour ||
-                                item.SO.itemType == ItemType.Weapon ||
-                                item.SO.itemType == ItemType.Spell ||
-                                item.SO.itemType == ItemType.Shield ||
-                                item.SO.itemType == ItemType.Helmet)
-                            {
-                                Inventory.Instance.AddShopItems(item);
-                                secretShopItemsCount++;
-                            }
+                    Item item = child?.GetComponent<Item>();
 
-                            else if (item.SO.itemType == ItemType.Food ||
-                                     item.SO.itemType == ItemType.Item ||
-                                     item.SO.itemType == ItemType.Potion)
-                            {
-                                Inventory.Instance.AddShopItems(item);
+                    if (child == null || child.GetComponent<Item>() == null) { continue; }
+
+                    item.GetItemDetailsFromScriptObject(item);
+
+                    if (isShopInstantiated == false)
+                    {
+                        switch (item.itemType)
+                        {
+                            case ItemType.Armour or ItemType.Weapon or ItemType.Spell or ItemType.Shield
+                                or ItemType.Helmet:
+                                Inventory.Instance.InitializeShop(item);
+                                secretShopItemsCount++;
+                                break;
+                            case ItemType.Food or ItemType.Item or ItemType.Potion:
+                                Inventory.Instance.InitializeShop(item);
                                 shopItemsCount++;
-                            }
+                                break;
                         }
                     }
                 }
 
-                if (i == 0)
+                switch (i)
                 {
-                    shop1NormalItems = shopItemsCount;
-                    shop1SecretItems = secretShopItemsCount;
-                    Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + shopItemsCount + " | Secret items: " +
-                              secretShopItemsCount);
-                }
-
-                else if (i == 1)
-                {
-                    Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + (shopItemsCount - shop1NormalItems) +
-                              " | Secret items: " + (secretShopItemsCount - shop1SecretItems));
-                    shop2NormalItems = shopItemsCount;
-                    shop2SecretItems = secretShopItemsCount;
-                }
-
-                else if (i == 2)
-                {
-                    Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + (shopItemsCount - shop2NormalItems) +
-                              " | Secret items: " + (secretShopItemsCount - shop2SecretItems));
+                    case 0:
+                        _shop1NormalItems = shopItemsCount;
+                        _shop1SecretItems = secretShopItemsCount;
+                        Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + shopItemsCount + " | Secret items: " +
+                                  secretShopItemsCount);
+                        break;
+                    case 1:
+                        Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + (shopItemsCount - _shop1NormalItems) +
+                                  " | Secret items: " + (secretShopItemsCount - _shop1SecretItems));
+                        _shop2NormalItems = shopItemsCount;
+                        _shop2SecretItems = secretShopItemsCount;
+                        break;
+                    case 2:
+                        Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + (shopItemsCount - _shop2NormalItems) +
+                                  " | Secret items: " + (secretShopItemsCount - _shop2SecretItems));
+                        break;
                 }
             }
         }
 
         isShopInstantiated = true; // armoury is instantiated on first shop onload
         Debug.Log("Shops fully Instantiated");
-        Instance.UpdateShopItemsInventory();
+        //Instance.UpdateShopItemsInventory();
     }
 
     public void ShopArmouryBool()
@@ -304,12 +313,12 @@ public class ShopManager : MonoBehaviour
 
     public void ShopArmouryReset()
     {
-        secretShop.OpenSecretPanel();
+        _secretShop.OpenSecretPanel();
     }
 
     public void HomeButton() // tidying for back and home buttons
     {
-        shopCurrentNewItems = 0;
+        _shopCurrentNewItems = 0;
         NofifyOnly();
     }
 
@@ -391,21 +400,21 @@ public class ShopManager : MonoBehaviour
         Debug.Log("Sort by item initiated: " + boolName);
     }
 
-    public void ShopType(Shop shopType)
+    public void ShopType(Shop setShopType)
     {
-        this.shopType = shopType;
+        shopType = setShopType;
     }
 
     public void UpdateShopItemsInventory()
     {
-        shopCurrentNewItems = 0;
-        foodItems = 0; // debug stuff
-        potionItems = 0;
-        weaponItems = 0;
-        itemItems = 0;
-        armourItems = 0;
-        shieldItems = 0;
-        helmetItems = 0;
+        _shopCurrentNewItems = 0;
+        _foodItems = 0; // debug stuff
+        _potionItems = 0;
+        _weaponItems = 0;
+        _itemItems = 0;
+        _armourItems = 0;
+        _shieldItems = 0;
+        _helmetItems = 0;
 
         foreach (Transform itemSlot in shopItemBoxParent)
         {
@@ -414,17 +423,14 @@ public class ShopManager : MonoBehaviour
 
         foreach (Item item in Inventory.Instance.GetShopList())
         {
-            if (item.SO.isShopItem != true)
-            {
-                continue;
-            }
+            if (!item.isShopItem) { continue; }
 
             RectTransform itemSlot = Instantiate(shopItemBox, shopItemBoxParent).GetComponent<RectTransform>();
-            Debug.Log($"ShopType: {item.SO.shop} | Item: {item.SO.itemName} | Quantity: {item.quantity}");
+
             // show item image
 
             Image itemImage = itemSlot.Find("Items Image").GetComponent<Image>();
-            itemImage.sprite = item.SO.itemsImage;
+            itemImage.sprite = item.itemsImage;
 
             TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
             itemsAmountText.text = item.quantity > 1 ? item.quantity.ToString() : "";
@@ -432,218 +438,212 @@ public class ShopManager : MonoBehaviour
             itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
 
             int i = -1;
-            i = item.SO.itemType switch
+            i = item.itemType switch
             {
-                ItemType.Food => foodItems++,
-                ItemType.Potion => potionItems++,
-                ItemType.Item => itemItems++,
-                ItemType.Weapon => weaponItems++,
-                ItemType.Armour => armourItems++,
-                ItemType.Helmet => armourItems++,
-                ItemType.Shield => armourItems++,
+                ItemType.Food => _foodItems++,
+                ItemType.Potion => _potionItems++,
+                ItemType.Item => _itemItems++,
+                ItemType.Weapon => _weaponItems++,
+                ItemType.Armour => _armourItems++,
+                ItemType.Helmet => _armourItems++,
+                ItemType.Shield => _armourItems++,
                 _ => i
             };
 
 
             // new items - needs to run here to count how many new items
 
-            if (item.SO.isNewItem == true)
+            if (item.isNewItem)
             {
                 GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                shopCurrentNewItems++;
+                _shopCurrentNewItems++;
             }
 
             // Stuff to activate ONLY when inside a shop
 
-            if (GameManager.Instance.isShopUIOn == true)
+            if (GameManager.Instance.isShopUIOn)
             {
                 // Removing focus from previously selected items 
 
-                if (item.SO.itemSelected == false)
+                switch (item.itemSelected)
                 {
-                    itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
-                    GameManager.Instance.isItemSelected = false;
-
-                    if (item.SO.isNewItem == true)
-                    {
-                        itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
-                    }
-                    // new items - set red marker; count item
-
-                    if (item.SO.isNewItem == false)
-                    {
-                        itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
-                    }
-                }
-
-                // SORTING - SELECTED ITEM
-
-                else if (item.SO.itemSelected == true) // if item has been selected
-                {
-                    item.SO.itemSelected = false;
-                    itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
-
-                    // ITEM SELECTED animation
-
-                    itemSlot.GetComponent<ButtonBounce>().AnimateItemSelection();
-
-                    // NEW ITEM tagging
-
-                    item.SO.isNewItem = false; // switch off new item tag after selection
-                    itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
-
-                    // EFFECT RESET
-
-                    shopEffectBox.GetComponent<CanvasGroup>().alpha = 0; // necessary reset
-
-
-                    //  EFFECTS - POTIONS
-
-                    if (item.SO.itemType == ItemType.Potion)
-                    {
-                        Debug.Log("Type: " + item.SO.itemType + " | " + "Name: " + item.SO.itemName);
-
-                        // EFFECT MODIFIER (on item info)
-
-                        if (item.SO.itemName == "Speed Potion")
+                    case false:
                         {
-                            shopEffectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            shopEffectText.text = "x" + item.SO.amountOfEffect.ToString();
-                        }
+                            itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
+                            GameManager.Instance.isItemSelected = false;
 
-                        else if (item.SO.itemName == "Mana Potion")
+                            itemSlot.Find("New Item").GetComponent<Image>().enabled = item.isNewItem switch
+                            {
+                                true => true,
+                                // new items - set red marker; count item
+                                false => false
+                            };
+
+                            break;
+                        }
+                    // SORTING - SELECTED ITEM
+                    // if item has been selected
+                    case true:
                         {
-                            shopEffectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            shopEffectText.text = "+" + item.SO.amountOfEffect.ToString();
+                            item.itemSelected = false;
+                            itemSlot.Find("Focus").GetComponent<Image>().enabled = true;
+
+                            // ITEM SELECTED animation
+
+                            itemSlot.GetComponent<ButtonBounce>().AnimateItemSelection();
+
+                            // NEW ITEM tagging
+
+                            item.isNewItem = false; // switch off new item tag after selection
+                            itemSlot.Find("New Item").GetComponent<Image>().enabled = false;
+
+                            // EFFECT RESET
+
+                            shopEffectBox.GetComponent<CanvasGroup>().alpha = 0; // necessary reset
+
+
+                            //  EFFECTS - POTIONS
+
+                            switch (item.itemType)
+                            {
+                                case ItemType.Potion:
+                                    {
+                                        Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+
+                                        // EFFECT MODIFIER (on item info)
+
+                                        switch (item.itemName)
+                                        {
+                                            case "Speed Potion":
+                                                shopEffectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                                shopEffectText.text = "x" + item.amountOfEffect.ToString();
+                                                break;
+                                            case "Mana Potion":
+                                                shopEffectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                                shopEffectText.text = "+" + item.amountOfEffect.ToString();
+                                                break;
+                                            case "Red Healing Potion":
+                                            case "Green Healing Potion":
+                                            case "Red Healing Potion Large":
+                                                shopEffectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                                shopEffectText.text = "+" + item.amountOfEffect.ToString();
+                                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect +
+                                                          " | " +
+                                                          "Alpha status: " +
+                                                          GameObject.FindGameObjectWithTag("Effect")
+                                                              .GetComponent<CanvasGroup>()
+                                                              .alpha);
+                                                break;
+                                            default:
+                                                shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
+                                                Debug.Log("Healing potion effect amount: " + item.amountOfEffect +
+                                                          " | " +
+                                                          "Alpha status: " +
+                                                          GameObject.FindGameObjectWithTag("Effect")
+                                                              .GetComponent<CanvasGroup>()
+                                                              .alpha);
+                                                break;
+                                        }
+
+                                        break;
+                                    }
+                                // EFFECTS - ARMOUR
+                                case ItemType.Armour:
+                                case ItemType.Helmet:
+                                case ItemType.Shield:
+                                    shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
+                                    Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName +
+                                              " | Shop no: " +
+                                              item.shop);
+                                    break;
+                                // EFFECTS - FOOD
+                                case ItemType.Food:
+                                    shopEffectBox.GetComponent<CanvasGroup>().alpha = 1;
+                                    shopEffectText.text = "+" + item.amountOfEffect.ToString();
+                                    Debug.Log("Food restoration amount Healing potion effect amount: " +
+                                              item.amountOfEffect +
+                                              " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect")
+                                                  .GetComponent<CanvasGroup>()
+                                                  .alpha);
+                                    break;
+                                // EFFECTS - WEAPON
+                                case ItemType.Weapon:
+                                    shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
+                                    Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                                    break;
+                                // EFFECTS - ITEMS
+                                case ItemType.Item:
+                                    shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
+                                    Debug.Log("Type: " + item.itemType + " | " + "Name: " + item.itemName);
+                                    break;
+                            }
+
+                            break;
                         }
-
-                        else if (item.SO.itemName == "Red Healing Potion" ||
-                                 item.SO.itemName == "Green Healing Potion" ||
-                                 item.SO.itemName == "Red Healing Potion Large")
-                        {
-                            shopEffectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            shopEffectText.text = "+" + item.SO.amountOfEffect.ToString();
-                            Debug.Log("Healing potion effect amount: " + item.SO.amountOfEffect + " | " +
-                                      "Alpha status: " +
-                                      GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
-                        }
-
-                        else
-                        {
-                            shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log("Healing potion effect amount: " + item.SO.amountOfEffect + " | " +
-                                      "Alpha status: " +
-                                      GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
-                        }
-                    }
-
-                    // EFFECTS - ARMOUR
-
-                    if (item.SO.itemType == ItemType.Armour ||
-                        item.SO.itemType == ItemType.Helmet ||
-                        item.SO.itemType == ItemType.Shield)
-                    {
-                        shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
-                        Debug.Log("Type: " + item.SO.itemType + " | " + "Name: " + item.SO.itemName + " | Shop no: " +
-                                  item.SO.shop);
-                    }
-
-                    // EFFECTS - FOOD
-
-                    if (item.SO.itemType == ItemType.Food)
-                    {
-                        shopEffectBox.GetComponent<CanvasGroup>().alpha = 1;
-                        shopEffectText.text = "+" + item.SO.amountOfEffect.ToString();
-                        Debug.Log("Food restoration amount Healing potion effect amount: " + item.SO.amountOfEffect +
-                                  " | " + "Alpha status: " + GameObject.FindGameObjectWithTag("Effect")
-                                      .GetComponent<CanvasGroup>().alpha);
-                    }
-
-                    // EFFECTS - WEAPON
-
-                    if (item.SO.itemType == ItemType.Weapon)
-                    {
-                        shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
-                        Debug.Log("Type: " + item.SO.itemType + " | " + "Name: " + item.SO.itemName);
-                    }
-
-                    // EFFECTS - ITEMS
-
-                    if (item.SO.itemType == ItemType.Item)
-                    {
-                        shopEffectBox.GetComponent<CanvasGroup>().alpha = 0;
-                        Debug.Log("Type: " + item.SO.itemType + " | " + "Name: " + item.SO.itemName);
-                    }
                 }
 
                 //SORTING - ITEMS(plural)
 
-                if (shopWeaponBool == true)
+                if (shopWeaponBool)
                 {
-                    if (item.SO.itemType == ItemType.Potion ||
-                        item.SO.itemType == ItemType.Armour ||
-                        item.SO.itemType == ItemType.Item ||
-                        item.SO.itemType == ItemType.Skill ||
-                        item.SO.itemType == ItemType.Food ||
-                        item.SO.itemType == ItemType.Helmet ||
-                        item.SO.itemType == ItemType.Shield ||
-                        item.SO.itemType == ItemType.Relic)
+                    if (item.itemType is ItemType.Potion or ItemType.Armour or ItemType.Item or ItemType.Skill
+                        or ItemType.Food or ItemType.Helmet or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
 
-                else if (shopArmourBool == true)
+                else if (shopArmourBool)
                 {
-                    if (item.SO.itemType == ItemType.Potion ||
-                        item.SO.itemType == ItemType.Weapon ||
-                        item.SO.itemType == ItemType.Item ||
-                        item.SO.itemType == ItemType.Skill ||
-                        item.SO.itemType == ItemType.Food ||
-                        item.SO.itemType == ItemType.Relic)
+                    if (item.itemType is ItemType.Potion
+                        or ItemType.Weapon
+                        or ItemType.Item
+                        or ItemType.Skill
+                        or ItemType.Food
+                        or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
 
-                else if (shopItemBool == true)
+                else if (shopItemBool)
                 {
-                    if (item.SO.itemType == ItemType.Potion ||
-                        item.SO.itemType == ItemType.Armour ||
-                        item.SO.itemType == ItemType.Weapon ||
-                        item.SO.itemType == ItemType.Spell ||
-                        item.SO.itemType == ItemType.Helmet ||
-                        item.SO.itemType == ItemType.Shield)
+                    if (item.itemType is ItemType.Potion
+                        or ItemType.Armour
+                        or ItemType.Weapon
+                        or ItemType.Spell
+                        or ItemType.Helmet
+                        or ItemType.Shield)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
 
-                else if (shopSpellBool == true)
+                else if (shopSpellBool)
                 {
-                    if (item.SO.itemType == ItemType.Potion ||
-                        item.SO.itemType == ItemType.Armour ||
-                        item.SO.itemType == ItemType.Item ||
-                        item.SO.itemType == ItemType.Weapon ||
-                        item.SO.itemType == ItemType.Helmet ||
-                        item.SO.itemType == ItemType.Shield ||
-                        item.SO.itemType == ItemType.Food ||
-                        item.SO.itemType == ItemType.Relic)
+                    if (item.itemType is ItemType.Potion
+                        or ItemType.Armour
+                        or ItemType.Item
+                        or ItemType.Weapon
+                        or ItemType.Helmet
+                        or ItemType.Shield
+                        or ItemType.Food
+                        or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
 
-                else if (shopPotionBool == true)
+                else if (shopPotionBool)
                 {
-                    if (item.SO.itemType == ItemType.Weapon ||
-                        item.SO.itemType == ItemType.Armour ||
-                        item.SO.itemType == ItemType.Item ||
-                        item.SO.itemType == ItemType.Spell ||
-                        item.SO.itemType == ItemType.Food ||
-                        item.SO.itemType == ItemType.Helmet ||
-                        item.SO.itemType == ItemType.Shield ||
-                        item.SO.itemType == ItemType.Relic)
+                    if (item.itemType is ItemType.Weapon
+                        or ItemType.Armour
+                        or ItemType.Item
+                        or ItemType.Spell
+                        or ItemType.Food
+                        or ItemType.Helmet
+                        or ItemType.Shield
+                        or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -653,13 +653,12 @@ public class ShopManager : MonoBehaviour
 
                 if (isShopArmouryOpen != true)
                 {
-                    if (item.SO.itemType == ItemType.Weapon ||
-                        item.SO.itemType == ItemType.Armour ||
-                        item.SO.itemType == ItemType.Spell ||
-                        item.SO.itemType == ItemType.Helmet ||
-                        item.SO.itemType == ItemType.Shield ||
-                        item.SO.itemType == ItemType.Relic)
-
+                    if (item.itemType is ItemType.Weapon
+                        or ItemType.Armour
+                        or ItemType.Spell
+                        or ItemType.Helmet
+                        or ItemType.Shield
+                        or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
@@ -667,36 +666,35 @@ public class ShopManager : MonoBehaviour
             }
             // SORTING - NOFIFY
 
-            if (item.SO.shop != shopType && item.SO.isNewItem == true)
+            if (item.shop != shopType && item.isNewItem)
             {
-                shopCurrentNewItems--;
-                shopNewItemsText.text = shopCurrentNewItems.ToString();
+                _shopCurrentNewItems--;
+                shopNewItemsText.text = _shopCurrentNewItems.ToString();
             }
 
-            if (isShopArmouryOpen == false && item.SO.shop == shopType && item.SO.isNewItem == true)
+            if (isShopArmouryOpen == false && item.shop == shopType && item.isNewItem)
             {
-                if (item.SO.itemType == ItemType.Weapon ||
-                    item.SO.itemType == ItemType.Armour || item.SO.itemType == ItemType.Spell ||
-                    item.SO.itemType == ItemType.Helmet || item.SO.itemType == ItemType.Shield)
+                if (item.itemType is ItemType.Weapon or ItemType.Armour or ItemType.Spell or ItemType.Helmet
+                    or ItemType.Shield)
                 {
-                    shopCurrentNewItems--;
+                    _shopCurrentNewItems--;
                 }
 
-                shopNewItemsText.text = shopCurrentNewItems.ToString();
+                shopNewItemsText.text = _shopCurrentNewItems.ToString();
             }
 
-            else if (isShopArmouryOpen == true && item.SO.shop == shopType)
+            else if (isShopArmouryOpen && item.shop == shopType)
             {
                 GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                shopNewItemsText.text = shopCurrentNewItems.ToString();
+                shopNewItemsText.text = _shopCurrentNewItems.ToString();
             }
 
-            if (shopCurrentNewItems == 0)
+            if (_shopCurrentNewItems == 0)
             {
                 GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
             }
 
-            if (item.SO.shop != shopType)
+            if (item.shop != shopType)
             {
                 Destroy(itemSlot.gameObject);
             }
@@ -735,14 +733,6 @@ public class ShopManager : MonoBehaviour
         ShopItemInfoReset();
         yield return new WaitForSecondsRealtime(0.1f);
         shopItemImage.GetComponentInParent<Transform>().localScale = new Vector3(1f, 1f, 1f);
-    }
-
-    // Start is called before the first frame update
-    private void Start()
-    {
-        Instance = this;
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        ShopArmoury();
     }
 
     #endregion

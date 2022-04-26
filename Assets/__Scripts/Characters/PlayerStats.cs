@@ -1,10 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Linq;
 using Sirenix.OdinInspector;
 
 
-public class PlayerStats : Rewardable<QuestRewards>
+public class PlayerStats : Rewardable<QuestRewards>, ISaveable
 {
     public static PlayerStats Instance;
 
@@ -15,19 +16,19 @@ public class PlayerStats : Rewardable<QuestRewards>
     public string playerName;
     public string playerDesc;
     public string playerMoniker;
-    [Space] public int thulGold, thulSpells, thulPotions;
+
 
     [TabGroup("Images")] [GUIColor(0.670f, 1, 0.560f)] [PreviewField] [Required]
     public Sprite characterImage, characterMug, characterPlain;
 
     [TabGroup("Stats")] [GUIColor(0.970f, 1, 0.260f)]
-    public int maxLevel, baseLevelXP, characterXP, maxMana, maxHP;
+    public int maxLevel, baseLevelXp, characterXp, maxMana, maxHp;
 
     [TabGroup("Range")] [GUIColor(0.970f, 1, 0.260f)] [Range(1, 10)]
     public int characterLevel;
 
     [TabGroup("Range")] [GUIColor(0.970f, 1, 0.260f)] [Range(1, 300)]
-    public int characterMana, characterHP;
+    public int characterMana, characterHp;
 
     [TabGroup("Range")] [GUIColor(0.970f, 1, 0.260f)] [Range(1, 100)]
     public int characterIntelligence, characterPerception;
@@ -65,6 +66,8 @@ public class PlayerStats : Rewardable<QuestRewards>
     public int[] skillBonus;
     public MagicManager[] magicSlots;
 
+    private string _npcGuid;
+
     #endregion
 
 
@@ -72,7 +75,9 @@ public class PlayerStats : Rewardable<QuestRewards>
     private void Start()
     {
         xpLevelUp = new int[maxLevel];
-        xpLevelUp[1] = baseLevelXP;
+        xpLevelUp[1] = baseLevelXp;
+
+        _npcGuid = GetComponent<GenerateGUID>().GUID;
 
         for (int i = 1; i < xpLevelUp.Length; i++)
         {
@@ -85,59 +90,63 @@ public class PlayerStats : Rewardable<QuestRewards>
 
     public override void Reward(QuestRewards rewards)
     {
-        if (rewards.playerClass == QuestRewards.PlayerClasses.NPC ||
-            rewards.playerClass == QuestRewards.PlayerClasses.all)
+        switch (rewards.playerClass)
         {
-            if (rewards.rewardType == QuestRewards.RewardTypes.hp)
-            {
-                characterHP += rewards.rewardAmount;
-            }
+            case QuestRewards.PlayerClasses.NPC:
+            case QuestRewards.PlayerClasses.all:
+                {
+                    if (rewards.rewardType == QuestRewards.RewardTypes.hp)
+                    {
+                        characterHp += rewards.rewardAmount;
+                    }
+
+                    break;
+                }
         }
     }
 
-    public void AddXP(int amountOfXp)
+    public void AddXp(int amountOfXp)
     {
-        characterXP += amountOfXp;
-        if (characterXP > xpLevelUp[characterLevel])
+        characterXp += amountOfXp;
+        if (characterXp <= xpLevelUp[characterLevel]) { return; }
+
+        characterXp -= xpLevelUp[characterLevel];
+        characterLevel++;
+
+        maxHp = (int)(maxHp * 1.06f);
+        maxMana = (int)(maxMana * 1.06f);
+        characterHp = maxHp;
+        characterMana = maxMana;
+
+        if (characterLevel % 2 == 0)
         {
-            characterXP -= xpLevelUp[characterLevel];
-            characterLevel++;
+            characterBaseAttack++;
+        }
+        else
+        {
+            characterBaseDefence++;
+        }
 
-            maxHP = (int)(maxHP * 1.06f);
-            maxMana = (int)(maxMana * 1.06f);
-            characterHP = maxHP;
-            characterMana = maxMana;
+        if (characterLevel % 3 == 0)
+        {
+            characterIntelligence++;
+        }
 
-            if (characterLevel % 2 == 0)
-            {
-                characterBaseAttack++;
-            }
-            else
-            {
-                characterBaseDefence++;
-            }
-
-            if (characterLevel % 3 == 0)
-            {
-                characterIntelligence++;
-            }
-
-            if (characterLevel % 5 == 0)
-            {
-                characterPerception++;
-            }
+        if (characterLevel % 5 == 0)
+        {
+            characterPerception++;
         }
     }
 
-    public void AddHP(int amountOfHPToAdd)
+    public void AddHp(int amountOfHpToAdd)
     {
         if (playerName != "Thulgran")
         {
-            characterHP += amountOfHPToAdd;
+            characterHp += amountOfHpToAdd;
 
-            if (characterHP > maxHP)
+            if (characterHp > maxHp)
             {
-                characterHP = maxHP;
+                characterHp = maxHp;
                 NotificationFader.instance.CallFadeInOut(
                     $"{playerName}'s HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
                     3f,
@@ -180,40 +189,103 @@ public class PlayerStats : Rewardable<QuestRewards>
     public void EquipWeapon(Item weaponToEquip)
     {
         characterWeapon = weaponToEquip;
-        characterWeaponName = characterWeapon.SO.itemName;
-        characterWeaponImage = characterWeapon.SO.itemsImage;
-        characterWeaponDescription = characterWeapon.SO.itemDescription;
+        characterWeaponName = characterWeapon.itemName;
+        characterWeaponImage = characterWeapon.itemsImage;
+        characterWeaponDescription = characterWeapon.itemDescription;
     }
 
     public void EquipArmour(Item armourToEquip)
     {
         characterArmour = armourToEquip;
-        characterArmourName = characterArmour.SO.itemName;
-        characterArmourImage = characterArmour.SO.itemsImage;
-        characterArmourDescription = characterArmour.SO.itemDescription;
+        characterArmourName = characterArmour.itemName;
+        characterArmourImage = characterArmour.itemsImage;
+        characterArmourDescription = characterArmour.itemDescription;
     }
 
     public void EquipHelmet(Item helmetToEquip)
     {
         characterHelmet = helmetToEquip;
-        characterHelmetName = characterHelmet.SO.itemName;
-        characterHelmetImage = characterHelmet.SO.itemsImage;
-        characterHelmetDescription = characterHelmet.SO.itemDescription;
+        characterHelmetName = characterHelmet.itemName;
+        characterHelmetImage = characterHelmet.itemsImage;
+        characterHelmetDescription = characterHelmet.itemDescription;
     }
 
     public void EquipShield(Item shieldToEquip)
     {
         characterShield = shieldToEquip;
-        characterShieldName = characterShield.SO.itemName;
-        characterShieldImage = characterShield.SO.itemsImage;
-        characterShieldDescription = characterShield.SO.itemDescription;
+        characterShieldName = characterShield.itemName;
+        characterShieldImage = characterShield.itemsImage;
+        characterShieldDescription = characterShield.itemDescription;
     }
 
     private IEnumerator Initialize()
     {
         yield return new WaitForSeconds(1f);
-        characterDefenceTotal = characterBaseDefence + characterArmour.SO.itemDefence + characterShield.SO.itemDefence +
-                                characterHelmet.SO.itemDefence;
-        characterAttackTotal = characterBaseAttack + characterWeapon.SO.itemAttack;
+        characterDefenceTotal = characterBaseDefence + characterArmour.itemDefence + characterShield.itemDefence +
+                                characterHelmet.itemDefence;
+        characterAttackTotal = characterBaseAttack + characterWeapon.itemAttack;
     }
+
+    #region Implementation of ISaveable
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        SaveData.CharacterData cd = new(_npcGuid, characterLevel, characterMana, characterHp, characterIntelligence,
+            characterPerception, characterBaseAttack, characterBaseDefence, isTeamMember, isAvailable, isNew,
+            characterWeapon, characterArmour, characterHelmet, characterShield, characterAttackTotal,
+            characterDefenceTotal, characterWeaponImage, characterArmourImage, characterHelmetImage,
+            characterShieldImage, skills);
+
+        a_SaveData.characterDataList.Add(cd);
+    }
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        foreach (SaveData.CharacterData cd in a_SaveData.characterDataList.Where(cd => cd.npcGuid == _npcGuid))
+        {
+            characterLevel = cd.characterLevel;
+            characterMana = cd.characterMana;
+            characterHp = cd.characterHp;
+            characterIntelligence = cd.characterIntelligence;
+            characterPerception = cd.characterPerception;
+            characterBaseAttack = cd.characterBaseAttack;
+            characterBaseDefence = cd.characterBaseDefence;
+            isTeamMember = cd.isTeamMember;
+            isAvailable = cd.isAvailable;
+            isNew = cd.isNew;
+            characterWeapon = cd.characterWeapon;
+            characterArmour = cd.characterArmour;
+            characterHelmet = cd.characterHelmet;
+            characterShield = cd.characterShield;
+            characterAttackTotal = cd.characterAttackTotal;
+            characterDefenceTotal = cd.characterDefenceTotal;
+            characterWeaponImage = cd.characterWeaponImage;
+            characterArmourImage = cd.characterArmourImage;
+            characterHelmetImage = cd.characterHelmetImage;
+            characterShieldImage = cd.characterShieldImage;
+            skills = cd.skills;
+            if (isTeamMember)
+            {
+                switch (playerName)
+                {
+                    case "Briarfoot":
+                        MenuManager.Instance.CharacterActivationButtons(1);
+                        break;
+                    case "Grumpy Greta":
+                        MenuManager.Instance.CharacterActivationButtons(2);
+                        break;
+                    case "Winrussel":
+                        MenuManager.Instance.CharacterActivationButtons(3);
+                        break;
+                    case "Haefra Do'hea":
+                        MenuManager.Instance.CharacterActivationButtons(4);
+                        break;
+                }
+            }
+
+            break;
+        }
+    }
+
+    #endregion
 }

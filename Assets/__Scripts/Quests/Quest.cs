@@ -1,11 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 
 [Serializable]
+[RequireComponent(typeof(GenerateGUID))]
 public class Quest : MonoBehaviour, ISaveable
 {
     #region SERIALIZATION
@@ -91,6 +92,9 @@ public class Quest : MonoBehaviour, ISaveable
     [VerticalGroup("Bools/c")] [LabelWidth(160)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool questRewardClaimed;
 
+    [VerticalGroup("Bools/c")] [LabelWidth(160)] [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool hasElement; // but is not an item, i.e. it's a collider
+
     [VerticalGroup("Bools/c")] [LabelWidth(160)] [GUIColor(0.4f, 0.886f, 0.780f)] [ShowIf("isItem")]
     public bool itemIsRelic;
 
@@ -106,6 +110,7 @@ public class Quest : MonoBehaviour, ISaveable
     [ShowIf("hasSubQuests")]
     public Quest[] subQuests;
 
+    [Space]
     [ShowIf("isSubQuest")] [Required] [GUIColor(.5f, 0.8f, 0.215f)]
     public Quest masterQuest;
 
@@ -116,8 +121,14 @@ public class Quest : MonoBehaviour, ISaveable
     [SerializeField]
     private RectTransform relicBox;
 
-    [ShowIf("isItem")] [GUIColor(.5f, 0.8f, 0.215f)] [PropertyTooltip("drag quest object into this box from hierarchy")]
-    public Item questElement;
+    [ShowIf("isItem")] [GUIColor(.5f, 0.8f, 0.215f)]
+    [PropertyTooltip("drag quest item into this box from hierarchy")]
+    public Item questItem;
+
+    [ShowIf("hasElement")] [GUIColor(.5f, 0.8f, 0.215f)]
+    [PropertyTooltip("drag quest element into this box from hierarchy")]
+    public QuestElement questElement;
+
 
     [Space] [TextArea(2, 15)] [GUIColor(0.4f, 0.886f, 0.780f)]
     public string onActivateMessage;
@@ -126,7 +137,7 @@ public class Quest : MonoBehaviour, ISaveable
 
     [Space]
     [InfoBox(
-        "IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER ON THE GAMEOBJECT SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.",
+        "IF THE QUEST IS SET TO INACTIVE AT THE START OF THE GAME, REMEMBER TO DISABLE BOTH THE RENDERER AND THE COLLIDER ON THE GAMEOBJECT SO THAT THE OBJECT IS NOT VISIBLE AND NOT ACCIDENTALLY ADDED TO INVENTORY. WHEN THE QUEST IS ACTIVATED, THESE WILL BE ACTIVATED AUTOMATICALLY TOO.",
         InfoMessageType.Warning, "showWarnings")]
     public bool showWarnings = true;
 
@@ -143,6 +154,8 @@ public class Quest : MonoBehaviour, ISaveable
     [HideInInspector]
     public bool resetChildren; // when Master Quest reward is claimed, all toggle settings in children are reset
 
+    private string _questGuid;
+
     #endregion SERIALIZATION
 
     #region Methods
@@ -153,6 +166,8 @@ public class Quest : MonoBehaviour, ISaveable
         {
             _childQuests = GetComponentsInChildren<Quest>();
         }
+
+        _questGuid = GetComponent<GenerateGUID>().GUID;
     }
 
     private void OnEnable()
@@ -179,15 +194,17 @@ public class Quest : MonoBehaviour, ISaveable
         if (isActive && !isDone)
         {
             isDone = true;
+            if (questElement != null) { questElement.elementCompleted = true; }
+
             questID -= 1000;
             if (isMasterQuest)
             {
                 questID -= 500;
             }
 
-            if (isItem && questElement != null)
+            if (isItem && questItem != null)
             {
-                Inventory.Instance.AddItems(questElement);
+                Inventory.Instance.AddItems(questItem);
             }
 
             Actions.OnQuestCompleted?.Invoke(questName);
@@ -196,7 +213,7 @@ public class Quest : MonoBehaviour, ISaveable
             MenuManager.Instance.notifyActiveQuest--;
             MenuManager.Instance.QuestCompletePanel(this, GetChildQuests());
 
-            if (questElement != null && questElement.SO.pickUpNotice == true)
+            if (questItem != null && questItem.pickUpNotice)
             {
                 NotifyPlayer();
             }
@@ -219,14 +236,18 @@ public class Quest : MonoBehaviour, ISaveable
 
             if (isItem)
             {
-                questElement.spriteRenderer.enabled = enabledAfterDone;
-                Debug.Log($"Quest element. Renderer disabled: {questElement.SO.itemName}");
+                questItem.spriteRenderer.enabled = enabledAfterDone;
+                questItem.polyCollider.enabled = enabledAfterDone;
+                Debug.Log($"Quest element. Renderer disabled: {questItem.itemName}");
             }
 
-            if (isItem)
+            if (hasElement)
             {
+                questElement.spriteRenderer.enabled = enabledAfterDone;
                 questElement.polyCollider.enabled = enabledAfterDone;
             }
+
+            if (activateOnEnter) { ActivateAfterEnter(); }
         }
 
         else
@@ -258,9 +279,9 @@ public class Quest : MonoBehaviour, ISaveable
             MenuManager.Instance.notifyActiveQuest++;
             if (isItem)
             {
-                questElement.polyCollider.enabled = true;
-                questElement.spriteRenderer.enabled = true;
-                Debug.Log($"Renderer enabled: {questElement.SO.itemName}");
+                questItem.polyCollider.enabled = true;
+                questItem.spriteRenderer.enabled = true;
+                Debug.Log($"Renderer enabled: {questItem.itemName}");
             }
         }
     }
@@ -371,11 +392,16 @@ public class Quest : MonoBehaviour, ISaveable
         QuestManager.Instance.HandOutReward(rewards);
         MenuManager.Instance.UpdateQuestNotifications();
 
-        if (questElement == null || !questElement.SO.isRelic) { return; }
+        if (questItem == null || !questItem.isRelic) { return; }
 
-        Debug.Log($"Item: {questElement.SO.itemName} | isRelic: {questElement.SO.isRelic}");
+        Debug.Log($"Item: {questItem.itemName} | isRelic: {questItem.isRelic}");
         MenuManager.Instance.notifyRelicActive++;
 
+        DisableGreyScale();
+    }
+
+    private void DisableGreyScale()
+    {
         // DISABLE GRAYSCALE ON RELIC OBJECT IN UI
         Transform[] relicTransforms = relicBox.GetComponentsInChildren<Transform>();
         foreach (Transform t in relicTransforms)
@@ -416,23 +442,47 @@ public class Quest : MonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        a_SaveData.questData.questName = questName;
-        a_SaveData.questData.completedStages = completedStages;
-        a_SaveData.questData.questRewardClaimed = questRewardClaimed;
-        a_SaveData.questData.isExpanded = isExpanded;
-        a_SaveData.questData.toggleSub = toggleMasterSub;
-        a_SaveData.questData.isActive = isActive;
-        a_SaveData.questData.isDone = isDone;
+        SaveData.QuestData qd = new(_questGuid, questName, completedStages, questRewardClaimed,
+            isExpanded, toggleMasterSub, isActive, isDone);
+
+        a_SaveData.questDataList.Add(qd);
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        questName = a_SaveData.questData.questName;
-        completedStages = a_SaveData.questData.completedStages;
-        questRewardClaimed = a_SaveData.questData.questRewardClaimed;
-        isExpanded = a_SaveData.questData.isExpanded;
-        toggleMasterSub = a_SaveData.questData.toggleSub;
-        isActive = a_SaveData.questData.isActive;
-        isDone = a_SaveData.questData.isDone;
+        foreach (SaveData.QuestData questData in a_SaveData.questDataList.Where(questData =>
+                     questData.uniqueGuid == _questGuid))
+        {
+            completedStages = questData.completedStages;
+            questRewardClaimed = questData.questRewardClaimed;
+            isExpanded = questData.isExpanded;
+            toggleMasterSub = questData.toggleSub;
+            isActive = questData.isActive;
+            isDone = questData.isDone;
+            switch (isDone)
+            {
+                case true when questRewardClaimed && itemIsRelic:
+                    DisableGreyScale();
+                    questItem.polyCollider.enabled = false;
+                    questItem.spriteRenderer.enabled = false;
+                    Debug.Log($"quest relic saved: {questName}");
+                    break;
+
+                case true when !questRewardClaimed && itemIsRelic:
+                    if (questItem == null)
+                    {
+                        Debug.Log($"Null Check: {questName}");
+                    }
+                    else
+                    {
+                        questItem.polyCollider.enabled = false;
+                        questItem.spriteRenderer.enabled = false;
+                    }
+
+                    break;
+            }
+
+            break;
+        }
     }
 }

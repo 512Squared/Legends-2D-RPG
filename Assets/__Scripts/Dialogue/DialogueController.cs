@@ -1,86 +1,84 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class DialogueController : MonoBehaviour
 {
-    public static DialogueController instance;
+    public static DialogueController Instance;
 
     [SerializeField] private TextMeshProUGUI dialogueText, nameText;
-    [SerializeField] private GameObject dialogueBox, nameBox;
+    [SerializeField] private GameObject dialogueBox;
 
     public bool activatesQuest;
     public string questToActivate;
     public bool completesQuest;
     public string questYouHaveJustCompleted;
     public string emptyArg = string.Empty;
-    private int turn = 0;
+    private int _turn;
 
     [SerializeField] private string[] dialogueSentences;
     [SerializeField] private int currentSentence;
 
     public bool dialogueJustStarted;
-    public bool activatedOnEnter = false;
 
     // Start is called before the first frame update
     private void Start()
     {
+        Instance = this;
         dialogueText.text = dialogueSentences[currentSentence];
-        instance = this;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (dialogueBox.activeInHierarchy)
+        if (!dialogueBox.activeInHierarchy) { return; }
+
+        if (!Input.GetButtonUp("Fire1")) { return; }
+
+        if (!dialogueJustStarted)
         {
-            if (Input.GetButtonUp("Fire1"))
+            currentSentence++;
+
+            if (currentSentence >= dialogueSentences.Length)
             {
-                if (!dialogueJustStarted)
+                dialogueBox.SetActive(false);
+                GameManager.Instance.dialogueBoxOpened = false;
+
+                if (activatesQuest && !completesQuest)
                 {
-                    currentSentence++;
+                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("activate", questToActivate, emptyArg);
+                    Actions.OnActivateQuest?.Invoke(questToActivate);
+                    Debug.Log($"OnActivateQuest called: {questToActivate}");
+                    activatesQuest = false;
+                }
 
-                    if (currentSentence >= dialogueSentences.Length)
+                else
+                {
+                    switch (completesQuest)
                     {
-                        dialogueBox.SetActive(false);
-                        GameManager.Instance.dialogueBoxOpened = false;
-
-                        if (activatesQuest && !completesQuest)
-                        {
-                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("activate", questToActivate, emptyArg);
-                            Actions.OnActivateQuest?.Invoke(questToActivate);
-                            Debug.Log($"OnActivateQuest called: {questToActivate}");
-                            activatesQuest = false;
-                        }
-
-                        else if (completesQuest && !activatesQuest)
-                        {
+                        case true when !activatesQuest:
                             Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete", emptyArg,
                                 questYouHaveJustCompleted);
                             completesQuest = false;
-                        }
-                        else if (completesQuest && activatesQuest)
-                        {
+                            break;
+                        case true when activatesQuest:
                             Actions.OnDoQuestStuffAfterDialogue?.Invoke("both", questToActivate,
                                 questYouHaveJustCompleted);
                             completesQuest = false;
                             activatesQuest = false;
-                        }
-                        // disable trigger after dialogue
-                    }
-                    else
-                    {
-                        CheckForName();
-                        dialogueText.text = dialogueSentences[currentSentence];
+                            break;
                     }
                 }
-                else
-                {
-                    dialogueJustStarted = false;
-                }
+                // disable trigger after dialogue
             }
+            else
+            {
+                CheckForName();
+                dialogueText.text = dialogueSentences[currentSentence];
+            }
+        }
+        else
+        {
+            dialogueJustStarted = false;
         }
     }
 
@@ -101,25 +99,24 @@ public class DialogueController : MonoBehaviour
 
     private void CheckForName()
     {
-        if (dialogueSentences[currentSentence].StartsWith("#"))
+        if (!dialogueSentences[currentSentence].StartsWith("#")) { return; }
+
+        nameText.text = dialogueSentences[currentSentence].Replace("#", "");
+        currentSentence++;
+        switch (_turn)
         {
-            nameText.text = dialogueSentences[currentSentence].Replace("#", "");
-            currentSentence++;
-            if (turn == 1)
-            {
+            case 1:
                 nameText.color = new Color32(209, 206, 66, 255);
-                turn = 0;
+                _turn = 0;
                 return;
-            }
-            else if (turn == 0)
-            {
+            case 0:
                 nameText.color = new Color32(89, 198, 200, 255);
-                turn = 1;
-            }
+                _turn = 1;
+                break;
         }
     }
 
-    public bool isDialogueBoxActive()
+    public bool IsDialogueBoxActive()
     {
         return dialogueBox.activeInHierarchy;
     }

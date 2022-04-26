@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class SaveDataManager
 {
     private static SaveData _initialData;
     public static string InitialData;
+    public static SaveData.InventoryData ShopList;
 
     public static void SaveJsonData(IEnumerable<ISaveable> a_Saveables) // ATM called in GameManager in OnDestroy
     {
@@ -37,27 +39,24 @@ public static class SaveDataManager
 
     public static string GetInitialData()
     {
-        _initialData = new SaveData
-        {
-            sceneData = default,
-            questData = default,
-            itemsData = default,
-            characterData = default,
-            thulgranData = default
-        };
+        _initialData = new SaveData {sceneData = default, thulgranData = default, inventoryDatas = default};
         _initialData.thulgranData.position = new Vector3(-8.25f, -3.25f, 0.75f);
         _initialData.thulgranData.trophies = 0;
         _initialData.thulgranData.hitPoints = 10;
         _initialData.thulgranData.gold = 10;
-        _initialData.thulgranData.moveSpeed = 3;
+        _initialData.thulgranData.moveSpeed = 5;
         _initialData.thulgranData.maxHp = 300;
         _initialData.thulgranData.maxMana = 200;
-
         _initialData.sceneData.currentScene = "Homestead";
         _initialData.sceneData.sceneObjects = 1;
-
-
+        _initialData.questDataList.Clear();
+        _initialData.questElementsList.Clear();
+        _initialData.dialoguesList.Clear();
+        _initialData.itemsData.Clear();
+        _initialData.inventoryDataList.Clear();
+        _initialData.inventoryDatas.shopsItemsList = Inventory.Instance.GetInitialShopList();
         InitialData = _initialData.ToJson();
+        Debug.Log($"Shoplist check: {_initialData.inventoryDatas.shopsItemsList.Count}");
         return InitialData;
     }
 

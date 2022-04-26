@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour, ISaveable
     #region Serialized Fields
 
     [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Item activeItem;
+    public Item activeItem; // this is just for tracking activeItems in UI
 
     [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
     public string activeScene = "Homestead";
@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour, ISaveable
     [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
     public int shopCurrentNewItems;
 
-    // this is probably going to get called later. It's an array to hold the player stats
     [Space] public PlayerStats[] playerStats;
     public MagicManager[] magicManager;
     public GameObject[] sceneObjects;
@@ -91,7 +90,7 @@ public class GameManager : MonoBehaviour, ISaveable
         _sceneHandler = GetComponent<SceneHandling>();
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
         magicManager = FindObjectsOfType<MagicManager>().OrderBy(m => m.transform.position.z).ToArray();
-        _saveables = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>().ToList();
+        _saveables = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveable>().ToList();
         Debug.Log($"Save items count: {_saveables.Count}");
 
         StartCoroutine(Initialize());
@@ -228,6 +227,7 @@ public class GameManager : MonoBehaviour, ISaveable
         a_SaveData.sceneData.sceneObjects = objectInt;
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void LoadFromSaveData(SaveData a_SaveData)
     {
         _firstScene = a_SaveData.sceneData.currentScene;

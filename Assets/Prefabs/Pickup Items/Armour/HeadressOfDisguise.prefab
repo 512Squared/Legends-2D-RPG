@@ -30,6 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.31, y: -4.02, z: 3.99}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4561350910300548882}
   m_Father: {fileID: 0}
@@ -167,6 +168,8 @@ MonoBehaviour:
     isRelic: 0
     isStackable: 0
     itemsImage: {fileID: 0}
+  isPickedUp: 0
+  isNewItem: 1
 --- !u!1 &690522469445647809
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,6 +197,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 77981936016948659}
   m_RootOrder: 0

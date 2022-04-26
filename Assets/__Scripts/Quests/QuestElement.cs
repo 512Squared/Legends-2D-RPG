@@ -1,6 +1,7 @@
+using System.Linq;
 using UnityEngine;
 
-
+[RequireComponent(typeof(GenerateGUID))]
 public class QuestElement : MonoBehaviour, ISaveable
 {
     [SerializeField] private GameObject questElement;
@@ -10,10 +11,15 @@ public class QuestElement : MonoBehaviour, ISaveable
     [SerializeField] private bool disableAfterConditionsMet;
     public bool isGameObject;
     public bool isItem;
-    private bool _isActive;
+    public bool elementCompleted;
+    public bool isActivated;
 
     private Item _item;
+    public PolygonCollider2D polyCollider;
+
+    public SpriteRenderer spriteRenderer;
     public Quest quest;
+    private string _questElementGUID;
 
     private void Start()
     {
@@ -21,6 +27,8 @@ public class QuestElement : MonoBehaviour, ISaveable
         {
             _item = gameObject.GetComponent<Item>();
         }
+
+        _questElementGUID = GetComponent<GenerateGUID>().GUID;
     }
 
     private void OnEnable()
@@ -38,26 +46,24 @@ public class QuestElement : MonoBehaviour, ISaveable
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player"))
-        {
-            return;
-        }
+        if (!collision.CompareTag("Player")) { return; }
 
-        if (!quest.activateOnEnter && _isActive)
-        {
-            Debug.Log($"Quest not activated on enter: {quest.questName}");
-        }
+        if (elementCompleted) { return; } // i.e. element has been triggered
 
         if (quest.isActive && quest.markOnEnter)
         {
             quest.MarkTheQuest();
         }
 
-        if (_isActive || !quest.activateOnEnter) { return; }
+        if (disableAfterConditionsMet)
+        {
+            polyCollider.enabled = false;
+            Debug.Log($"Poly disabled: {quest.questName}");
+            elementCompleted = true;
+        }
 
-        _isActive = true;
         Debug.Log($"Quest activate called: {quest.questName}");
-        quest.ActivateAfterEnter();
+        if (quest.activateOnEnter) { quest.ActivateAfterEnter(); }
     }
 
 
@@ -119,12 +125,37 @@ public class QuestElement : MonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        // a_SaveData.questData.isActiveElement = _isActive;
+        SaveData.QuestElementsData qed = new(isActivated, elementCompleted, _questElementGUID, polyCollider, spriteRenderer);
+
+        a_SaveData.questElementsList.Add(qed);
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        // _isActive = a_SaveData.questData.isActiveElement;
+        _questElementGUID = GetComponent<GenerateGUID>()?.GUID;
+
+        foreach (SaveData.QuestElementsData qed in a_SaveData.questElementsList.Where(qed =>
+                     qed.elementGuid == _questElementGUID))
+        {
+            Debug.Log($"Quest Element Loaded: {quest.questName}");
+            isActivated = qed.isActivated;
+            elementCompleted = qed.isCompleted;
+            polyCollider = qed.polyCollider;
+            spriteRenderer = qed.spriteRenderer;
+
+            switch (elementCompleted)
+            {
+                case true:
+                    {
+                        Debug.Log($"QuestElement Activated and disabled: {quest.questName}");
+                        if (polyCollider != null) { polyCollider.enabled = false; }
+
+                        if (spriteRenderer != null) { spriteRenderer.enabled = false; }
+
+                        break;
+                    }
+            }
+        }
     }
 
     #endregion

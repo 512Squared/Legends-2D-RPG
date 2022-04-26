@@ -18,8 +18,8 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
     #region FIELDS
 
     [InlineEditor] public List<Quest> questList;
-    private Dictionary<string, bool> _questProgress;
-    private Dictionary<int, string> _questId;
+    public Dictionary<string, bool> _questProgress;
+    public Dictionary<int, string> _questId;
     [HideInInspector] public Quest[] questArray;
     private List<Item> _relicList;
 
@@ -52,7 +52,7 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
         _questId = new Dictionary<int, string>();
         GetAllQuests();
         StartCoroutine(InitializeQuestManager());
-        rewardables = FindObjectsOfType<Rewardable<QuestRewards>>();
+        rewardables = FindObjectsOfType<Rewardable<QuestRewards>>(true);
         Debug.Log($"IRewardable Array: {rewardables.Length}");
     }
 
@@ -182,11 +182,10 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
                 continue;
             }
 
-            if (questArray[i].questElement != null)
+            if (questArray[i].questItem != null)
             {
                 _relicList.Add(questArray[i]
-                    .questElement
-                    .GetComponent<Item>()); // useful place to build the relic list too           
+                    .questItem.GetComponent<Item>()); // useful place to build the relic list too           
             }
         }
 
@@ -215,19 +214,10 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        foreach (Quest quest in questList)
-        {
-            Debug.Log($"Quest Saved: {quest.questName}");
-            quest.PopulateSaveData(a_SaveData);
-        }
-
-        Debug.Log($"questList Count: {questList.Count}");
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        
-        
     }
 
     #endregion

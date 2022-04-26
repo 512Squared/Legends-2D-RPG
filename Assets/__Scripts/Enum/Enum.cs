@@ -60,7 +60,7 @@ public enum ItemLists
 
 public enum Shop
 {
-    Inventory,
+    PickUpItem,
     shop1,
     shop2,
     shop3

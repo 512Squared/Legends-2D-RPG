@@ -74,10 +74,10 @@ public class CoinsManager : MonoBehaviour
     private int maxMana;
 
     [TabGroup("Miscellaneous")] [GUIColor(0.670f, 1, 0.560f)]
-    private Queue<GameObject> coinsQueue = new Queue<GameObject>();
+    private Queue<GameObject> coinsQueue = new();
 
-    private Queue<GameObject> hpQueue = new Queue<GameObject>();
-    private Queue<GameObject> manaQueue = new Queue<GameObject>();
+    private Queue<GameObject> hpQueue = new();
+    private Queue<GameObject> manaQueue = new();
 
     [Header("Animation settings")]
     [TabGroup("New Group", "Animation settings")]
@@ -127,8 +127,7 @@ public class CoinsManager : MonoBehaviour
         for (int i = 0; i < maxCoins; i++)
         {
             GameObject coin;
-            coin = Instantiate(animatedCoinPrefab);
-            coin.transform.SetParent(sourceTransformCoin, false);
+            coin = Instantiate(animatedCoinPrefab, sourceTransformCoin, false);
             coin.SetActive(false);
             coinsQueue.Enqueue(coin);
         }
@@ -139,8 +138,7 @@ public class CoinsManager : MonoBehaviour
         for (int i = 0; i < maxHP; i++)
         {
             GameObject hp;
-            hp = Instantiate(animatedHPPrefab);
-            hp.transform.SetParent(sourceTransformHP, false);
+            hp = Instantiate(animatedHPPrefab, sourceTransformHP, false);
             hp.SetActive(false);
             hpQueue.Enqueue(hp);
         }
@@ -151,8 +149,7 @@ public class CoinsManager : MonoBehaviour
         for (int i = 0; i < maxMana; i++)
         {
             GameObject mana;
-            mana = Instantiate(animatedManaPrefab);
-            mana.transform.SetParent(sourceTransformMana, false);
+            mana = Instantiate(animatedManaPrefab, sourceTransformMana, false);
             mana.SetActive(false);
             manaQueue.Enqueue(mana);
         }
@@ -165,8 +162,7 @@ public class CoinsManager : MonoBehaviour
             for (int j = 0; j < valueInCoins - maxCoins + 1; j++)
             {
                 GameObject coin;
-                coin = Instantiate(animatedCoinPrefab);
-                coin.transform.SetParent(sourceTransformCoin, false);
+                coin = Instantiate(animatedCoinPrefab, sourceTransformCoin, false);
                 coin.SetActive(false);
                 coinsQueue.Enqueue(coin);
             }
@@ -177,27 +173,26 @@ public class CoinsManager : MonoBehaviour
         // check if there's coins in the pool
         for (int i = 0; i < valueInCoins; i++)
         {
-            if (coinsQueue.Count > 0)
-            {
-                GameObject coin;
-                coin = coinsQueue.Dequeue();
-                coin.SetActive(true);
+            if (coinsQueue.Count <= 0) { continue; }
 
-                // move coin to the collected coin position
-                coin.transform.position = source + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
+            GameObject coin;
+            coin = coinsQueue.Dequeue();
+            coin.SetActive(true);
 
-                // animate coin to target position
-                float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
-                coin.transform.DOMove(targetPositionCoins, duration)
-                    .SetEase(easeType)
-                    .OnComplete(() =>
-                    {
-                        // executes whenever coin reach target position;
-                        coin.SetActive(false);
-                        coinsQueue.Enqueue(coin);
-                        Thulgran.ThulgranGold++;
-                    });
-            }
+            // move coin to the collected coin position
+            coin.transform.position = source + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
+
+            // animate coin to target position
+            float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
+            coin.transform.DOMove(targetPositionCoins, duration)
+                .SetEase(easeType)
+                .OnComplete(() =>
+                {
+                    // executes whenever coin reach target position;
+                    coin.SetActive(false);
+                    coinsQueue.Enqueue(coin);
+                    Thulgran.ThulgranGold++;
+                });
         }
     }
 
@@ -270,19 +265,19 @@ public class CoinsManager : MonoBehaviour
 
     public void UseItem(Item item, int selectedCharacter, Vector2 target)
     {
-        if (item.SO.affectType == AffectType.Hp)
+        if (item.affectType == AffectType.Hp)
         {
             UpdateHPTarget();
             chosenCharacter = selectedCharacter;
-            AnimateHP(sourceHP, item.SO.amountOfEffect, target);
+            AnimateHP(sourceHP, item.amountOfEffect, target);
             Debug.Log("UIAddHP called from CoinsManager");
         }
 
-        if (item.SO.affectType == AffectType.Mana)
+        if (item.affectType == AffectType.Mana)
         {
             UpdateManaTarget();
             chosenCharacter = selectedCharacter;
-            AnimateMana(sourceMana, item.SO.amountOfEffect, target);
+            AnimateMana(sourceMana, item.amountOfEffect, target);
             Debug.Log("UIAddMana called from CoinsManager");
         }
     }
@@ -290,7 +285,7 @@ public class CoinsManager : MonoBehaviour
     public void SellItem(Item item)
     {
         UpdateCoins();
-        AnimateCoins(sourceCoins, item.SO.valueInCoins);
+        AnimateCoins(sourceCoins, item.valueInCoins);
     }
 
     public void UpdateCoins()
@@ -313,6 +308,6 @@ public class CoinsManager : MonoBehaviour
 
     public void CoinUpdate(Item item)
     {
-        Thulgran.ThulgranGold -= item.SO.valueInCoins;
+        Thulgran.ThulgranGold -= item.valueInCoins;
     }
 }

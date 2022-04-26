@@ -24,7 +24,7 @@ public class ItemDetails
     [VerticalGroup("Data/a")]
     [HideLabel]
     [GUIColor(0.058f, 0.380f, 1f)]
-    public Shop shop; // inventory, shop1, shop2, shop3
+    public Shop shop; // pickUpItem, shop1, shop2, shop3
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]

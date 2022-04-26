@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
+using JetBrains.Annotations;
 using UnityEngine;
 
 [Serializable]
 public class SaveData
 {
+    #region JSON Stuff
+
     public string ToJson()
     {
         return JsonUtility.ToJson(this, true);
@@ -14,6 +18,8 @@ public class SaveData
     {
         JsonUtility.FromJsonOverwrite(a_Json, this);
     }
+
+    #endregion
 
     #region Scene Data
 
@@ -33,8 +39,7 @@ public class SaveData
     [Serializable]
     public struct QuestData
     {
-        public IEnumerable<Quest> QuestSaves;
-        
+        public string uniqueGuid;
         public string questName;
         public int completedStages;
         public bool questRewardClaimed;
@@ -42,23 +47,49 @@ public class SaveData
         public bool toggleSub;
         public bool isActive;
         public bool isDone;
-        public bool isActiveElement;
 
-        public QuestData(IEnumerable<Quest> questSaves)
+
+        public QuestData([NotNull] string uniqueGuid, [NotNull] string questName, int completedStages,
+            bool questRewardClaimed, bool isExpanded, bool toggleSub, bool isActive, bool isDone)
         {
-            QuestSaves = questSaves;
-            questName = "";
-            completedStages = 0;
-            questRewardClaimed = false;
-            isExpanded = false;
-            toggleSub = false;
-            isActive = false;
-            isDone = false;
-            isActiveElement = false;
+            this.uniqueGuid = uniqueGuid ?? throw new ArgumentNullException(nameof(uniqueGuid));
+            this.questName = questName ?? throw new ArgumentNullException(nameof(questName));
+            this.completedStages = completedStages;
+            this.questRewardClaimed = questRewardClaimed;
+            this.isExpanded = isExpanded;
+            this.toggleSub = toggleSub;
+            this.isActive = isActive;
+            this.isDone = isDone;
         }
     }
 
-    public QuestData questData;
+    public List<QuestData> questDataList = new();
+
+    #endregion
+
+    #region Quest Elements Data
+
+    [Serializable]
+    public struct QuestElementsData
+    {
+        public QuestElementsData(bool isActivated, bool isCompleted, string elementGuid, PolygonCollider2D polyCollider,
+            SpriteRenderer spriteRenderer)
+        {
+            this.isActivated = isActivated;
+            this.isCompleted = isCompleted;
+            this.elementGuid = elementGuid;
+            this.spriteRenderer = spriteRenderer;
+            this.polyCollider = polyCollider;
+        }
+
+        public bool isActivated;
+        public bool isCompleted;
+        public string elementGuid;
+        public PolygonCollider2D polyCollider;
+        public SpriteRenderer spriteRenderer;
+    }
+
+    public List<QuestElementsData> questElementsList = new();
 
     #endregion
 
@@ -67,9 +98,47 @@ public class SaveData
     [Serializable]
     public struct ItemsData
     {
+        public ItemsData(string itemGuid, int quantity, bool isPickedUp, bool isNewItem, bool isShopItem, SpriteRenderer
+            spriteRenderer, PolygonCollider2D polyCollider)
+        {
+            this.itemGuid = itemGuid;
+            this.quantity = quantity;
+            this.isPickedUp = isPickedUp;
+            this.isNewItem = isNewItem;
+            this.isShopItem = isShopItem;
+            this.spriteRenderer = spriteRenderer;
+            this.polyCollider = polyCollider;
+        }
+
+        public string itemGuid;
+        public int quantity;
+        public bool isNewItem;
+        public bool isPickedUp;
+        public bool isShopItem;
+        public SpriteRenderer spriteRenderer;
+        public PolygonCollider2D polyCollider;
     }
 
-    public ItemsData itemsData = new();
+    public List<ItemsData> itemsData = new();
+
+    #endregion
+
+    #region Dialogue Data
+
+    [Serializable]
+    public struct DialogueData
+    {
+        public int runCount;
+        public string dialogueGuid;
+
+        public DialogueData(int runCount, string dialogueGuid)
+        {
+            this.runCount = runCount;
+            this.dialogueGuid = dialogueGuid;
+        }
+    }
+
+    public List<DialogueData> dialoguesList = new();
 
     #endregion
 
@@ -78,9 +147,50 @@ public class SaveData
     [Serializable]
     public struct CharacterData
     {
+        public CharacterData(string npcGuid, int characterLevel, int characterMana, int characterHp,
+            int characterIntelligence, int characterPerception, int characterBaseAttack, int characterBaseDefence,
+            bool isTeamMember, bool isAvailable, bool isNew, Item characterWeapon, Item characterArmour,
+            Item characterHelmet, Item characterShield, int characterAttackTotal, int characterDefenceTotal,
+            Sprite characterWeaponImage, Sprite characterArmourImage, Sprite characterHelmetImage,
+            Sprite characterShieldImage, Sprite[] skills)
+        {
+            this.npcGuid = npcGuid;
+            this.characterLevel = characterLevel;
+            this.characterMana = characterMana;
+            this.characterHp = characterHp;
+            this.characterIntelligence = characterIntelligence;
+            this.characterPerception = characterPerception;
+            this.characterBaseAttack = characterBaseAttack;
+            this.characterBaseDefence = characterBaseDefence;
+            this.isTeamMember = isTeamMember;
+            this.isAvailable = isAvailable;
+            this.isNew = isNew;
+            this.characterWeapon = characterWeapon;
+            this.characterArmour = characterArmour;
+            this.characterHelmet = characterHelmet;
+            this.characterShield = characterShield;
+            this.characterAttackTotal = characterAttackTotal;
+            this.characterDefenceTotal = characterDefenceTotal;
+            this.characterWeaponImage = characterWeaponImage;
+            this.characterArmourImage = characterArmourImage;
+            this.characterHelmetImage = characterHelmetImage;
+            this.characterShieldImage = characterShieldImage;
+            this.skills = skills;
+        }
+
+        public string npcGuid;
+        public int characterLevel;
+        public int characterMana, characterHp;
+        public int characterIntelligence, characterPerception;
+        public int characterBaseAttack, characterBaseDefence;
+        public bool isTeamMember, isAvailable, isNew;
+        public Item characterWeapon, characterArmour, characterHelmet, characterShield;
+        public int characterAttackTotal, characterDefenceTotal;
+        public Sprite characterWeaponImage, characterArmourImage, characterHelmetImage, characterShieldImage;
+        public Sprite[] skills;
     }
 
-    public CharacterData characterData;
+    public List<CharacterData> characterDataList = new();
 
     #endregion
 
@@ -103,6 +213,26 @@ public class SaveData
     }
 
     public ThulgranData thulgranData;
+
+    #endregion
+
+    #region Inventory
+
+    [Serializable]
+    public struct InventoryData
+    {
+        public InventoryData(List<Item> inventoryItemsList, List<Item> shopsItemsList)
+        {
+            this.inventoryItemsList = inventoryItemsList;
+            this.shopsItemsList = shopsItemsList;
+        }
+
+        public List<Item> inventoryItemsList;
+        public List<Item> shopsItemsList;
+    }
+
+    public InventoryData inventoryDatas;
+    public List<InventoryData> inventoryDataList = new();
 
     #endregion
 }
