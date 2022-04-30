@@ -44,7 +44,7 @@ public static class Actions
     public static Action<string> OnActivateQuest;
     public static Action<string> OnQuestLogCalled;
     public static Action<Quest> OnClaimQuestRewards;
-    public static Action<string, string, string> OnDoQuestStuffAfterDialogue;
+    public static Action<string, Quest, Quest> OnDoQuestStuffAfterDialogue;
 
     #endregion
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Sirenix.OdinInspector;
@@ -13,13 +10,15 @@ public class DialogueHandler : MonoBehaviour, ISaveable
     [SerializeField]
     private bool activatesQuest;
 
-    [SerializeField] private string questToActivate;
+    [ShowIf("activatesQuest")] [Required]
+    [SerializeField] private Quest questToActivate;
 
     [Space]
     [SerializeField]
     private bool completesQuest;
 
-    [SerializeField] private string questToComplete;
+    [Required] [ShowIf("completesQuest")]
+    [SerializeField] private Quest questToComplete;
 
     [Space]
     [SerializeField]
@@ -52,15 +51,14 @@ public class DialogueHandler : MonoBehaviour, ISaveable
 
         if (activatesQuest) // passes dialogue-specific data to the controller
         {
-            DialogueController.Instance.activatesQuest = activatesQuest;
+            DialogueController.Instance.activatesAQuest = activatesQuest;
             DialogueController.Instance.questToActivate = questToActivate;
         }
 
         if (completesQuest)
 
         {
-            DialogueController.Instance.completesQuest = completesQuest;
-            DialogueController.Instance.questYouHaveJustCompleted = questToComplete;
+            DialogueController.Instance.questToComplete = questToComplete;
         }
 
         DialogueController.Instance.ActivateDialogue(sentences);

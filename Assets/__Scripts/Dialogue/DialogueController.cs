@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
+using Sirenix.OdinInspector;
 
+[RequireComponent(typeof(GenerateGUID))]
 public class DialogueController : MonoBehaviour
 {
     public static DialogueController Instance;
@@ -8,12 +10,18 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText, nameText;
     [SerializeField] private GameObject dialogueBox;
 
-    public bool activatesQuest;
-    public string questToActivate;
-    public bool completesQuest;
-    public string questYouHaveJustCompleted;
-    public string emptyArg = string.Empty;
+    public bool activatesAQuest;
+    public bool completesAQuest;
+
+    [ShowIf("activatesAQuest")] [Required]
+    public Quest questToActivate;
+
+    [ShowIf("completesAQuest")] [Required]
+    public Quest questToComplete;
+
+    private bool _isTrigger = true;
     private int _turn;
+    private string _questElementGUID;
 
     [SerializeField] private string[] dialogueSentences;
     [SerializeField] private int currentSentence;
@@ -25,6 +33,7 @@ public class DialogueController : MonoBehaviour
     {
         Instance = this;
         dialogueText.text = dialogueSentences[currentSentence];
+        _questElementGUID = GetComponent<GenerateGUID>().GUID;
     }
 
     // Update is called once per frame
@@ -43,31 +52,31 @@ public class DialogueController : MonoBehaviour
                 dialogueBox.SetActive(false);
                 GameManager.Instance.dialogueBoxOpened = false;
 
-                if (activatesQuest && !completesQuest)
+                if (!_isTrigger) { return; }
+
+                if (activatesAQuest && !questToComplete)
                 {
-                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("activate", questToActivate, emptyArg);
-                    Actions.OnActivateQuest?.Invoke(questToActivate);
-                    Debug.Log($"OnActivateQuest called: {questToActivate}");
-                    activatesQuest = false;
+                    // questToActivate is passed twice to avoid null
+                    Debug.Log($"OnActivateQuest called: {questToActivate.questName}");
+                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("activate", questToActivate, questToActivate);
+                    _isTrigger = false;
                 }
 
-                else
+                if (completesAQuest && !activatesAQuest)
                 {
-                    switch (completesQuest)
-                    {
-                        case true when !activatesQuest:
-                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete", emptyArg,
-                                questYouHaveJustCompleted);
-                            completesQuest = false;
-                            break;
-                        case true when activatesQuest:
-                            Actions.OnDoQuestStuffAfterDialogue?.Invoke("both", questToActivate,
-                                questYouHaveJustCompleted);
-                            completesQuest = false;
-                            activatesQuest = false;
-                            break;
-                    }
+                    // questToComplete is passed twice to avoid null
+                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete", questToComplete,
+                        questToComplete);
+                    _isTrigger = false;
                 }
+
+                if (completesAQuest && activatesAQuest)
+                {
+                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("both", questToActivate,
+                        questToComplete);
+                    _isTrigger = false;
+                }
+
                 // disable trigger after dialogue
             }
             else

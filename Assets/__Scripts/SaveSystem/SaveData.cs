@@ -40,26 +40,27 @@ public class SaveData
     public struct QuestData
     {
         public string uniqueGuid;
-        public string questName;
         public int completedStages;
         public bool questRewardClaimed;
         public bool isExpanded;
         public bool toggleSub;
         public bool isActive;
         public bool isDone;
+        public bool hasQuestElement;
 
 
-        public QuestData([NotNull] string uniqueGuid, [NotNull] string questName, int completedStages,
-            bool questRewardClaimed, bool isExpanded, bool toggleSub, bool isActive, bool isDone)
+        public QuestData([NotNull] string uniqueGuid, int completedStages,
+            bool questRewardClaimed, bool isExpanded, bool toggleSub, bool isActive, bool isDone, bool
+                hasQuestElement)
         {
             this.uniqueGuid = uniqueGuid ?? throw new ArgumentNullException(nameof(uniqueGuid));
-            this.questName = questName ?? throw new ArgumentNullException(nameof(questName));
             this.completedStages = completedStages;
             this.questRewardClaimed = questRewardClaimed;
             this.isExpanded = isExpanded;
             this.toggleSub = toggleSub;
             this.isActive = isActive;
             this.isDone = isDone;
+            this.hasQuestElement = hasQuestElement;
         }
     }
 
@@ -72,26 +73,39 @@ public class SaveData
     [Serializable]
     public struct QuestElementsData
     {
-        public QuestElementsData(bool isActivated, bool isCompleted, string elementGuid, PolygonCollider2D polyCollider,
-            SpriteRenderer spriteRenderer)
+        public QuestElementsData(bool isActivated, bool isCompleted, string elementGuid)
         {
             this.isActivated = isActivated;
             this.isCompleted = isCompleted;
             this.elementGuid = elementGuid;
-            this.spriteRenderer = spriteRenderer;
-            this.polyCollider = polyCollider;
         }
 
         public bool isActivated;
         public bool isCompleted;
         public string elementGuid;
-        public PolygonCollider2D polyCollider;
-        public SpriteRenderer spriteRenderer;
     }
 
     public List<QuestElementsData> questElementsList = new();
 
     #endregion
+
+    [Serializable]
+    public struct QuestManager
+    {
+        public QuestManager(int nofifyQuestReward, int nofifyActiveQuest, int nofifyRelicActive)
+        {
+            this.nofifyQuestReward = nofifyQuestReward;
+            this.nofifyActiveQuest = nofifyActiveQuest;
+            this.nofifyRelicActive = nofifyRelicActive;
+        }
+
+        public int nofifyQuestReward;
+        public int nofifyActiveQuest;
+        public int nofifyRelicActive;
+    }
+
+    public QuestManager QuestManagerData;
+
 
     #region Items Data
 

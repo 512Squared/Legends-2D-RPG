@@ -37,6 +37,10 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
 
     // each quest also has its own bool for completed - this is the array for the manager to keep track
 
+    private int _nofifyQuestReward;
+    private int _nofifyActiveQuest;
+    private int _notifyRelicActive;
+
     [Space] public ParticleSystem pSystem;
 
     #endregion SERIALIZATION
@@ -169,23 +173,36 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
     {
         questArray = questList.ToArray();
         HierarchicalSorting.Sort(questArray);
+
         for (int i = 0; i < questArray.Length; i++)
         {
             questArray[i].questID = i + 1001;
-            if (questArray[i].isActive)
+
+            if (questArray[i].isActive && !questArray[i].questRewardClaimed && !questArray[i].isDone &&
+                !questArray[i].isSubQuest)
             {
                 MenuManager.Instance.notifyActiveQuest++;
             }
 
-            if (!questArray[i].itemIsRelic)
+            if (questArray[i].isDone && !questArray[i].questRewardClaimed)
+            {
+                MenuManager.Instance.notifyQuestReward++;
+            }
+
+            if (!questArray[i].hasQuestElement && questArray[i].questElement != null && !questArray[i]
+                    .questElement
+                    .itemIsRelic)
             {
                 continue;
             }
 
-            if (questArray[i].questItem != null)
+            if (questArray[i].questElement != null && questArray[i].questElement.itemIsRelic && questArray[i]
+                    .questElement
+                    .questItem
+                != null)
             {
                 _relicList.Add(questArray[i]
-                    .questItem.GetComponent<Item>()); // useful place to build the relic list too           
+                    .questElement.questItem); // useful place to build the relic list too           
             }
         }
 
@@ -214,10 +231,22 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
+        _notifyRelicActive = MenuManager.Instance.notifyRelicActive;
+        a_SaveData.QuestManagerData.nofifyQuestReward = _nofifyQuestReward;
+        a_SaveData.QuestManagerData.nofifyActiveQuest = _nofifyActiveQuest;
+        a_SaveData.QuestManagerData.nofifyRelicActive = _notifyRelicActive;
+
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
+        _nofifyQuestReward = a_SaveData.QuestManagerData.nofifyQuestReward;
+        _nofifyActiveQuest = a_SaveData.QuestManagerData.nofifyActiveQuest;
+        _notifyRelicActive = a_SaveData.QuestManagerData.nofifyRelicActive;
+
+        MenuManager.Instance.notifyQuestReward = _nofifyQuestReward;
+        MenuManager.Instance.notifyActiveQuest = _nofifyActiveQuest;
+        MenuManager.Instance.notifyRelicActive = _notifyRelicActive;
     }
 
     #endregion
