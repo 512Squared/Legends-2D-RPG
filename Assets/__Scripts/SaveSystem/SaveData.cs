@@ -47,11 +47,12 @@ public class SaveData
         public bool isActive;
         public bool isDone;
         public bool hasQuestElement;
+        public bool resetChildren;
 
 
         public QuestData([NotNull] string uniqueGuid, int completedStages,
             bool questRewardClaimed, bool isExpanded, bool toggleSub, bool isActive, bool isDone, bool
-                hasQuestElement)
+                hasQuestElement, bool resetChildren)
         {
             this.uniqueGuid = uniqueGuid ?? throw new ArgumentNullException(nameof(uniqueGuid));
             this.completedStages = completedStages;
@@ -61,6 +62,7 @@ public class SaveData
             this.isActive = isActive;
             this.isDone = isDone;
             this.hasQuestElement = hasQuestElement;
+            this.resetChildren = resetChildren;
         }
     }
 
@@ -73,16 +75,21 @@ public class SaveData
     [Serializable]
     public struct QuestElementsData
     {
-        public QuestElementsData(bool isActivated, bool isCompleted, string elementGuid)
+        public QuestElementsData(bool isActivated, bool isCompleted, string elementGuid, bool activate, bool
+            complete, bool hasTriggered)
         {
             this.isActivated = isActivated;
             this.isCompleted = isCompleted;
             this.elementGuid = elementGuid;
+            this.activate = activate;
+            this.complete = complete;
+            this.hasTriggered = hasTriggered;
         }
 
-        public bool isActivated;
-        public bool isCompleted;
+        public bool isActivated, isCompleted;
         public string elementGuid;
+        public bool activate, complete;
+        public bool hasTriggered;
     }
 
     public List<QuestElementsData> questElementsList = new();
@@ -92,16 +99,16 @@ public class SaveData
     [Serializable]
     public struct QuestManager
     {
-        public QuestManager(int nofifyQuestReward, int nofifyActiveQuest, int nofifyRelicActive)
+        public QuestManager(int nofifyQuestReward, int nofifyActiveQuest, int nofifyRelicActive, bool firstPopulate)
         {
             this.nofifyQuestReward = nofifyQuestReward;
             this.nofifyActiveQuest = nofifyActiveQuest;
             this.nofifyRelicActive = nofifyRelicActive;
+            this.firstPopulate = firstPopulate;
         }
 
-        public int nofifyQuestReward;
-        public int nofifyActiveQuest;
-        public int nofifyRelicActive;
+        public int nofifyQuestReward, nofifyActiveQuest, nofifyRelicActive;
+        public bool firstPopulate;
     }
 
     public QuestManager QuestManagerData;

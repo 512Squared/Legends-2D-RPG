@@ -6,6 +6,8 @@ using Sirenix.OdinInspector;
 [RequireComponent(typeof(GenerateGUID))]
 public class Item : MonoBehaviour, ISaveable
 {
+    #region SERIALIZATION
+
     [Space] public int quantity = 1;
 
     [Space] [ItemCodeDescription] [SerializeField]
@@ -167,6 +169,8 @@ public class Item : MonoBehaviour, ISaveable
     public ItemDetails So { get; set; }
 
     public int ItemCode { get => itemCode; set => itemCode = value; }
+
+    #endregion
 
     private void Awake()
     {
@@ -358,10 +362,11 @@ public class Item : MonoBehaviour, ISaveable
         }
     }
 
-    private void SelfDeactivate()
+    public void SelfDeactivate()
     {
         spriteRenderer.enabled = false;
         polyCollider.enabled = false;
+        Debug.Log($"UseItem {itemName} | Visible: {spriteRenderer.enabled}");
     }
 
     #region Implementation of ISaveable
@@ -391,6 +396,7 @@ public class Item : MonoBehaviour, ISaveable
             {
                 polyCollider.enabled = false;
                 spriteRenderer.enabled = false;
+                Debug.Log($"Poly: LoadfromSave {itemName} | poly status: {polyCollider.enabled}");
             }
 
             break;

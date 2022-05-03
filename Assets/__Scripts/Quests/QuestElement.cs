@@ -22,8 +22,17 @@ public class QuestElement : MonoBehaviour, ISaveable
     [GUIColor(.1f, 0.8f, 0.215f)]
     public PolygonCollider2D polyCollider;
 
-    [ShowIf("isItem")] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
+    [ShowIf("isItem", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
     public SpriteRenderer spriteRenderer;
+
+    [ShowIf("changeAnObject", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
+    public PolygonCollider2D changedObjectCollider;
+
+    [ShowIf("changeAnObject", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
+    public SpriteRenderer changedObjectRenderer;
+
+    [ShowIf("secondaryCollider", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
+    public PolygonCollider2D secondCollider;
 
     #region Conditions
 
@@ -53,7 +62,7 @@ public class QuestElement : MonoBehaviour, ISaveable
 
 
     [Space] [PropertyTooltip("If this item is a relic, drag the appropriate relicBox from the Relics UI panel")]
-    [GUIColor(.5f, 0.8f, 0.215f)] [ShowIf("itemIsRelic")]
+    [GUIColor(.5f, 0.8f, 0.215f)] [ShowIf("itemIsRelic", false)]
     public RectTransform relicBox;
 
     [TitleGroup("Quest Bools")] [Space]
@@ -62,8 +71,16 @@ public class QuestElement : MonoBehaviour, ISaveable
     public bool isItem;
 
     [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Left")]
-    [GUIColor(0.4f, 0.886f, 0.780f)] [ShowIf("isItem")]
+    [GUIColor(0.4f, 0.886f, 0.780f)] [ShowIf("isItem")] [Indent]
     public bool itemIsRelic;
+
+    [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Left")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool secondaryCollider;
+
+    [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Left")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool activateSubQuests;
 
     [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Left")]
     [GUIColor(0.4f, 0.886f, 0.780f)]
@@ -79,11 +96,22 @@ public class QuestElement : MonoBehaviour, ISaveable
 
     [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Right")]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool activateSubQuests;
+    public bool enabledAfterDone;
 
     [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Right")]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool enabledAfterDone;
+    public bool changeAnObject;
+
+    [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Right")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [ShowIf("changeAnObject", false)] [Indent]
+    public bool revealObject;
+
+    [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Right")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [ShowIf("changeAnObject", false)] [Indent]
+    public bool hideObject;
+
 
     [TitleGroup("For information only")] [Space]
     [GUIColor(0.1f, 0.886f, 1)] [IconTag("@EditorIcons.Info")]
@@ -92,8 +120,13 @@ public class QuestElement : MonoBehaviour, ISaveable
     [GUIColor(0.1f, 0.886f, 1)] [IconTag("@EditorIcons.Info")]
     public bool elementCompleted;
 
+    [GUIColor(0.1f, 0.886f, 1)] [IconTag("@EditorIcons.Info")]
+    public bool hasTriggered;
+
     [HideInInspector]
     public string questElementGUID;
+
+    private bool isLoading;
 
     #endregion
 
@@ -136,26 +169,76 @@ public class QuestElement : MonoBehaviour, ISaveable
         // Do an ID check first
         if (questID != quest.questGUID) { return; }
 
-        if (HasMetConditions())
+        // The quest element triggers via the OnTrigger event, either completion or activation of the element 
+        // HasMetConditions ensures preconditions are met first, like activate or complete another quest
+        // Once conditions are met, hasTriggered avoids multiple triggering or having to track before and after states
+        // hasTriggered can also be used in the LoadSave to re-establish the triggered state
+
+        // CheckConditions only reports HasMetConditions to the Console.Log
+
+
+        if (HasMetConditions() && !hasTriggered)
         {
             ActivateQuestOnEnter();
-            CompleteQuest();
-            DisableOrEnableElement();
+            CompleteQuestOnEnter();
             EnableAfterDialogue();
             EnableSubElements();
             HandleMasterQuest();
+            HideOrRevealAnObject();
+            SecondaryCollider();
+            hasTriggered = true;
+            if (isLoading) { Debug.Log($"Loading of element completed: {quest.questName}"); }
         }
 
-        else if (!HasMetConditions()) { Debug.Log($"Conditions not met: {quest.questName}"); }
+        else if (!HasMetConditions())
+        {
+            Debug.Log($"Conditions not met: {quest.questName}");
+        }
 
         // 1. activate a quest
         // 2. complete a quest
         // 3. activate (and thereby enable) an element
         // 4. complete this element
-        // 5. disable or  enable a renderer/collider
+        // 5. handle new states
         // 6. be enabled after a dialogue
         // 7. call (enable or activate other elements) subquests
         // 8. handle masterQuests
+    }
+
+    private void SecondaryCollider()
+    {
+        if (!secondaryCollider || !elementActivated) { return; }
+
+        if (secondaryCollider) { secondCollider.enabled = true; }
+
+        Debug.Log($"Secondary collider enabled");
+    }
+
+    [Button(ButtonSizes.Large)]
+    [GUIColor(0.282f, 0.286f, 0.556f)]
+    private void HideOrRevealAnObject()
+    {
+        if (!changeAnObject) { return; }
+
+        if (revealObject)
+        {
+            if (changedObjectRenderer) { changedObjectRenderer.enabled = revealObject; }
+
+            if (changedObjectCollider) { changedObjectCollider.enabled = revealObject; }
+
+            Debug.Log($"Reveal Notification: object visible: {changedObjectRenderer.enabled}");
+        }
+
+        if (hideObject)
+        {
+            if (changedObjectRenderer) { changedObjectRenderer.enabled = !hideObject; }
+
+            if (changedObjectCollider) { changedObjectCollider.enabled = !hideObject; }
+
+            Debug.Log($"Hide Notification - Object visible: {changedObjectRenderer.enabled}");
+        }
+
+        changeAnObject = false;
     }
 
 
@@ -165,46 +248,108 @@ public class QuestElement : MonoBehaviour, ISaveable
 
         quest.isActive = true;
         elementActivated = true;
-        Debug.Log($"ActivateQuest called: {quest.questName}");
+        // activate element handled in HandleNewStates
+        if (!quest.isSubQuest)
+        {
+            MenuManager.Instance.notifyActiveQuest++;
+            Debug.Log($"Notify ActiveQuest++ {MenuManager.Instance.notifyActiveQuest} | {quest.questName}");
+        }
+
+        if (spriteRenderer) { spriteRenderer.enabled = true; }
+
+        if (polyCollider) { polyCollider.enabled = true; }
+
+        if (!isLoading) { StartCoroutine(DelayedMessage()); }
+
+        //Debug.Log($"ActivateQuest called: {quest.questName}");
     }
 
-
-    private void CompleteQuest()
+    private void CompleteQuestOnEnter()
     {
-        if (!quest.isActive || !completeOnEnter) { return; }
+        if (!completeOnEnter) { return; }
 
         quest.MarkThisQuestAsDone(quest.questGUID);
-        CompleteElement(); // completing the quest completes the element
+
+        CompleteElement(); // takes care of collider and renderer
     }
 
-    private void DisableOrEnableElement()
+    [Button(ButtonSizes.Large)]
+    [GUIColor(0.482f, 0.486f, 0.156f)]
+    private void HandleNewStates()
     {
-        switch (thenActivateThisQuest && !quest.isDone)
+        if (activateThisQuestFirst)
         {
-            case true:
+            if (thenActivateThisQuest) // this means the other quest MUST have been activated before this one can activate
+            {
+                if (spriteRenderer)
                 {
-                    if (spriteRenderer) { spriteRenderer.enabled = true; }
-
-                    if (polyCollider) { polyCollider.enabled = true; }
-
-                    Debug.Log($"Renderers enabled: {quest.questName} | isDone: {quest.isDone}");
-
-                    break;
+                    spriteRenderer.enabled = true;
+                    Debug.Log($"Poly - Activate | {quest.questName} | Visible: {spriteRenderer.enabled}");
                 }
+
+                if (polyCollider)
+                {
+                    polyCollider.enabled = true;
+                    Debug.Log($"Poly - Activate | {quest.questName} | Active: {polyCollider.enabled}");
+                }
+            }
+
+            if (thenCompleteThisQuest) // this means the other quest MUST have been activated before this one can complete
+            {
+                if (spriteRenderer)
+                {
+                    spriteRenderer.enabled = enabledAfterDone;
+                    Debug.Log($"Poly - Activate | {quest.questName} | Visible: {spriteRenderer.enabled}");
+                }
+
+                if (polyCollider)
+                {
+                    polyCollider.enabled = enabledAfterDone;
+                    Debug.Log($"Poly - Activate | {quest.questName} | Active: {polyCollider.enabled}");
+                }
+
+                quest.MarkThisQuestAsDone(quest.questGUID);
+                CompleteElement();
+            }
         }
 
 
-        switch (quest.isDone || thenCompleteThisQuest)
+        if (completeThisQuestFirst) // quest that has to have been completed
         {
-            case true:
+            if (thenActivateThisQuest)
+            {
+                if (spriteRenderer)
                 {
-                    if (spriteRenderer) { spriteRenderer.enabled = enabledAfterDone; }
-
-                    if (polyCollider) { polyCollider.enabled = enabledAfterDone; }
-
-                    Debug.Log($"Switch off: {quest.questName} | renderer is on?: {enabledAfterDone}");
-                    break;
+                    spriteRenderer.enabled = true;
+                    Debug.Log($"Poly - Activate | {quest.questName} | Visible: {spriteRenderer.enabled}");
                 }
+
+                if (polyCollider)
+                {
+                    polyCollider.enabled = true;
+                    Debug.Log($"Poly - Activate | {quest.questName} | Active: {polyCollider.enabled}");
+                }
+
+                elementActivated = true;
+            }
+
+            if (thenCompleteThisQuest) // the condition means another quest MUST have been completed before this can be completed
+            {
+                if (spriteRenderer)
+                {
+                    spriteRenderer.enabled = enabledAfterDone;
+                    Debug.Log($"Poly - Complete | {quest.questName} | Visible: {spriteRenderer.enabled}");
+                }
+
+                if (polyCollider)
+                {
+                    polyCollider.enabled = enabledAfterDone;
+                    Debug.Log($"Poly - Complete | {quest.questName} | Active: {polyCollider.enabled}");
+                }
+
+                quest.MarkThisQuestAsDone(quest.questGUID);
+                CompleteElement();
+            }
         }
     }
 
@@ -213,13 +358,21 @@ public class QuestElement : MonoBehaviour, ISaveable
     {
         if (!enabledAfterDialogue) { return; }
 
-        Debug.Log($"EnableAfterDialogue called: {quest.questName}");
-
         if (spriteRenderer) { spriteRenderer.enabled = true; }
 
-        if (polyCollider) { polyCollider.enabled = true; }
+        if (polyCollider)
+        {
+            polyCollider.enabled = true;
+            Debug.Log($"Poly: AfterDialogue {quest.questName} | poly status: {polyCollider.enabled}");
+        }
 
         quest.isActive = true;
+        if (!quest.isSubQuest)
+        {
+            MenuManager.Instance.notifyActiveQuest++;
+            Debug.Log($"Notify ActiveQuest++ {MenuManager.Instance.notifyActiveQuest} | {quest.questName}");
+        }
+
         elementActivated = true;
     }
 
@@ -227,24 +380,32 @@ public class QuestElement : MonoBehaviour, ISaveable
     {
         if (!activateSubQuests) { return; }
 
-        quest.ActivateSubQuests(quest.questName);
-
-
         foreach (Quest sub in quest.subQuests)
         {
             if (!sub.questElement.HasMetConditions()) { continue; }
 
+            Debug.Log($"Processing subs - Quest: {quest.questName} | SubQuest: {sub.questElement.quest.questName}");
             sub.ActivateQuest(sub.questName);
             sub.questElement.elementActivated = true;
-            sub.questElement.DisableOrEnableElement();
+            sub.questElement.HandleNewStates();
         }
     }
 
 
     private void CompleteElement()
     {
-        Debug.Log($"CompleteElement called: {quest.questName}");
         elementCompleted = true;
+        if (polyCollider)
+        {
+            polyCollider.enabled = enabledAfterDone;
+            Debug.Log($"Quest: {quest.questName} | polyCollider: {polyCollider.enabled}");
+        }
+
+        if (spriteRenderer)
+        {
+            spriteRenderer.enabled = enabledAfterDone;
+            Debug.Log($"Quest: {quest.questName} | spriteRender: {spriteRenderer.enabled}");
+        }
     }
 
     private void OnCheckQuestElementAfterDialogue(string trigger, Quest questToActivate, Quest
@@ -255,8 +416,7 @@ public class QuestElement : MonoBehaviour, ISaveable
 
         // if subquests, then check if they have conditions being met
 
-
-        Debug.Log($"AfterDialogue called: {trigger} + {questToActivate}");
+        //Debug.Log($"AfterDialogue called: {trigger} + {questToActivate}");
 
         switch (trigger)
         {
@@ -276,6 +436,7 @@ public class QuestElement : MonoBehaviour, ISaveable
 
     private IEnumerator DelayedMessage()
     {
+        Debug.Log($"ActivateMessage called");
         yield return new WaitForSeconds(0.2f);
         NotificationFader.instance.CallFadeInOut(
             $"You have activated a new quest: <color=#E0A515>{quest.questName}</color>.{quest.onActivateMessage}",
@@ -296,39 +457,27 @@ public class QuestElement : MonoBehaviour, ISaveable
                     if (completeThisQuestFirst && completeThisQuestFirst.isDone)
                     {
                         returnValue = true;
-                        Debug.Log($"isDone: {true}");
-                        if (!activateThisQuestFirst) { meetConditions = false; }
                     }
 
                     else if (activateThisQuestFirst && activateThisQuestFirst.isActive)
                     {
                         returnValue = true;
-                        Debug.Log($"isActive: {true}");
-                        if (!completeThisQuestFirst) { meetConditions = false; }
                     }
 
                     if (completeThisQuestFirst && !completeThisQuestFirst.isDone)
                     {
                         returnValue = false;
-                        Debug.Log($"isDone: {false}");
                     }
 
                     else if (activateThisQuestFirst && !activateThisQuestFirst.isActive)
                     {
                         returnValue = false;
-                        Debug.Log($"isActive: {false}");
                     }
 
                     if (!activateThisQuestFirst && !completeThisQuestFirst)
                     {
                         returnValue = false;
-                        Debug.LogError(
-                            $"Quest present: {(bool)activateThisQuestFirst} | {(bool)completeThisQuestFirst}");
                     }
-
-                    if (activateThisQuestFirst && completeThisQuestFirst && completeThisQuestFirst.isDone &&
-                        activateThisQuestFirst.isActive) { meetConditions = false; }
-
 
                     return returnValue;
                 }
@@ -338,18 +487,23 @@ public class QuestElement : MonoBehaviour, ISaveable
 
     private void HandleMasterQuest()
     {
+        if (quest.masterQuest) // if quest has a master quest
+        {
+            Debug.Log($"Master Quest: {quest.masterQuest.questName} | isComplete? {quest.IsMasterComplete()}");
+            if (quest.IsMasterComplete())
+            {
+                quest.masterQuest.MarkThisQuestAsDone(quest.masterQuest.questGUID);
+                quest.masterQuest.questElement.CompleteElement();
+                Debug.Log($"Master Quest completed: {quest.masterQuest.questName}");
+            }
+        }
+
         if (!quest.isMasterQuest) { return; }
 
-        if (quest.isDone) { return; }
+        // no need to keep the colliders active once it has been activated
+        if (spriteRenderer) { spriteRenderer.enabled = false; }
 
-        if (!quest.isActive) { return; }
-
-        foreach (Quest q in quest.subQuests)
-        {
-            // will also check if conditions are met for activation/completion
-            Debug.Log($"MasterQuest Handling: {q.questName}");
-            q.questElement.DisableOrEnableElement();
-        }
+        if (polyCollider) { polyCollider.enabled = false; }
     }
 
     [Button(ButtonSizes.Large)]
@@ -357,8 +511,8 @@ public class QuestElement : MonoBehaviour, ISaveable
     public void CheckConditions()
     {
         Debug.Log(HasMetConditions()
-            ? $"Conditions met: {quest.questName}"
-            : $"Conditions not met: {quest.questName}");
+            ? $"Conditions met for {quest.questName}"
+            : $"Conditions not met {quest.questName}");
     }
 
     #endregion
@@ -368,7 +522,8 @@ public class QuestElement : MonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        SaveData.QuestElementsData qed = new(elementActivated, elementCompleted, questElementGUID);
+        SaveData.QuestElementsData qed = new(elementActivated, elementCompleted, questElementGUID,
+            thenActivateThisQuest, thenCompleteThisQuest, hasTriggered);
 
         a_SaveData.questElementsList.Add(qed);
     }
@@ -383,18 +538,15 @@ public class QuestElement : MonoBehaviour, ISaveable
             // Save data is ONLY data that can change during the game
             elementActivated = qed.isActivated;
             elementCompleted = qed.isCompleted;
+            thenActivateThisQuest = qed.activate;
+            thenCompleteThisQuest = qed.complete;
+            hasTriggered = qed.hasTriggered;
 
-            switch (elementCompleted)
+            if (elementActivated && elementCompleted && hasTriggered)
             {
-                case true:
-                    {
-                        Debug.Log($"QuestElement Activated and disabled: {quest.questName}");
-                        if (polyCollider) { polyCollider.enabled = false; }
+                if (polyCollider) { polyCollider.enabled = enabledAfterDone; }
 
-                        if (spriteRenderer) { spriteRenderer.enabled = false; }
-
-                        break;
-                    }
+                if (spriteRenderer) { spriteRenderer.enabled = enabledAfterDone; }
             }
         }
     }

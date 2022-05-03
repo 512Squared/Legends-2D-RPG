@@ -863,7 +863,7 @@ public partial class MenuManager
         Thulgran.AddTrophies(quest.trophiesAwarded);
     }
 
-    public static void ResetChildren(Quest quest)
+    public void ResetChildren(Quest quest)
     {
         if (!quest.resetChildren)
         {

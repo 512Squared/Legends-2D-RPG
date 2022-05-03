@@ -140,14 +140,12 @@ public class Quest : MonoBehaviour, ISaveable
     {
         //QuestManager.instance.AddQuests(this);
         Actions.MarkQuestCompleted += ActivateSubQuests;
-        Actions.MarkQuestCompleted += UpdateQuestStatus;
         Actions.OnActivateQuest += ActivateQuest;
         Actions.OnClaimQuestRewards += ClaimQuestReward;
     }
 
     private void OnDisable()
     {
-        Actions.MarkQuestCompleted -= UpdateQuestStatus;
         Actions.MarkQuestCompleted -= ActivateSubQuests;
         Actions.OnActivateQuest -= ActivateQuest;
         Actions.OnClaimQuestRewards -= ClaimQuestReward;
@@ -160,7 +158,6 @@ public class Quest : MonoBehaviour, ISaveable
 
         if (!isActive || isDone) { return; }
 
-        Debug.Log($"Quest completed: {questName}");
         isDone = true;
         completedStages++;
 
@@ -169,11 +166,19 @@ public class Quest : MonoBehaviour, ISaveable
         if (isMasterQuest)
         {
             questID -= 500;
+            MenuManager.Instance.notifyActiveQuest--;
+            Debug.Log($"MarkQuest: Notify ActiveQuest-- {MenuManager.Instance.notifyActiveQuest} | {questName}");
         }
 
-        if (questElement && questElement.isItem)
+        if (questElement && questElement.questItem && questElement.isItem)
         {
             Inventory.Instance.AddItems(questElement.questItem);
+            Debug.Log($"Item deactivated: {questElement.questItem.spriteRenderer.enabled}");
+            // notification for subquest completion - enable or disable with 'pickUpNotice' bool
+            if (questElement.questItem.pickUpNotice)
+            {
+                NotifyPlayer();
+            }
         }
 
         // invoke a popup notification on quest completion
@@ -181,17 +186,15 @@ public class Quest : MonoBehaviour, ISaveable
 
         // UI stuff
         MenuManager.Instance.notifyQuestReward++;
-        MenuManager.Instance.notifyActiveQuest--;
-        MenuManager.Instance.QuestCompletePanel(this, GetChildQuests());
+        Debug.Log($"MarkQuest: Notify Quest Reward++ {MenuManager.Instance.notifyQuestReward} | {questName}");
 
-        // notification for subquest completion - enable or disable with 'pickUpNotice' bool
-        if (questElement && questElement.questItem && questElement.questItem.pickUpNotice)
+        if (!isSubQuest && !isMasterQuest)
         {
-            NotifyPlayer();
+            MenuManager.Instance.notifyActiveQuest--;
+            Debug.Log($"MarkQuest: Notify ActiveQuest-- {MenuManager.Instance.notifyActiveQuest} | {questName}");
         }
 
-        // completing some quests enables subquests
-        ActivateSubQuests(questName);
+        MenuManager.Instance.QuestCompletePanel(this, GetChildQuests());
 
 
         // SUBQUEST PROCESSING
@@ -220,33 +223,28 @@ public class Quest : MonoBehaviour, ISaveable
             messageFadeTime, 1000, 30);
     }
 
-    private void UpdateQuestStatus(string questCompleted)
-    {
-        if (questCompleted != questName) { return; }
-
-        Debug.Log($"Update called: {questCompleted}");
-        MarkThisQuestAsDone(questGUID); // basic but core
-    }
-
     public void ActivateQuest(string questToActivate)
     {
         if (questToActivate != questName) { return; }
 
         isActive = true;
-        MenuManager.Instance.notifyActiveQuest++;
+        if (!isSubQuest)
+        {
+            MenuManager.Instance.notifyActiveQuest++;
+            Debug.Log($"ActivateQuest: Notify ActiveQuest++ {MenuManager.Instance.notifyActiveQuest} | {questName}");
+        }
     }
 
     public void ActivateSubQuests(string questsToActivate)
     {
         if (questsToActivate != questName) { return; }
 
-
         if (subQuests.Length <= 0) { return; }
 
         foreach (Quest q in subQuests)
         {
             q.isActive = true;
-            Debug.Log($"SubQuest activated: {q.questName}");
+            Debug.Log($"Quest now active: {q.questName}");
         }
     }
 
@@ -290,6 +288,7 @@ public class Quest : MonoBehaviour, ISaveable
         Debug.Log($"Quest Reward called: {quest.questName} | questID: {quest.questID}");
         questRewardClaimed = true;
         MenuManager.Instance.notifyQuestReward--;
+        Debug.Log($"ClaimReward: Notify Quest Reward-- {MenuManager.Instance.notifyQuestReward} | {quest.questName}");
 
         QuestManager.Instance.HandOutReward(rewards);
         MenuManager.Instance.UpdateQuestNotifications();
@@ -299,6 +298,7 @@ public class Quest : MonoBehaviour, ISaveable
         Debug.Log($"Item: {questElement.questItem.itemName} | isRelic: {questElement.questItem.isRelic}");
 
         MenuManager.Instance.notifyRelicActive++;
+        Debug.Log($"ClaimReward: Notify relic active++ {MenuManager.Instance.notifyRelicActive} | {quest.questName}");
         DisableGreyScale();
     }
 
@@ -347,7 +347,7 @@ public class Quest : MonoBehaviour, ISaveable
     public void PopulateSaveData(SaveData a_SaveData)
     {
         SaveData.QuestData qd = new(questGUID, completedStages, questRewardClaimed,
-            isExpanded, toggleMasterSub, isActive, isDone, hasQuestElement);
+            isExpanded, toggleMasterSub, isActive, isDone, hasQuestElement, resetChildren);
 
         a_SaveData.questDataList.Add(qd);
     }
@@ -359,12 +359,12 @@ public class Quest : MonoBehaviour, ISaveable
         {
             completedStages = questData.completedStages;
             questRewardClaimed = questData.questRewardClaimed;
-            isExpanded = questData.isExpanded;
-            toggleMasterSub = questData.toggleSub;
+            isExpanded = true;
+            toggleMasterSub = false;
             isActive = questData.isActive;
             isDone = questData.isDone;
             hasQuestElement = questData.hasQuestElement;
-
+            resetChildren = questData.resetChildren;
 
             switch (isDone)
             {
@@ -372,7 +372,7 @@ public class Quest : MonoBehaviour, ISaveable
                     DisableGreyScale();
                     questElement.polyCollider.enabled = false;
                     questElement.spriteRenderer.enabled = false;
-                    Debug.Log($"quest relic saved: {questName}");
+                    Debug.Log($"Poly: LoadFromSave {questName} | poly status: {questElement.polyCollider.enabled}");
                     break;
 
                 case true when questElement != null && !questRewardClaimed && questElement.itemIsRelic:
@@ -384,6 +384,7 @@ public class Quest : MonoBehaviour, ISaveable
                     {
                         questElement.polyCollider.enabled = false;
                         questElement.spriteRenderer.enabled = false;
+                        Debug.Log($"Poly: LoadFromSave {questName} | poly status: {questElement.polyCollider.enabled}");
                     }
 
                     break;

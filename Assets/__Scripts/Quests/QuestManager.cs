@@ -42,6 +42,7 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
     private int _notifyRelicActive;
 
     [Space] public ParticleSystem pSystem;
+    private bool _firstPopulate;
 
     #endregion SERIALIZATION
 
@@ -174,19 +175,33 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
         questArray = questList.ToArray();
         HierarchicalSorting.Sort(questArray);
 
+        MenuManager.Instance.notifyActiveQuest = 0;
+        MenuManager.Instance.notifyRelicActive = 0;
+        MenuManager.Instance.notifyQuestReward = 0;
+
+        Debug.Log($"Reset: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
+        Debug.Log($"Reset: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
+        Debug.Log($"Reset: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
+
         for (int i = 0; i < questArray.Length; i++)
         {
             questArray[i].questID = i + 1001;
 
-            if (questArray[i].isActive && !questArray[i].questRewardClaimed && !questArray[i].isDone &&
-                !questArray[i].isSubQuest)
+            if (!_firstPopulate)
             {
-                MenuManager.Instance.notifyActiveQuest++;
-            }
+                if (questArray[i].isActive && !questArray[i].questRewardClaimed && !questArray[i].isDone &&
+                    !questArray[i].isSubQuest)
+                {
+                    MenuManager.Instance.notifyActiveQuest++;
+                    Debug.Log(
+                        $"Initialize: Notify ActiveQuest++ {MenuManager.Instance.notifyActiveQuest} | {questArray[i].questName}");
+                }
 
-            if (questArray[i].isDone && !questArray[i].questRewardClaimed)
-            {
-                MenuManager.Instance.notifyQuestReward++;
+                if (questArray[i].isDone && !questArray[i].questRewardClaimed)
+                {
+                    MenuManager.Instance.notifyQuestReward++;
+                    Debug.Log($"Initialize: Notify QuestReward++ {MenuManager.Instance.notifyQuestReward}");
+                }
             }
 
             if (!questArray[i].hasQuestElement && questArray[i].questElement != null && !questArray[i]
@@ -207,6 +222,17 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
         }
 
         questList = questArray.ToList();
+
+        if (_firstPopulate)
+        {
+            MenuManager.Instance.notifyActiveQuest = _nofifyActiveQuest;
+            MenuManager.Instance.notifyQuestReward = _nofifyQuestReward;
+            MenuManager.Instance.notifyRelicActive = _notifyRelicActive;
+            Debug.Log($"Replace: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
+            Debug.Log($"Replace: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
+            Debug.Log($"Replace: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
+        }
+
         Debug.Log($"Quest List: {questList.Count}");
         Debug.Log($"Relic List: {_relicList.Count} items");
     }
@@ -231,11 +257,17 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        _notifyRelicActive = MenuManager.Instance.notifyRelicActive;
-        a_SaveData.QuestManagerData.nofifyQuestReward = _nofifyQuestReward;
-        a_SaveData.QuestManagerData.nofifyActiveQuest = _nofifyActiveQuest;
-        a_SaveData.QuestManagerData.nofifyRelicActive = _notifyRelicActive;
+        _firstPopulate = true;
 
+        _nofifyActiveQuest = MenuManager.Instance.notifyActiveQuest;
+        _nofifyQuestReward = MenuManager.Instance.notifyQuestReward;
+        _notifyRelicActive = MenuManager.Instance.notifyRelicActive;
+
+        SaveData.QuestManager sd = new(_nofifyQuestReward, _nofifyActiveQuest, _notifyRelicActive, _firstPopulate);
+        a_SaveData.QuestManagerData = sd;
+        Debug.Log($"Save: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
+        Debug.Log($"Save: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
+        Debug.Log($"Save: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
@@ -243,10 +275,11 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
         _nofifyQuestReward = a_SaveData.QuestManagerData.nofifyQuestReward;
         _nofifyActiveQuest = a_SaveData.QuestManagerData.nofifyActiveQuest;
         _notifyRelicActive = a_SaveData.QuestManagerData.nofifyRelicActive;
+        _firstPopulate = a_SaveData.QuestManagerData.firstPopulate;
 
-        MenuManager.Instance.notifyQuestReward = _nofifyQuestReward;
-        MenuManager.Instance.notifyActiveQuest = _nofifyActiveQuest;
-        MenuManager.Instance.notifyRelicActive = _notifyRelicActive;
+        Debug.Log($"Load: Notify ActiveQuest: {_nofifyActiveQuest}");
+        Debug.Log($"Load: Notify QuestReward: {_nofifyQuestReward}");
+        Debug.Log($"Load: Notify RelicActive: {_notifyRelicActive}");
     }
 
     #endregion
