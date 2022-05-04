@@ -103,9 +103,39 @@ public class Inventory : MonoBehaviour, ISaveable
         }
     }
 
+    public void DropItem(Item item)
+    {
+        if (item.isStackable)
+        {
+            Item inventoryItem = null;
+
+            foreach (Item itemInInventory in _inventoryList.Where(itemInInventory => itemInInventory.itemName ==
+                         item.itemName))
+            {
+                itemInInventory.quantity--;
+                inventoryItem = itemInInventory;
+            }
+
+            if (inventoryItem != null && inventoryItem.quantity <= 0)
+            {
+                _inventoryList.Remove(inventoryItem);
+                Actions.OnDropItem?.Invoke(item);
+                Debug.Log($"{item.itemName} dropped");
+            }
+        }
+
+        else
+        {
+            _inventoryList.Remove(item);
+            Actions.OnDropItem?.Invoke(item);
+            Debug.Log($"{item.itemName} dropped");
+        }
+    }
+
+
     public void SellItem(Item item)
     {
-        Debug.Log($"OnSellItem invoked for {GetItemDetails(item.ItemCode).itemName}");
+        Debug.Log($"OnSellItem invoked for {item.itemName}");
 
         if (item.isStackable)
         {
@@ -163,8 +193,9 @@ public class Inventory : MonoBehaviour, ISaveable
         }
 
         Actions.OnUseItem?.Invoke(item, selectedCharacterUse,
-            target); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
-        Debug.Log($"OnUseItem has broadcast for: {GetItemDetails(item.ItemCode).itemName}");
+            target);
+        MenuManager.Instance.UpdateItemsInventory(); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
+        Debug.Log($"OnUseItem has broadcast for: {item.itemName}");
     }
 
     public void BuyItem(Item item)
@@ -174,7 +205,7 @@ public class Inventory : MonoBehaviour, ISaveable
             bool itemAlreadyInInventory = false;
 
             foreach (Item itemInInventory in _inventoryList.Where(itemInInventory =>
-                         itemInInventory.itemName == GetItemDetails(item.ItemCode).itemName))
+                         itemInInventory.itemName == item.itemName))
             {
                 itemInInventory.quantity += item.quantity;
                 itemAlreadyInInventory = true;

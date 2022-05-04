@@ -53,6 +53,8 @@ public class Exit : MonoBehaviour
             _unloaded = true;
             SceneManager.UnloadSceneAsync(arrivingFrom);
             Actions.OnSceneChange?.Invoke(sceneToLoad, indexFrom, indexTo);
+            PlayerGlobalData.Instance.currentSceneIndex = indexTo;
+            Debug.Log($"currentSceneIndex: {PlayerGlobalData.Instance.currentSceneIndex}");
         }
     }
 

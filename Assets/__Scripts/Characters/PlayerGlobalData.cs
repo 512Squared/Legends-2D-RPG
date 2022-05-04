@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     [SerializeField] private Rigidbody2D playerRigidBody;
     [SerializeField] private int moveSpeed = 1;
     [SerializeField] private Animator playerAnimator;
+
+    public int currentSceneIndex;
 
     public string arrivingAt;
 
@@ -40,6 +43,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         Instance = this;
         _toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
     }
+
 
     private void Update()
     {
@@ -100,10 +104,11 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     {
         if (!collision.gameObject.CompareTag("Character")) { return; }
 
+        AddTwoToPartyQuest();
+
         if (collision.gameObject.GetComponent<PlayerStats>().isAvailable) { return; }
 
         AddToParty(collision);
-        AddTwoToPartyQuest();
     }
 
     private static void AddToParty(Collision2D collision)
@@ -124,11 +129,12 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         if (_characterParty < 3)
         {
             _characterParty++;
+            Debug.Log($"Player added to character party: {_characterParty}");
         }
 
         if (_characterParty == 2)
         {
-            Actions.MarkQuestCompleted?.Invoke("Add two people to your character party");
+            Actions.MarkQuestCompleted?.Invoke("e32408e2-2d2f-4413-a6a9-75eb6e9a4331");
         }
     }
 

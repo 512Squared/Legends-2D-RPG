@@ -7,7 +7,7 @@ using System.Collections;
 public class ButtonHandler : MonoBehaviour
 {
     public static ButtonHandler instance;
-    private GameObject useButton, sellButton;
+    private GameObject useButton, sellButton, dropButton;
 
 
     private void Awake()
@@ -15,12 +15,14 @@ public class ButtonHandler : MonoBehaviour
         instance = this;
         useButton = GameObject.FindGameObjectWithTag("buttonUse");
         sellButton = GameObject.FindGameObjectWithTag("button_sell");
+        dropButton = GameObject.FindGameObjectWithTag("buttonDrop");
     }
 
     public void UseButtonIsOn()
     {
         useButton.GetComponent<Button>().interactable = true;
         sellButton.GetComponent<Button>().interactable = true;
+        dropButton.GetComponent<Button>().interactable = true;
     }
 
 
@@ -67,7 +69,7 @@ public class ButtonHandler : MonoBehaviour
         {
             buttons[1].interactable = false;
         }
-        else if (calledTab == "armour" || calledTab == "helmet" || calledTab == "shield")
+        else if (calledTab is "armour" or "helmet" or "shield")
         {
             buttons[2].interactable = false;
         }

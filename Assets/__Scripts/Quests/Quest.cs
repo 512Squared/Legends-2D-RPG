@@ -140,6 +140,7 @@ public class Quest : MonoBehaviour, ISaveable
     {
         //QuestManager.instance.AddQuests(this);
         Actions.MarkQuestCompleted += ActivateSubQuests;
+        Actions.MarkQuestCompleted += MarkThisQuestAsDone;
         Actions.OnActivateQuest += ActivateQuest;
         Actions.OnClaimQuestRewards += ClaimQuestReward;
     }
@@ -147,6 +148,7 @@ public class Quest : MonoBehaviour, ISaveable
     private void OnDisable()
     {
         Actions.MarkQuestCompleted -= ActivateSubQuests;
+        Actions.MarkQuestCompleted -= MarkThisQuestAsDone;
         Actions.OnActivateQuest -= ActivateQuest;
         Actions.OnClaimQuestRewards -= ClaimQuestReward;
     }
@@ -359,8 +361,8 @@ public class Quest : MonoBehaviour, ISaveable
         {
             completedStages = questData.completedStages;
             questRewardClaimed = questData.questRewardClaimed;
-            isExpanded = true;
-            toggleMasterSub = false;
+            isExpanded = false;
+            toggleMasterSub = true;
             isActive = questData.isActive;
             isDone = questData.isDone;
             hasQuestElement = questData.hasQuestElement;

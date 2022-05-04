@@ -27,11 +27,16 @@ public class GameManager : MonoBehaviour, ISaveable
     public int shopCurrentNewItems;
 
     [Space] public PlayerStats[] playerStats;
+
+    public Transform[] pickupParents;
+    public Transform pickedUpItems;
+
     public MagicManager[] magicManager;
+
     public GameObject[] sceneObjects;
+
     public int objectInt = 1;
     private SceneHandling _sceneHandler;
-
 
     [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool isInterfaceOn, dialogueBoxOpened;

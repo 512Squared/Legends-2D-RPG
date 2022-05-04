@@ -1123,6 +1123,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         textUseEquipTake.text = "Select";
     }
 
+    public void CallToDropItem()
+    {
+        Inventory.Instance.DropItem(activeItem);
+        UpdateItemsInventory();
+    }
+
     public void CallToUseItem(int selectedCharacter)
     {
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " +
@@ -1755,6 +1761,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         weaponItems = 0;
         itemItems = 0;
         armourItems = 0;
+
+        Debug.Log($"Update Items Inventory Called");
 
         foreach (Transform itemSlot in itemBoxParent)
         {

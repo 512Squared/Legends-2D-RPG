@@ -4,6 +4,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 
 [RequireComponent(typeof(GenerateGUID))]
+[RequireComponent(typeof(DropItem))]
 public class Item : MonoBehaviour, ISaveable
 {
     #region SERIALIZATION
@@ -18,7 +19,7 @@ public class Item : MonoBehaviour, ISaveable
     public PolygonCollider2D polyCollider;
 
 
-    private string _itemGuid;
+    public string _itemGuid;
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
@@ -161,6 +162,8 @@ public class Item : MonoBehaviour, ISaveable
     [GUIColor(0.2f, 0.286f, 0.680f)]
     public Sprite itemsImage;
 
+    [HideInInspector]
+    public int pickup;
 
     [SerializeField] private int itemDefenceModifier;
     [SerializeField] private int itemAttackModifier;
@@ -169,6 +172,8 @@ public class Item : MonoBehaviour, ISaveable
     public ItemDetails So { get; set; }
 
     public int ItemCode { get => itemCode; set => itemCode = value; }
+
+    private DropItem _dropItem;
 
     #endregion
 
@@ -183,6 +188,7 @@ public class Item : MonoBehaviour, ISaveable
 
         GetItemDetailsFromScriptObject(this);
     }
+
 
     public Item GetItemDetailsFromScriptObject(Item item)
     {
@@ -219,6 +225,7 @@ public class Item : MonoBehaviour, ISaveable
     private void Start()
     {
         _itemGuid = GetComponent<GenerateGUID>().GUID;
+        _dropItem = GetComponent<DropItem>();
         GetItemDetailsFromScriptObject(this);
     }
 
@@ -247,12 +254,13 @@ public class Item : MonoBehaviour, ISaveable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player") || So.isQuestObject) { return; }
+        if (!collision.CompareTag("Player") || isQuestObject) { return; }
 
+        _dropItem.SetItemParent(GameManager.Instance.pickedUpItems.transform);
         SelfDeactivate();
         if (pickUpNotice)
         {
-            NotificationFader.instance.CallFadeInOut($"You picked up a {So.itemName}", So.itemsImage,
+            NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage,
                 3f, 1000f,
                 30);
         }
@@ -269,73 +277,73 @@ public class Item : MonoBehaviour, ISaveable
         Debug.Log("UseItem called from Item");
         if (affectType == AffectType.Hp)
         {
-            selectedCharacter.AddHp(So.amountOfEffect);
+            selectedCharacter.AddHp(amountOfEffect);
             if (characterToUseOn != 0)
             {
-                Debug.Log(So.amountOfEffect + " HP given to " + selectedCharacter.playerName);
+                Debug.Log(amountOfEffect + " HP given to " + selectedCharacter.playerName);
             }
         }
 
         else if (affectType == AffectType.Mana)
         {
-            selectedCharacter.AddMana(So.amountOfEffect);
-            Debug.Log(So.amountOfEffect + $"Mana given to{selectedCharacter.playerName}");
+            selectedCharacter.AddMana(amountOfEffect);
+            Debug.Log(amountOfEffect + $"Mana given to{selectedCharacter.playerName}");
         }
 
 
         else if (itemType == ItemType.Armour)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterArmour.So.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterArmour.itemDefence;
 
             if (selectedCharacter.characterArmourName != "")
             {
                 Debug.Log(selectedCharacter.playerName + "'s equipped " +
-                          selectedCharacter.characterArmour.So.itemName +
+                          selectedCharacter.characterArmour.itemName +
                           " has been added back into the Inventory");
                 Inventory.Instance.AddItems(selectedCharacter.characterArmour);
 
                 MenuManager.Instance.UpdateItemsInventory();
             }
 
-            selectedCharacter.AddArmourDefence(So.itemDefence);
+            selectedCharacter.AddArmourDefence(itemDefence);
             selectedCharacter.EquipArmour(this);
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
         else if (itemType == ItemType.Shield)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterShield.So.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterShield.itemDefence;
 
             if (selectedCharacter.characterShieldName != "")
             {
                 Debug.Log(selectedCharacter.playerName + "'s equipped " +
-                          selectedCharacter.characterShield.So.itemName +
+                          selectedCharacter.characterShield.itemName +
                           " has been added back into the Inventory");
                 Inventory.Instance.AddItems(selectedCharacter.characterShield);
 
                 MenuManager.Instance.UpdateItemsInventory();
             }
 
-            selectedCharacter.AddArmourDefence(So.itemDefence);
+            selectedCharacter.AddArmourDefence(itemDefence);
             selectedCharacter.EquipShield(this);
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
         else if (itemType == ItemType.Helmet)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterHelmet.So.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterHelmet.itemDefence;
 
             if (selectedCharacter.characterHelmetName != "")
             {
                 Debug.Log(selectedCharacter.playerName + "'s equipped " +
-                          selectedCharacter.characterHelmet.So.itemName +
+                          selectedCharacter.characterHelmet.itemName +
                           " has been added back into the Inventory");
                 Inventory.Instance.AddItems(selectedCharacter.characterHelmet);
 
                 MenuManager.Instance.UpdateItemsInventory();
             }
 
-            selectedCharacter.AddArmourDefence(So.itemDefence);
+            selectedCharacter.AddArmourDefence(itemDefence);
             selectedCharacter.EquipHelmet(this);
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
@@ -343,22 +351,22 @@ public class Item : MonoBehaviour, ISaveable
 
         else if (itemType == ItemType.Weapon)
         {
-            selectedCharacter.characterAttackTotal -= selectedCharacter.characterWeapon.So.itemAttack;
+            selectedCharacter.characterAttackTotal -= selectedCharacter.characterWeapon.itemAttack;
 
             if (selectedCharacter.characterWeaponName != "")
             {
                 Debug.Log(selectedCharacter.playerName + "'s equipped " +
-                          selectedCharacter.characterWeapon.So.itemName +
+                          selectedCharacter.characterWeapon.itemName +
                           " has been added back into the Inventory");
                 Inventory.Instance.AddItems(selectedCharacter.characterWeapon);
 
                 MenuManager.Instance.UpdateItemsInventory();
             }
 
-            selectedCharacter.AddWeaponPower(So.itemAttack);
+            selectedCharacter.AddWeaponPower(itemAttack);
             selectedCharacter.EquipWeapon(this);
 
-            Debug.Log(selectedCharacter.playerName + " equipped with " + So.itemName);
+            Debug.Log(selectedCharacter.playerName + " equipped with " + itemName);
         }
     }
 
@@ -373,7 +381,7 @@ public class Item : MonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        SaveData.ItemsData id = new(_itemGuid, quantity, isPickedUp, isNewItem, isShopItem, spriteRenderer,
+        SaveData.ItemsData id = new(_itemGuid, quantity, pickup, isPickedUp, isNewItem, isShopItem, spriteRenderer,
             polyCollider);
 
         a_SaveData.itemsData.Add(id);
@@ -392,12 +400,17 @@ public class Item : MonoBehaviour, ISaveable
             isShopItem = id.isShopItem;
             spriteRenderer = id.spriteRenderer;
             polyCollider = id.polyCollider;
+            pickup = id.pickup;
             if (id.isPickedUp)
             {
                 polyCollider.enabled = false;
                 spriteRenderer.enabled = false;
                 Debug.Log($"Poly: LoadfromSave {itemName} | poly status: {polyCollider.enabled}");
             }
+
+            DropItem dropItem = GetComponent<DropItem>();
+            dropItem.itemPickupPlace = pickup;
+            dropItem.SetItemParent(GameManager.Instance.pickupParents[pickup]);
 
             break;
         }

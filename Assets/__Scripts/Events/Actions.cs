@@ -8,12 +8,13 @@ public static class Actions
     public static Action<Item> OnSellItem;
     public static Action<Item> OnBuyItem;
     public static Action<Item, int, Vector2> OnUseItem;
+    public static Action<Item> OnDropItem;
 
     #endregion
 
-    #region Stats
+    #region Player
 
-    public static Action<Thulgran, Item> OnThulgran; //
+    public static Action<Thulgran, Item> OnThulgran;
 
     #endregion
 

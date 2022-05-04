@@ -764,11 +764,8 @@ public partial class MenuManager
         totalQuestNotifications = notifyActiveQuest + notifyQuestReward + notifyRelicActive;
 
         questsTabNofify.alpha = notifyActiveQuest > 0 ? 1 : 0;
-
         claimsTabNofify.alpha = notifyQuestReward > 0 ? 1 : 0;
-
         relicsTabNofify.alpha = notifyRelicActive > 0 ? 1 : 0;
-
         totalQuestNofify.alpha = totalQuestNotifications > 0 ? 1 : 0;
 
         newQuestActiveText.text = notifyActiveQuest.ToString();

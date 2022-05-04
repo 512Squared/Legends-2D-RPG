@@ -119,11 +119,13 @@ public class SaveData
     [Serializable]
     public struct ItemsData
     {
-        public ItemsData(string itemGuid, int quantity, bool isPickedUp, bool isNewItem, bool isShopItem, SpriteRenderer
-            spriteRenderer, PolygonCollider2D polyCollider)
+        public ItemsData(string itemGuid, int quantity, int pickup, bool isPickedUp, bool isNewItem, bool isShopItem,
+            SpriteRenderer
+                spriteRenderer, PolygonCollider2D polyCollider)
         {
             this.itemGuid = itemGuid;
             this.quantity = quantity;
+            this.pickup = pickup;
             this.isPickedUp = isPickedUp;
             this.isNewItem = isNewItem;
             this.isShopItem = isShopItem;
@@ -132,7 +134,7 @@ public class SaveData
         }
 
         public string itemGuid;
-        public int quantity;
+        public int quantity, pickup;
         public bool isNewItem;
         public bool isPickedUp;
         public bool isShopItem;
