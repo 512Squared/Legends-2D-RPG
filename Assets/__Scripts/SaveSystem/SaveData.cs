@@ -96,6 +96,8 @@ public class SaveData
 
     #endregion
 
+    #region QuestManager Data
+
     [Serializable]
     public struct QuestManager
     {
@@ -113,6 +115,7 @@ public class SaveData
 
     public QuestManager QuestManagerData;
 
+    #endregion
 
     #region Items Data
 
@@ -145,6 +148,24 @@ public class SaveData
     public List<ItemsData> itemsData = new();
 
     #endregion
+
+    [Serializable]
+    public struct DroppedItemsData
+    {
+        public DroppedItemsData(Vector3 itemTransform, int itemPickupPlace, string itemDropGUID)
+        {
+            this.itemTransform = itemTransform;
+            this.itemPickupPlace = itemPickupPlace;
+            this.itemDropGUID = itemDropGUID;
+        }
+
+        public Vector3 itemTransform;
+        public int itemPickupPlace;
+        public string itemDropGUID;
+    }
+
+    public List<DroppedItemsData> droppedItemsData = new();
+
 
     #region Dialogue Data
 

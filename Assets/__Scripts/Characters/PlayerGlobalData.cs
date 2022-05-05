@@ -42,6 +42,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     {
         Instance = this;
         _toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
+        currentSceneIndex = 1;
     }
 
 
@@ -104,7 +105,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     {
         if (!collision.gameObject.CompareTag("Character")) { return; }
 
-        AddTwoToPartyQuest();
+        if (!collision.gameObject.GetComponent<PlayerStats>().isAvailable) { AddTwoToPartyQuest(); }
 
         if (collision.gameObject.GetComponent<PlayerStats>().isAvailable) { return; }
 

@@ -19,7 +19,7 @@ public class Item : MonoBehaviour, ISaveable
     public PolygonCollider2D polyCollider;
 
 
-    public string _itemGuid;
+    public string itemGuid;
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
@@ -224,7 +224,7 @@ public class Item : MonoBehaviour, ISaveable
 
     private void Start()
     {
-        _itemGuid = GetComponent<GenerateGUID>().GUID;
+        itemGuid = GetComponent<GenerateGUID>().GUID;
         _dropItem = GetComponent<DropItem>();
         GetItemDetailsFromScriptObject(this);
     }
@@ -256,7 +256,7 @@ public class Item : MonoBehaviour, ISaveable
     {
         if (!collision.CompareTag("Player") || isQuestObject) { return; }
 
-        _dropItem.SetItemParent(GameManager.Instance.pickedUpItems.transform);
+        _dropItem.SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
         SelfDeactivate();
         if (pickUpNotice)
         {
@@ -374,14 +374,13 @@ public class Item : MonoBehaviour, ISaveable
     {
         spriteRenderer.enabled = false;
         polyCollider.enabled = false;
-        Debug.Log($"UseItem {itemName} | Visible: {spriteRenderer.enabled}");
     }
 
     #region Implementation of ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        SaveData.ItemsData id = new(_itemGuid, quantity, pickup, isPickedUp, isNewItem, isShopItem, spriteRenderer,
+        SaveData.ItemsData id = new(itemGuid, quantity, pickup, isPickedUp, isNewItem, isShopItem, spriteRenderer,
             polyCollider);
 
         a_SaveData.itemsData.Add(id);
@@ -389,10 +388,10 @@ public class Item : MonoBehaviour, ISaveable
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        _itemGuid = GetComponent<GenerateGUID>()?.GUID;
+        itemGuid = GetComponent<GenerateGUID>()?.GUID;
         if (GetComponent<GenerateGUID>() == null) { Debug.Log($"GUID is Null: {itemName}"); }
 
-        foreach (SaveData.ItemsData id in a_SaveData.itemsData.Where(id => id.itemGuid == _itemGuid))
+        foreach (SaveData.ItemsData id in a_SaveData.itemsData.Where(id => id.itemGuid == itemGuid))
         {
             quantity = id.quantity;
             isPickedUp = id.isPickedUp;
@@ -410,7 +409,7 @@ public class Item : MonoBehaviour, ISaveable
 
             DropItem dropItem = GetComponent<DropItem>();
             dropItem.itemPickupPlace = pickup;
-            dropItem.SetItemParent(GameManager.Instance.pickupParents[pickup]);
+            dropItem.SetItemParent(GameManager.Instance.pickupParents[pickup], true);
 
             break;
         }

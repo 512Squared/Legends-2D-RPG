@@ -17,24 +17,22 @@ public class GameManager : MonoBehaviour, ISaveable
     [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
     public Item activeItem; // this is just for tracking activeItems in UI
 
-    [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
     public string activeScene = "Homestead";
 
-    [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
     public int currentNewItems;
 
-    [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
+    [GUIColor(0.447f, 0.654f, 0.996f)]
     public int shopCurrentNewItems;
 
     [Space] public PlayerStats[] playerStats;
 
     public Transform[] pickupParents;
-    public Transform pickedUpItems;
-
-    public MagicManager[] magicManager;
 
     public GameObject[] sceneObjects;
 
+    public Transform pickedUpItems;
     public int objectInt = 1;
     private SceneHandling _sceneHandler;
 
@@ -94,7 +92,6 @@ public class GameManager : MonoBehaviour, ISaveable
         Instance = this;
         _sceneHandler = GetComponent<SceneHandling>();
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
-        magicManager = FindObjectsOfType<MagicManager>().OrderBy(m => m.transform.position.z).ToArray();
         _saveables = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveable>().ToList();
         Debug.Log($"Save items count: {_saveables.Count}");
 
@@ -165,11 +162,6 @@ public class GameManager : MonoBehaviour, ISaveable
     public PlayerStats[] GetPlayerStats()
     {
         return playerStats;
-    }
-
-    public MagicManager[] GetMagicManager()
-    {
-        return magicManager;
     }
 
     public void ActivateCharacters(string sceneToLoad)
