@@ -152,14 +152,14 @@ public class SaveData
     [Serializable]
     public struct DroppedItemsData
     {
-        public DroppedItemsData(Vector3 itemTransform, int itemPickupPlace, string itemDropGUID)
+        public DroppedItemsData(Vector3 itemPosition, int itemPickupPlace, string itemDropGUID)
         {
-            this.itemTransform = itemTransform;
+            this.itemPosition = itemPosition;
             this.itemPickupPlace = itemPickupPlace;
             this.itemDropGUID = itemDropGUID;
         }
 
-        public Vector3 itemTransform;
+        public Vector3 itemPosition;
         public int itemPickupPlace;
         public string itemDropGUID;
     }

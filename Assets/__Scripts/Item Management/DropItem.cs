@@ -1,13 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class DropItem : MonoBehaviour, ISaveable
 {
     public int itemPickupPlace;
     public Item item;
-    private Vector3 _itemTransform;
-    private string _itemDropGUID;
+    private Vector3 _itemPosition;
+    public string _itemDropGUID;
+
+    private void Validate()
+    {
+        _itemDropGUID = GetComponent<GenerateGUID>().GUID;
+    }
 
     private void OnEnable()
     {
@@ -17,11 +21,6 @@ public class DropItem : MonoBehaviour, ISaveable
     private void OnDisable()
     {
         Actions.OnDropItem -= DropAnItem;
-    }
-
-    private void Start()
-    {
-        item = GetComponent<Item>();
     }
 
     private void DropAnItem(Item droppedItem)
@@ -65,24 +64,27 @@ public class DropItem : MonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        _itemTransform = transform.position;
-        SaveData.DroppedItemsData did = new(_itemTransform, itemPickupPlace, _itemDropGUID);
+        _itemPosition = transform.position;
+        SaveData.DroppedItemsData did = new(_itemPosition, itemPickupPlace, _itemDropGUID);
         a_SaveData.droppedItemsData.Add(did);
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        _itemDropGUID = GetComponent<GenerateGUID>()?.GUID;
-        if (GetComponent<GenerateGUID>() == null) { Debug.Log($"GUID is Null: {item.itemName}"); }
+        _itemDropGUID = GetComponent<GenerateGUID>().GUID;       
+
 
         foreach (SaveData.DroppedItemsData did in a_SaveData.droppedItemsData.Where(did =>
                      did.itemDropGUID == _itemDropGUID))
         {
-            _itemTransform = did.itemTransform;
-            transform.position = _itemTransform;
-            Debug.Log($"Transform: {_itemTransform}");
+            _itemPosition = did.itemPosition;
             itemPickupPlace = did.itemPickupPlace;
-            SetItemParent(GameManager.Instance.pickupParents[itemPickupPlace], true);
+            transform.position = did.itemPosition;
+            Debug.Log($"Item: {item.itemName} | Item PickUpPlace: {itemPickupPlace} | Item position: {_itemPosition}");
+            SetItemParent(
+                item.isPickedUp
+                    ? GameManager.Instance.pickedUpItems.transform
+                    : GameManager.Instance.pickupParents[itemPickupPlace], true);
         }
     }
 

@@ -23,6 +23,11 @@ public class Inventory : MonoBehaviour, ISaveable
         _inventoryList = new List<Item>();
         _initializeShop = new List<Item>();
         shopList = new List<Item>();
+    }
+
+    private void Awake()
+    {
+        Instance = this;
         CreateItemDetailsDictionary();
     }
 
@@ -118,16 +123,16 @@ public class Inventory : MonoBehaviour, ISaveable
 
             if (inventoryItem != null && inventoryItem.quantity <= 0)
             {
+                Actions.OnDropItem?.Invoke(inventoryItem);
                 _inventoryList.Remove(inventoryItem);
-                Actions.OnDropItem?.Invoke(item);
-                Debug.Log($"{item.itemName} dropped");
+                Debug.Log($"{inventoryItem.itemName} dropped");
             }
         }
 
         else
         {
-            _inventoryList.Remove(item);
             Actions.OnDropItem?.Invoke(item);
+            _inventoryList.Remove(item);
             Debug.Log($"{item.itemName} dropped");
         }
     }
@@ -150,6 +155,7 @@ public class Inventory : MonoBehaviour, ISaveable
 
             if (inventoryItem != null && inventoryItem.quantity <= 0)
             {
+                Actions.OnSellItem?.Invoke(inventoryItem);
                 _inventoryList.Remove(inventoryItem);
                 Debug.Log($"stacked {item.itemName} sold and now empty");
             }
@@ -157,11 +163,10 @@ public class Inventory : MonoBehaviour, ISaveable
 
         else
         {
+            Actions.OnSellItem?.Invoke(item);
             _inventoryList.Remove(item);
             Debug.Log($"{item.itemName} sold");
         }
-
-        Actions.OnSellItem?.Invoke(item); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
     }
 
     public void UseAndRemoveItem(Item item, int selectedCharacterUse, Vector2 target)
@@ -181,6 +186,8 @@ public class Inventory : MonoBehaviour, ISaveable
 
             if (inventoryItem != null && inventoryItem.quantity <= 0)
             {
+                Actions.OnUseItem?.Invoke(inventoryItem, selectedCharacterUse,
+                    target);
                 _inventoryList.Remove(inventoryItem);
                 Debug.Log("Item stack empty - item removed");
             }
@@ -188,14 +195,11 @@ public class Inventory : MonoBehaviour, ISaveable
 
         else // same code as above but for non-stackable items
         {
+            Actions.OnUseItem?.Invoke(item, selectedCharacterUse,
+                target);
             _inventoryList.Remove(item);
             Debug.Log("Item removed");
         }
-
-        Actions.OnUseItem?.Invoke(item, selectedCharacterUse,
-            target);
-        MenuManager.Instance.UpdateItemsInventory(); // Broadcast | subscribers: Thulgran, MenuManager, CoinsManager
-        Debug.Log($"OnUseItem has broadcast for: {item.itemName}");
     }
 
     public void BuyItem(Item item)

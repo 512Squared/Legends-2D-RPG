@@ -185,8 +185,6 @@ public class Item : MonoBehaviour, ISaveable
         }
 
         spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>(0);
-
-        GetItemDetailsFromScriptObject(this);
     }
 
 
@@ -194,7 +192,6 @@ public class Item : MonoBehaviour, ISaveable
     {
         // Get itemDetails from SO list
         item.So = Inventory.Instance.GetItemDetails(ItemCode);
-
 
         // enums
         item.itemType = So.itemType;
@@ -297,6 +294,8 @@ public class Item : MonoBehaviour, ISaveable
 
             if (selectedCharacter.characterArmourName != "")
             {
+                selectedCharacter.characterArmour.GetItemDetailsFromScriptObject(selectedCharacter
+                    .characterArmour);
                 Debug.Log(selectedCharacter.playerName + "'s equipped " +
                           selectedCharacter.characterArmour.itemName +
                           " has been added back into the Inventory");
@@ -316,6 +315,8 @@ public class Item : MonoBehaviour, ISaveable
 
             if (selectedCharacter.characterShieldName != "")
             {
+                selectedCharacter.characterShield.GetItemDetailsFromScriptObject(selectedCharacter
+                    .characterShield);
                 Debug.Log(selectedCharacter.playerName + "'s equipped " +
                           selectedCharacter.characterShield.itemName +
                           " has been added back into the Inventory");
@@ -335,6 +336,7 @@ public class Item : MonoBehaviour, ISaveable
 
             if (selectedCharacter.characterHelmetName != "")
             {
+                selectedCharacter.characterHelmet.GetItemDetailsFromScriptObject(selectedCharacter.characterHelmet);
                 Debug.Log(selectedCharacter.playerName + "'s equipped " +
                           selectedCharacter.characterHelmet.itemName +
                           " has been added back into the Inventory");
@@ -355,6 +357,8 @@ public class Item : MonoBehaviour, ISaveable
 
             if (selectedCharacter.characterWeaponName != "")
             {
+                selectedCharacter.characterWeapon.GetItemDetailsFromScriptObject(selectedCharacter
+                    .characterWeapon);
                 Debug.Log(selectedCharacter.playerName + "'s equipped " +
                           selectedCharacter.characterWeapon.itemName +
                           " has been added back into the Inventory");
