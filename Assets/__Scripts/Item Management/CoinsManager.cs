@@ -13,13 +13,13 @@ public class CoinsManager : MonoBehaviour
 {
     #region Serialisation
 
-    public static CoinsManager instance;
+    public static CoinsManager Instance;
 
     [Header("Main connectors")] [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
     private GameObject animatedCoinPrefab;
 
     [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
-    private GameObject animatedHPPrefab;
+    private GameObject animatedHpPrefab;
 
     [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
     private GameObject animatedManaPrefab;
@@ -28,7 +28,7 @@ public class CoinsManager : MonoBehaviour
     private Transform targetCoin;
 
     [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
-    private Transform targetHP;
+    private Transform targetHp;
 
     [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
     private Transform targetMana;
@@ -37,7 +37,7 @@ public class CoinsManager : MonoBehaviour
     private Transform sourceTransformCoin;
 
     [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
-    private Transform sourceTransformHP;
+    private Transform sourceTransformHp;
 
     [TabGroup("UI references")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
     private Transform sourceTransformMana;
@@ -52,13 +52,13 @@ public class CoinsManager : MonoBehaviour
     private TextMeshProUGUI manaUIText;
 
 
-    private Vector2 sourceCoins;
-    private Vector2 sourceHP;
-    private Vector2 sourceMana;
+    private Vector2 _sourceCoins;
+    private Vector2 _sourceHp;
+    private Vector2 _sourceMana;
 
-    private Vector2 targetPositionCoins;
-    private Vector2 targetPositionHP;
-    private Vector2 targetPositionMana;
+    private Vector2 _targetPositionCoins;
+    private Vector2 _targetPositionHp;
+    private Vector2 _targetPositionMana;
 
 
     [Header("Available coins : (coins to pool)")]
@@ -68,16 +68,16 @@ public class CoinsManager : MonoBehaviour
     private int maxCoins;
 
     [TabGroup("Miscellaneous")] [GUIColor(0.670f, 1, 0.560f)] [SerializeField]
-    private int maxHP;
+    private int maxHp;
 
     [TabGroup("Miscellaneous")] [GUIColor(0.670f, 1, 0.560f)] [SerializeField]
     private int maxMana;
 
     [TabGroup("Miscellaneous")] [GUIColor(0.670f, 1, 0.560f)]
-    private Queue<GameObject> coinsQueue = new();
+    private Queue<GameObject> _coinsQueue = new();
 
-    private Queue<GameObject> hpQueue = new();
-    private Queue<GameObject> manaQueue = new();
+    private Queue<GameObject> _hpQueue = new();
+    private Queue<GameObject> _manaQueue = new();
 
     [Header("Animation settings")]
     [TabGroup("New Group", "Animation settings")]
@@ -115,10 +115,10 @@ public class CoinsManager : MonoBehaviour
 
     private void Start()
     {
-        instance = this;
+        Instance = this;
 
         PrepareCoins();
-        PrepareHP();
+        PrepareHp();
         PrepareMana();
     }
 
@@ -129,18 +129,18 @@ public class CoinsManager : MonoBehaviour
             GameObject coin;
             coin = Instantiate(animatedCoinPrefab, sourceTransformCoin, false);
             coin.SetActive(false);
-            coinsQueue.Enqueue(coin);
+            _coinsQueue.Enqueue(coin);
         }
     }
 
-    private void PrepareHP()
+    private void PrepareHp()
     {
-        for (int i = 0; i < maxHP; i++)
+        for (int i = 0; i < maxHp; i++)
         {
             GameObject hp;
-            hp = Instantiate(animatedHPPrefab, sourceTransformHP, false);
+            hp = Instantiate(animatedHpPrefab, sourceTransformHp, false);
             hp.SetActive(false);
-            hpQueue.Enqueue(hp);
+            _hpQueue.Enqueue(hp);
         }
     }
 
@@ -151,7 +151,7 @@ public class CoinsManager : MonoBehaviour
             GameObject mana;
             mana = Instantiate(animatedManaPrefab, sourceTransformMana, false);
             mana.SetActive(false);
-            manaQueue.Enqueue(mana);
+            _manaQueue.Enqueue(mana);
         }
     }
 
@@ -164,7 +164,7 @@ public class CoinsManager : MonoBehaviour
                 GameObject coin;
                 coin = Instantiate(animatedCoinPrefab, sourceTransformCoin, false);
                 coin.SetActive(false);
-                coinsQueue.Enqueue(coin);
+                _coinsQueue.Enqueue(coin);
             }
 
             maxCoins = valueInCoins;
@@ -173,10 +173,10 @@ public class CoinsManager : MonoBehaviour
         // check if there's coins in the pool
         for (int i = 0; i < valueInCoins; i++)
         {
-            if (coinsQueue.Count <= 0) { continue; }
+            if (_coinsQueue.Count <= 0) { continue; }
 
             GameObject coin;
-            coin = coinsQueue.Dequeue();
+            coin = _coinsQueue.Dequeue();
             coin.SetActive(true);
 
             // move coin to the collected coin position
@@ -184,46 +184,46 @@ public class CoinsManager : MonoBehaviour
 
             // animate coin to target position
             float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
-            coin.transform.DOMove(targetPositionCoins, duration)
+            coin.transform.DOMove(_targetPositionCoins, duration)
                 .SetEase(easeType)
                 .OnComplete(() =>
                 {
                     // executes whenever coin reach target position;
                     coin.SetActive(false);
-                    coinsQueue.Enqueue(coin);
+                    _coinsQueue.Enqueue(coin);
                     Thulgran.ThulgranGold++;
                 });
         }
     }
 
-    public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget)
+    public void AnimateHp(Vector2 sourceHp, int amountOfEffect, Vector2 receivedTarget)
     {
         // trying to assign a target position to player image
 
-        targetPositionHP = receivedTarget;
+        _targetPositionHp = receivedTarget;
 
         Debug.Log("Animate HP called");
         for (int i = 0; i < amountOfEffect; i++)
         {
             // check if there's hearts in the pool
-            if (hpQueue.Count > 0)
+            if (_hpQueue.Count > 0)
             {
-                GameObject heart = hpQueue.Dequeue();
+                GameObject heart = _hpQueue.Dequeue();
                 heart.SetActive(true);
 
                 // move hearts to the collected heart position
-                heart.transform.position = sourceHP + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
+                heart.transform.position = sourceHp + new Vector2(UnityEngine.Random.Range(-spread, spread), 0f);
 
 
                 // animate hearts to target position
                 float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
-                heart.transform.DOMove(targetPositionHP, duration)
+                heart.transform.DOMove(_targetPositionHp, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
                     {
                         // executes whenever heart reaches target position;
                         heart.SetActive(false);
-                        hpQueue.Enqueue(heart);
+                        _hpQueue.Enqueue(heart);
                     });
             }
         }
@@ -233,15 +233,15 @@ public class CoinsManager : MonoBehaviour
     {
         // assigning target position to polayer image
 
-        targetPositionMana = receivedTarget;
+        _targetPositionMana = receivedTarget;
 
         Debug.Log("Animate runes called");
         for (int i = 0; i < amountOfEffect; i++)
         {
             // check if there's coins in the pool
-            if (manaQueue.Count > 0)
+            if (_manaQueue.Count > 0)
             {
-                GameObject rune = manaQueue.Dequeue();
+                GameObject rune = _manaQueue.Dequeue();
                 rune.SetActive(true);
 
                 // move coin to the collected coin position
@@ -250,13 +250,13 @@ public class CoinsManager : MonoBehaviour
 
                 // animate coin to target position
                 float duration = UnityEngine.Random.Range(minAnimDuration, maxAnimDuration);
-                rune.transform.DOMove(targetPositionMana, duration)
+                rune.transform.DOMove(_targetPositionMana, duration)
                     .SetEase(easeType)
                     .OnComplete(() =>
                     {
                         // executes whenever mana runes reach target position;
                         rune.SetActive(false);
-                        manaQueue.Enqueue(rune);
+                        _manaQueue.Enqueue(rune);
                     });
             }
         }
@@ -267,9 +267,9 @@ public class CoinsManager : MonoBehaviour
     {
         if (item.affectType == AffectType.Hp)
         {
-            UpdateHPTarget();
+            UpdateHpTarget();
             chosenCharacter = selectedCharacter;
-            AnimateHP(sourceHP, item.amountOfEffect, target);
+            AnimateHp(_sourceHp, item.amountOfEffect, target);
             Debug.Log("UIAddHP called from CoinsManager");
         }
 
@@ -277,7 +277,7 @@ public class CoinsManager : MonoBehaviour
         {
             UpdateManaTarget();
             chosenCharacter = selectedCharacter;
-            AnimateMana(sourceMana, item.amountOfEffect, target);
+            AnimateMana(_sourceMana, item.amountOfEffect, target);
             Debug.Log("UIAddMana called from CoinsManager");
         }
     }
@@ -285,25 +285,25 @@ public class CoinsManager : MonoBehaviour
     public void SellItem(Item item)
     {
         UpdateCoins();
-        AnimateCoins(sourceCoins, item.valueInCoins);
+        AnimateCoins(_sourceCoins, item.valueInCoins);
     }
 
     public void UpdateCoins()
     {
-        targetPositionCoins = targetCoin.position;
-        sourceCoins = sourceTransformCoin.position;
+        _targetPositionCoins = targetCoin.position;
+        _sourceCoins = sourceTransformCoin.position;
     }
 
-    public void UpdateHPTarget()
+    public void UpdateHpTarget()
     {
-        targetPositionHP = targetHP.position;
-        sourceHP = sourceTransformHP.position;
+        _targetPositionHp = targetHp.position;
+        _sourceHp = sourceTransformHp.position;
     }
 
     public void UpdateManaTarget()
     {
-        targetPositionMana = targetMana.position;
-        sourceMana = sourceTransformMana.position;
+        _targetPositionMana = targetMana.position;
+        _sourceMana = sourceTransformMana.position;
     }
 
     public void CoinUpdate(Item item)

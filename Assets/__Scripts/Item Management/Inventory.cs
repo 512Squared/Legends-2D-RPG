@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour, ISaveable
     private Dictionary<int, ItemDetails> _itemDetailsDictionary;
 
     [Header("Scriptable Object - Items")] [SerializeField]
-    private SO_itemsList itemsList;
+    private SoItemsList itemsList;
 
     private void Start()
     {

@@ -1,14 +1,15 @@
 // Uncomment to use in Editor
+
+
 #define USECONSOLEPROREMOTESERVERINEDITOR
 
-// #if (UNITY_WP_8_1 || UNITY_WSA)
-	// #define UNSUPPORTEDCONSOLEPROREMOTESERVER
+// #if (UNITY_WP_8_1 || UNITY_WSA)// #define UNSUPPORTEDCONSOLEPROREMOTESERVER
 // #endif
 
 #if (!UNITY_EDITOR && DEBUG) || (UNITY_EDITOR && USECONSOLEPROREMOTESERVERINEDITOR)
-	#if !UNSUPPORTEDCONSOLEPROREMOTESERVER
-		#define USECONSOLEPROREMOTESERVER
-	#endif
+#if !UNSUPPORTEDCONSOLEPROREMOTESERVER
+#define USECONSOLEPROREMOTESERVER
+#endif
 #endif
 
 #if UNITY_EDITOR && !USECONSOLEPROREMOTESERVER
@@ -30,131 +31,130 @@ using FlyingWormConsole3.LiteNetLib.Utils;
 
 namespace FlyingWormConsole3
 {
-	#if USECONSOLEPROREMOTESERVER
-public class ConsoleProRemoteServer : MonoBehaviour, INetEventListener
-	#else
-public class ConsoleProRemoteServer : MonoBehaviour
-	#endif
-{
-	public bool useNATPunch = false;
-	public int port = 51000;
+if USECONSOLEPROREMOTESERVER
+p    ublic class ConsoleProRemoteServer : MonoBehaviour, INetEventListener
+#lse
+    public class ConsoleProRemoteServer : MonoBehaviou
+#endif    
+           {
+        public bool useNATPun        h = false;
+        public nt port = 51000;
 
-	#if UNITY_EDITOR && !USECONSOLEPROREMOTESERVER
-
-	#elif UNSUPPORTEDCONSOLEPROREMOTESERVER
-
+#if UNITY_EDITOR && !USECONSLPROREMOTESERVER
+#elif UNSUPPORTEDCONSOLPROREMOTESERVER
 	public void Awake()
 	{
-		Debug.Log("Console Pro Remote Server is not supported on this platform");
+		Debug.Log("Console Pro Remote Server is not supported on this patform");
 	}
 
-	#elif !USECONSOLEPROREMOTESERVER
-	
-	public void Awake()
+#elif !USECONSOLEP
+	MOTESERVER
+
+        public void Awake()
+        {
+            Debug.Log(
+                "Console Pro Remote Server is disabled in release mode, please usea Devel        pment build or define DEBUG to         se it");
+        }
+
+#else
+        private NetManager _netServer;
+	priv        ter _ourPeer;
+	private N        tDataWriter _dataWriter        
+
+            System.SerializableAttrib            e]
+	public class Queued            g
 	{
-		Debug.Log("Console Pro Remote Server is disabled in release mode, please use a Development build or define DEBUG to use it");
-	}
-
-	#else
-
-	private NetManager _netServer;
-	private NetPeer _ourPeer;
-	private NetDataWriter _dataWriter;
-
-	[System.SerializableAttribute]
-	public class QueuedLog
-	{
-		public string timestamp;
-		public string message;
+		public string ti        est        mp;
+		public string messa        e;
 		public string logType;
 	}
 
-	[NonSerializedAttribute]
-	public List<QueuedLog> logs = new List<QueuedLog>();
+	tribu        e]
+	public List<QueuedLog> logs = new List<QueuedLog>();        private 
+	private sta        ic            on soleProRemoteServer            ns                ce = null;
 
-	private static ConsoleProRemoteServer instance = null;
+	void Awa            (
 
-	void Awake()
-	{
-		if(instance != null)
-		{
+            	if(instance != 
+
+            		{
 			Destroy(gameObject);
 		}
-		
+            
 		instance = this;
 		
 		DontDestroyOnLoad(gameObject);
 
-		Debug.Log("#Remote# Starting Console Pro Server on port : " + port);
+		Debug.Log("            emote# Starting Console Pro Server              port : " + port);
 
-		_dataWriter = new NetDataWriter();
-		_netServer = new NetManager(this);
-		_netServer.Start(port);
-		_netServer.BroadcastReceiveEnabled = true;
-		_netServer.UpdateTime = 15;
-		_netServer.NatPunchEnabled = useNATPunch;
+		_dataWriter =            ew NetDataWriter();
+		_n            Server = new NetManager(this);
+		_netServer            tart(port);
+		_netServer.Bro            castReceiveEnabled = true;
+		_netServer.Up        ate        private ime = 15;
+		_netS        rv            .N atPunchEnabled = useN            Pu                ;
 	}
 
-	void OnDestroy()
-	{
-		if(_netServer != null)
+	void OnDestr            ()        	{
+        	if(_netServer != null)
 		{
-			_netServer.Stop();
+			_netServer.        to            );
 		}
 	}
 
-	public void OnPeerConnected(NetPeer peer)
-	{
-		Debug.Log("#Remote# Connected to " + peer.EndPoint);
+	public void OnPeerConnected(NetPeer peer)            {
+		Debug.Log("#R        mot        # Connected to " + peer.EndPoint);
 		_ourPeer = peer;
 	}
 
-	public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
+	public void OnPee        Di            onnected(NetPeer peer, DisconnectInfo disconnectInfo)
 	{
-		Debug.Log("#Remote# Disconnected from " + peer.EndPoint + ", info: " + disconnectInfo.Reason);
+		Debug.Log("#Remote# Disconnected fro            " + peer.EndPoint + ",            nf                " + disconnectInf            Re        son        ;
 		if (peer == _ourPeer)
 		{
 			_ourPeer = null;
 		}
 	}
 
-	public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
+	public void On        et            rkError(IPEndPoint endPoint, SocketError        soc        etError)
 	{
 		// throw new NotImplementedException();
 	}
 
-	public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
+	public void OnNetworkReceive(NetPeer pe        r,            etPacketReader reader, DeliveryMethod de        ive        yMethod)
 	{
 		// throw new NotImplementedException();
 	}
 
-	public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
-	{
-		if(messageType == UnconnectedMessageType.Broadcast)
+	public void OnNetworkReceiveUnc
+            nnected(IPEndPoint remoteEndPoint, N        tP            ke tReader reader, UnconnectedMessageType messageType            	{                if(messageType == UnconnectedMessageType.Broadcast)
 		{
-			// Debug.Log("#Remote# Received discovery request. Send discovery response");
-			_netServer.SendUnconnectedMessage(new byte[] {1}, remoteEndPoint);
+			// Debug.Log("#Remo                 Received discovery request. Send discovery response");
+			_netServ            .S        n
+
+        onnectedMessage(new byte[] {1}, remoteEndPoint);
 		}
 	}
 	
-	public void OnPeerDisconnected(NetPeer peer, DisconnectReason reason, int socketErrorCode)
+	public void OnPeerDisconnected(N        te        r p        er, DisconnectReason reason, int socketErrorCode)
 	{
 
 	}
 
-	public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
+	pub        i
+        d O        NetworkLatencyUpdate(NetPeer peer, int latency)
 	{
 		
 	}
 
-	public void OnConnectionRequest(ConnectionRequest request)
+	        ub            c void OnConnectionRequest(ConnectionRequest request)
 	{
-		// Debug.Log("#Remote# Connection requested, accepting");
+	            / Debug.Log("#Remote# Connection req        este, accepting");
 		request.AcceptIfKey("Console Pro");
 	}
 
 
-	#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9
+	#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNTY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9
 
 	void OnEnable()
 	{
@@ -166,84 +166,88 @@ public class ConsoleProRemoteServer : MonoBehaviour
 		Application.RegisterLogCallback(LogCallback);
 	}
 
-	void OnDisable()
+	void ODisable        private )
 	{
-		Application.RegisterLogCallback(null);
+		Applicati        n.            gisterLogCallback(null);
 	}
 
 	#else
 
 	void OnEnable()
-	{
-		Application.logMessageReceivedThreaded += LogCallback;
+	        
+		        private pplication.logMes        ag            eceivedThreaded += LogCallback;
 	}
 
 	void OnDisable()
-	{
-		Application.logMessageReceivedThreaded -= LogCallback;
+	        
+		pplicati        n.logMessageReceivedThreaded -= LogCallback;
 	}
 
 	#endif
 
-	public void LogCallback(string logString, string stackTrace, LogType type)
+	public void LogC        ll            ck (string logString, string stackTrace            Lo                pe type)
 	{
-		if(!logString.StartsWith("CPIGNORE"))
+		if(!logString.StartsWith(            PI        NOR        private "))
 		{
 			QueueLog(logString, stackTrace, type);
 		}
 	}
 
-	void QueueLog(string logString, string stackTrace, LogType type)
-	{
-		if(logs.Count > 1000)
-		{
-			while(logs.Count > 1000)
-			{
-				logs.RemoveAt(0);
+	void Q        eu            og (string logString, s            in                tackT race, LogType type)
+                		                    ogs.Count > 1000)
+                
+	            whi(logs.Count > 1000)
+			{            		logs.RemoveAt(0);
 			}
 		}
 
-		#if CSHARP_7_3_OR_NEWER
-			logString = $"{logString}\n{stackTrace}\n";
-			logs.Add(new QueuedLog() { message = logString, logType = type.ToString(), timestamp = $"[{DateTime.Now.ToString("HH:mm:ss")}]" } );
+		#if CSHARP_7            OR_NEWER
+			logString = 
+            "
+                logString}\n{stackTrace}\n";
+			logs.Add(new QueuedLog() { messagString, logType = type.ToString(), 
+            iestp =
+ $"[{System.DateTime.Now.ToString("HH:mm:ss")}]" } );
 		#else
 			logString = logString + "\n" + stackTrace + "\n";
-			logs.Add(new QueuedLog() { message = logString, logType = type.ToString(), timestamp = "[" + DateTime.Now.ToString("HH:mm:ss") + "]" } );
-		#endif
+			logs.Add(new QueuedLog() {
+ message = logString, logType = type.ToString(), timtamp =
+        "
+
+        private  DateTime.Now.ToSt        in            "H H:mm:ss") + "]" } );
+            #e                f
 	}
 	
-	void LateUpdate()
+	            id             teUpdate()
 	{
-		if(_netServer == null)
+		if(_netSer            r  == null)
 		{
+			ret            n;                }
+
+		_ne            erv            .P ollEvents();
+
+		if            ou                er == nu            )
+	            
 			return;
 		}
 
-		_netServer.PollEvents();
+		if
 
-		if(_ourPeer == null)
+            Count < =QueuedLog
 		{
-			return;
-		}
-
-		if(logs.Count <= 0)
-		{
-			return;
-		}
-
-		string cMessage = "";
+			return;            	}                	string cMessage = "";
 		
-		foreach(var cLog in logs)
+		foreach(v                cLog in logs)
 		{
-			cMessage = JsonUtility.ToJson(cLog);
+			                ssage = JsonUtility.ToJson(                g);
 			_dataWriter.Reset();
 			_dataWriter.Put(cMessage);
-			_ourPeer.Send(_dataWriter, DeliveryMethod.ReliableOrdered);
+		            our            er.Send(_dataW        ite, Deliv    eryMethod.ReliableOrdered);
 		}
 
 		logs.Clear();
 	}
 
-	#endif
-}
+#endif
+    }
 }

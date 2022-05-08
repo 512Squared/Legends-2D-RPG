@@ -48,9 +48,9 @@ public class ItemCodeDescriptionDrawer : PropertyDrawer
 
     private static string GetItemDescription(int itemCode)
     {
-        SO_itemsList so_itemList =
-            AssetDatabase.LoadAssetAtPath("Assets/ScriptableObjects/Items/so_itemList.asset", typeof(SO_itemsList)) as
-                SO_itemsList;
+        SoItemsList so_itemList =
+            AssetDatabase.LoadAssetAtPath("Assets/ScriptableObjects/Items/so_itemList.asset", typeof(SoItemsList)) as
+                SoItemsList;
 
         List<ItemDetails> itemDetailsList = so_itemList!.itemsDetails;
 
@@ -70,9 +70,9 @@ public class ItemCodeDescriptionDrawer : PropertyDrawer
 
     private static Sprite GetItemImage(int itemCode)
     {
-        SO_itemsList so_itemList =
-            AssetDatabase.LoadAssetAtPath("Assets/ScriptableObjects/Items/so_itemList.asset", typeof(SO_itemsList)) as
-                SO_itemsList;
+        SoItemsList so_itemList =
+            AssetDatabase.LoadAssetAtPath("Assets/ScriptableObjects/Items/so_itemList.asset", typeof(SoItemsList)) as
+                SoItemsList;
 
         Sprite error = AssetDatabase.LoadAssetAtPath("Assets/Sprites/UI/error.png", typeof(Sprite)) as Sprite;
 

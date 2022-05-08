@@ -117,7 +117,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         Debug.Log(collision.gameObject.GetComponent<PlayerStats>().playerName + " is now available");
         collision.gameObject.GetComponentInChildren<PlayerStats>().isAvailable = true;
         MenuManager.Instance.UpdateItemsInventory();
-        NotificationFader.instance.CallFadeInOut(
+        NotificationFader.Instance.CallFadeInOut(
             collision.gameObject.GetComponent<PlayerStats>().playerName +
             " is now available to add to your character party!",
             collision.gameObject.GetComponent<PlayerStats>().characterPlain,

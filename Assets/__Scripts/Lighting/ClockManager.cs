@@ -9,17 +9,17 @@ using System.Collections;
 public class ClockManager : MonoBehaviour
 {
     [Header("Day-Night Clock")]
-    public RectTransform ClockFace;
+    public RectTransform clockFace;
 
     [Space]
-    public TextMeshProUGUI Date, Time, Seasons, Year;
+    public TextMeshProUGUI date, time, seasons, year;
 
     [Space]
     public Image seasonSprite;
 
-    private _DateTime _time;
+    private TimeDate _time;
 
-    private float startingRotation;
+    private float _startingRotation;
 
     [Space]
     public Light2D sunlight;
@@ -41,7 +41,7 @@ public class ClockManager : MonoBehaviour
 
     private void Awake()
     {
-        startingRotation = ClockFace.localEulerAngles.z - 90;
+        _startingRotation = clockFace.localEulerAngles.z - 90;
         isDaylightOn = true;
         lightScaler = 0;
     }
@@ -67,23 +67,23 @@ public class ClockManager : MonoBehaviour
     }
 
 
-    private void UpdateDateTime(_DateTime dateTime, Continental continental) // UI update
+    private void UpdateDateTime(TimeDate timeDate, Continental continental) // UI update
     {
-        _time = dateTime;
+        _time = timeDate;
 
-        Date.text = dateTime.DateToString();
-        if (continental.RailwayTime) { Time.text = dateTime.TimeToString24(); }
-        else if (!continental.RailwayTime) { Time.text = dateTime.TimeToString12(); }
+        date.text = timeDate.DateToString();
+        if (continental.RailwayTime) { time.text = timeDate.TimeToString24(); }
+        else if (!continental.RailwayTime) { time.text = timeDate.TimeToString12(); }
 
-        seasonSprite.sprite = seasonSprites[(int)dateTime.Season];
+        seasonSprite.sprite = seasonSprites[(int)timeDate.Season];
 
-        Seasons.text = dateTime.Season.ToString();
-        Year.text = dateTime.YearToString();
+        seasons.text = timeDate.Season.ToString();
+        year.text = timeDate.YearToString();
 
-        float t = (float)dateTime.Hour / 24f;
+        float t = (float)timeDate.Hour / 24f;
 
         float newRotation = Mathf.Lerp(360, 0, t);
-        ClockFace.localEulerAngles = new Vector3(0, 0, newRotation + startingRotation);
+        clockFace.localEulerAngles = new Vector3(0, 0, newRotation + _startingRotation);
 
         float dayNightT = dayNightCurve.Evaluate(t);
 

@@ -6,23 +6,23 @@ using System.Collections;
 
 public class ButtonHandler : MonoBehaviour
 {
-    public static ButtonHandler instance;
-    private GameObject useButton, sellButton, dropButton;
+    public static ButtonHandler Instance;
+    private GameObject _useButton, _sellButton, _dropButton;
 
 
     private void Awake()
     {
-        instance = this;
-        useButton = GameObject.FindGameObjectWithTag("buttonUse");
-        sellButton = GameObject.FindGameObjectWithTag("button_sell");
-        dropButton = GameObject.FindGameObjectWithTag("buttonDrop");
+        Instance = this;
+        _useButton = GameObject.FindGameObjectWithTag("buttonUse");
+        _sellButton = GameObject.FindGameObjectWithTag("button_sell");
+        _dropButton = GameObject.FindGameObjectWithTag("buttonDrop");
     }
 
     public void UseButtonIsOn()
     {
-        useButton.GetComponent<Button>().interactable = true;
-        sellButton.GetComponent<Button>().interactable = true;
-        dropButton.GetComponent<Button>().interactable = true;
+        _useButton.GetComponent<Button>().interactable = true;
+        _sellButton.GetComponent<Button>().interactable = true;
+        _dropButton.GetComponent<Button>().interactable = true;
     }
 
 

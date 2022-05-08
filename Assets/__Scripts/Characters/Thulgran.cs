@@ -15,7 +15,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         set
         {
             _thulgranGold = value;
-            UI.instance.UpdateGoldUI(_thulgranGold);
+            UI.Instance.UpdateGoldUI(_thulgranGold);
         }
     }
 
@@ -28,7 +28,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         set
         {
             _thulgranHp = value;
-            UI.instance.UpdateHPUI(_thulgranHp);
+            UI.Instance.UpdateHpui(_thulgranHp);
         }
     }
 
@@ -41,7 +41,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         set
         {
             _thulgranMana = value;
-            UI.instance.UpdateManaUI(_thulgranMana);
+            UI.Instance.UpdateManaUI(_thulgranMana);
         }
     }
 
@@ -54,7 +54,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         set
         {
             _thulgranTrophies = value;
-            UI.instance.UpdateGoldUI(_thulgranMana);
+            UI.Instance.UpdateGoldUI(_thulgranMana);
         }
     }
 
@@ -87,20 +87,20 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     public override void Reward(QuestRewards rewards)
     {
         if (rewards.playerClass != QuestRewards.PlayerClasses.Thulgran &&
-            rewards.playerClass != QuestRewards.PlayerClasses.all) { return; }
+            rewards.playerClass != QuestRewards.PlayerClasses.All) { return; }
 
         Debug.Log($"Player class: {rewards.playerClass} | Reward called {rewards.rewardType}");
-        if (rewards.rewardType == QuestRewards.RewardTypes.gold)
+        if (rewards.rewardType == QuestRewards.RewardTypes.Gold)
         {
             ThulgranGold += rewards.rewardAmount;
         }
 
-        if (rewards.rewardType == QuestRewards.RewardTypes.hp)
+        if (rewards.rewardType == QuestRewards.RewardTypes.Hp)
         {
             ThulgranHp += rewards.rewardAmount;
         }
 
-        if (rewards.rewardType == QuestRewards.RewardTypes.immuneToDragonBreath)
+        if (rewards.rewardType == QuestRewards.RewardTypes.ImmuneToDragonBreath)
         {
             immuneToDragonBreath = true;
         }
@@ -115,11 +115,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         {
             case AffectType.Hp:
                 AddHp(item);
-                UI.instance.UpdateHPUI(0);
+                UI.Instance.UpdateHpui(0);
                 break;
             case AffectType.Mana:
                 AddMana(item);
-                UI.instance.UpdateManaUI(0);
+                UI.Instance.UpdateManaUI(0);
                 break;
         }
     }
@@ -128,11 +128,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     {
         ThulgranGold += item.valueInCoins;
 
-        for (int i = 0; i < UI.instance.goldStats.Length; i++)
+        for (int i = 0; i < UI.Instance.goldStats.Length; i++)
         {
             if (i != 0)
             {
-                UI.instance.goldStats[i].text = ThulgranGold.ToString();
+                UI.Instance.goldStats[i].text = ThulgranGold.ToString();
             }
         }
 
@@ -143,11 +143,11 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     {
         ThulgranGold += amountToAdd;
 
-        for (int i = 0; i < UI.instance.goldStats.Length; i++)
+        for (int i = 0; i < UI.Instance.goldStats.Length; i++)
         {
             if (i != 0)
             {
-                UI.instance.goldStats[i].text = ThulgranGold.ToString();
+                UI.Instance.goldStats[i].text = ThulgranGold.ToString();
             }
         }
 
@@ -158,14 +158,14 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     {
         ThulgranTrophies += trophiesToAdd;
 
-        for (int i = 0; i < UI.instance.thulgranTrophies.Length; i++)
+        for (int i = 0; i < UI.Instance.thulgranTrophies.Length; i++)
         {
-            UI.instance.thulgranTrophies[i].text = ThulgranTrophies.ToString() + " / <color=#DECEB7>500</color>";
+            UI.Instance.thulgranTrophies[i].text = ThulgranTrophies.ToString() + " / <color=#DECEB7>500</color>";
         }
 
-        for (int i = 0; i < UI.instance.thulgranTrophySliders.Length; i++)
+        for (int i = 0; i < UI.Instance.thulgranTrophySliders.Length; i++)
         {
-            UI.instance.thulgranTrophySliders[i].value = ThulgranTrophies;
+            UI.Instance.thulgranTrophySliders[i].value = ThulgranTrophies;
         }
 
         Debug.Log($"Add Trophies | Value: {trophiesToAdd}");
@@ -177,8 +177,8 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         if (ThulgranHp > MaxThulgranHp)
         {
             ThulgranHp = MaxThulgranHp;
-            NotificationFader.instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!",
-                Sprites.instance.hpSprite,
+            NotificationFader.Instance.CallFadeInOut("Thulgran's HP is <color=#E0A515>full</color> - well done!",
+                Sprites.Instance.hpSprite,
                 2f,
                 1400, 30);
         }
@@ -192,8 +192,8 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         if (ThulgranMana > MaxThulgranMana)
         {
             ThulgranMana = MaxThulgranMana;
-            NotificationFader.instance.CallFadeInOut(
-                "Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.instance.manaSprite,
+            NotificationFader.Instance.CallFadeInOut(
+                "Thulgran's Mana is <color=#E0A515>full</color> - well done!</size>", Sprites.Instance.manaSprite,
                 2f,
                 1400, 30);
         }

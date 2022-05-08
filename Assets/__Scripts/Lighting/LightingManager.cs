@@ -22,7 +22,7 @@ public class LightingManager : MonoBehaviour
         TimeManager.OnDateTimeChanged -= TimeFetch;
     }
 
-    private void TimeFetch(_DateTime time, Continental empty)
+    private void TimeFetch(TimeDate time, Continental empty)
     {
         if (time.IsNight())
         {

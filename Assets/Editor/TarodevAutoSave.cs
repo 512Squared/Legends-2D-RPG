@@ -62,8 +62,10 @@ namespace Tarodev
 
         private static string GetConfigPath()
         {
-            List<string> paths = AssetDatabase.FindAssets(nameof(AutoSaveConfig)).Select(AssetDatabase.GUIDToAssetPath)
-                .Where(c => c.EndsWith(".asset")).ToList();
+            List<string> paths = AssetDatabase.FindAssets(nameof(AutoSaveConfig))
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Where(c => c.EndsWith(".asset"))
+                .ToList();
             if (paths.Count > 1)
             {
                 Debug.LogWarning("Multiple auto save config assets found. Delete one.");

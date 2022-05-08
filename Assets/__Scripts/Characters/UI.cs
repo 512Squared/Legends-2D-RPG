@@ -7,7 +7,7 @@ public class UI : MonoBehaviour
 {
     #region Singleton
 
-    public static UI instance;
+    public static UI Instance;
 
     #endregion
 
@@ -22,7 +22,7 @@ public class UI : MonoBehaviour
 
     private void Start()
     {
-        instance = this;
+        Instance = this;
         UpdateAll(0);
     }
 
@@ -73,7 +73,7 @@ public class UI : MonoBehaviour
         }
     }
 
-    public void UpdateHPUI(int heart)
+    public void UpdateHpui(int heart)
     {
         for (int i = 0; i < hpStats.Length; i++)
         {
@@ -116,7 +116,7 @@ public class UI : MonoBehaviour
     public void UpdateAll(int empty)
     {
         UpdateGoldUI(empty); // values are taken from static ThulgranGold
-        UpdateHPUI(empty);
+        UpdateHpui(empty);
         UpdateManaUI(empty);
         UpdateTrophiesUI(empty);
 

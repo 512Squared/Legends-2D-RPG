@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using DOTweenConfigs;
 
-public class DOScale : MonoBehaviour
+public class DoScale : MonoBehaviour
 {
     [SerializeField]
     private Scale3DTweenConfig tweenConfig;

@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour, ISaveable
 
     private static void Shop(string scene, SceneObjectsLoad sceneObjectsLoad)
     {
-        if (sceneObjectsLoad is SceneObjectsLoad.shop1 or SceneObjectsLoad.shop2 or SceneObjectsLoad.shop3)
+        if (sceneObjectsLoad is SceneObjectsLoad.Shop1 or SceneObjectsLoad.Shop2 or SceneObjectsLoad.Shop3)
         {
             ShopManager.Instance.isPlayerInsideShop = true;
             Debug.Log($"Scene Name: {scene}");

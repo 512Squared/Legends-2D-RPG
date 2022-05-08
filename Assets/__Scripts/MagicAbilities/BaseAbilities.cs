@@ -20,8 +20,7 @@ public enum MagicType
     AreaHealing,
     Summon,
     Curse,
-    LifeDrain,
-}
+    LifeDrain}
 
 public enum MagicStates
 {
@@ -37,31 +36,32 @@ public enum MagicStates
     Parry, // helmet (10% chance of parry enemy attack)
     MortalWounding, // sword (10% change of mortal wound)
     Proximity, // Dungeon basic: glows when enemies are near
-    Undead, // double damage against undead enemies
-
+    Undead / double damage against undead enemies
 }
-
 public enum Modify
 {
     Null,
     IncreaseFlat,
     DecreaseFlat,
     IncreasePercentage,
-    DecreasePercentage, 
-    Area,
-    Enemies, 
-    Control,
-    Summon,
+    DecreasePercentage,
+  
+    ,
+    Enemies,
+   
+    ol,
+    Summon
 }
 
-public enum Stats
+pblic enum Stats
 {
-    CurrentHP,
-    MaxHP,
+    CurrentHp,
+    MaxHp,
     CurrentMana,
     MaxMana,
-    Defence, 
-    Attack,
+    Defence,
+    A
+    
     Speed,
     Jump
 }
@@ -70,8 +70,7 @@ public enum Stats
 [System.Serializable]
 public class BaseAbilities
 {
-
-    public string name;
+    pulic string name;
 
     [TextArea]
     [Space]
@@ -93,7 +92,9 @@ public class BaseAbilities
 
     [Space]
     public bool ticking;
-    public float tickTime;
+
+    pub
+lic float tickTime;
 
     [Space]
     public float projectileLifeTime;
@@ -111,9 +112,20 @@ public class BaseAbilities
     public GameObject magicPrefab;
 
     [System.Serializable]
-    public struct SpellControlList { public MagicType castType; public Modify modify; public Stats stats; public MagicStates states; }
+    public struct SpellControlList
+    {
+
+     
+             public MagicType cast
+        ype;
+        public M
+        dify modify;
+      
+         public Stats stats;
+     
+      public MagicStates states;
+    }
 
     [Space]
-    public SpellControlList spellControl = new SpellControlList();
-
+    public SpellControlList spellonrol = new();
 }

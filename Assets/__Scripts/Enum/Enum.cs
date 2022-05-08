@@ -1,19 +1,19 @@
 ﻿public enum SceneObjectsLoad
 {
-    building,
-    homestead,
-    mountain,
-    dungeon,
-    house_h_north,
-    house_h_south,
-    house_h_west,
-    house_m_north,
-    house_m_south,
-    house_m_west,
-    shop1,
-    shop2,
-    shop3,
-    town
+    Building,
+    Homestead,
+    Mountain,
+    Dungeon,
+    HouseHNorth,
+    HouseHSouth,
+    HouseHWest,
+    HouseMNorth,
+    HouseMSouth,
+    HouseMWest,
+    Shop1,
+    Shop2,
+    Shop3,
+    Town
 }
 
 public enum Season
@@ -26,20 +26,20 @@ public enum Season
 
 public enum SceneObjectsUnload
 {
-    building,
-    homestead,
-    mountain,
-    dungeon,
-    house_h_north,
-    house_h_south,
-    house_h_west,
-    house_m_north,
-    house_m_south,
-    house_m_west,
-    shop1,
-    shop2,
-    shop3,
-    town
+    Building,
+    Homestead,
+    Mountain,
+    Dungeon,
+    HouseHNorth,
+    HouseHSouth,
+    HouseHWest,
+    HouseMNorth,
+    HouseMSouth,
+    HouseMWest,
+    Shop1,
+    Shop2,
+    Shop3,
+    Town
 }
 
 public enum Position
@@ -61,9 +61,9 @@ public enum ItemLists
 public enum Shop
 {
     PickUpItem,
-    shop1,
-    shop2,
-    shop3
+    Shop1,
+    Shop2,
+    Shop3
 }
 
 public enum AffectType

@@ -15,7 +15,7 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     [SerializeField] private ScrollRect[] container;
 
-    private Vector2 m_NextScrollPosition;
+    private Vector2 _mNextScrollPosition;
     public bool isMouseOver = false;
 
     private void Update()
@@ -29,7 +29,7 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 for (int i = 0; i < container.Length; i++)
                 {
                     container[i].horizontalNormalizedPosition = Mathf.Lerp(container[i].horizontalNormalizedPosition,
-                        m_NextScrollPosition.x, scrollSpeed * Time.unscaledDeltaTime);
+                        _mNextScrollPosition.x, scrollSpeed * Time.unscaledDeltaTime);
                 }
             }
 
@@ -38,7 +38,7 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 for (int i = 0; i < container.Length; i++)
                 {
                     container[i].verticalNormalizedPosition = Mathf.Lerp(container[i].verticalNormalizedPosition,
-                        m_NextScrollPosition.y, scrollSpeed * Time.unscaledDeltaTime);
+                        _mNextScrollPosition.y, scrollSpeed * Time.unscaledDeltaTime);
                 }
             }
         }
@@ -95,13 +95,13 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void ScrollToSelected()
     {
-        m_NextScrollPosition = position switch
+        _mNextScrollPosition = position switch
         {
             Position.Left => new Vector2(-1, 0),
             Position.Right => new Vector2(1.5f, 0),
             Position.Bottom => new Vector2(0, -1f),
             Position.Top => new Vector2(0, 1.5f),
-            _ => m_NextScrollPosition
+            _ => _mNextScrollPosition
         };
     }
 }

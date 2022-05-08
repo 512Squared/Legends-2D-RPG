@@ -254,10 +254,11 @@ public class Item : MonoBehaviour, ISaveable
         if (!collision.CompareTag("Player") || isQuestObject) { return; }
 
         _dropItem.SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
+        _dropItem.dropped = false;
         SelfDeactivate();
         if (pickUpNotice)
         {
-            NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage,
+            NotificationFader.Instance.CallFadeInOut($"You picked up a {itemName}", itemsImage,
                 3f, 1000f,
                 30);
         }
@@ -408,7 +409,7 @@ public class Item : MonoBehaviour, ISaveable
             {
                 polyCollider.enabled = false;
                 spriteRenderer.enabled = false;
-                Debug.Log($"Poly: LoadfromSave {itemName} | poly status: {polyCollider.enabled}");
+                Debug.Log($"Poly: LoadFomSave {itemName} | poly status: {polyCollider.enabled}");
             }
 
             DropItem dropItem = GetComponent<DropItem>();

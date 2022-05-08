@@ -8,44 +8,48 @@ using System;
 
 public class NotificationFader : MonoBehaviour
 {
+    public static NotificationFader Instance;
 
-    public static NotificationFader instance;
-    
     [SerializeField] private CanvasGroup canvasGroup;
-    private Tween fadeTween;
+    private Tween _fadeTween;
     public TextMeshProUGUI message;
     public Image noteCharacter;
     [SerializeField] private Transform messageContainer;
-    private float duration;
+    private float _duration;
 
-    private static string memoryString;
-    private static Image memoryImage;
-    private static float memoryPosX;
-    private static float memoryPosY;
+    private static string _memoryString;
+    private static Image _memoryImage;
+    private static float _memoryPosX;
+    private static float _memoryPosY;
 
-    private bool isInProgress = false;
-
+    private bool _isInProgress = false;
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        instance = this;
+        Instance = this;
     }
 
     private void OnEnable()
     {
-        if(isInProgress) if(memoryString != null && memoryImage != null) CallFadeInOut(memoryString, memoryImage.sprite, duration, memoryPosX, memoryPosY); 
+        if (_isInProgress)
+        {
+            if (_memoryString != null && _memoryImage != null)
+            {
+                CallFadeInOut(_memoryString, _memoryImage.sprite, _duration, _memoryPosX, _memoryPosY);
+            }
+        }
     }
 
     private void OnDisable()
     {
-        if (isInProgress == true)
+        if (_isInProgress == true)
         {
-            memoryString = message.text;
-            memoryPosX = messageContainer.position.x;
-            memoryPosY = messageContainer.position.y;
-            memoryImage = noteCharacter;
+            _memoryString = message.text;
+            _memoryPosX = messageContainer.position.x;
+            _memoryPosY = messageContainer.position.y;
+            _memoryImage = noteCharacter;
         }
     }
 
@@ -72,25 +76,25 @@ public class NotificationFader : MonoBehaviour
 
     private void Fade(float endValue, float duration, TweenCallback onEnd)
     {
-        if (fadeTween != null)
+        if (_fadeTween != null)
         {
-            fadeTween.Kill(false);
+            _fadeTween.Kill(false);
         }
 
-        fadeTween = canvasGroup.DOFade(endValue, duration);
-        fadeTween.onComplete += onEnd;
+        _fadeTween = canvasGroup.DOFade(endValue, duration);
+        _fadeTween.onComplete += onEnd;
     }
 
     private IEnumerator Fader(string passedMessage, Sprite characterMug, float duration, float xpos, float ypos)
     {
-        isInProgress = true;
+        _isInProgress = true;
         DOTween.KillAll();
-        this.duration = duration;
+        _duration = duration;
         messageContainer.position = new Vector3(xpos, ypos, 0f);
         FadeIn(0.5f, passedMessage, characterMug);
         yield return new WaitForSeconds(duration);
         FadeOut(1f);
-        isInProgress = false;    
+        _isInProgress = false;
     }
 
     public void CallFadeInOut(string message, Sprite character, float dur, float xposition, float yposition)

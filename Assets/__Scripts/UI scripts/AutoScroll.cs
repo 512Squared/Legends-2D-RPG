@@ -2,88 +2,119 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
+
 [RequireComponent(typeof(ScrollRect))]
 public class AutoScroll : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public float scrollSpeed = 10f;
-    private bool mouseOver = false;
+    private bool _mouseOver = false;
 
-    private List<Selectable> m_Selectables = new List<Selectable>();
-    private ScrollRect m_ScrollRect;
+    private List<Selectable> _mSelectables = neScrollRect _mScrollRect;
 
-    private Vector2 m_NextScrollPosition;
-    void OnEnable()
+    private Vector2 _mNextScrollPosition;
+
+    private voi
+d Onprivate Enable()
     {
-        if (m_ScrollRect)
+        if (_mScrollRect)
         {
-            m_ScrollRect.content.GetComponentsInChildren(m_Selectables);
+            _mScrollRect.content.GetComponentsInChildren(_mSelectables);
         }
     }
-    void Awake()
+
+    pr
+ivatprivate e void Awake()
     {
-        m_ScrollRect = GetComponent<ScrollRect>();
-    }
-    void Start()
+        _mScrollRect = GetComponent<ScrollRect>();
+    
+}
+
+ private    private void Start()
     {
-        if (m_ScrollRect)
+        if (_mScrollRect)
         {
-            m_ScrollRect.content.GetComponentsInChildren(m_Selectables);
+            _mScrollRect.content.GetComponentsInChildren(_mSelectables);
+
         }
-        ScrollToSelected(true);
+
+        ScrollToSelected(t
+rue)private ;
     }
-    void Update()
+
+    private void Update()
     {
         // Scroll via input.
         InputScroll();
-        if (!mouseOver)
+        if (!_mouseOver)
         {
             // Lerp scrolling code.
-            m_ScrollRect.normalizedPosition = Vector2.Lerp(m_ScrollRect.normalizedPosition, m_NextScrollPosition, scrollSpeed * Time.unscaledDeltaTime);
+            _mScrollRect.normalizedPosition = Vector2.Lerp(_mScrollRect.normalizedPosition, 
+                mNextScrollPosition,
+                scrollSpeed * Time.unscaledDeltaTime);
         }
         else
         {
-            m_NextScrollPosition = m_ScrollRect.normalizedPosition;
+            _mNextScrollPosition = _mScrollRect
+.norprivate malizedPosition;
         }
     }
-    void InputScroll()
+
+    private void InputScroll()
     {
-        if (m_Selectables.Count > 0)
+        if (_mSelectables.Count > 0)
         {
-            if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical") || Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
+            if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("
+                ertical") || Input.GetButton("Horizontal") ||
+                Input.GetButton("Vertical"))
             {
-                ScrollToSelected(false);
+         
+    private    ScrollToSelected(false);
             }
         }
     }
-    void ScrollToSelected(bool quickScroll)
+
+    private void ScrollToSelected(bool quickScroll)
     {
         int selectedIndex = -1;
-        Selectable selectedElement = EventSystem.current.currentSelectedGameObject ? EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>() : null;
+        Sel
+            ctable selectedElement = EventSystem.current.currentSelectedGameObject
+   
+                    ? EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>()
+            : null;
 
-        if (selectedElement)
+        if (selectedEl
+ement)
         {
-            selectedIndex = m_Selectables.IndexOf(selectedElement);
+            selectedIndex = _mSelectables.IndexOf(selectedElement);
         }
+
         if (selectedIndex > -1)
-        {
+      
+                     {
             if (quickScroll)
             {
-                m_ScrollRect.normalizedPosition = new Vector2(0, 1 - (selectedIndex / ((float)m_Selectables.Count - 1)));
-                m_NextScrollPosition = m_ScrollRect.normalizedPosition;
+                _mScrollRect.normalizedPosition =
+                    new Vector2(0, 1 - (selectedIndex / ((float)_mSelectables.Count - 1)));
+                _mNextScrollPosition = _mScrollRect.normalizedPosition;
             }
             else
             {
-                m_NextScrollPosition = new Vector2(0, 1 - (selectedIndex / ((float)m_Selectables.Count - 1)));
-            }
+                _mNextScr
+ollPosition = new Vector2(0, 1 - (selectedIndex / ((float)_mSelectables.Count - 1)));
+            
+}
         }
     }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-        mouseOver = true;
+        _mouseOver = true;
     }
+
     public void OnPointerExit(PointerEventData eventData)
     {
-        mouseOver = false;
+        _mouseOver = false;
         ScrollToSelected(false);
     }
 }
