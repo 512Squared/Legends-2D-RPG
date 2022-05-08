@@ -2,23 +2,26 @@ using System;
 using UnityEngine;
 using Cinemachine;
 
-public class CameraZoom MonoBehaviour
+public class CameraZoom   : MonoBehaviour
 {
-   #region FIELDS
 
-    private CinemachineComponentBase _componentBase;
-    private float _cameraDistance;
+    #region FIELDS
+
+    CinemachineComponentBase componentBase;
+    float cameraDistance;
 
     #endregion FIELDS
 
-    #regi PROPERTIES
+    #region PROPERTIES
+
+
 
     #endregion PROPERTIES
 
     #region SERIALIZATION
 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
-    [SerializeField] private float sensitivity = 10f;
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
+    [SerializeField] float sensitivity = 10f;
 
     #endregion SERIALIZATION
 
@@ -29,45 +32,51 @@ public class CameraZoom MonoBehaviour
         if (virtualCamera.Follow == null)
         {
             virtualCamera.Follow = virtualCamera.Follow.Find("Player");
-            virtualCamera.LookAt = virtualCamera.LookAt
-.Find("Player");
+            virtualCamera.LookAt = virtualCamera.LookAt.Find("Player");
         }
-
         if (virtualCamera == null)
         {
             virtualCamera = GetComponent<CinemachineVirtualCamera>();
         }
 
-        if (_componentBase == null)
+        if (componentBase == null)
         {
-            _componentBase = virtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+            componentBase = virtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
         }
 
         if (Input.GetAxis("Scrollwheel") != 0)
         {
-            _cameraDistance = Input.GetAxis("Scrollwheel") *  sensitivity;
-            if (_componentBase is CinemachineFramingTransposer)
-            {
-                (_componentBase as CinemachineFramingTransposer).m_CameraDistance -= _cameraDistance;
-            }
-      }
+            cameraDistance = Input.GetAxis("Scrollwheel") * sensitivity;
+            if(componentBase is CinemachineFramingTransposer)
+                (componentBase as CinemachineFramingTransposer).m_CameraDistance -= cameraDistance;
+        }
     }
 
     #endregion
 
 
-    #region SUBSCRIBE
+    #region SUBSCRIBERS
+
+
 
     #endregion SUBSCRIBERS
 
-    #region INVOCATION
+    #region INVOCATIONS
+
+
+
     #endregion INVOCATIONS
 
-    #region COROUTIS
+    #region COROUTINES
 
-    #endregion COROUTNE
+
+
+    #endregion COROUTINES
 
     #region METHODS
 
+
+
     #endregion METHODS
+
 }

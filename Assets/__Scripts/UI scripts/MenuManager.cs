@@ -15,11 +15,11 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     #region FIELDS
 
-    private int _panelStuff;
-    private string _whichPanelIsOn = "";
-    private int _teamNofifyCount;
-    private Tween _fadeText;
-    private int _foodItems, _weaponItems, _potionItems, _itemItems, _armourItems;
+    private int panelStuff;
+    private string whichPanelIsOn = "";
+    private int teamNofifyCount;
+    private Tween fadeText;
+    private int foodItems, weaponItems, potionItems, itemItems, armourItems;
 
     #endregion
 
@@ -32,7 +32,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [FoldoutGroup("UI Bools", false)]
     [ShowInInspector]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool IsExpanded
+    public bool isExpanded
     {
         get => _isExpanded;
 
@@ -48,7 +48,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [FoldoutGroup("UI Bools", false)]
     [ShowInInspector]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool Animate
+    public bool animate
     {
         get => _animate;
 
@@ -64,7 +64,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [FoldoutGroup("UI Bools", false)]
     [ShowInInspector]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool ToggleMasterSub
+    public bool toggleMasterSub
     {
         get => _toggleMasterSub;
 
@@ -255,7 +255,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public TextMeshProUGUI[] teamItemWeaponBonus, teamItemArmourBonus, teamItemHelmetBonus, teamItemShieldBonus;
 
     [TabGroup("Weapon Group", "Team Weaponry")] [GUIColor(0.047f, 0.254f, 0.296f)]
-    public Sprite teamBasicAxe, teamBasicArmour, teamBasicHelmet, teamBasicShield;
+    public Sprite teamBasicAxe, teamBasicArmour, teamBasicHelmet, TeamBasicShield;
 
     [TabGroup("Weapon Group", "Team Popup")] [GUIColor(0.207f, 0.121f, 0.027f)]
     public Image teamPopWeaponryImage;
@@ -296,13 +296,13 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public Sprite partyMember;
 
     [Title("Quests")] [TabGroup("Quests Group", "Quest Prefab")] [GUIColor(0.5f, 1f, 0.515f)]
-    public GameObject pfQuestDefault;
+    public GameObject pf_QuestDefault;
 
     [TabGroup("Quests Group", "Quest Prefab")] [GUIColor(0.5f, 1f, 0.515f)]
-    public GameObject pfQuestComplete, pfQuestClaimed;
+    public GameObject pf_QuestComplete, pf_QuestClaimed;
 
     [TabGroup("Quests Group", "Quest Prefab")] [GUIColor(0.5f, 1f, 0.515f)]
-    public Transform questParent, claimsParent, relicsParent;
+    public Transform QuestParent, ClaimsParent, relicsParent;
 
     [TabGroup("Quests Group", "Quest Prefab")] [GUIColor(0.5f, 1f, 0.515f)] [SerializeField]
     private CanvasGroup questsUIPanel, claimsUIPanel, relicsUIPanel, fadeBackground;
@@ -510,7 +510,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         #region Data
 
         currentNewItems = 0;
-        ButtonHandler.Instance.SetAllButtonsInteractable();
+        ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.Instance.ShopItemInfoReset();
         ItemInfoReset();
         UpdateItemsInventory();
@@ -557,7 +557,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         #region Data
 
         currentNewItems = 0;
-        ButtonHandler.Instance.SetAllButtonsInteractable();
+        ButtonHandler.instance.SetAllButtonsInteractable();
         ShopManager.Instance.ShopItemInfoReset();
         ItemInfoReset();
         UpdateQuestList("");
@@ -642,7 +642,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         {
             Debug.Log($"Inventory is open and 'back' has been called");
 
-            ButtonHandler.Instance.SetAllButtonsInteractable();
+            ButtonHandler.instance.SetAllButtonsInteractable();
             ShopManager.Instance.ShopItemInfoReset();
             ItemInfoReset();
 
@@ -660,7 +660,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         {
             Debug.Log($"Shop is open and 'back' has been called");
 
-            ButtonHandler.Instance.SetAllButtonsInteractable();
+            ButtonHandler.instance.SetAllButtonsInteractable();
             ShopManager.Instance.ShopItemInfoReset();
             ItemInfoReset();
 
@@ -771,20 +771,20 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         {
             playerStats[0].characterHp = Thulgran.ThulgranHp;
 
-            if (_panelStuff != 0)
+            if (panelStuff != 0)
             {
-                hpEquipToString[_panelStuff].text = playerStats[_panelStuff].characterHp.ToString();
+                hpEquipToString[panelStuff].text = playerStats[panelStuff].characterHp.ToString();
             }
-            else if (_panelStuff == 0) // Thulgran is controlled by Thulgran.cs
+            else if (panelStuff == 0) // Thulgran is controlled by Thulgran.cs
             {
-                hpEquipToString[_panelStuff].text = Thulgran.ThulgranHp.ToString();
+                hpEquipToString[panelStuff].text = Thulgran.ThulgranHp.ToString();
             }
 
             Sequence sequence = DOTween.Sequence()
-                .Append(hpEquipSlider[_panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(hpEquipSlider[_panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(hpEquipSlider[_panelStuff]
-                    .DOValue(playerStats[_panelStuff].characterHp + activeItem.amountOfEffect, 1.8f));
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
+                .Append(hpEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(hpEquipSlider[panelStuff]
+                    .DOValue(playerStats[panelStuff].characterHp + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
 
 
@@ -799,20 +799,20 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         {
             playerStats[0].characterMana = Thulgran.ThulgranMana;
 
-            if (_panelStuff != 0)
+            if (panelStuff != 0)
             {
-                manaEquipToString[_panelStuff].text = playerStats[_panelStuff].characterMana.ToString();
+                manaEquipToString[panelStuff].text = playerStats[panelStuff].characterMana.ToString();
             }
-            else if (_panelStuff == 0)
+            else if (panelStuff == 0)
             {
-                manaEquipToString[_panelStuff].text = Thulgran.ThulgranMana.ToString();
+                manaEquipToString[panelStuff].text = Thulgran.ThulgranMana.ToString();
             }
 
             Sequence sequence = DOTween.Sequence()
-                .Append(manaEquipSlider[_panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
-                .Append(manaEquipSlider[_panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
-                .Join(manaEquipSlider[_panelStuff]
-                    .DOValue(playerStats[_panelStuff].characterMana + activeItem.amountOfEffect, 1.8f));
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(2.2f, 0.2f))
+                .Append(manaEquipSlider[panelStuff].GetComponentInChildren<Transform>().DOScaleY(1f, 0.6f))
+                .Join(manaEquipSlider[panelStuff]
+                    .DOValue(playerStats[panelStuff].characterMana + activeItem.amountOfEffect, 1.8f));
             sequence.SetLoops(1, LoopType.Yoyo);
 
             yield return new WaitForSecondsRealtime(1.8f);
@@ -830,16 +830,16 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 InventoryStats();
                 Sequence sequence = DOTween.Sequence()
-                    .Append(equippedArmourImage[_panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
-                    .Append(equippedArmourImage[_panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedArmourImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
             else if (activeItem.itemType == ItemType.Weapon)
             {
                 InventoryStats();
                 Sequence sequence = DOTween.Sequence()
-                    .Append(equippedWeaponImage[_panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
-                    .Append(equippedWeaponImage[_panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedWeaponImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
 
@@ -847,8 +847,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 InventoryStats();
                 Sequence sequence = DOTween.Sequence()
-                    .Append(equippedHelmetImage[_panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
-                    .Append(equippedHelmetImage[_panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                    .Append(equippedHelmetImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedHelmetImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
 
@@ -856,8 +856,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 InventoryStats();
                 Sequence sequence = DOTween.Sequence()
-                    .Append(equippedShieldImage[_panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
-                    .Append(equippedShieldImage[_panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
+                    .Append(equippedShieldImage[panelStuff].GetComponent<Transform>().DOScale(1.2f, 0.6f))
+                    .Append(equippedShieldImage[panelStuff].GetComponent<Transform>().DOScale(0.8f, 0.7f));
                 sequence.SetLoops(1, LoopType.Yoyo);
             }
 
@@ -1092,7 +1092,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 playerStats[character].isTeamMember = true;
                 playerStats[character].isNew = false;
-                _teamNofifyCount--;
+                teamNofifyCount--;
                 CharacterActivationButtons(character);
                 InventoryStats();
                 Debug.Log(playerStats[character].playerName + " added to party");
@@ -1134,7 +1134,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " +
                   "Item: " + activeItem.itemName);
 
-        _panelStuff = selectedCharacter;
+        panelStuff = selectedCharacter;
 
         if (activeItem.affectType == AffectType.Hp)
         {
@@ -1142,9 +1142,9 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 if (playerStats[selectedCharacter].characterHp == playerStats[selectedCharacter].maxHp)
                 {
-                    NotificationFader.Instance.CallFadeInOut(
+                    NotificationFader.instance.CallFadeInOut(
                         $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
-                        Sprites.Instance.hpSprite, 1.5f, 1400, 30);
+                        Sprites.instance.hpSprite, 1.5f, 1400, 30);
                     Debug.Log($"Yo");
                 }
 
@@ -1171,9 +1171,9 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 if (Thulgran.ThulgranHp == Thulgran.MaxThulgranHp)
                 {
-                    NotificationFader.Instance.CallFadeInOut(
+                    NotificationFader.instance.CallFadeInOut(
                         $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
-                        Sprites.Instance.hpSprite, 1.5f, 1400, 30);
+                        Sprites.instance.hpSprite, 1.5f, 1400, 30);
                     Debug.Log($"Yo");
                 }
 
@@ -1203,9 +1203,9 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 if (playerStats[selectedCharacter].characterMana == playerStats[selectedCharacter].maxMana)
                 {
-                    NotificationFader.Instance.CallFadeInOut(
+                    NotificationFader.instance.CallFadeInOut(
                         $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color> \n Try someone else?",
-                        Sprites.Instance.manaSprite, 1.5f, 1400, 30);
+                        Sprites.instance.manaSprite, 1.5f, 1400, 30);
                 }
 
                 else if (playerStats[selectedCharacter].characterMana < playerStats[selectedCharacter].maxMana)
@@ -1230,9 +1230,9 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 if (Thulgran.ThulgranMana == Thulgran.MaxThulgranMana)
                 {
-                    NotificationFader.Instance.CallFadeInOut(
+                    NotificationFader.instance.CallFadeInOut(
                         $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?",
-                        Sprites.Instance.manaSprite, 1.5f, 1400, 30);
+                        Sprites.instance.manaSprite, 1.5f, 1400, 30);
                 }
 
                 else if (Thulgran.ThulgranMana < Thulgran.MaxThulgranMana)
@@ -1530,7 +1530,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void TeamMembersCount()
     {
-        _teamNofifyCount = 0;
+        teamNofifyCount = 0;
 
         playerStats = GameManager.Instance.GetPlayerStats();
 
@@ -1538,15 +1538,15 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         {
             if (playerStats[i].isAvailable == true && playerStats[i].isNew == true)
             {
-                _teamNofifyCount++;
+                teamNofifyCount++;
             }
 
-            if (_teamNofifyCount > 0)
+            if (teamNofifyCount > 0)
             {
                 teamNofify.alpha = 1;
-                teamMemberCount.text = _teamNofifyCount.ToString();
+                teamMemberCount.text = teamNofifyCount.ToString();
             }
-            else if (_teamNofifyCount == 0)
+            else if (teamNofifyCount == 0)
             {
                 teamNofify.alpha = 0;
             }
@@ -1756,11 +1756,11 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public void UpdateItemsInventory()
     {
         currentNewItems = 0;
-        _foodItems = 0; // debug stuff
-        _potionItems = 0;
-        _weaponItems = 0;
-        _itemItems = 0;
-        _armourItems = 0;
+        foodItems = 0; // debug stuff
+        potionItems = 0;
+        weaponItems = 0;
+        itemItems = 0;
+        armourItems = 0;
 
         Debug.Log($"Update Items Inventory Called");
 
@@ -1792,13 +1792,13 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 int i = -1;
                 i = item.itemType switch
                 {
-                    ItemType.Food => _foodItems++,
-                    ItemType.Potion => _potionItems++,
-                    ItemType.Item => _itemItems++,
-                    ItemType.Weapon => _weaponItems++,
-                    ItemType.Armour => _armourItems++,
-                    ItemType.Helmet => _armourItems++,
-                    ItemType.Shield => _armourItems++,
+                    ItemType.Food => foodItems++,
+                    ItemType.Potion => potionItems++,
+                    ItemType.Item => itemItems++,
+                    ItemType.Weapon => weaponItems++,
+                    ItemType.Armour => armourItems++,
+                    ItemType.Helmet => armourItems++,
+                    ItemType.Shield => armourItems++,
                     _ => i
                 };
 
@@ -2058,36 +2058,36 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         if (isOverviewOn == true)
         {
-            _whichPanelIsOn = "Overview";
-            Debug.Log("Which panel is on: " + _whichPanelIsOn);
+            whichPanelIsOn = "Overview";
+            Debug.Log("Which panel is on: " + whichPanelIsOn);
         }
 
         else if (isStatsOn == true)
         {
-            _whichPanelIsOn = "Stats";
-            Debug.Log("Which panel is on: " + _whichPanelIsOn);
+            whichPanelIsOn = "Stats";
+            Debug.Log("Which panel is on: " + whichPanelIsOn);
         }
 
         else if (isWeaponryOn == true)
         {
-            _whichPanelIsOn = "Weaponry";
-            Debug.Log("Which panel is on: " + _whichPanelIsOn);
+            whichPanelIsOn = "Weaponry";
+            Debug.Log("Which panel is on: " + whichPanelIsOn);
         }
         else if (isStatsOn == false && isWeaponryOn == false && isOverviewOn == false)
         {
-            _whichPanelIsOn = "None";
-            Debug.Log("Which panel is on: " + _whichPanelIsOn);
+            whichPanelIsOn = "None";
+            Debug.Log("Which panel is on: " + whichPanelIsOn);
         }
     }
 
     private void Fade(float endValue, float duration, TweenCallback onEnd)
     {
-        if (_fadeText != null)
+        if (fadeText != null)
         {
-            _fadeText.Kill(false);
+            fadeText.Kill(false);
         }
 
-        _fadeText = chooseText.DOFade(endValue, duration);
+        fadeText = chooseText.DOFade(endValue, duration);
     }
 
     public void OpenClock()

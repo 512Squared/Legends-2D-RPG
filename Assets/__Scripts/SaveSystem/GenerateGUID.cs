@@ -5,9 +5,9 @@ using Sirenix.OdinInspector;
 public class GenerateGUID : MonoBehaviour
 {
     [SerializeField]
-    private string gUid = "";
+    private string _gUID = "";
 
-    public string GUID { get => gUid; set => gUid = value; }
+    public string GUID { get => _gUID; set => _gUID = value; }
 
     private void OnValidate()
     {
@@ -15,10 +15,10 @@ public class GenerateGUID : MonoBehaviour
         if (Application.IsPlaying(gameObject)) { return; }
 
         // Ensure the object has a guaranteed unique id
-        if (gUid == "")
+        if (_gUID == "")
         {
             //Assign GUID
-            gUid = System.Guid.NewGuid().ToString();
+            _gUID = System.Guid.NewGuid().ToString();
         }
     }
 
@@ -26,6 +26,6 @@ public class GenerateGUID : MonoBehaviour
     [Button(ButtonSizes.Large)] [GUIColor(0.682f, 0.686f, 0.156f)]
     public void CreateNewGUID()
     {
-        gUid = System.Guid.NewGuid().ToString();
+        _gUID = System.Guid.NewGuid().ToString();
     }
 }

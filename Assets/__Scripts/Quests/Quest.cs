@@ -220,7 +220,7 @@ public class Quest : MonoBehaviour, ISaveable
 
     private void NotifyPlayer()
     {
-        NotificationFader.Instance.CallFadeInOut(
+        NotificationFader.instance.CallFadeInOut(
             $"You have completed the quest <color=#E0A515>{questName}</color>. {onDoneMessage}", questImage,
             messageFadeTime, 1000, 30);
     }

@@ -3,56 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class CamController : MonoBehaviour
+public class camController : MonoBehaviour
 {
-    private PlayerGlobalData _playerTarget;
-    private private CinemachineVirtualCamera _virtualCamera;
+    private PlayerGlobalData playerTarget;
+    CinemachineVirtualCamera virtualCamera;
 
-    public float minimum = 8f;
-    public float maximum = 4f;
+    public float _minimum = 8f;
+    public float _maximum = 4f;
 
-    private static float _t = 0f;
+    static float t = 0f;
 
-    // Start is called before the first fprivate rame update
-    pr
+    // Start is called before the first frame update
+    void Start()
+    {
         
-    {
-        _playerTarget = FindObjectOfType<PlayerGlobalData>();
-        _virtualCamera = GetComponent<CinemachineVirtualCamera>();
-        _virtualCamera.Follow = _playerTa
+        playerTarget = FindObjectOfType<PlayerGlobalData>();
+        virtualCamera = GetComponent<CinemachineVirtualCamera>();
+        virtualCamera.Follow = playerTarget.transform;
+        
+        _minimum = virtualCamera.m_Lens.OrthographicSize;
+    }
 
-               minimum = _virtualCamera.m_Lens.OrthographicSize;
-    private }
-
-    private IEnumerator Lerp(float start, float end)
+    IEnumerator Lerp(float start, float end)
     {
-        _t = 0f ;
-        while (_virtualCamera.m_Lens.OrthographicSize != end)
+        t = 0f;
+        while(virtualCamera.m_Lens.OrthographicSize != end)
         {
-            _virtualCamera.m_Lens.OrthographicSize = Mathf.Lerp(start, end, _t);
-            _t += Time.deltaTime;
-            yield return 
-null;
+            virtualCamera.m_Lens.OrthographicSize = Mathf.Lerp(start, end, t);
+            t += Time.deltaTime;
+            yield return null;
         }
-
-        y
-    turn null;
+        yield return null;  
     }
 
 
-    // Update is called onceprivate  per frame
-    priv
-               if (Input.GetKeyDown(KeyCode.Z))
+    // Update is called once per frame
+    void Update()
+    {
+               
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             StopAllCoroutines();
-            StartCoroutine(Lerp(_virtualCamera.m_Lens.OrthographicSize, maxmum));
-    
-    }
+            StartCoroutine(Lerp(virtualCamera.m_Lens.OrthographicSize, _maximum));
 
+        }
         if (Input.GetKeyUp(KeyCode.Z))
         {
             StopAllCoroutines();
-            StartCoroutine(Lerp(_virtualCamera.m_Lens.OrthographicSize, minimum));
+            StartCoroutine(Lerp(virtualCamera.m_Lens.OrthographicSize, _minimum));
         }
-   }
+    }
 }

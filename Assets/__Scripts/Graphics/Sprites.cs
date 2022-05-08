@@ -2,30 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sprites : MonoBehaviour{
+public class Sprites : MonoBehaviour 
+{
     #region TODO List
-
-
     // TODO Complete DayNight cycle
 
     #endregion
 
     #region SINGLETON
 
-    public static Sprites Instance;
+    public static Sprites instance;
 
     #endregion
 
     # region SpriteStuff
-
-
     public Sprite manaSprite, hpSprite;
 
-    private void Start()
+    void Start()
     {
-        Instance = thi
-s;
+        instance = this;
     }
+    #endregion
 
-    enregion
 }

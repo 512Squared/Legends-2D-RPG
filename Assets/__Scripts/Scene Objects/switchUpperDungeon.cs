@@ -1,12 +1,17 @@
 using UnityEngine;
 
-public class SwitchUpperDungeon : MonoBehaviour
+public class switchUpperDungeon : MonoBehaviour
 {
-    private te void OnTriggerEnter2D(Collider2D collision)
+   
+
+    void onTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<PlayerGlobalData>())
         {
-            Debug.Log("TestTileWorking?);
+            Debug.Log("TestTileWorking?");
+
         }
-   
+    }
+
+
 }

@@ -148,12 +148,12 @@ public partial class MenuManager
 
     public void UpdateQuestList(string toggle)
     {
-        foreach (Transform questPanel in questParent)
+        foreach (Transform questPanel in QuestParent)
         {
             Destroy(questPanel.gameObject);
         }
 
-        foreach (Transform claimsPanel in claimsParent)
+        foreach (Transform claimsPanel in ClaimsParent)
         {
             Destroy(claimsPanel.gameObject);
         }
@@ -172,7 +172,7 @@ public partial class MenuManager
                 {
                     // in progress Master
                     RectTransform questPanel =
-                        Instantiate(pfQuestDefault, questParent).GetComponent<RectTransform>(); // Default
+                        Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
 
                     questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1351f);
 
@@ -210,10 +210,10 @@ public partial class MenuManager
                         upButton.localScale = quest.toggleMasterSub switch
                         {
                             // start position, subQuests will now collapse, change to DOWN icon
-                            false when Animate => new Vector3(upButton.localScale.x, -1f, upButton.localScale.z),
+                            false when animate => new Vector3(upButton.localScale.x, -1f, upButton.localScale.z),
 
                             // after toggle, subQuests will now expand, change to UP icon
-                            true when Animate => new Vector3(upButton.localScale.x, 1f, upButton.localScale.z),
+                            true when animate => new Vector3(upButton.localScale.x, 1f, upButton.localScale.z),
                             _ => upButton.localScale
                         };
                     }
@@ -250,7 +250,7 @@ public partial class MenuManager
                     // in progress subs
 
                     RectTransform questPanel =
-                        Instantiate(pfQuestDefault, questParent).GetComponent<RectTransform>(); // Default
+                        Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
 
                     questPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1155f);
 
@@ -259,8 +259,8 @@ public partial class MenuManager
 
                     RectTransform upButton = questPanel.Find("upDownIcon").GetComponent<RectTransform>();
                     RectTransform buttonBox = questPanel.Find("MissionReward").GetComponent<RectTransform>();
-                    RectTransform textBox = questPanel.Find("Name").GetComponent<RectTransform>();
-                    RectTransform descriptionBox = questPanel.Find("Description").GetComponent<RectTransform>();
+                    RectTransform TextBox = questPanel.Find("Name").GetComponent<RectTransform>();
+                    RectTransform DescriptionBox = questPanel.Find("Description").GetComponent<RectTransform>();
                     RectTransform mask = questPanel.Find("MissionReward/Trophies/Image").GetComponent<RectTransform>();
                     TextMeshProUGUI questName = questPanel.Find("Name").GetComponent<TextMeshProUGUI>();
                     TextMeshProUGUI questDescription = questPanel.Find("Description").GetComponent<TextMeshProUGUI>();
@@ -285,14 +285,14 @@ public partial class MenuManager
 
                     if (toggle == quest.masterQuest.questName)
                     {
-                        if (Animate && quest.isExpanded) // toggle expansion, animate collapse
+                        if (animate && quest.isExpanded) // toggle expansion, animate collapse
                         {
                             questPanel.DOScale(new Vector3(0f, 0f, 1f), 0.6f).SetEase(Ease.InCirc);
                             questPanel.DOSizeDelta(new Vector3(0f, -9f, 0.8f), 0.8f).SetEase(Ease.InCirc);
                             quest.isExpanded = false;
                         }
 
-                        else if (Animate && !quest.isExpanded) // toggle collapse, animate expansion
+                        else if (animate && !quest.isExpanded) // toggle collapse, animate expansion
                         {
                             questPanel.DOSizeDelta(new Vector3(1155, 131, 1), 0.3f).SetEase(Ease.InCirc);
                             questPanel.DOScale(new Vector3(1, 1, 1), 0.4f).SetEase(Ease.InCirc);
@@ -335,7 +335,7 @@ public partial class MenuManager
                 // in progress
 
                 RectTransform
-                    questPanel = Instantiate(pfQuestDefault, questParent).GetComponent<RectTransform>(); // Default
+                    questPanel = Instantiate(pf_QuestDefault, QuestParent).GetComponent<RectTransform>(); // Default
 
                 questPanel.SetSiblingIndex(quest.questID);
 
@@ -391,7 +391,7 @@ public partial class MenuManager
             {
                 // in progress Master
                 RectTransform claimsPanel =
-                    Instantiate(pfQuestDefault, claimsParent).GetComponent<RectTransform>(); // Default
+                    Instantiate(pf_QuestDefault, ClaimsParent).GetComponent<RectTransform>(); // Default
 
                 claimsPanel.SetSiblingIndex(quest.questID);
                 Debug.Log($"Quest Name: {quest.questName} | QuestID {claimsPanel.GetSiblingIndex()}");
@@ -439,7 +439,7 @@ public partial class MenuManager
             if (isClaimsOn && quest.isMasterQuest && quest.isDone && !quest.questRewardClaimed)
             {
                 RectTransform claimsPanel =
-                    Instantiate(pfQuestComplete, claimsParent).GetComponent<RectTransform>(); // Completed
+                    Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
 
                 claimsPanel.SetSiblingIndex(quest.questID);
                 Debug.Log(
@@ -479,7 +479,7 @@ public partial class MenuManager
             {
                 // completed subs
                 RectTransform claimsPanel =
-                    Instantiate(pfQuestComplete, claimsParent).GetComponent<RectTransform>(); // Completed
+                    Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
 
                 claimsPanel.SetSiblingIndex(quest.questID);
 
@@ -520,7 +520,7 @@ public partial class MenuManager
             if (isClaimsOn && !quest.isSubQuest && !quest.isMasterQuest && quest.isDone && !quest.questRewardClaimed)
             {
                 RectTransform claimsPanel =
-                    Instantiate(pfQuestComplete, claimsParent).GetComponent<RectTransform>(); // Completed
+                    Instantiate(pf_QuestComplete, ClaimsParent).GetComponent<RectTransform>(); // Completed
 
                 claimsPanel.SetSiblingIndex(quest.questID);
 
@@ -564,7 +564,7 @@ public partial class MenuManager
                 }
 
                 RectTransform claimedPanel =
-                    Instantiate(pfQuestClaimed, questParent).GetComponent<RectTransform>(); // Default
+                    Instantiate(pf_QuestClaimed, QuestParent).GetComponent<RectTransform>(); // Default
 
                 claimedPanel.SetSiblingIndex(quest.questID); // quest limit
 
@@ -606,10 +606,10 @@ public partial class MenuManager
                     upButton.localScale = quest.toggleMasterSub switch
                     {
                         // start position, subQuests will now collapse, change to DOWN icon
-                        false when Animate => new Vector3(upButton.localScale.x, -1f, upButton.localScale.z),
+                        false when animate => new Vector3(upButton.localScale.x, -1f, upButton.localScale.z),
 
                         // after toggle, subQuests will now expand, change to UP icon
-                        true when Animate => new Vector3(upButton.localScale.x, 1f, upButton.localScale.z)
+                        true when animate => new Vector3(upButton.localScale.x, 1f, upButton.localScale.z)
                     };
                 }
 
@@ -638,7 +638,7 @@ public partial class MenuManager
             if (quest.isSubQuest && quest.masterQuest.questRewardClaimed)
             {
                 RectTransform claimedPanel =
-                    Instantiate(pfQuestClaimed, questParent).GetComponent<RectTransform>(); // Default
+                    Instantiate(pf_QuestClaimed, QuestParent).GetComponent<RectTransform>(); // Default
 
                 claimedPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1155f);
 
@@ -670,7 +670,7 @@ public partial class MenuManager
 
                 if (toggle == quest.masterQuest.questName)
                 {
-                    switch (Animate)
+                    switch (animate)
                     {
                         // toggle expansion, animate collapse
                         case true when quest.isExpanded:
@@ -713,7 +713,7 @@ public partial class MenuManager
             if (!quest.isMasterQuest && !quest.isSubQuest)
             {
                 RectTransform claimedPanel =
-                    Instantiate(pfQuestClaimed, questParent).GetComponent<RectTransform>(); // Default
+                    Instantiate(pf_QuestClaimed, QuestParent).GetComponent<RectTransform>(); // Default
 
                 claimedPanel.SetSiblingIndex(quest.questID);
 
@@ -776,12 +776,12 @@ public partial class MenuManager
 
     public void SubQuestsShowing(Quest quest)
     {
-        Animate = true;
+        animate = true;
         Debug.Log($"Quest name: {quest.questName}");
         UpdateQuestList(quest.questName);
         quest.isExpanded = !quest.isExpanded;
         quest.toggleMasterSub = !quest.toggleMasterSub;
-        Animate = false;
+        animate = false;
     }
 
     public void QuestCompletePanel(Quest quest, Quest[] childQuests)

@@ -148,7 +148,7 @@ public class ShopManager : MonoBehaviour
         {
             Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
             Inventory.Instance.BuyItem(activeItem);
-            NotificationFader.Instance.CallFadeInOut(
+            NotificationFader.instance.CallFadeInOut(
                 "You have bought a " + activeItem.itemName + " for <color=#E0A515>" + activeItem.valueInCoins +
                 "</color> gold coins. Item has been added to your inventory.", activeItem.itemsImage, 3f, 1400f, 30);
             UpdateShopItemsInventory();
@@ -158,7 +158,7 @@ public class ShopManager : MonoBehaviour
 
         else if (activeItem.valueInCoins > Thulgran.ThulgranGold)
         {
-            NotificationFader.Instance.CallFadeInOut(
+            NotificationFader.instance.CallFadeInOut(
                 "<color=#C60B0B>You're too poor!</color> The item costs <color=#E0A515>" + activeItem.valueInCoins +
                 " </color>and you have <color=#E0A515>" + Thulgran.ThulgranGold + "</color> gold coins.",
                 activeItem.itemsImage, 3f, 1400f, 30);

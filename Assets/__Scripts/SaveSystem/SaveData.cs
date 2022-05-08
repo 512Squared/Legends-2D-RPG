@@ -113,7 +113,7 @@ public class SaveData
         public bool firstPopulate;
     }
 
-    public QuestManager questManagerData;
+    public QuestManager QuestManagerData;
 
     #endregion
 
@@ -152,18 +152,16 @@ public class SaveData
     [Serializable]
     public struct DroppedItemsData
     {
-        public DroppedItemsData(Vector3 itemPosition, int itemPickupPlace, string itemDropGUID, bool dropped)
+        public DroppedItemsData(Vector3 itemPosition, int itemPickupPlace, string itemDropGUID)
         {
             this.itemPosition = itemPosition;
             this.itemPickupPlace = itemPickupPlace;
             this.itemDropGUID = itemDropGUID;
-            this.dropped = dropped;
         }
 
         public Vector3 itemPosition;
         public int itemPickupPlace;
         public string itemDropGUID;
-        public bool dropped;
     }
 
     public List<DroppedItemsData> droppedItemsData = new();

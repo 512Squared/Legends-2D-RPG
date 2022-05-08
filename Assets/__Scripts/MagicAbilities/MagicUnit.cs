@@ -2,23 +2,11 @@
 using UnityEngine;
 
 public class MagicUnit : MonoBehaviour
-{    public enum MagicType
+{
 
-     
-         {
-        Fireball, Fire, FireRain, IceNova, IceShards, Hammer, LightStrike, LightBlink, MeleeSlash, MeleeAoE,
-        MeleeCone,
-        Healing, AreaHealing, Summo
-    , 
-Curse, LifeDrain
-    }
-
-    publ
-ic MagicType magicType;
-
-    public enum MagicEffect { Speed, Defence, Hp, Attack, 
-Area, Enemies, Control }
-
+    public enum MagicType { Fireball, Fire, FireRain, IceNova, IceShards, Hammer, LightStrike, LightBlink, MeleeSlash, MeleeAoE, MeleeCone, Healing, AreaHealing, Summon, Curse, LifeDrain }
+    public MagicType magicType;
+    public enum MagicEffect { Speed, Defence, HP, Attack, Area, Enemies, Control }
     public MagicEffect magicAffect;
 
     public string magicName;
@@ -29,14 +17,17 @@ Area, Enemies, Control }
 
     public GameObject[] magicSlots;
 
-    public int level;
+    public int Level;
 
-    // Use this for initializaton
-    private void Start()
+    // Use this for initialization
+    void Start()
     {
+
     }
 
-    // Update is called once er frame    private void Update()
+    // Update is called once per frame
+    void Update()
     {
+
     }
 }

@@ -126,7 +126,7 @@ public class QuestElement : MonoBehaviour, ISaveable
     [HideInInspector]
     public string questElementGUID;
 
-    private bool _isLoading;
+    private bool isLoading;
 
     #endregion
 
@@ -187,7 +187,7 @@ public class QuestElement : MonoBehaviour, ISaveable
             HideOrRevealAnObject();
             SecondaryCollider();
             hasTriggered = true;
-            if (_isLoading) { Debug.Log($"Loading of element completed: {quest.questName}"); }
+            if (isLoading) { Debug.Log($"Loading of element completed: {quest.questName}"); }
         }
 
         else if (!HasMetConditions())
@@ -259,7 +259,7 @@ public class QuestElement : MonoBehaviour, ISaveable
 
         if (polyCollider) { polyCollider.enabled = true; }
 
-        if (!_isLoading) { StartCoroutine(DelayedMessage()); }
+        if (!isLoading) { StartCoroutine(DelayedMessage()); }
 
         //Debug.Log($"ActivateQuest called: {quest.questName}");
     }
@@ -438,7 +438,7 @@ public class QuestElement : MonoBehaviour, ISaveable
     {
         Debug.Log($"ActivateMessage called");
         yield return new WaitForSeconds(0.2f);
-        NotificationFader.Instance.CallFadeInOut(
+        NotificationFader.instance.CallFadeInOut(
             $"You have activated a new quest: <color=#E0A515>{quest.questName}</color>.{quest.onActivateMessage}",
             quest.questImage,
             5f,

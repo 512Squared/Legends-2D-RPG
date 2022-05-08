@@ -17,15 +17,19 @@ namespace FlyingWormConsole3.LiteNetLib
         {
             _id = id;
             _reliable = reliable;
-            if (_reliable) { _ackPacket = new NetPacket(PacketProperty.Ack, 0) {ChannelId = id}; }        protected override bool SendNextPackets()
+            if (_reliable)
+                _ackPacket = new NetPacket(PacketProperty.Ack, 0) {ChannelId = id};
+        }
+
+        protected override bool SendNextPackets()
         {
             if (_reliable && OutgoingQueue.Count == 0)
             {
-                long currentTime = DateTime.Utcks;
+                long currentTime = DateTime.UtcNow.Ticks;
                 long packetHoldTime = currentTime - _lastPacketSendTime;
                 if (packetHoldTime >= Peer.ResendDelay * TimeSpan.TicksPerMillisecond)
                 {
-                    NetPacket packet = NetPacketstPacket;
+                    var packet = _lastPacket;
                     if (packet != null)
                     {
                         _lastPacketSendTime = currentTime;
@@ -47,7 +51,7 @@ namespace FlyingWormConsole3.LiteNetLib
 
                         if (_reliable && OutgoingQueue.Count == 0)
                         {
-                            _lastPacketSendTime = DateTime.UtcNs;
+                            _lastPacketSendTime = DateTime.UtcNow.Ticks;
                             _lastPacket = packet;
                         }
                         else
@@ -70,19 +74,19 @@ namespace FlyingWormConsole3.LiteNetLib
 
         public override bool ProcessPacket(NetPacket packet)
         {
-            if (packet.IsFragmented) { return false; }
-
- { return false; }y
- == PacketProperty.Ack)
+            if (packet.IsFragmented)
+                return false;
+            if (packet.Property == PacketProperty.Ack)
             {
-                if (_reliable && _lastPacket != null && packet.Sequence == _lastPacket.Sequence) { _lastPacket = null; }
-
-      { _lastPacket = null; } 
-           int relative = NetUtils.RelativeSequenceNumber(packet.Sequence, _remoteSequence);
+                if (_reliable && _lastPacket != null && packet.Sequence == _lastPacket.Sequence)
+                    _lastPacket = null;
+                return false;
+            }
+            int relative = NetUtils.RelativeSequenceNumber(packet.Sequence, _remoteSequence);
             bool packetProcessed = false;
             if (packet.Sequence < NetConstants.MaxSequence && relative > 0)
             {
-                if (Peer.NetManager.EnableStatistics)
+                if (Peer.NetManager.EnableStatistics) 
                 {
                     Peer.Statistics.AddPacketLoss(relative - 1);
                     Peer.NetManager.Statistics.AddPacketLoss(relative - 1);
@@ -90,8 +94,8 @@ namespace FlyingWormConsole3.LiteNetLib
 
                 _remoteSequence = packet.Sequence;
                 Peer.NetManager.CreateReceiveEvent(
-                    packet,
-                    _reliable ? DeliveryMethod.ReliableSequenced : DeliveryMethod.Sequenced,
+                    packet, 
+                    _reliable ? DeliveryMethod.ReliableSequenced : DeliveryMethod.Sequenced, 
                     NetConstants.ChanneledHeaderSize,
                     Peer);
                 packetProcessed = true;

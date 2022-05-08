@@ -16,9 +16,9 @@ public class SecretShopSection : MonoBehaviour
 
     [GUIColor(1f, 1f, 0.215f)] public bool isSecretPanelOpen;
     [GUIColor(1f, 1f, 0.215f)] public GameObject definedButton;
-    [GUIColor(1f, 1f, 0.215f)] public UnityEvent onClick = new();
-    private int _hitNumber = 0;
-    private bool _isImageSpriteOn = false;
+    [GUIColor(1f, 1f, 0.215f)] public UnityEvent OnClick = new();
+    private int hitNumber = 0;
+    private bool isImageSpriteOn = false;
     public SpriteRenderer bell;
     public Sprite bellImageOn, bellImageOff;
 
@@ -47,12 +47,12 @@ public class SecretShopSection : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log(hit.transform.name + " has been hit with a raycast");
-                if (_hitNumber < 1)
+                if (hitNumber < 1)
                 {
-                    onClick.Invoke();
+                    OnClick.Invoke();
                     StartCoroutine(ResetBell());
                     SetImageBool();
-                    _hitNumber++;
+                    hitNumber++;
                 }
             }
 
@@ -62,12 +62,12 @@ public class SecretShopSection : MonoBehaviour
                 if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                 {
                     Debug.Log(hit.transform.name);
-                    if (_hitNumber < 1)
+                    if (hitNumber < 1)
                     {
-                        onClick.Invoke();
+                        OnClick.Invoke();
                         StartCoroutine(ResetBell());
                         SetImageBool();
-                        _hitNumber++;
+                        hitNumber++;
                     }
                 }
             }
@@ -78,17 +78,17 @@ public class SecretShopSection : MonoBehaviour
             }
         }
 
-        else if (hit.collider != null && hit.collider.gameObject.CompareTag("settingsButton") && _hitNumber < 1)
+        else if (hit.collider != null && hit.collider.gameObject.CompareTag("settingsButton") && hitNumber < 1)
         {
             StartCoroutine(ResetBell());
-            _hitNumber++;
+            hitNumber++;
         }
     }
 
     private IEnumerator ResetBell()
     {
         yield return new WaitForSeconds(1f);
-        _hitNumber = 0;
+        hitNumber = 0;
     }
 
     public void OpenSecretPanel()
@@ -120,19 +120,19 @@ public class SecretShopSection : MonoBehaviour
         ShopManager.Instance.ShopArmouryBool();
     }
 
-    public void ShopId(Shop parsed_ShopType_Enum)
+    public void ShopId(Shop parsed_shopType_enum)
     {
-        ShopManager.Instance.ShopType(parsed_ShopType_Enum);
+        ShopManager.Instance.ShopType(parsed_shopType_enum);
     }
 
     public void SetImageBool()
     {
-        _isImageSpriteOn = !_isImageSpriteOn;
-        if (_isImageSpriteOn == true)
+        isImageSpriteOn = !isImageSpriteOn;
+        if (isImageSpriteOn == true)
         {
             bell.sprite = bellImageOn;
         }
-        else if (_isImageSpriteOn == false)
+        else if (isImageSpriteOn == false)
         {
             bell.sprite = bellImageOff;
         }
@@ -141,10 +141,10 @@ public class SecretShopSection : MonoBehaviour
     public void SetShopType(string scene)
     {
         Debug.Log($"SetShopType called: {scene}");
-        Shop enumShopType = (Shop)Enum.Parse(typeof(Shop), scene);
-        shopType = enumShopType;
-        ShopId(enumShopType);
-        ShopManager.Instance.shopType = enumShopType;
+        Shop _enum_shopType = (Shop)Enum.Parse(typeof(Shop), scene);
+        shopType = _enum_shopType;
+        ShopId(_enum_shopType);
+        ShopManager.Instance.shopType = _enum_shopType;
         Debug.Log("Shop type now set: " + shopType); // don't forget to change onclick string
     }
 }

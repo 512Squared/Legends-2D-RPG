@@ -2,35 +2,34 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[zable]
+[System.Serializable]
 public class QuestRewards
 {
+
     public enum RewardTypes
     {
-        None,
-        Hp,
-        Gold,
-        Skills,
-        ImmuneToDragonBreath
+        none,
+        hp,
+        gold,
+        skills,
+        immuneToDragonBreath
     }
-
     [HideInInlineEditors]
     public enum PlayerClasses
     {
         Thulgran,
-        Npc,
-        All,
-        Enemy
+        NPC,
+        all,
+        enemy
     }
 
     public RewardTypes rewardType;
-
     [HideInInspector]
     public PlayerClasses playerClass;
 
     [EnumToggleButtons]
     public Recipients recipients;
-
+    
     public int rewardAmount;
 }
 
@@ -38,7 +37,8 @@ public class QuestRewards
 public enum Recipients
 {
     Thulgran = 1 << 1, // 1
-    Npc = 1 << 2, // 2
-    Enemy = 1 << 3, // 4
-    All = Thulgran | Npc | Enemy
+    NPC = 1 << 2, // 2
+    enemy = 1 << 3, // 4
+    all = Thulgran | NPC | enemy
 }
+

@@ -92,10 +92,10 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
     {
         switch (rewards.playerClass)
         {
-            case QuestRewards.PlayerClasses.Npc:
-            case QuestRewards.PlayerClasses.All:
+            case QuestRewards.PlayerClasses.NPC:
+            case QuestRewards.PlayerClasses.all:
                 {
-                    if (rewards.rewardType == QuestRewards.RewardTypes.Hp)
+                    if (rewards.rewardType == QuestRewards.RewardTypes.hp)
                     {
                         characterHp += rewards.rewardAmount;
                     }
@@ -147,8 +147,8 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
             if (characterHp > maxHp)
             {
                 characterHp = maxHp;
-                NotificationFader.Instance.CallFadeInOut(
-                    $"{playerName}'s HP is <color=#E0A515>full</color> - well done!", Sprites.Instance.hpSprite,
+                NotificationFader.instance.CallFadeInOut(
+                    $"{playerName}'s HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
                     3f,
                     1400, 30);
                 Debug.Log($"Yo");
@@ -168,8 +168,8 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
             if (characterMana > maxMana)
             {
                 characterMana = maxMana;
-                NotificationFader.Instance.CallFadeInOut(
-                    $"{playerName}'s Mana is <color=#E0A515>full</color> - well done!", Sprites.Instance.manaSprite, 3f,
+                NotificationFader.instance.CallFadeInOut(
+                    $"{playerName}'s Mana is <color=#E0A515>full</color> - well done!", Sprites.instance.manaSprite, 3f,
                     1400, 30);
                 Debug.Log($"Yo");
             }

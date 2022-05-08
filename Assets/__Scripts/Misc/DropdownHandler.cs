@@ -7,22 +7,22 @@ using System.Linq;
 
 public class DropdownHandler : MonoBehaviour
 {
-    public TextMeshProUGUI textBox;
+    public TextMeshProUGUI TextBox;
 
-    private int _select;
+    private int select;
 
     [SerializeField] private PlayerStats[] characters;
 
-    public static DropdownHandler Instance;
+    public static DropdownHandler instance;
 
 
-    private bool _isTeamMember;
+    private bool isTeamMember;
 
 
     // Start is called before the first frame update
     private void Start()
     {
-        Instance = this;
+        instance = this;
 
         TMP_Dropdown dropdown = transform.GetComponent<TMP_Dropdown>();
 
@@ -33,8 +33,8 @@ public class DropdownHandler : MonoBehaviour
 
         for (int i = 0; i < characters.Length; i++)
         {
-            _isTeamMember = characters[i].isTeamMember;
-            if (_isTeamMember == true)
+            isTeamMember = characters[i].isTeamMember;
+            if (isTeamMember == true)
             {
                 dropdownListOfPlayers.Add(characters[i].playerName);
             }

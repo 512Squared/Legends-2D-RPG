@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class UIFader : MonoBehaviour
 {
-    public static UIFader Instance;
 
+    public static UIFader instance;
+       
     public CanvasGroup uiElement;
 
-    [SerializeField] private private float fadeTime = 0.3f;
+    [SerializeField] float fadeTime = 0.3f;
 
-    private private void Start()
+    void Start()
     {
-        Instance = this;
+        instance = this;        
     }
 
 
@@ -34,20 +35,27 @@ public class UIFader : MonoBehaviour
 
     public IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float lerpTime)
     {
-        float timeStartedLerping = Time.time;
-        float timeSinceStarted = Time.time - timeStartedLerping;
-        float percentageComplete = timeSinceStarted / lerpTime;
 
+        float _timeStartedLerping = Time.time;
+        float timeSinceStarted = Time.time - _timeStartedLerping;
+        float percentageComplete = timeSinceStarted / lerpTime;
+        
         while (true)
         {
-            timeSinceStarted = Time.time - timeStartedLerping;
+            timeSinceStarted = Time.time - _timeStartedLerping;
             percentageComplete = timeSinceStarted / lerpTime;
 
             float currentValue = Mathf.Lerp(start, end, percentageComplete);
 
             cg.alpha = currentValue;
 
-            if (percentageComplete >= 1) { break; { break; }         yield return new WaitForEndOfFrame();
+            if (percentageComplete >= 1) break;
+
+            yield return new WaitForEndOfFrame();
         }
+
     }
+
 }
+
+

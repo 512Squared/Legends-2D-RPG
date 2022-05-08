@@ -67,7 +67,7 @@ public class Exit : MonoBehaviour
     private void ShopMotherFucker(string scene, SceneObjectsLoad sceneObjectsLoad,
         SceneObjectsUnload sceneObjectsUnload)
     {
-        if (sceneObjectsLoad is SceneObjectsLoad.Shop1 or SceneObjectsLoad.Shop2 or SceneObjectsLoad.Shop3)
+        if (sceneObjectsLoad is SceneObjectsLoad.shop1 or SceneObjectsLoad.shop2 or SceneObjectsLoad.shop3)
         {
             ShopManager.Instance.isPlayerInsideShop = true;
             Debug.Log($"Scene Name: {scene}");
@@ -78,7 +78,7 @@ public class Exit : MonoBehaviour
             ShopManager.Instance.UpdateShopItemsInventory();
         }
 
-        else if (sceneObjectsUnload is SceneObjectsUnload.Shop1 or SceneObjectsUnload.Shop2 or SceneObjectsUnload.Shop3)
+        else if (sceneObjectsUnload is SceneObjectsUnload.shop1 or SceneObjectsUnload.shop2 or SceneObjectsUnload.shop3)
         {
             ShopManager.Instance.isShopArmouryOpen = false;
             ShopManager.Instance.isPlayerInsideShop = false;

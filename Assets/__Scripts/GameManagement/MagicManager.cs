@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class MagicManager : MonoBehaviour
 {
-    [SerializeField] private MagicUnit unitPrefab;
+    [SerializeField] private MagicUnit _unitPrefab;
     private MagicUnit _spawn;
 
-    private List<MagicUnit> _magicUnits = newt is called before the first frame update
+    private List<MagicUnit> _MagicUnits = new List<MagicUnit>();
+
+    // Start is called before the first frame update
     private void Start()
     {
         //_spawn.magicSlots = new GameObject[7];

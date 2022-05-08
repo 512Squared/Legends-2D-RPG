@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TeamWeaponryPopup : MonoBehaviour
 {
-    private string _weaponryType;
+    private string weaponryType;
     public CanvasGroup fadeImage;
     public CanvasGroup fadeImage2;
 
@@ -13,7 +13,7 @@ public class TeamWeaponryPopup : MonoBehaviour
 
     public void SetWeaponryType(string type)
     {
-        _weaponryType = type;
+        weaponryType = type;
     }
 
     public void Open(int chosenPlayer)
@@ -24,7 +24,7 @@ public class TeamWeaponryPopup : MonoBehaviour
         fadeImage.blocksRaycasts = true;
         fadeImage.interactable = true;
 
-        MenuManager.Instance.TeamWeaponryPopup(chosenPlayer, _weaponryType);
+        MenuManager.Instance.TeamWeaponryPopup(chosenPlayer, weaponryType);
         transform.LeanScale(Vector3.one, 0.6f).setEaseOutBack();
     }
 
@@ -39,7 +39,7 @@ public class TeamWeaponryPopup : MonoBehaviour
 
     public void Change()
     {
-        MenuManager.Instance.SortByItemType(_weaponryType);
+        MenuManager.Instance.SortByItemType(weaponryType);
         transform.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
         fadeImage.LeanAlpha(0, 0.5f);
         fadeImage2.LeanAlpha(0f, 0.5f);
