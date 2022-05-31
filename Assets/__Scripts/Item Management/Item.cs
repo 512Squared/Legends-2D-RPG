@@ -4,7 +4,6 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 
 [RequireComponent(typeof(GenerateGUID))]
-[RequireComponent(typeof(DropItem))]
 public class Item : MonoBehaviour, ISaveable
 {
     #region SERIALIZATION
@@ -14,10 +13,12 @@ public class Item : MonoBehaviour, ISaveable
     [Space] [ItemCodeDescription] [SerializeField]
     private int itemCode = 1000;
 
-    [Space] public SpriteRenderer spriteRenderer;
+    [Space]
+    [Required]
+    public SpriteRenderer spriteRenderer;
 
+    [Required]
     public PolygonCollider2D polyCollider;
-
 
     public string itemGuid;
 
@@ -44,42 +45,36 @@ public class Item : MonoBehaviour, ISaveable
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
-    [BoxGroup("Data/a")]
     [LabelWidth(100)]
     [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemCodeSo = 1000;
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
-    [BoxGroup("Data/a")]
     [LabelWidth(100)]
     [GUIColor(0.8f, 0.286f, 0.780f)]
     public int valueInCoins;
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
-    [BoxGroup("Data/a")]
     [LabelWidth(100)]
     [GUIColor(0.8f, 0.286f, 0.780f)]
     public int amountOfEffect;
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
-    [BoxGroup("Data/a")]
     [LabelWidth(100)]
     [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemAttack;
 
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
-    [BoxGroup("Data/a")]
     [LabelWidth(100)]
     [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemDefence;
 
     [HorizontalGroup("Info")]
     [TableColumnWidth(220)]
-    [BoxGroup("Info/a")]
     [LabelWidth(90)]
     [TextArea(1, 5)]
     [GUIColor(0.4f, 0.986f, 0.380f)]
@@ -88,7 +83,6 @@ public class Item : MonoBehaviour, ISaveable
     [Space]
     [HorizontalGroup("Info")]
     [TableColumnWidth(220)]
-    [BoxGroup("Info/a")]
     [LabelWidth(90)]
     [TextArea(7, 7)]
     [GUIColor(0.4f, 0.986f, 0.380f)]
@@ -97,59 +91,20 @@ public class Item : MonoBehaviour, ISaveable
     [Space]
     [HorizontalGroup("Bools")]
     [TableColumnWidth(120)]
-    [BoxGroup("Bools/a")]
     [LabelWidth(90)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool itemSelected;
 
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [BoxGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isNewItem = true;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [BoxGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isShopItem;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [BoxGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isQuestObject;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [BoxGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool pickUpNotice = true;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [BoxGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isRelic;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [BoxGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isStackable;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [BoxGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isPickedUp;
+    public bool isDeletedStack;
+    public bool hasBeenDropped;
+    public bool isPrefab;
 
     [HorizontalGroup("Sprite")]
     [TableColumnWidth(120)]
@@ -173,7 +128,8 @@ public class Item : MonoBehaviour, ISaveable
 
     public int ItemCode { get => itemCode; set => itemCode = value; }
 
-    private DropItem _dropItem;
+    public int itemPickupPlace;
+    public Vector3 itemPosition;
 
     #endregion
 
@@ -187,6 +143,23 @@ public class Item : MonoBehaviour, ISaveable
         spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>(0);
     }
 
+
+    private void OnEnable()
+    {
+        Actions.OnDropItem += DropAnItem;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnDropItem -= DropAnItem;
+    }
+
+
+    private void Start()
+    {
+        itemGuid = GetComponent<GenerateGUID>().GUID;
+        GetItemDetailsFromScriptObject(this);
+    }
 
     public Item GetItemDetailsFromScriptObject(Item item)
     {
@@ -219,12 +192,6 @@ public class Item : MonoBehaviour, ISaveable
         return item;
     }
 
-    private void Start()
-    {
-        itemGuid = GetComponent<GenerateGUID>().GUID;
-        _dropItem = GetComponent<DropItem>();
-        GetItemDetailsFromScriptObject(this);
-    }
 
     private int CalculateValueInCoins(int initialValue)
     {
@@ -253,8 +220,9 @@ public class Item : MonoBehaviour, ISaveable
     {
         if (!collision.CompareTag("Player") || isQuestObject) { return; }
 
-        _dropItem.SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
+        SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
         SelfDeactivate();
+
         if (pickUpNotice)
         {
             NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage,
@@ -262,7 +230,13 @@ public class Item : MonoBehaviour, ISaveable
                 30);
         }
 
+        if (isPrefab)
+        {
+            NewObjects.Instance.RemoveItem(this);
+        }
+
         isPickedUp = true;
+        hasBeenDropped = false;
         Inventory.Instance.AddItems(this);
     }
 
@@ -376,16 +350,79 @@ public class Item : MonoBehaviour, ISaveable
 
     public void SelfDeactivate()
     {
-        spriteRenderer.enabled = false;
-        polyCollider.enabled = false;
+        if (polyCollider)
+        {
+            polyCollider.enabled = false;
+            Debug.Log($"polyCollider enabled: {polyCollider.enabled}");
+        }
+
+        if (spriteRenderer) { spriteRenderer.enabled = false; }
+    }
+
+    public void SelfDestruct()
+    {
+        SetItemParent(GameManager.Instance.deletedItems, true);
+        isDeletedStack = true;
+    }
+
+
+    private void DropAnItem(Item droppedItem)
+    {
+        if (droppedItem.itemGuid != itemGuid) { return; }
+
+        SelfActivate();
+        isPickedUp = false;
+        hasBeenDropped = true;
+        isNewItem = true;
+        quantity = 1;
+        if (droppedItem.isQuestObject)
+        {
+            droppedItem.polyCollider.enabled = true;
+            droppedItem.spriteRenderer.enabled = true;
+            droppedItem.isQuestObject = false;
+            droppedItem.pickUpNotice = true;
+        }
+
+        DropItemPosition(this);
+        NotificationFader.instance.CallFadeInOut($"You dropped the {droppedItem.itemName}", droppedItem.itemsImage,
+            3f, 1400f,
+            30);
+    }
+
+    private void DropItemPosition(Item itemToDrop)
+    {
+        itemPickupPlace = PlayerGlobalData.Instance.currentSceneIndex;
+        if (!itemToDrop.isQuestObject) { SetItemParent(GameManager.Instance.pickupParents[itemPickupPlace], true); }
+
+        Transform playerTransform = PlayerGlobalData.Instance.gameObject.GetComponent<Transform>();
+        transform.position = playerTransform.position;
+        transform.position = new Vector3(transform.position.x, transform.position.y - 1.34f, transform
+            .position.z);
+        itemPosition = transform.position;
+    }
+
+    private void SelfActivate()
+    {
+        spriteRenderer.enabled = true;
+        polyCollider.enabled = true;
+        string guid = itemGuid[..8];
+        Debug.Log(
+            $"Dropped {itemName} | Visible: {spriteRenderer.enabled} | Position: {transform.position} | GUID: {guid}");
+    }
+
+    public void SetItemParent(Transform newParent, bool worldSpace)
+    {
+        transform.SetParent(newParent, worldSpace);
     }
 
     #region Implementation of ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        SaveData.ItemsData id = new(itemGuid, quantity, pickup, isPickedUp, isNewItem, isShopItem, spriteRenderer,
-            polyCollider);
+        itemPosition = transform.position;
+        SaveData.ItemsData id = new(itemGuid, itemName, quantity, pickup, isPickedUp, isNewItem, isShopItem,
+            spriteRenderer, polyCollider, itemPosition, itemPickupPlace, isDeletedStack, hasBeenDropped, isPrefab,
+            isQuestObject);
 
         a_SaveData.itemsData.Add(id);
     }
@@ -393,7 +430,9 @@ public class Item : MonoBehaviour, ISaveable
     public void LoadFromSaveData(SaveData a_SaveData)
     {
         itemGuid = GetComponent<GenerateGUID>()?.GUID;
-        if (GetComponent<GenerateGUID>() == null) { Debug.Log($"GUID is Null: {itemName}"); }
+
+        polyCollider = GetComponent<PolygonCollider2D>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         foreach (SaveData.ItemsData id in a_SaveData.itemsData.Where(id => id.itemGuid == itemGuid))
         {
@@ -404,19 +443,48 @@ public class Item : MonoBehaviour, ISaveable
             spriteRenderer = id.spriteRenderer;
             polyCollider = id.polyCollider;
             pickup = id.pickup;
+            isDeletedStack = id.isDeletedStack;
+            hasBeenDropped = id.hasBeenDropped;
+            itemPosition = id.itemPosition;
+            itemPickupPlace = id.itemPickupPlace;
+            isPrefab = id.isPrefab;
+            isQuestObject = id.isQuestObject;
+            transform.position = itemPosition;
+
             if (id.isPickedUp)
             {
                 polyCollider.enabled = false;
                 spriteRenderer.enabled = false;
-                Debug.Log($"Poly: LoadfromSave {itemName} | poly status: {polyCollider.enabled}");
+                SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
+                Debug.Log($"Poly: LoadFromSave {id.itemName} | poly status: {id.polyCollider.enabled}");
             }
 
-            DropItem dropItem = GetComponent<DropItem>();
-            dropItem.itemPickupPlace = pickup;
-            dropItem.SetItemParent(GameManager.Instance.pickupParents[pickup], true);
+            string guid = id.itemGuid[..8];
+
+            if (!id.isPickedUp && id.hasBeenDropped)
+            {
+                SetItemParent(GameManager.Instance.pickupParents[id.itemPickupPlace]
+                    .transform, true); // pickupParent is where dropped item is stored ready for pickup
+                Debug.Log($"Dropped item put into correct box: {id.itemName} | GUID: {guid}");
+            }
+
+            if (isDeletedStack)
+            {
+                // Maybe Destroy
+
+                SetItemParent(GameManager.Instance.deletedItems, true);
+
+                if (polyCollider) { polyCollider.enabled = false; }
+
+                if (spriteRenderer) { spriteRenderer.enabled = false; }
+
+                Debug.Log($"Deleted item put into correct box: {id.itemName} | GUID: {guid}");
+            }
 
             break;
         }
+
+        if (GetComponent<GenerateGUID>() == null) { Debug.Log($"GUID is Null: {itemName}"); }
     }
 
     #endregion

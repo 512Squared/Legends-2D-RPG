@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1886274307985849949}
-  - component: {fileID: 1886274307985849950}
   - component: {fileID: 1886274307985849944}
   - component: {fileID: 1785893719}
   - component: {fileID: 1785893720}
@@ -30,32 +29,12 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.2, y: -3.15, z: 3.99}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4160075758888329293}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1886274307985849950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886274307985849948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f3bb30d8c5dd8449e6e0f78d24cb65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!60 &1886274307985849944
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -144,25 +123,30 @@ MonoBehaviour:
   itemCode: 1032
   spriteRenderer: {fileID: 1114475159906073071}
   polyCollider: {fileID: 1886274307985849944}
-  _so:
-    itemType: 0
-    affectType: 0
-    shop: 0
-    itemCode: 1000
-    valueInCoins: 0
-    amountOfEffect: 0
-    itemAttack: 0
-    itemDefence: 0
-    itemName: 
-    itemDescription: 
-    itemSelected: 0
-    isNewItem: 1
-    isShopItem: 0
-    isQuestObject: 0
-    pickUpNotice: 1
-    isRelic: 0
-    isStackable: 0
-    itemsImage: {fileID: 0}
+  itemGuid: 
+  itemType: 0
+  affectType: 0
+  shop: 0
+  itemCodeSo: 1000
+  valueInCoins: 0
+  amountOfEffect: 0
+  itemAttack: 0
+  itemDefence: 0
+  itemName: 
+  itemDescription: 
+  itemSelected: 0
+  isNewItem: 1
+  isShopItem: 0
+  isQuestObject: 0
+  pickUpNotice: 1
+  isRelic: 0
+  isStackable: 0
+  isPickedUp: 0
+  itemsImage: {fileID: 0}
+  pickup: 0
+  itemDefenceModifier: 0
+  itemAttackModifier: 0
+  amountOfEffectModifier: 0
 --- !u!1 &5137477501895512587
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,6 +174,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1886274307985849949}
   m_RootOrder: 0

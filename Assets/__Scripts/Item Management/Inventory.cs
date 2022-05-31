@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEditor;
 
 
 public class Inventory : MonoBehaviour, ISaveable
@@ -10,6 +11,8 @@ public class Inventory : MonoBehaviour, ISaveable
     private List<Item> _inventoryList;
     public List<Item> shopList;
     private List<Item> _initializeShop;
+
+    public GameObject itemPrefab;
 
 
     private Dictionary<int, ItemDetails> _itemDetailsDictionary;
@@ -47,6 +50,7 @@ public class Inventory : MonoBehaviour, ISaveable
 
             if (itemAlreadyInInventory)
             {
+                item.SelfDestruct();
                 return;
             }
 
@@ -118,17 +122,25 @@ public class Inventory : MonoBehaviour, ISaveable
                          item.itemName))
             {
                 itemInInventory.quantity--;
+                Debug.Log($"Quantity of {itemInInventory.itemName}s in Inventory is {itemInInventory.quantity}");
                 inventoryItem = itemInInventory;
+                break;
             }
 
             if (inventoryItem != null && inventoryItem.quantity <= 0)
             {
+                Debug.Log($"Inventory now empty of {inventoryItem.itemName}s");
+                // this resets the item quantity to 1, since previously it served as the inventory counter
                 Actions.OnDropItem?.Invoke(inventoryItem);
                 _inventoryList.Remove(inventoryItem);
-                Debug.Log($"{inventoryItem.itemName} dropped");
+                return;
+            }
+
+            if (inventoryItem != null && inventoryItem.quantity >= 1)
+            {
+                NewObjects.Instance.InstantiateDroppedObject(item);
             }
         }
-
         else
         {
             Actions.OnDropItem?.Invoke(item);

@@ -548,6 +548,13 @@ public class QuestElement : MonoBehaviour, ISaveable
 
                 if (spriteRenderer) { spriteRenderer.enabled = enabledAfterDone; }
             }
+
+            if (elementActivated && !elementCompleted && !hasTriggered)
+            {
+                if (polyCollider) { polyCollider.enabled = true; }
+
+                if (spriteRenderer) { spriteRenderer.enabled = true; }
+            }
         }
     }
 

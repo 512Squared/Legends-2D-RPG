@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.U2D;
 
 [Serializable]
 public class SaveData
@@ -122,11 +123,12 @@ public class SaveData
     [Serializable]
     public struct ItemsData
     {
-        public ItemsData(string itemGuid, int quantity, int pickup, bool isPickedUp, bool isNewItem, bool isShopItem,
-            SpriteRenderer
-                spriteRenderer, PolygonCollider2D polyCollider)
+        public ItemsData(string itemGuid, string itemName, int quantity, int pickup, bool isPickedUp, bool isNewItem,
+            bool isShopItem, SpriteRenderer spriteRenderer, PolygonCollider2D polyCollider, Vector3 itemPosition,
+            int itemPickupPlace, bool isDeletedStack, bool hasBeenDropped, bool isPrefab, bool isQuestObject)
         {
             this.itemGuid = itemGuid;
+            this.itemName = itemName;
             this.quantity = quantity;
             this.pickup = pickup;
             this.isPickedUp = isPickedUp;
@@ -134,37 +136,71 @@ public class SaveData
             this.isShopItem = isShopItem;
             this.spriteRenderer = spriteRenderer;
             this.polyCollider = polyCollider;
+            this.itemPosition = itemPosition;
+            this.itemPickupPlace = itemPickupPlace;
+            this.isDeletedStack = isDeletedStack;
+            this.hasBeenDropped = hasBeenDropped;
+            this.isPrefab = isPrefab;
+            this.isQuestObject = isQuestObject;
         }
 
         public string itemGuid;
+        public string itemName;
         public int quantity, pickup;
         public bool isNewItem;
         public bool isPickedUp;
-        public bool isShopItem;
+        public bool isShopItem, isDeletedStack, hasBeenDropped, isPrefab, isQuestObject;
         public SpriteRenderer spriteRenderer;
         public PolygonCollider2D polyCollider;
+        public Vector3 itemPosition;
+        public int itemPickupPlace;
     }
 
     public List<ItemsData> itemsData = new();
 
     #endregion
 
+    #region DroppedItemsData // dropped items+
+
     [Serializable]
     public struct DroppedItemsData
     {
-        public DroppedItemsData(Vector3 itemPosition, int itemPickupPlace, string itemDropGUID)
+        public DroppedItemsData(int itemCode, string itemGuid, string itemName, int quantity, int pickup, bool
+                isPickedUp, bool isShopItem, bool isNewItem, SpriteRenderer spriteRenderer,
+            PolygonCollider2D polyCollider,
+            Vector3 itemPosition, int itemPickupPlace, bool isDeletedStack)
         {
+            this.itemCode = itemCode;
+            this.itemGuid = itemGuid;
+            this.itemName = itemName;
+            this.quantity = quantity;
+            this.pickup = pickup;
+            this.isPickedUp = isPickedUp;
+            this.isDeletedStack = isDeletedStack;
+            this.isShopItem = isShopItem;
+            this.spriteRenderer = spriteRenderer;
+            this.polyCollider = polyCollider;
             this.itemPosition = itemPosition;
             this.itemPickupPlace = itemPickupPlace;
-            this.itemDropGUID = itemDropGUID;
+            this.isNewItem = isNewItem;
         }
 
+        public int itemCode;
+        public string itemGuid;
+        public string itemName;
+        public int quantity, pickup;
+        public bool isNewItem, isDeletedStack;
+        public bool isPickedUp;
+        public bool isShopItem;
+        public SpriteRenderer spriteRenderer;
+        public PolygonCollider2D polyCollider;
         public Vector3 itemPosition;
         public int itemPickupPlace;
-        public string itemDropGUID;
     }
 
-    public List<DroppedItemsData> droppedItemsData = new();
+    public List<DroppedItemsData> droppedItems = new();
+
+    #endregion
 
 
     #region Dialogue Data

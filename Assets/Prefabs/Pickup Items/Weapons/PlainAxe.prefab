@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2857239660931172458}
-  - component: {fileID: 2857239660931172468}
   - component: {fileID: 2857239660931172469}
   - component: {fileID: 2857239660931172462}
   - component: {fileID: 2857239660931172463}
@@ -36,27 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2857239660931172468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2857239660931172457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f3bb30d8c5dd8449e6e0f78d24cb65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!60 &2857239660931172469
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -174,27 +152,30 @@ MonoBehaviour:
   itemCode: 1003
   spriteRenderer: {fileID: 2370736277598156956}
   polyCollider: {fileID: 2857239660931172469}
-  _so:
-    itemType: 0
-    affectType: 0
-    shop: 0
-    itemCode: 1000
-    valueInCoins: 0
-    amountOfEffect: 0
-    itemAttack: 0
-    itemDefence: 0
-    itemName: 
-    itemDescription: 
-    itemSelected: 0
-    isNewItem: 1
-    isShopItem: 0
-    isQuestObject: 0
-    pickUpNotice: 1
-    isRelic: 0
-    isStackable: 0
-    itemsImage: {fileID: 0}
-  isPickedUp: 0
+  itemGuid: 
+  itemType: 0
+  affectType: 0
+  shop: 0
+  itemCodeSo: 1000
+  valueInCoins: 0
+  amountOfEffect: 0
+  itemAttack: 0
+  itemDefence: 0
+  itemName: 
+  itemDescription: 
+  itemSelected: 0
   isNewItem: 1
+  isShopItem: 0
+  isQuestObject: 0
+  pickUpNotice: 1
+  isRelic: 0
+  isStackable: 0
+  isPickedUp: 0
+  itemsImage: {fileID: 0}
+  pickup: 0
+  itemDefenceModifier: 0
+  itemAttackModifier: 0
+  amountOfEffectModifier: 0
 --- !u!1 &6472981204566848223
 GameObject:
   m_ObjectHideFlags: 0

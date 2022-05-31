@@ -574,7 +574,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         dayNightCycle.SetActive(true);
         isInventoryOn = false;
         GameManager.Instance.isInventoryOn = false;
-        Debug.Log($"isInventoryOn: {isInventoryOn}");
 
         isQuestsOn = false;
         isClaimsOn = false;
@@ -1750,7 +1749,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         isInventoryOn = !isInventoryOn;
         GameManager.Instance.isInventoryOn = !GameManager.Instance.isInventoryOn;
-        Debug.Log("IsInventoryOn status: " + isInventoryOn);
     }
 
     public void UpdateItemsInventory()
@@ -1761,8 +1759,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         weaponItems = 0;
         itemItems = 0;
         armourItems = 0;
-
-        Debug.Log($"Update Items Inventory Called");
 
         foreach (Transform itemSlot in itemBoxParent)
         {
@@ -1779,15 +1775,14 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 RectTransform itemSlot = Instantiate(itemBox, itemBoxParent).GetComponent<RectTransform>();
 
                 // show item image
-
                 Image itemsImage = itemSlot.Find("Items Image").GetComponent<Image>();
                 itemsImage.sprite = item.itemsImage;
 
                 TextMeshProUGUI itemsAmountText = itemSlot.Find("Amount Text").GetComponent<TextMeshProUGUI>();
-
                 itemsAmountText.text = item.quantity > 1 ? item.quantity.ToString() : "";
 
-                itemSlot.GetComponent<ItemButton>().itemOnButton = item; // this is a really important method
+                // this finds the ItemButton on the item prefab and assigns the item to it. When the button is pressed, that data can be used for the item info, use ietem etc. 
+                itemSlot.GetComponent<ItemButton>().itemOnButton = item;
 
                 int i = -1;
                 i = item.itemType switch
@@ -1816,12 +1811,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 {
                     // Removing focus from previously selected items 
 
-                    if (item.itemSelected == false)
+                    if (!item.itemSelected)
                     {
                         itemSlot.Find("Focus").GetComponent<Image>().enabled = false;
                         GameManager.Instance.isItemSelected = false;
 
-                        if (item.isNewItem == true)
+                        if (item.isNewItem)
                         {
                             itemSlot.Find("New Item").GetComponent<Image>().enabled = true;
                         }
@@ -1835,7 +1830,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                     // ITEM SORTING FOR SELECTED ITEM
 
-                    else if (item.itemSelected == true) // if item has been selected
+                    else if (item.itemSelected) // if item has been selected
                     {
                         item.itemSelected = false;
                         itemSlot.GetComponent<ButtonBounce>().AnimateItemSelection(); // button bounce
@@ -1859,9 +1854,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                         if (item.affectType == AffectType.Hp)
                         {
-                            Debug.Log(
-                                $"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect}");
-
                             textUseEquipTake.text = "Give";
 
 
@@ -1889,8 +1881,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                         if (item.affectType == AffectType.Speed)
                         {
-                            Debug.Log(
-                                $"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect}");
                             effectBox.GetComponent<CanvasGroup>().alpha = 1;
                             effectText.text = "x" + item.amountOfEffect.ToString();
                         }
@@ -1901,8 +1891,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 1;
                             effectText.text = "+" + item.amountOfEffect.ToString();
-                            Debug.Log("Food: " + item.amountOfEffect + " | " + "Alpha status: " +
-                                      GameObject.FindGameObjectWithTag("Effect").GetComponent<CanvasGroup>().alpha);
                         }
 
                         // SORT BY ARMOUR
@@ -1912,9 +1900,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                             item.itemType == ItemType.Shield)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log(
-                                $"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect} | Power: {item.itemAttack} | Defence: {item.itemDefence}");
-                            textUseEquipTake.text = "Equip";
                         }
 
                         // SORT BY WEAPON
@@ -1922,8 +1907,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         if (item.itemType == ItemType.Weapon)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
-                            Debug.Log(
-                                $"Type: {item.itemType} | Name: {item.itemName} | Effect: {item.amountOfEffect} | Weapon Power: {item.itemAttack} | Armour Defence: {item.itemDefence}");
                             textUseEquipTake.text = "Equip";
                         }
 
@@ -1940,26 +1923,20 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 }
                 // sorting strategy - destroy everything else but the chosen type
 
-                if (weaponBool == true)
+                if (weaponBool)
 
                 {
                     if (item.itemType == ItemType.Weapon)
                     {
                         itemSlot.gameObject.SetActive(true);
                     }
-                    else if (item.itemType == ItemType.Potion ||
-                             item.itemType == ItemType.Armour ||
-                             item.itemType == ItemType.Item ||
-                             item.itemType == ItemType.Skill ||
-                             item.itemType == ItemType.Food ||
-                             item.itemType == ItemType.Helmet ||
-                             item.itemType == ItemType.Shield ||
-                             item.itemType == ItemType.Relic)
+                    else if (item.itemType is ItemType.Potion or ItemType.Armour or ItemType.Item or ItemType.Skill
+                             or ItemType.Food or ItemType.Helmet or ItemType.Shield or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
-                else if (armourBool == true)
+                else if (armourBool)
 
                 {
                     if (item.itemType == ItemType.Armour)
@@ -1967,17 +1944,13 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         itemSlot.gameObject.SetActive(true);
                     }
 
-                    if (item.itemType == ItemType.Potion ||
-                        item.itemType == ItemType.Weapon ||
-                        item.itemType == ItemType.Item ||
-                        item.itemType == ItemType.Spell ||
-                        item.itemType == ItemType.Food ||
-                        item.itemType == ItemType.Relic)
+                    if (item.itemType is ItemType.Potion or ItemType.Weapon or ItemType.Item or ItemType.Skill
+                        or ItemType.Food or ItemType.Helmet or ItemType.Shield or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
-                else if (itemBool == true)
+                else if (itemBool)
 
                 {
                     if (item.itemType == ItemType.Item ||
@@ -1986,17 +1959,13 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         itemSlot.gameObject.SetActive(true);
                     }
 
-                    if (item.itemType == ItemType.Potion ||
-                        item.itemType == ItemType.Armour ||
-                        item.itemType == ItemType.Weapon ||
-                        item.itemType == ItemType.Spell ||
-                        item.itemType == ItemType.Helmet ||
-                        item.itemType == ItemType.Shield)
+                    if (item.itemType is ItemType.Potion or ItemType.Armour or ItemType.Weapon or ItemType.Spell
+                        or ItemType.Helmet or ItemType.Shield)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
-                else if (spellBool == true)
+                else if (spellBool)
 
                 {
                     if (item.itemType == ItemType.Spell)
@@ -2004,18 +1973,13 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         itemSlot.gameObject.SetActive(true);
                     }
 
-                    if (item.itemType == ItemType.Potion ||
-                        item.itemType == ItemType.Armour ||
-                        item.itemType == ItemType.Item ||
-                        item.itemType == ItemType.Weapon ||
-                        item.itemType == ItemType.Helmet ||
-                        item.itemType == ItemType.Shield ||
-                        item.itemType == ItemType.Relic)
+                    if (item.itemType is ItemType.Potion or ItemType.Armour or ItemType.Item or ItemType.Weapon
+                        or ItemType.Helmet or ItemType.Shield or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
-                else if (potionBool == true)
+                else if (potionBool)
 
                 {
                     if (item.itemType == ItemType.Potion)
@@ -2023,14 +1987,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         itemSlot.gameObject.SetActive(true);
                     }
 
-                    if (item.itemType == ItemType.Weapon ||
-                        item.itemType == ItemType.Armour ||
-                        item.itemType == ItemType.Item ||
-                        item.itemType == ItemType.Spell ||
-                        item.itemType == ItemType.Food ||
-                        item.itemType == ItemType.Helmet ||
-                        item.itemType == ItemType.Shield ||
-                        item.itemType == ItemType.Relic)
+                    if (item.itemType is ItemType.Weapon or ItemType.Armour or ItemType.Item or ItemType.Spell
+                        or ItemType.Food or ItemType.Helmet or ItemType.Shield or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }

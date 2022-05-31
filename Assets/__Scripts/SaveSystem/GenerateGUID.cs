@@ -27,5 +27,6 @@ public class GenerateGUID : MonoBehaviour
     public void CreateNewGUID()
     {
         _gUID = System.Guid.NewGuid().ToString();
+        Debug.Log($"New GUID Created: {gameObject.name}");
     }
 }

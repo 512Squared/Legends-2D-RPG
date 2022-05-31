@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour, ISaveable
     public GameObject[] sceneObjects;
 
     public Transform pickedUpItems;
+    public Transform deletedItems;
     public int objectInt = 1;
     private SceneHandling _sceneHandler;
 
@@ -166,12 +167,13 @@ public class GameManager : MonoBehaviour, ISaveable
 
     public void ActivateCharacters(string sceneToLoad)
     {
+        int playersActivated = 0;
         foreach (PlayerStats t in playerStats)
         {
             if (sceneToLoad == t.homeScene)
             {
                 t.gameObject.SetActive(true);
-                Debug.Log(t.playerName + " is active in " + sceneToLoad);
+                playersActivated++;
             }
             else if (sceneToLoad != t.homeScene)
             {
@@ -179,6 +181,7 @@ public class GameManager : MonoBehaviour, ISaveable
             }
         }
 
+        Debug.Log($"Players activated in Scene: {playersActivated}");
         playerStats[0].gameObject.SetActive(true); // Thulgran
     }
 

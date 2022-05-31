@@ -18,7 +18,7 @@ public static class Helpers
         {
             if (!stringArray.Contains(newString))
             {
-                List<string> list = new List<string>(stringArray.ToList());
+                List<string> list = new(stringArray.ToList());
                 list.Add(newString);
                 stringArray = list.ToArray();
                 return stringArray;
@@ -53,7 +53,7 @@ public static class Helpers
         {
             if (!stringArray.Contains(newString))
             {
-                List<string> list = new List<string>(stringArray.ToList());
+                List<string> list = new(stringArray.ToList());
                 list.Add(newString);
                 stringArray = list.ToArray();
                 return stringArray;
@@ -72,7 +72,7 @@ public static class Helpers
 
         else if (acceptDuplicates && newString != null)
         {
-            List<string> list = new List<string>(stringArray.ToList());
+            List<string> list = new(stringArray.ToList());
             list.Add(newString);
             stringArray = list.ToArray();
             return stringArray;
@@ -97,7 +97,7 @@ public static class Helpers
         {
             if (!intArray.Contains(newInt))
             {
-                List<int> list = new List<int>(intArray.ToList());
+                List<int> list = new(intArray.ToList());
                 list.Add(newInt);
                 intArray = list.ToArray();
                 return intArray;
@@ -116,7 +116,7 @@ public static class Helpers
 
         else if (acceptDuplicates)
         {
-            List<int> list = new List<int>(intArray.ToList());
+            List<int> list = new(intArray.ToList());
             list.Add(newInt);
             intArray = list.ToArray();
             return intArray;
@@ -205,7 +205,7 @@ public static class Helpers
     {
         bool found = false;
 
-        List<T> componentList = new List<T>();
+        List<T> componentList = new();
 
         Collider2D[] collider2DArray = Physics2D.OverlapPointAll(positionToCheck);
 
@@ -245,7 +245,7 @@ public static class Helpers
         Vector2 size, float angle)
     {
         bool found = false;
-        List<T> componentList = new List<T>();
+        List<T> componentList = new();
 
         Collider2D[] collider2DArray = Physics2D.OverlapBoxAll(point, size, angle);
 
@@ -310,5 +310,40 @@ public static class Helpers
     public static T GetComponentInChildren<T>(this GameObject gameObject, int index)
     {
         return gameObject.transform.GetChild(index).GetComponent<T>();
+    }
+
+    /// <summary>
+    /// Resets the polygon colliders shape path to match the sprite image.
+    /// </summary>
+    public static void TryUpdateShapeToAttachedSprite(this PolygonCollider2D collider)
+    {
+        collider.UpdateShapeToSprite(collider.GetComponentInChildren<SpriteRenderer>().sprite);
+    }
+
+    /// <summary>
+    /// Resets the polygon colliders shape path to match the sprite image.
+    /// </summary>
+    public static void UpdateShapeToSprite(this PolygonCollider2D collider, Sprite sprite)
+    {
+        // ensure both valid
+        if (collider != null && sprite != null)
+        {
+            // update count
+            collider.pathCount = sprite.GetPhysicsShapeCount();
+
+            // new paths variable
+            List<Vector2> path = new();
+
+            // loop path count
+            for (int i = 0; i < collider.pathCount; i++)
+            {
+                // clear
+                path.Clear();
+                // get shape
+                sprite.GetPhysicsShape(i, path);
+                // set path
+                collider.SetPath(i, path.ToArray());
+            }
+        }
     }
 }
