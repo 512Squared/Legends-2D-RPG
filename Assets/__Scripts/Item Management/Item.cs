@@ -22,77 +22,27 @@ public class Item : MonoBehaviour, ISaveable
 
     public string itemGuid;
 
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [BoxGroup("Data/a")]
-    [HideLabel]
-    [GUIColor(0.058f, 0.380f, 1f)]
     public ItemType itemType;
 
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [BoxGroup("Data/a")]
-    [HideLabel]
-    [GUIColor(0.058f, 0.380f, 1f)]
     public AffectType affectType;
 
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [BoxGroup("Data/a")]
-    [HideLabel]
-    [GUIColor(0.058f, 0.380f, 1f)]
     public Shop shop; // pickUpItem, shop1, shop2, shop3
 
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [LabelWidth(100)]
-    [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemCodeSo = 1000;
 
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [LabelWidth(100)]
-    [GUIColor(0.8f, 0.286f, 0.780f)]
     public int valueInCoins;
 
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [LabelWidth(100)]
-    [GUIColor(0.8f, 0.286f, 0.780f)]
     public int amountOfEffect;
 
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [LabelWidth(100)]
-    [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemAttack;
 
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [LabelWidth(100)]
-    [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemDefence;
 
-    [HorizontalGroup("Info")]
-    [TableColumnWidth(220)]
-    [LabelWidth(90)]
-    [TextArea(1, 5)]
-    [GUIColor(0.4f, 0.986f, 0.380f)]
     public string itemName;
 
-    [Space]
-    [HorizontalGroup("Info")]
-    [TableColumnWidth(220)]
-    [LabelWidth(90)]
-    [TextArea(7, 7)]
-    [GUIColor(0.4f, 0.986f, 0.380f)]
     public string itemDescription;
 
-    [Space]
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
+
     public bool itemSelected;
 
     public bool isNewItem = true;
@@ -106,13 +56,7 @@ public class Item : MonoBehaviour, ISaveable
     public bool hasBeenDropped;
     public bool isPrefab;
 
-    [HorizontalGroup("Sprite")]
-    [TableColumnWidth(120)]
-    [BoxGroup("Sprite/a")]
-    [HideLabel]
-    [Space]
-    [Space]
-    [Space]
+
     [PreviewField(120, ObjectFieldAlignment.Center)]
     [GUIColor(0.2f, 0.286f, 0.680f)]
     public Sprite itemsImage;
@@ -182,8 +126,6 @@ public class Item : MonoBehaviour, ISaveable
         item.itemName = So.itemName;
         item.itemDescription = So.itemDescription;
         item.itemSelected = So.itemSelected;
-        item.isQuestObject = So.isQuestObject;
-        item.pickUpNotice = So.pickUpNotice;
         item.isRelic = So.isRelic;
         item.isStackable = So.isStackable;
         item.itemsImage = So.itemsImage;
@@ -377,10 +319,10 @@ public class Item : MonoBehaviour, ISaveable
         quantity = 1;
         if (droppedItem.isQuestObject)
         {
-            droppedItem.polyCollider.enabled = true;
-            droppedItem.spriteRenderer.enabled = true;
-            droppedItem.isQuestObject = false;
-            droppedItem.pickUpNotice = true;
+            polyCollider.enabled = true;
+            spriteRenderer.enabled = true;
+            pickUpNotice = true;
+            isQuestObject = false;
         }
 
         DropItemPosition(this);
@@ -422,7 +364,7 @@ public class Item : MonoBehaviour, ISaveable
         itemPosition = transform.position;
         SaveData.ItemsData id = new(itemGuid, itemName, quantity, pickup, isPickedUp, isNewItem, isShopItem,
             spriteRenderer, polyCollider, itemPosition, itemPickupPlace, isDeletedStack, hasBeenDropped, isPrefab,
-            isQuestObject);
+            isQuestObject, pickUpNotice);
 
         a_SaveData.itemsData.Add(id);
     }
@@ -449,6 +391,7 @@ public class Item : MonoBehaviour, ISaveable
             itemPickupPlace = id.itemPickupPlace;
             isPrefab = id.isPrefab;
             isQuestObject = id.isQuestObject;
+            pickUpNotice = id.pickupNotice;
             transform.position = itemPosition;
 
             if (id.isPickedUp)
@@ -461,11 +404,17 @@ public class Item : MonoBehaviour, ISaveable
 
             string guid = id.itemGuid[..8];
 
-            if (!id.isPickedUp && id.hasBeenDropped)
+            if (!id.isPickedUp && id.hasBeenDropped && !id.isQuestObject)
             {
                 SetItemParent(GameManager.Instance.pickupParents[id.itemPickupPlace]
                     .transform, true); // pickupParent is where dropped item is stored ready for pickup
                 Debug.Log($"Dropped item put into correct box: {id.itemName} | GUID: {guid}");
+            }
+
+            if (!id.isPickedUp && id.hasBeenDropped)
+            {
+                polyCollider.enabled = true;
+                spriteRenderer.enabled = true;
             }
 
             if (isDeletedStack)

@@ -3765,7 +3765,6 @@ GameObject:
   - component: {fileID: 3748298633651295931}
   - component: {fileID: 368962744}
   - component: {fileID: 1646438142}
-  - component: {fileID: 1646438143}
   - component: {fileID: 8646728709289014647}
   - component: {fileID: 1741571145}
   m_Layer: 7
@@ -3816,10 +3815,10 @@ MonoBehaviour:
   baseLevelXp: 0
   characterXp: 0
   maxMana: 200
-  maxHp: 0
+  maxHp: 300
   characterLevel: 3
   characterMana: 63
-  characterHp: 0
+  characterHp: 10
   characterIntelligence: 46
   characterPerception: 35
   characterBaseAttack: 7
@@ -3829,10 +3828,10 @@ MonoBehaviour:
   isTeamMember: 0
   isAvailable: 0
   isNew: 1
-  characterWeapon: {fileID: 2857239660931172463, guid: 041075786fc396948b9a7e0058842007, type: 3}
-  characterArmour: {fileID: 1147687330772214631, guid: 4a2606e7d38ea3c42ad66e4520ae636c, type: 3}
-  characterHelmet: {fileID: 8193090981810930703, guid: ef92110a568b1ba4a9cd417d89cd388f, type: 3}
-  characterShield: {fileID: 1785893720, guid: 52d9083b7fb47e941b500045514f8e31, type: 3}
+  characterWeapon: {fileID: 0}
+  characterArmour: {fileID: 0}
+  characterHelmet: {fileID: 0}
+  characterShield: {fileID: 0}
   characterWeaponName: Long axe
   characterArmourName: Leather armour
   characterHelmetName: Leather helmet
@@ -3908,72 +3907,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1646438143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3749032128522621965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_ComponentVersion: 1
-  m_HasRenderer: 0
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c20
-  m_ShapePath:
-  - {x: -0.5876606, y: -1.148294, z: 0}
-  - {x: -0.46113253, y: -1.0348841, z: 0}
-  - {x: -0.44089285, y: -0.8189842, z: 0}
-  - {x: -0.60956377, y: -0.6503125, z: 0}
-  - {x: -0.61631036, y: -0.4816407, z: 0}
-  - {x: -0.7242608, y: -0.2994752, z: 0}
-  - {x: -0.9604015, y: -0.28598148, z: 0}
-  - {x: -1.0211233, y: -0.09032224, z: 0}
-  - {x: -0.946907, y: 0.05810891, z: 0}
-  - {x: -0.7512485, y: 0.19979323, z: 0}
-  - {x: -0.6500445, y: 0.42918682, z: 0}
-  - {x: -0.8322113, y: 0.732796, z: 0}
-  - {x: -0.7849826, y: 1.0768865, z: 0}
-  - {x: -0.7782347, y: 1.3602549, z: 0}
-  - {x: -0.757995, y: 1.6503702, z: 0}
-  - {x: -0.8659455, y: 2.0281951, z: 0}
-  - {x: -0.75325525, y: 2.2790184, z: 0}
-  - {x: -0.3464355, y: 2.4532483, z: 0}
-  - {x: 0.004400863, y: 2.446501, z: 0}
-  - {x: 0.26417223, y: 2.3297188, z: 0}
-  - {x: 0.3687317, y: 2.2710824, z: 0}
-  - {x: 0.537404, y: 1.9809669, z: 0}
-  - {x: 0.44969457, y: 1.6098891, z: 0}
-  - {x: 0.5508985, y: 1.4884455, z: 0}
-  - {x: 0.5171629, y: 1.2657987, z: 0}
-  - {x: 0.4092138, y: 1.144355, z: 0}
-  - {x: 0.65884763, y: 1.1106207, z: 0}
-  - {x: 0.8342665, y: 0.8812271, z: 0}
-  - {x: 0.9152293, y: 0.59785855, z: 0}
-  - {x: 0.777452, y: 0.079418935, z: 0}
-  - {x: 0.5306574, y: -0.04984098, z: 0}
-  - {x: 0.5104164, y: -0.3736908, z: 0}
-  - {x: 0.38897276, y: -0.4816407, z: 0}
-  - {x: 0.44969457, y: -0.61657816, z: 0}
-  - {x: 0.5104164, y: -0.724528, z: 0}
-  - {x: 0.4092138, y: -0.8527187, z: 0}
-  - {x: 0.3706813, y: -1.2073778, z: 0}
-  - {x: 0.004400863, y: -1.1630745, z: 0}
-  - {x: 0.071870595, y: -0.9539218, z: 0}
-  - {x: 0.071870595, y: -0.50862825, z: 0}
-  - {x: -0.0968017, y: -0.5423625, z: 0}
-  - {x: -0.0968017, y: -0.9336811, z: 0}
-  - {x: -0.15077694, y: -1.196809, z: 0}
-  m_ShapePathHash: -336596798
-  m_Mesh: {fileID: 0}
-  m_InstanceId: -2808
 --- !u!114 &8646728709289014647
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -181,7 +181,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public TextMeshProUGUI itemName, goldMain, itemDescription, itemDamage, itemArmour, itemPotion, itemFood, itemValue;
 
     [TabGroup("New Group", "Items")] [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Image itemImage;
+    public Image itemImage, sellGold;
 
     [TabGroup("New Group", "Items")] [GUIColor(0.447f, 0.654f, 0.996f)]
     public Sprite masking;
@@ -199,7 +199,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public GameObject effectBox;
 
     [TabGroup("New Group", "Items")] [GUIColor(0.447f, 0.654f, 0.996f)]
-    public GameObject cancelButton, useButton;
+    public GameObject cancelButton, useButton, dropButton, sellButton;
 
 
     [TabGroup("New Group", "Equip")] [GUIColor(0.447f, 0.654f, 0.996f)]
@@ -441,10 +441,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     private void Awake()
     {
         mainMenu.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.15f, 0.15f, 0), 0.4f, 0, 1);
-    }
-
-    private void Update()
-    {
+        sellGold = GameObject.FindGameObjectWithTag("sellGold").GetComponent<Image>();
     }
 
     #endregion CALLBACKS
@@ -510,7 +507,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         #region Data
 
         currentNewItems = 0;
-        ButtonHandler.instance.SetAllButtonsInteractable();
+        ButtonHandler.Instance.SetAllButtonsInteractable();
         ShopManager.Instance.ShopItemInfoReset();
         ItemInfoReset();
         UpdateItemsInventory();
@@ -557,7 +554,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         #region Data
 
         currentNewItems = 0;
-        ButtonHandler.instance.SetAllButtonsInteractable();
+        ButtonHandler.Instance.SetAllButtonsInteractable();
+        ButtonHandler.Instance.InventoryButtonsDisabled();
         ShopManager.Instance.ShopItemInfoReset();
         ItemInfoReset();
         UpdateQuestList("");
@@ -637,11 +635,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     private void PanelController()
     {
-        if (isInventoryOn == true)
+        if (isInventoryOn)
         {
             Debug.Log($"Inventory is open and 'back' has been called");
 
-            ButtonHandler.instance.SetAllButtonsInteractable();
+            ButtonHandler.Instance.SetAllButtonsInteractable();
+            ButtonHandler.Instance.InventoryButtonsDisabled();
             ShopManager.Instance.ShopItemInfoReset();
             ItemInfoReset();
 
@@ -655,11 +654,11 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             isInventoryOn = false;
             GameManager.Instance.isInventoryOn = false;
         }
-        else if (GameManager.Instance.isShopUIOn == true)
+        else if (GameManager.Instance.isShopUIOn)
         {
             Debug.Log($"Shop is open and 'back' has been called");
 
-            ButtonHandler.instance.SetAllButtonsInteractable();
+            ButtonHandler.Instance.SetAllButtonsInteractable();
             ShopManager.Instance.ShopItemInfoReset();
             ItemInfoReset();
 
@@ -1135,141 +1134,175 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         panelStuff = selectedCharacter;
 
-        if (activeItem.affectType == AffectType.Hp)
+
+        switch (activeItem.affectType)
         {
-            if (selectedCharacter != 0)
-            {
-                if (playerStats[selectedCharacter].characterHp == playerStats[selectedCharacter].maxHp)
+            case AffectType.Hp when selectedCharacter != 0:
                 {
-                    NotificationFader.instance.CallFadeInOut(
-                        $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
-                        Sprites.instance.hpSprite, 1.5f, 1400, 30);
-                    Debug.Log($"Yo");
-                }
+                    if (playerStats[selectedCharacter].characterHp == playerStats[selectedCharacter].maxHp)
+                    {
+                        NotificationFader.instance.CallFadeInOut(
+                            $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
+                            Sprites.instance.hpSprite, 1.5f, 1400, 30);
+                        Debug.Log($"Yo");
+                    }
 
-                else
+                    else
+                    {
+                        cancelButton.SetActive(false);
+                        dropButton.SetActive(true);
+                        dropButton.GetComponent<Button>().interactable = false;
+                        useButton.GetComponent<Button>().interactable = false;
+                        sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
+                            (byte)sellGold.color.g, 100);
+                        //useButton.GetComponent<Image>().sprite = buttonGreen;
+
+                        FadeOutText(1);
+                        SetAllButtonsUninteractable();
+                        activeItem.UseItem(selectedCharacter);
+                        Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                            characterMugEquip[selectedCharacter].transform.position);
+                        UpdateItemsInventory();
+                        OnPlayerButton();
+                        ItemInfoReset();
+
+                        Debug.Log(activeItem.amountOfEffect + " HP given to " + playerStats[selectedCharacter]
+                            .playerName);
+                    }
+
+                    break;
+                }
+            case AffectType.Hp:
                 {
-                    cancelButton.SetActive(false);
-                    useButton.GetComponent<Button>().interactable = false;
-                    FadeOutText(1);
-                    useButton.GetComponent<Image>().sprite = buttonGreen;
-                    SetAllButtonsUninteractable();
-                    activeItem.UseItem(selectedCharacter);
-                    Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
-                        characterMugEquip[selectedCharacter].transform.position);
-                    UpdateItemsInventory();
-                    OnPlayerButton();
-                    ItemInfoReset();
+                    if (selectedCharacter == 0)
+                    {
+                        if (Thulgran.ThulgranHp < Thulgran.MaxThulgranHp)
+                        {
+                            cancelButton.SetActive(false);
+                            dropButton.SetActive(true);
+                            dropButton.GetComponent<Button>().interactable = false;
+                            useButton.GetComponent<Button>().interactable = false;
+                            sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
+                                (byte)sellGold.color.g, 100);
+                            //useButton.GetComponent<Image>().sprite = buttonGreen;
 
-                    Debug.Log(activeItem.amountOfEffect + " HP given to " + playerStats[selectedCharacter]
-                        .playerName);
+                            FadeOutText(1);
+                            SetAllButtonsUninteractable();
+                            activeItem.UseItem(selectedCharacter);
+                            Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                                characterMugEquip[selectedCharacter].transform.position);
+                            UpdateItemsInventory();
+                            OnPlayerButton();
+                            ItemInfoReset();
+                            Debug.Log(
+                                $"CallToUseItem completed | {activeItem.amountOfEffect} HP should have been given to " +
+                                playerStats[selectedCharacter].playerName);
+                        }
+                        else if (Thulgran.ThulgranHp == Thulgran.MaxThulgranHp)
+                        {
+                            NotificationFader.instance.CallFadeInOut(
+                                $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
+                                Sprites.instance.hpSprite, 1.5f, 1400, 30);
+                            Debug.Log($"Yo");
+                        }
+                    }
+
+                    break;
                 }
-            }
-
-            else if (selectedCharacter == 0)
-            {
-                if (Thulgran.ThulgranHp == Thulgran.MaxThulgranHp)
+            case AffectType.Mana when selectedCharacter != 0:
                 {
-                    NotificationFader.instance.CallFadeInOut(
-                        $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
-                        Sprites.instance.hpSprite, 1.5f, 1400, 30);
-                    Debug.Log($"Yo");
-                }
+                    if (playerStats[selectedCharacter].characterMana == playerStats[selectedCharacter].maxMana)
+                    {
+                        NotificationFader.instance.CallFadeInOut(
+                            $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color> \n Try someone else?",
+                            Sprites.instance.manaSprite, 1.5f, 1400, 30);
+                    }
 
-                else if (Thulgran.ThulgranHp < Thulgran.MaxThulgranHp)
+                    else if (playerStats[selectedCharacter].characterMana < playerStats[selectedCharacter].maxMana)
+                    {
+                        cancelButton.SetActive(false);
+                        dropButton.SetActive(true);
+                        dropButton.GetComponent<Button>().interactable = false;
+                        useButton.GetComponent<Button>().interactable = false;
+                        sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
+                            (byte)sellGold.color.g, 100);
+                        //useButton.GetComponent<Image>().sprite = buttonGreen;
+
+                        FadeOutText(1);
+                        SetAllButtonsUninteractable();
+                        activeItem.UseItem(selectedCharacter);
+                        Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                            characterMugEquip[selectedCharacter].transform.position);
+                        UpdateItemsInventory();
+                        OnPlayerButton();
+                        ItemInfoReset();
+                        Debug.Log(activeItem.amountOfEffect + " mana given to " +
+                                  playerStats[selectedCharacter].playerName);
+                    }
+
+                    break;
+                }
+            case AffectType.Mana:
                 {
-                    cancelButton.SetActive(false);
-                    useButton.GetComponent<Button>().interactable = false;
-                    FadeOutText(1);
-                    useButton.GetComponent<Image>().sprite = buttonGreen;
-                    SetAllButtonsUninteractable();
-                    activeItem.UseItem(selectedCharacter);
-                    Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
-                        characterMugEquip[selectedCharacter].transform.position);
-                    UpdateItemsInventory();
-                    OnPlayerButton();
-                    ItemInfoReset();
-                    Debug.Log(
-                        $"CallToUseItem completed | {activeItem.amountOfEffect} HP should have been given to " +
-                        playerStats[selectedCharacter].playerName);
-                }
-            }
-        }
+                    if (selectedCharacter == 0)
+                    {
+                        if (Thulgran.ThulgranMana == Thulgran.MaxThulgranMana)
+                        {
+                            NotificationFader.instance.CallFadeInOut(
+                                $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?",
+                                Sprites.instance.manaSprite, 1.5f, 1400, 30);
+                        }
 
-        else if (activeItem.affectType == AffectType.Mana)
-        {
-            if (selectedCharacter != 0)
-            {
-                if (playerStats[selectedCharacter].characterMana == playerStats[selectedCharacter].maxMana)
+                        else if (Thulgran.ThulgranMana < Thulgran.MaxThulgranMana)
+                        {
+                            cancelButton.SetActive(false);
+                            dropButton.SetActive(true);
+                            dropButton.GetComponent<Button>().interactable = false;
+                            useButton.GetComponent<Button>().interactable = false;
+                            sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
+                                (byte)sellGold.color.g, 100);
+                            //useButton.GetComponent<Image>().sprite = buttonGreen;
+
+                            FadeOutText(1);
+                            SetAllButtonsUninteractable();
+                            activeItem.UseItem(selectedCharacter);
+                            Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                                characterMugEquip[selectedCharacter].transform.position);
+                            UpdateItemsInventory();
+                            OnPlayerButton();
+                            ItemInfoReset();
+
+                            Debug.Log(activeItem.amountOfEffect + " mana given to " +
+                                      playerStats[selectedCharacter].playerName);
+                        }
+                    }
+
+                    break;
+                }
+            default:
                 {
-                    NotificationFader.instance.CallFadeInOut(
-                        $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color> \n Try someone else?",
-                        Sprites.instance.manaSprite, 1.5f, 1400, 30);
+                    if (activeItem.itemType is ItemType.Armour or ItemType.Weapon or ItemType.Helmet or ItemType.Shield)
+                    {
+                        cancelButton.SetActive(false);
+                        dropButton.SetActive(true);
+                        dropButton.GetComponent<Button>().interactable = false;
+                        useButton.GetComponent<Button>().interactable = false;
+                        sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
+                            (byte)sellGold.color.g, 100);
+                        //useButton.GetComponent<Image>().sprite = buttonGreen;
+
+                        FadeOutText(1);
+                        SetAllButtonsUninteractable();
+                        activeItem.UseItem(selectedCharacter);
+                        Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                            characterMugEquip[selectedCharacter].transform.position);
+                        UpdateItemsInventory();
+                        OnPlayerButton();
+                        ItemInfoReset();
+                    }
+
+                    break;
                 }
-
-                else if (playerStats[selectedCharacter].characterMana < playerStats[selectedCharacter].maxMana)
-                {
-                    cancelButton.SetActive(false);
-                    useButton.GetComponent<Button>().interactable = false;
-                    FadeOutText(1);
-                    useButton.GetComponent<Image>().sprite = buttonGreen;
-                    SetAllButtonsUninteractable();
-                    activeItem.UseItem(selectedCharacter);
-                    Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
-                        characterMugEquip[selectedCharacter].transform.position);
-                    UpdateItemsInventory();
-                    OnPlayerButton();
-                    ItemInfoReset();
-                    Debug.Log(activeItem.amountOfEffect + " mana given to " +
-                              playerStats[selectedCharacter].playerName);
-                }
-            }
-
-            else if (selectedCharacter == 0)
-            {
-                if (Thulgran.ThulgranMana == Thulgran.MaxThulgranMana)
-                {
-                    NotificationFader.instance.CallFadeInOut(
-                        $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?",
-                        Sprites.instance.manaSprite, 1.5f, 1400, 30);
-                }
-
-                else if (Thulgran.ThulgranMana < Thulgran.MaxThulgranMana)
-                {
-                    cancelButton.SetActive(false);
-                    useButton.GetComponent<Button>().interactable = false;
-                    FadeOutText(1);
-                    useButton.GetComponent<Image>().sprite = buttonGreen;
-                    SetAllButtonsUninteractable();
-                    activeItem.UseItem(selectedCharacter);
-                    Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
-                        characterMugEquip[selectedCharacter].transform.position);
-                    UpdateItemsInventory();
-                    OnPlayerButton();
-                    ItemInfoReset();
-
-                    Debug.Log(activeItem.amountOfEffect + " mana given to " +
-                              playerStats[selectedCharacter].playerName);
-                }
-            }
-        }
-
-        else if (activeItem.itemType == ItemType.Armour ||
-                 activeItem.itemType == ItemType.Weapon ||
-                 activeItem.itemType == ItemType.Helmet ||
-                 activeItem.itemType == ItemType.Shield)
-        {
-            cancelButton.SetActive(false);
-            useButton.GetComponent<Button>().interactable = false;
-            FadeOutText(1);
-            useButton.GetComponent<Image>().sprite = buttonGreen;
-            SetAllButtonsUninteractable();
-            activeItem.UseItem(selectedCharacter);
-            Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
-                characterMugEquip[selectedCharacter].transform.position);
-            UpdateItemsInventory();
-            OnPlayerButton();
-            ItemInfoReset();
         }
     }
 
@@ -1365,15 +1398,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         mainEquipInfoPanel.DOAnchorPos(new Vector2(-750, 0), 1f);
 
-        if (activeItem.itemType == ItemType.Potion || activeItem.itemType == ItemType.Food)
+        if (activeItem.itemType is ItemType.Potion or ItemType.Food)
         {
             characterChoicePanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
 
-        else if (activeItem.itemType == ItemType.Armour ||
-                 activeItem.itemType == ItemType.Weapon ||
-                 activeItem.itemType == ItemType.Helmet ||
-                 activeItem.itemType == ItemType.Shield)
+        else if (activeItem.itemType is ItemType.Armour or ItemType.Weapon or ItemType.Helmet or ItemType.Shield)
         {
             characterWeaponryPanel.DOAnchorPos(new Vector2(0, 0), 1f);
         }
@@ -1420,7 +1450,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
-    public void SetAllButtonsUninteractable()
+    public void SetAllButtonsUninteractable() // this disables buttons for character selection on equip item etc
     {
         foreach (Button button in potionPanelButtons)
         {
@@ -1460,9 +1490,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             FadeOutText(1f);
         }
 
-        else
-        {
-        }
 
         weaponBool = armourBool = itemBool = potionBool = spellBool = false;
 
@@ -1865,9 +1892,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                                 effectText.text = "+" + item.amountOfEffect.ToString();
                             }
 
-                            else if (item.itemName == "Red Healing Potion" ||
-                                     item.itemName == "Green Healing Potion" ||
-                                     item.itemName == "Red Healing Potion Large")
+                            else if (item.itemName is "Red Healing Potion" or "Green Healing Potion"
+                                     or "Red Healing Potion Large")
                             {
                                 effectBox.GetComponent<CanvasGroup>().alpha = 1;
                                 effectText.text = "+" + item.amountOfEffect.ToString();
@@ -1887,24 +1913,24 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                         // EFFECT - FOOD
 
-                        if (item.itemType == ItemType.Food)
+                        if (item.itemType is ItemType.Food)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 1;
-                            effectText.text = "+" + item.amountOfEffect.ToString();
+                            effectText.text = "+" + item.amountOfEffect;
+                            textUseEquipTake.text = "Give";
                         }
 
                         // SORT BY ARMOUR
 
-                        if (item.itemType == ItemType.Armour ||
-                            item.itemType == ItemType.Helmet ||
-                            item.itemType == ItemType.Shield)
+                        if (item.itemType is ItemType.Armour or ItemType.Helmet or ItemType.Shield)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
+                            textUseEquipTake.text = "Equip";
                         }
 
                         // SORT BY WEAPON
 
-                        if (item.itemType == ItemType.Weapon)
+                        if (item.itemType is ItemType.Weapon)
                         {
                             effectBox.GetComponent<CanvasGroup>().alpha = 0;
                             textUseEquipTake.text = "Equip";
@@ -1939,13 +1965,13 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 else if (armourBool)
 
                 {
-                    if (item.itemType == ItemType.Armour)
+                    if (item.itemType is ItemType.Armour or ItemType.Helmet or ItemType.Shield)
                     {
                         itemSlot.gameObject.SetActive(true);
                     }
 
                     if (item.itemType is ItemType.Potion or ItemType.Weapon or ItemType.Item or ItemType.Skill
-                        or ItemType.Food or ItemType.Helmet or ItemType.Shield or ItemType.Relic)
+                        or ItemType.Food or ItemType.Relic)
                     {
                         itemSlot.gameObject.SetActive(false);
                     }

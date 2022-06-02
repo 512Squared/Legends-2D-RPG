@@ -198,20 +198,18 @@ public class Inventory : MonoBehaviour, ISaveable
 
             if (inventoryItem != null && inventoryItem.quantity <= 0)
             {
-                Actions.OnUseItem?.Invoke(inventoryItem, selectedCharacterUse,
-                    target);
-                _inventoryList.Remove(inventoryItem);
                 Debug.Log("Item stack empty - item removed");
+                _inventoryList.Remove(inventoryItem);
             }
         }
 
         else // same code as above but for non-stackable items
         {
-            Actions.OnUseItem?.Invoke(item, selectedCharacterUse,
-                target);
             _inventoryList.Remove(item);
             Debug.Log("Item removed");
         }
+
+        Actions.OnUseItem?.Invoke(item, selectedCharacterUse, target);
     }
 
     public void BuyItem(Item item)

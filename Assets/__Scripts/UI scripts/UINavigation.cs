@@ -19,6 +19,7 @@ namespace Assets.__Scripts.UI_scripts
         {
             Actions.OnMainMenuButton?.Invoke();
         }
+
         public void ResumeButtonPressed() // on fade mask too
         {
             Actions.OnResumeButton?.Invoke();
@@ -28,7 +29,5 @@ namespace Assets.__Scripts.UI_scripts
         {
             Actions.OnQuestCompletedResume?.Invoke();
         }
-
-
     }
 }

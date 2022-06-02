@@ -157,6 +157,8 @@ public class QuestElement : MonoBehaviour, ISaveable
     {
         if (!collision.CompareTag("Player")) { return; }
 
+        if (questItem && !questItem.isQuestObject) { return; }
+
         CheckQuestElement(quest.questGUID);
     }
 

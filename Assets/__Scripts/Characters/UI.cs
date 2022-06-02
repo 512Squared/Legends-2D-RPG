@@ -77,9 +77,9 @@ public class UI : MonoBehaviour
     {
         for (int i = 0; i < hpStats.Length; i++)
         {
-            if (i == 0 || i == 1) // front screen format
+            if (i is 0 or 1) // front screen format
             {
-                hpStats[i].text = Thulgran.ThulgranHp.ToString() + " / " + Thulgran.MaxThulgranHp;
+                hpStats[i].text = Thulgran.ThulgranHp + " / " + Thulgran.MaxThulgranHp;
             }
 
             else

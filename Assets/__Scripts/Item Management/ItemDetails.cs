@@ -105,20 +105,6 @@ public class ItemDetails
     [VerticalGroup("Bools/a")]
     [LabelWidth(90)]
     [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isQuestObject;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [VerticalGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool pickUpNotice = true;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [VerticalGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
     public bool isRelic;
 
     [HorizontalGroup("Bools")]

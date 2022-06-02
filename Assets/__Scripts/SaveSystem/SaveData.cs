@@ -125,7 +125,8 @@ public class SaveData
     {
         public ItemsData(string itemGuid, string itemName, int quantity, int pickup, bool isPickedUp, bool isNewItem,
             bool isShopItem, SpriteRenderer spriteRenderer, PolygonCollider2D polyCollider, Vector3 itemPosition,
-            int itemPickupPlace, bool isDeletedStack, bool hasBeenDropped, bool isPrefab, bool isQuestObject)
+            int itemPickupPlace, bool isDeletedStack, bool hasBeenDropped, bool isPrefab, bool isQuestObject, bool
+                pickupNotice)
         {
             this.itemGuid = itemGuid;
             this.itemName = itemName;
@@ -142,6 +143,7 @@ public class SaveData
             this.hasBeenDropped = hasBeenDropped;
             this.isPrefab = isPrefab;
             this.isQuestObject = isQuestObject;
+            this.pickupNotice = pickupNotice;
         }
 
         public string itemGuid;
@@ -149,7 +151,7 @@ public class SaveData
         public int quantity, pickup;
         public bool isNewItem;
         public bool isPickedUp;
-        public bool isShopItem, isDeletedStack, hasBeenDropped, isPrefab, isQuestObject;
+        public bool isShopItem, isDeletedStack, hasBeenDropped, isPrefab, isQuestObject, pickupNotice;
         public SpriteRenderer spriteRenderer;
         public PolygonCollider2D polyCollider;
         public Vector3 itemPosition;
