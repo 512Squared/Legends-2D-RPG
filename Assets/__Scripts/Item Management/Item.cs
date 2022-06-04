@@ -54,6 +54,7 @@ public class Item : MonoBehaviour, ISaveable
     public bool isPickedUp;
     public bool isDeletedStack;
     public bool hasBeenDropped;
+    public bool boughtFromShop;
     public bool isPrefab;
 
 
@@ -113,11 +114,8 @@ public class Item : MonoBehaviour, ISaveable
         // enums
         item.itemType = So.itemType;
         item.affectType = So.affectType;
-        item.shop = So.shop;
 
         // variables
-        item.isNewItem = So.isNewItem;
-        item.isShopItem = So.isShopItem;
         item.itemDefence = So.itemDefence + itemDefenceModifier;
         item.itemAttack = So.itemAttack + itemAttackModifier;
         item.amountOfEffect = So.amountOfEffect + amountOfEffectModifier;
@@ -125,7 +123,6 @@ public class Item : MonoBehaviour, ISaveable
         item.itemCodeSo = So.itemCode;
         item.itemName = So.itemName;
         item.itemDescription = So.itemDescription;
-        item.itemSelected = So.itemSelected;
         item.isRelic = So.isRelic;
         item.isStackable = So.isStackable;
         item.itemsImage = So.itemsImage;
@@ -325,6 +322,9 @@ public class Item : MonoBehaviour, ISaveable
             isQuestObject = false;
         }
 
+        spriteRenderer.sortingLayerName = "Objects";
+        spriteRenderer.sortingOrder = 3;
+
         DropItemPosition(this);
         NotificationFader.instance.CallFadeInOut($"You dropped the {droppedItem.itemName}", droppedItem.itemsImage,
             3f, 1400f,
@@ -334,6 +334,7 @@ public class Item : MonoBehaviour, ISaveable
     private void DropItemPosition(Item itemToDrop)
     {
         itemPickupPlace = PlayerGlobalData.Instance.currentSceneIndex;
+        Debug.Log($"itemPickupPlace after drop: {itemPickupPlace}");
         if (!itemToDrop.isQuestObject) { SetItemParent(GameManager.Instance.pickupParents[itemPickupPlace], true); }
 
         Transform playerTransform = PlayerGlobalData.Instance.gameObject.GetComponent<Transform>();
@@ -364,7 +365,7 @@ public class Item : MonoBehaviour, ISaveable
         itemPosition = transform.position;
         SaveData.ItemsData id = new(itemGuid, itemName, quantity, pickup, isPickedUp, isNewItem, isShopItem,
             spriteRenderer, polyCollider, itemPosition, itemPickupPlace, isDeletedStack, hasBeenDropped, isPrefab,
-            isQuestObject, pickUpNotice);
+            isQuestObject, pickUpNotice, shop, boughtFromShop);
 
         a_SaveData.itemsData.Add(id);
     }
@@ -379,6 +380,7 @@ public class Item : MonoBehaviour, ISaveable
         foreach (SaveData.ItemsData id in a_SaveData.itemsData.Where(id => id.itemGuid == itemGuid))
         {
             quantity = id.quantity;
+            boughtFromShop = id.boughtFromShop;
             isPickedUp = id.isPickedUp;
             isNewItem = id.isNewItem;
             isShopItem = id.isShopItem;
@@ -393,6 +395,8 @@ public class Item : MonoBehaviour, ISaveable
             isQuestObject = id.isQuestObject;
             pickUpNotice = id.pickupNotice;
             transform.position = itemPosition;
+            shop = id.shopPlace;
+
 
             if (id.isPickedUp)
             {
@@ -415,6 +419,15 @@ public class Item : MonoBehaviour, ISaveable
             {
                 polyCollider.enabled = true;
                 spriteRenderer.enabled = true;
+                spriteRenderer.sortingOrder = 3;
+                spriteRenderer.sortingLayerName = "Objects";
+            }
+
+            if (id.isPickedUp && id.boughtFromShop)
+            {
+                SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
+                isShopItem = false;
+                Debug.Log($"Bought Item put into Pickup box: {id.itemName}");
             }
 
             if (isDeletedStack)

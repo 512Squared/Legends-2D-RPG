@@ -1,30 +1,32 @@
 using UnityEngine;
 using UnityEngine.Events;
-using System;
-using Sirenix.OdinInspector;
 
-public class TimeManager : MonoBehaviour
+
+public class TimeManager : MonoBehaviour, ISaveable
 {
     [Header("Date & Time Settings")]
-
     public int streetLightsOnAt;
+
     public int streetLightsOffAt;
 
     [Space]
     [Range(1, 28)]
     public int dateInMonth;
+
     [Range(0, 3)]
     public int season;
+
     [Range(1, 99)]
     public int year;
+
     [Range(0, 24)]
     public int hour;
+
     [Range(0, 6)]
     public float minutes;
+
     [Space]
     public bool railwayTime;
-
-
 
 
     private _DateTime dateTime;
@@ -32,13 +34,12 @@ public class TimeManager : MonoBehaviour
 
     [Header("Tick Settings")]
     public float MinsAddedPerTick = 10;
+
     public float TickInSecs = 1;
     private float currentTimeBetweenTicks = 0;
 
     [Space]
     [Header("Lighting Controls")]
-
-
     public static UnityAction<_DateTime, Continental> OnDateTimeChanged;
 
     private void Awake()
@@ -50,6 +51,7 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         OnDateTimeChanged?.Invoke(dateTime, continental);
+        GameManager.Instance.startTime = hour;
     }
 
     private void Update()
@@ -61,77 +63,129 @@ public class TimeManager : MonoBehaviour
             currentTimeBetweenTicks = 0;
             Tick();
         }
-
-
     }
 
-    void Tick()
+    private void Tick()
     {
         AdvanceTime();
     }
 
-    void AdvanceTime()
+    private void AdvanceTime()
     {
         dateTime.AdvanceMinutes(MinsAddedPerTick);
 
         OnDateTimeChanged?.Invoke(dateTime, continental);
     }
+
+    #region Implementation of ISaveable
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        a_SaveData.timeData.date = dateTime.Date;
+        a_SaveData.timeData.minutes = dateTime.Minutes;
+        a_SaveData.timeData.hour = dateTime.Hour;
+        a_SaveData.timeData.season = dateTime.Season;
+        a_SaveData.timeData.year = dateTime.Year;
+    }
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        dateTime.Minutes = a_SaveData.timeData.minutes;
+        dateTime.Hour = a_SaveData.timeData.hour;
+        dateTime.Season = a_SaveData.timeData.season;
+        dateTime.Year = a_SaveData.timeData.year;
+        dateTime.Date = a_SaveData.timeData.date;
+
+        Debug.Log(
+            $"Time settings - Year: {dateTime.Year} | Season: {dateTime.Season} | Day: {dateTime.Date} | Time:{dateTime.Hour}:{dateTime.Minutes}");
+    }
+
+    #endregion
 }
 
 [System.Serializable]
 public struct _DateTime
 {
     #region Fields
-    private Days day;
-    private int date;
-    private int year;
 
-    private int hour;
-    private float minutes;
+    private int _date;
+    private int _year;
 
-    private Season season;
+    private int _hour;
+    private float _minutes;
 
-    private int totalNumDays;
-    private int totalNumWeeks;
-    private int streetLightsOffAt;
-    private int streetLightsOnAt;
+    private Season _season;
+
+    private int _totalNumDays;
+    private int _totalNumWeeks;
+    private int _streetLightsOffAt;
+    private int _streetLightsOnAt;
 
     #endregion
 
     #region Properties
-    public Days Day => day;
-    public int Date => date;
-    public float Hour => hour;
-    public float Minutes => minutes;
-    public Season Season => season;
-    public int Year => year;
-    public int TotalNumDays => totalNumDays;
-    public int TotalNumWeeks => totalNumWeeks;
-    public int CurrentWeek => totalNumWeeks % 16 == 0 ? 16 : totalNumWeeks % 16;
 
-    public int StreetLightsOnAt => streetLightsOnAt;
-    public int StreetLightsOffAt => streetLightsOffAt;
+    public Days Day { get; private set; }
+
+    public int Date
+    {
+        get => _date;
+        set => _date = value;
+    }
+
+    public float Hour
+    {
+        get => _hour;
+        set => _hour = (int)value;
+    }
+
+    public float Minutes
+    {
+        get => _minutes;
+        set => _minutes = value;
+    }
+
+    public Season Season
+    {
+        get => _season;
+        set => _season = value;
+    }
+
+    public int Year
+    {
+        get => _year;
+        set => _year = value;
+    }
+
+    public int TotalNumDays => _totalNumDays;
+    public int TotalNumWeeks => _totalNumWeeks;
+    public int CurrentWeek => _totalNumWeeks % 16 == 0 ? 16 : _totalNumWeeks % 16;
+
+    public int StreetLightsOnAt => _streetLightsOnAt;
+    public int StreetLightsOffAt => _streetLightsOffAt;
 
     #endregion
 
     #region Constructors
 
-    public _DateTime(int date, int season, int year, int hour, float minutes, int streetLightsOnAt, int streetLightsOffAt)
+    public _DateTime(int date, int season, int year, int hour, float minutes, int streetLightsOnAt,
+        int streetLightsOffAt)
     {
-        this.day = (Days)(date % 7);
-        if (day == 0) day = (Days)7;
-        this.date = date;
-        this.season = (Season)season;
-        this.year = year;
+        Day = (Days)(date % 7);
+        if (Day == 0) { Day = (Days)7; }
 
-        this.hour = hour;
-        this.minutes = minutes;
-        this.streetLightsOffAt = streetLightsOffAt;
-        this.streetLightsOnAt = streetLightsOnAt;
+        _date = date;
+        _season = (Season)season;
+        _year = year;
 
-        totalNumDays = date + (28 * (int)this.season) + (112 * (year - 1));
+        _hour = hour;
+        _minutes = minutes;
+        _streetLightsOffAt = streetLightsOffAt;
+        _streetLightsOnAt = streetLightsOnAt;
 
-        totalNumWeeks = 1 + totalNumDays / 7;
+        _totalNumDays = date + (28 * (int)_season) + (112 * (year - 1));
+
+        _totalNumWeeks = 1 + (_totalNumDays / 7);
     }
 
     #endregion
@@ -140,123 +194,128 @@ public struct _DateTime
 
     public void AdvanceMinutes(float SecondsToAdvanceBy)
     {
-        if (minutes + SecondsToAdvanceBy >= 60) // changed this from >=
+        if (_minutes + SecondsToAdvanceBy >= 60) // changed this from >=
         {
-            minutes = (minutes + SecondsToAdvanceBy) % 60;
+            _minutes = (_minutes + SecondsToAdvanceBy) % 60;
             AdvanceHour();
         }
         else
         {
-            minutes += SecondsToAdvanceBy;
+            _minutes += SecondsToAdvanceBy;
         }
     }
 
     private void AdvanceHour()
     {
-        if ((hour + 1) == 24)
+        if (_hour + 1 == 24)
         {
-            hour = 0;
+            _hour = 0;
             AdvanceDay();
         }
         else
         {
-            hour++;
+            _hour++;
         }
     }
 
     private void AdvanceDay()
     {
-        day++;
+        Day++;
 
-        if (day > (Days)7)
+        if (Day > (Days)7)
         {
-            day = (Days)1;
-            totalNumWeeks++;
+            Day = (Days)1;
+            _totalNumWeeks++;
         }
 
-        date++;
+        _date++;
 
-        if (date % 29 == 0)
+        if (_date % 29 == 0)
         {
             AdvanceSeason();
-            date = 1;
+            _date = 1;
         }
 
-        totalNumDays++;
-
+        _totalNumDays++;
     }
 
     private void AdvanceSeason()
     {
         if (Season == Season.Winter)
         {
-            season = Season.Spring;
+            _season = Season.Spring;
             AdvanceYear();
         }
-        else season++;
+        else { _season++; }
     }
 
     private void AdvanceYear()
     {
-        date = 1;
-        year++;
+        _date = 1;
+        _year++;
     }
 
     public void AdvanceHourKey()
     {
-        hour++;
+        _hour++;
     }
 
     public void AdvanceDayKey()
     {
-        day++;
+        Day++;
     }
 
     #endregion
 
     #region Bool Checks
+
     public bool IsNight()
     {
-        return hour > streetLightsOnAt - 1 || hour < streetLightsOffAt;
+        return _hour > _streetLightsOnAt - 1 || _hour < _streetLightsOffAt;
     }
 
     public bool IsMorning()
     {
-        return hour >= streetLightsOffAt && hour <= 12;
+        return _hour >= _streetLightsOffAt && _hour <= 12;
     }
 
     public bool IsAfternoon()
     {
-        return hour > 12 && hour < streetLightsOnAt - 1;
+        return _hour > 12 && _hour < _streetLightsOnAt - 1;
     }
 
     public bool IsWeekend()
     {
-        return day > Days.Fri ? true : false;
+        return Day > Days.Fri ? true : false;
     }
 
     public bool IsParticularDay(Days _day)
     {
-        return day == _day;
+        return Day == _day;
     }
+
     #endregion
 
     #region Key Dates
 
     public _DateTime NewYearsDay(int year)
     {
-        if (year == 0) year = 1;
+        if (year == 0) { year = 1; }
+
         return new _DateTime(1, 0, year, 6, 0, StreetLightsOnAt - 1, StreetLightsOffAt);
     }
 
     public _DateTime SummerSolstice(int year)
     {
-        if (year == 0) year = 1;
+        if (year == 0) { year = 1; }
+
         return new _DateTime(28, 1, year, 6, 0, StreetLightsOnAt - 1, StreetLightsOffAt);
     }
+
     public _DateTime PumpkinHarvest(int year)
     {
-        if (year == 0) year = 1;
+        if (year == 0) { year = 1; }
+
         return new _DateTime(28, 2, year, 6, 0, StreetLightsOnAt - 1, StreetLightsOffAt);
     }
 
@@ -267,7 +326,7 @@ public struct _DateTime
     public _DateTime StartOfSeason(int season, int year)
     {
         season = Mathf.Clamp(season, 0, 3);
-        if (year == 0) year = 1;
+        if (year == 0) { year = 1; }
 
         return new _DateTime(1, season, year, 6, 0, StreetLightsOnAt - 1, StreetLightsOffAt);
     }
@@ -298,9 +357,10 @@ public struct _DateTime
 
     public override string ToString()
     {
-        return $"Date: {DateToString()} Season: {season} Time: {TimeToString24()} " +
-            $"\nTotal Days: {totalNumDays} | Total Weeks: {totalNumWeeks}";
+        return $"Date: {DateToString()} Season: {_season} Time: {TimeToString24()} " +
+               $"\nTotal Days: {_totalNumDays} | Total Weeks: {_totalNumWeeks}";
     }
+
     public string DateToString()
     {
         return $"{Day} {Date}";
@@ -315,31 +375,32 @@ public struct _DateTime
     {
         float adjustedHour = 0;
 
-        if (hour == 0)
+        if (_hour == 0)
         {
             adjustedHour = 12;
         }
-        else if (hour >= 13)
+        else if (_hour >= 13)
         {
-            adjustedHour = hour - 12;
+            adjustedHour = _hour - 12;
         }
         else
         {
-            adjustedHour = hour;
+            adjustedHour = _hour;
         }
 
-        string AmPm = hour < 12 ? "AM" : "PM";
+        string AmPm = _hour < 12 ? "AM" : "PM";
 
-        return $"{adjustedHour.ToString("00")}:{Mathf.Floor(minutes).ToString("00")}";
+        return $"{adjustedHour.ToString("00")}:{Mathf.Floor(_minutes).ToString("00")}";
     }
 
     public string TimeToString24()
     {
-        return $"{hour.ToString("00")}:{Mathf.Floor(minutes).ToString("00")}";
+        return $"{_hour.ToString("00")}:{Mathf.Floor(_minutes).ToString("00")}";
     }
 
     #endregion
 }
+
 [System.Serializable]
 public struct Continental
 {
@@ -365,4 +426,3 @@ public enum Days
     Sat = 6,
     Sun = 7
 }
-

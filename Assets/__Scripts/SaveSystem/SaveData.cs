@@ -126,7 +126,7 @@ public class SaveData
         public ItemsData(string itemGuid, string itemName, int quantity, int pickup, bool isPickedUp, bool isNewItem,
             bool isShopItem, SpriteRenderer spriteRenderer, PolygonCollider2D polyCollider, Vector3 itemPosition,
             int itemPickupPlace, bool isDeletedStack, bool hasBeenDropped, bool isPrefab, bool isQuestObject, bool
-                pickupNotice)
+                pickupNotice, Shop shopPlace, bool boughtFromShop)
         {
             this.itemGuid = itemGuid;
             this.itemName = itemName;
@@ -144,18 +144,21 @@ public class SaveData
             this.isPrefab = isPrefab;
             this.isQuestObject = isQuestObject;
             this.pickupNotice = pickupNotice;
+            this.shopPlace = shopPlace;
+            this.boughtFromShop = boughtFromShop;
         }
 
         public string itemGuid;
         public string itemName;
         public int quantity, pickup;
-        public bool isNewItem;
+        public bool isNewItem, boughtFromShop;
         public bool isPickedUp;
         public bool isShopItem, isDeletedStack, hasBeenDropped, isPrefab, isQuestObject, pickupNotice;
         public SpriteRenderer spriteRenderer;
         public PolygonCollider2D polyCollider;
         public Vector3 itemPosition;
         public int itemPickupPlace;
+        public Shop shopPlace;
     }
 
     public List<ItemsData> itemsData = new();
@@ -170,7 +173,7 @@ public class SaveData
         public DroppedItemsData(int itemCode, string itemGuid, string itemName, int quantity, int pickup, bool
                 isPickedUp, bool isShopItem, bool isNewItem, SpriteRenderer spriteRenderer,
             PolygonCollider2D polyCollider,
-            Vector3 itemPosition, int itemPickupPlace, bool isDeletedStack)
+            Vector3 itemPosition, int itemPickupPlace, bool isDeletedStack, bool boughtFromShop)
         {
             this.itemCode = itemCode;
             this.itemGuid = itemGuid;
@@ -185,6 +188,7 @@ public class SaveData
             this.itemPosition = itemPosition;
             this.itemPickupPlace = itemPickupPlace;
             this.isNewItem = isNewItem;
+            this.boughtFromShop = boughtFromShop;
         }
 
         public int itemCode;
@@ -193,7 +197,7 @@ public class SaveData
         public int quantity, pickup;
         public bool isNewItem, isDeletedStack;
         public bool isPickedUp;
-        public bool isShopItem;
+        public bool isShopItem, boughtFromShop;
         public SpriteRenderer spriteRenderer;
         public PolygonCollider2D polyCollider;
         public Vector3 itemPosition;
@@ -203,7 +207,6 @@ public class SaveData
     public List<DroppedItemsData> droppedItems = new();
 
     #endregion
-
 
     #region Dialogue Data
 
@@ -315,6 +318,22 @@ public class SaveData
 
     public InventoryData inventoryDatas;
     public List<InventoryData> inventoryDataList = new();
+
+    #endregion
+
+    #region Time
+
+    [Serializable]
+    public struct TimeData
+    {
+        public Season season;
+        public float minutes;
+        public float hour;
+        public int year;
+        public int date;
+    }
+
+    public TimeData timeData = new();
 
     #endregion
 }

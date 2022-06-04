@@ -6,7 +6,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 using System.Collections;
 
 
-public class ClockManager : MonoBehaviour
+public class ClockManager : SingletonMonobehaviour<ClockManager>
 {
     [Header("Day-Night Clock")]
     public RectTransform ClockFace;
@@ -58,12 +58,11 @@ public class ClockManager : MonoBehaviour
         Actions.OnSceneChange -= SceneChange;
     }
 
-    private void SceneChange(string scene, int empty, int empty2) // change daylight by scene type
+    public void SceneChange(string scene, int empty, int empty2) // change daylight by scene type
     {
         this.scene = scene;
 
-        if (scene == "shop1" || scene == "shop2" || scene == "shop3") { lightScaler = 1.2f; }
-        else { lightScaler = 0f; }
+        lightScaler = scene is "shop1" or "shop2" or "shop3" ? 1.2f : 0f;
     }
 
 

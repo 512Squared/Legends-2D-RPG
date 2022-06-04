@@ -146,14 +146,21 @@ public class ShopManager : MonoBehaviour
     {
         if (activeItem.valueInCoins <= Thulgran.ThulgranGold)
         {
-            Debug.Log("Buy item initiated | Item: " + activeItem.itemName);
+            string guid;
+            guid = activeItem.itemGuid[..8];
+            Debug.Log($"Buy item initiated | Item: {activeItem.itemName} | GUID: {guid}");
             Inventory.Instance.BuyItem(activeItem);
             NotificationFader.instance.CallFadeInOut(
                 "You have bought a " + activeItem.itemName + " for <color=#E0A515>" + activeItem.valueInCoins +
                 "</color> gold coins. Item has been added to your inventory.", activeItem.itemsImage, 3f, 1400f, 30);
             UpdateShopItemsInventory();
             ItemSoldAnim();
-            activeItem.GetComponent<SpriteRenderer>().sprite = null;
+            activeItem.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            activeItem.SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
+            activeItem.shop = Shop.PickUpItem;
+            activeItem.boughtFromShop = true;
+            activeItem.isPickedUp = true;
+            activeItem.isNewItem = true;
         }
 
         else if (activeItem.valueInCoins > Thulgran.ThulgranGold)

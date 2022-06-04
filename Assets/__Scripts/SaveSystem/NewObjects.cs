@@ -40,18 +40,20 @@ public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
         it.isPrefab = true;
         it.spriteRenderer.sprite = it.itemsImage;
         it.polyCollider.TryUpdateShapeToAttachedSprite();
-        Debug.Log($"New object created: {it.itemName} | GUID: {it.itemGuid} | Image: {it.spriteRenderer.sprite}");
+        Debug.Log(
+            $"New object created: {it.itemName} | GUID: {it.itemGuid} | Image: {it.spriteRenderer.sprite} | CurrentSceneIndex: {PlayerGlobalData.Instance.currentSceneIndex}");
         OnDropItem(it);
         AddNewObjectToSaveList(it);
     }
-    
+
     public void RemoveItem(Item item)
     {
         Debug.Log($"Prefab Object List: {Objects.Count}");
         if (Objects.Any(prefabObject => item.itemGuid == prefabObject.itemGuid)) { Objects.Remove(item); }
+
         Debug.Log($"Prefab Object List: {Objects.Count}");
     }
-    
+
 
     public static void OnDropItem(Item it)
     {
@@ -67,10 +69,15 @@ public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        foreach (SaveData.DroppedItemsData did in Objects.Select(item => new SaveData.DroppedItemsData(item.ItemCode, item.itemGuid, item.itemName, item.quantity, item.pickup, item.isPickedUp, item.isShopItem, item.isNewItem, item.spriteRenderer, item.polyCollider, item.itemPosition, item.itemPickupPlace, item.isDeletedStack)))
+        foreach (SaveData.DroppedItemsData did in Objects.Select(item => new SaveData.DroppedItemsData(item.ItemCode,
+                     item.itemGuid, item.itemName, item.quantity, item.pickup, item.isPickedUp, item.isShopItem,
+                     item.isNewItem,
+                     item.spriteRenderer, item.polyCollider, item.itemPosition, item.itemPickupPlace,
+                     item.isDeletedStack, item
+                         .boughtFromShop)))
         {
             string guid = did.itemGuid[..8];
-            
+
             a_SaveData.droppedItems.Add(did);
 
             Debug.Log($"Dropped Item Saved: {did.itemName} | GUID: {guid}");
@@ -94,7 +101,7 @@ public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
 
             id.ItemCode = did.itemCode;
             id.GetItemDetailsFromScriptObject(id); // this is necessary to retrieve the right image
-    
+
             id.isPrefab = true;
             id.itemGuid = did.itemGuid;
             id.pickup = did.pickup;
@@ -122,7 +129,7 @@ public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
                     : GameManager.Instance.pickupParents[id.itemPickupPlace], true);
 
             id.itemName += "_rebuilt";
-            
+
             AddNewObjectToSaveList(id);
 
             Debug.Log($"Dropped Item Rebuilt: {id.itemName} | GUID: {guid}");
@@ -133,5 +140,4 @@ public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
     }
 
     #endregion
-
 }

@@ -74,7 +74,6 @@ public class Exit : MonoBehaviour
             Shop enumShopType = (Shop)System.Enum.Parse(typeof(Shop), scene);
             Debug.Log($"Enum shop type: {enumShopType}");
             ShopManager.Instance.ShopType(enumShopType);
-            //SecretShopSection.Instance.SetShopType(scene);
             ShopManager.Instance.UpdateShopItemsInventory();
         }
 

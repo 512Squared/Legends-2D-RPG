@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour, ISaveable
     public Transform deletedItems;
     public int objectInt = 1;
     private SceneHandling _sceneHandler;
+    public ClockManager clockManager;
 
     [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool isInterfaceOn, dialogueBoxOpened;
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour, ISaveable
     [Title("Messaging")] [Space] public TextMeshProUGUI playerMessages;
 
     private string _firstScene = "Homestead";
+
+    public float startTime;
 
     private List<ISaveable> _saveables;
 
@@ -191,7 +194,7 @@ public class GameManager : MonoBehaviour, ISaveable
     }
 
 
-    private static void Shop(string scene, SceneObjectsLoad sceneObjectsLoad)
+    private void Shop(string scene, SceneObjectsLoad sceneObjectsLoad)
     {
         if (sceneObjectsLoad is SceneObjectsLoad.shop1 or SceneObjectsLoad.shop2 or SceneObjectsLoad.shop3)
         {
@@ -200,8 +203,8 @@ public class GameManager : MonoBehaviour, ISaveable
             Shop enumShopType = (Shop)Enum.Parse(typeof(Shop), scene);
             Debug.Log($"Enum shop type: {enumShopType}");
             ShopManager.Instance.ShopType(enumShopType);
-            SecretShopSection.Instance.SetShopType(scene);
             ShopManager.Instance.UpdateShopItemsInventory();
+            StartCoroutine(SecretShopSetup(scene));
         }
 
         else if (scene == "Dungeon")
@@ -215,6 +218,12 @@ public class GameManager : MonoBehaviour, ISaveable
             GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size =
                 new Vector2(1.12f, 1.31f);
         }
+    }
+
+    private static IEnumerator SecretShopSetup(string scene)
+    {
+        yield return null;
+        SecretShopSection.Instance.SetShopType(scene);
     }
 
     #endregion
@@ -241,7 +250,11 @@ public class GameManager : MonoBehaviour, ISaveable
         sceneObjects[SceneHandling.SceneObjectsInt(_sceneHandler.sceneObjectsLoad)].SetActive(true);
 
         // Initialise shop
-        Shop(_firstScene, _sceneHandler.sceneObjectsLoad);
+        if (_firstScene is "shop1" or "shop2" or "shop3")
+        {
+            Shop(_firstScene, _sceneHandler.sceneObjectsLoad);
+            clockManager.SceneChange(_firstScene, 0, 0);
+        }
 
         // Initialise NPCs
         ActivateCharacters(_firstScene);

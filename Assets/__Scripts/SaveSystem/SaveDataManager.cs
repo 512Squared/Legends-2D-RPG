@@ -6,7 +6,7 @@ public static class SaveDataManager
 {
     private static SaveData _initialData;
     public static string InitialData;
-    public static SaveData.InventoryData ShopList;
+    //public static SaveData.InventoryData ShopList;
 
     public static void SaveJsonData(IEnumerable<ISaveable> a_Saveables) // ATM called in GameManager in OnDestroy
     {
@@ -49,6 +49,7 @@ public static class SaveDataManager
         _initialData.thulgranData.maxMana = 200;
         _initialData.sceneData.currentScene = "Homestead";
         _initialData.sceneData.sceneObjects = 1;
+        _initialData.timeData.hour = GameManager.Instance.startTime;
         _initialData.questDataList.Clear();
         _initialData.questElementsList.Clear();
         _initialData.dialoguesList.Clear();

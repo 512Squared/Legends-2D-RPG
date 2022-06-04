@@ -24,11 +24,13 @@ public class SecretShopSection : MonoBehaviour
 
     public Shop shopType;
 
-
-    // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
         definedButton = gameObject;
         bell.sprite = bellImageOff;
     }
