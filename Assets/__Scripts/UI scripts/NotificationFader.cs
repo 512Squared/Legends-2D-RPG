@@ -8,9 +8,8 @@ using System;
 
 public class NotificationFader : MonoBehaviour
 {
-
     public static NotificationFader instance;
-    
+
     [SerializeField] private CanvasGroup canvasGroup;
     private Tween fadeTween;
     public TextMeshProUGUI message;
@@ -26,21 +25,26 @@ public class NotificationFader : MonoBehaviour
     private bool isInProgress = false;
 
 
-
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         instance = this;
     }
 
     private void OnEnable()
     {
-        if(isInProgress) if(memoryString != null && memoryImage != null) CallFadeInOut(memoryString, memoryImage.sprite, duration, memoryPosX, memoryPosY); 
+        if (isInProgress)
+        {
+            if (memoryString != null && memoryImage != null)
+            {
+                CallFadeInOut(memoryString, memoryImage.sprite, duration, memoryPosX, memoryPosY);
+            }
+        }
     }
 
     private void OnDisable()
     {
-        if (isInProgress == true)
+        if (isInProgress)
         {
             memoryString = message.text;
             memoryPosX = messageContainer.position.x;
@@ -90,7 +94,7 @@ public class NotificationFader : MonoBehaviour
         FadeIn(0.5f, passedMessage, characterMug);
         yield return new WaitForSeconds(duration);
         FadeOut(1f);
-        isInProgress = false;    
+        isInProgress = false;
     }
 
     public void CallFadeInOut(string message, Sprite character, float dur, float xposition, float yposition)

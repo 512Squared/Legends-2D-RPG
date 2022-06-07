@@ -67,6 +67,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
     public MagicManager[] magicSlots;
 
     private string _npcGuid;
+    private Vector3 position;
 
     #endregion
 
@@ -95,10 +96,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
             case QuestRewards.PlayerClasses.NPC:
             case QuestRewards.PlayerClasses.all:
                 {
-                    if (rewards.rewardType == QuestRewards.RewardTypes.hp)
-                    {
-                        characterHp += rewards.rewardAmount;
-                    }
+                    if (rewards.rewardType == QuestRewards.RewardTypes.hp) { characterHp += rewards.rewardAmount; }
 
                     break;
                 }
@@ -118,24 +116,12 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
         characterHp = maxHp;
         characterMana = maxMana;
 
-        if (characterLevel % 2 == 0)
-        {
-            characterBaseAttack++;
-        }
-        else
-        {
-            characterBaseDefence++;
-        }
+        if (characterLevel % 2 == 0) { characterBaseAttack++; }
+        else { characterBaseDefence++; }
 
-        if (characterLevel % 3 == 0)
-        {
-            characterIntelligence++;
-        }
+        if (characterLevel % 3 == 0) { characterIntelligence++; }
 
-        if (characterLevel % 5 == 0)
-        {
-            characterPerception++;
-        }
+        if (characterLevel % 5 == 0) { characterPerception++; }
     }
 
     public void AddHp(int amountOfHpToAdd)
@@ -230,11 +216,13 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
+        position = transform.position;
+
         SaveData.CharacterData cd = new(_npcGuid, characterLevel, characterMana, characterHp, characterIntelligence,
             characterPerception, characterBaseAttack, characterBaseDefence, isTeamMember, isAvailable, isNew,
             characterWeapon, characterArmour, characterHelmet, characterShield, characterAttackTotal,
             characterDefenceTotal, characterWeaponImage, characterArmourImage, characterHelmetImage,
-            characterShieldImage, skills);
+            characterShieldImage, skills, position);
 
         a_SaveData.characterDataList.Add(cd);
     }
@@ -264,6 +252,11 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
             characterHelmetImage = cd.characterHelmetImage;
             characterShieldImage = cd.characterShieldImage;
             skills = cd.skills;
+            position = cd.position;
+            transform.position = position;
+
+            Debug.Log($"npcPosition: {position}");
+
             if (isTeamMember)
             {
                 switch (playerName)

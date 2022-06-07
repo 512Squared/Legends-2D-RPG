@@ -7,9 +7,10 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 {
     public static PlayerGlobalData Instance;
 
-    [SerializeField] private Rigidbody2D playerRigidBody;
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private int moveSpeed = 1;
     [SerializeField] private Animator playerAnimator;
+    private AudioSource audioSrc;
 
     public int currentSceneIndex;
 
@@ -23,6 +24,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     private Vector3 _topRightEdge;
 
     public bool controllerSwitch;
+    public bool isMoving;
 
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -43,6 +45,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         Instance = this;
         _toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
         currentSceneIndex = 1;
+        audioSrc = GetComponent<AudioSource>();
     }
 
 
@@ -52,15 +55,27 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 
         if (deactivedMovement)
         {
-            playerRigidBody.velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;
         }
         else
         {
-            playerRigidBody.velocity = new Vector2(_horizontalMovement, _verticalMovement) * moveSpeed;
+            rb.velocity = new Vector2(_horizontalMovement, _verticalMovement) * moveSpeed;
         }
 
-        playerAnimator.SetFloat(MovementX, playerRigidBody.velocity.x);
-        playerAnimator.SetFloat(MovementY, playerRigidBody.velocity.y);
+        if (rb.velocity.x != 0 || rb.velocity.y != 0) { isMoving = true; }
+        else { isMoving = false; }
+
+        if (isMoving)
+        {
+            if (!audioSrc.isPlaying)
+            {
+                audioSrc.Play();
+            }
+        }
+        else { audioSrc.Stop(); }
+
+        playerAnimator.SetFloat(MovementX, rb.velocity.x);
+        playerAnimator.SetFloat(MovementY, rb.velocity.y);
 
         if (_horizontalMovement is 1 or -1 || _verticalMovement is 1 or -1)
         {

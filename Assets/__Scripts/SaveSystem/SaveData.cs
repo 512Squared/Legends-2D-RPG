@@ -237,7 +237,7 @@ public class SaveData
             bool isTeamMember, bool isAvailable, bool isNew, Item characterWeapon, Item characterArmour,
             Item characterHelmet, Item characterShield, int characterAttackTotal, int characterDefenceTotal,
             Sprite characterWeaponImage, Sprite characterArmourImage, Sprite characterHelmetImage,
-            Sprite characterShieldImage, Sprite[] skills)
+            Sprite characterShieldImage, Sprite[] skills, Vector3 position)
         {
             this.npcGuid = npcGuid;
             this.characterLevel = characterLevel;
@@ -261,6 +261,7 @@ public class SaveData
             this.characterHelmetImage = characterHelmetImage;
             this.characterShieldImage = characterShieldImage;
             this.skills = skills;
+            this.position = position;
         }
 
         public string npcGuid;
@@ -273,6 +274,7 @@ public class SaveData
         public int characterAttackTotal, characterDefenceTotal;
         public Sprite characterWeaponImage, characterArmourImage, characterHelmetImage, characterShieldImage;
         public Sprite[] skills;
+        public Vector3 position;
     }
 
     public List<CharacterData> characterDataList = new();

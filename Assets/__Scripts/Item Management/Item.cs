@@ -13,6 +13,8 @@ public class Item : MonoBehaviour, ISaveable
     [Space] [ItemCodeDescription] [SerializeField]
     private int itemCode = 1000;
 
+    private static int test;
+
     [Space]
     [Required]
     public SpriteRenderer spriteRenderer;
@@ -421,6 +423,7 @@ public class Item : MonoBehaviour, ISaveable
                 spriteRenderer.enabled = true;
                 spriteRenderer.sortingOrder = 3;
                 spriteRenderer.sortingLayerName = "Objects";
+                Debug.Log($"Quantity calculation: {quantity}");
             }
 
             if (id.isPickedUp && id.boughtFromShop)

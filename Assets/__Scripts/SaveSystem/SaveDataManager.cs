@@ -5,8 +5,10 @@ using UnityEngine;
 public static class SaveDataManager
 {
     private static SaveData _initialData;
+
     public static string InitialData;
     //public static SaveData.InventoryData ShopList;
+
 
     public static void SaveJsonData(IEnumerable<ISaveable> a_Saveables) // ATM called in GameManager in OnDestroy
     {
