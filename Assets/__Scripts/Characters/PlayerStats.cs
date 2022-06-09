@@ -255,8 +255,6 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
             position = cd.position;
             transform.position = position;
 
-            Debug.Log($"npcPosition: {position}");
-
             if (isTeamMember)
             {
                 switch (playerName)

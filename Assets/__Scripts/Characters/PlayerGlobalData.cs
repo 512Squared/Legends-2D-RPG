@@ -10,6 +10,8 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private int moveSpeed = 1;
     [SerializeField] private Animator playerAnimator;
+
+    [SerializeField]
     private AudioSource audioSrc;
 
     public int currentSceneIndex;

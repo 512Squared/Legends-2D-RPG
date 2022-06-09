@@ -52,6 +52,8 @@ public static class SaveDataManager
         _initialData.sceneData.currentScene = "Homestead";
         _initialData.sceneData.sceneObjects = 1;
         _initialData.timeData.hour = GameManager.Instance.startTime;
+        _initialData.audioData.musicVolume = 0.2f;
+        _initialData.audioData.sfxVolume = 0.5f;
         _initialData.questDataList.Clear();
         _initialData.questElementsList.Clear();
         _initialData.dialoguesList.Clear();

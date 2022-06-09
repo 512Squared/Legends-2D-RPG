@@ -303,6 +303,20 @@ public class SaveData
 
     #endregion
 
+    #region Audio Settings
+
+    [Serializable]
+    public struct AudioData
+    {
+        public float sfxVolume;
+        public float musicVolume;
+    }
+
+    public AudioData audioData;
+
+    #endregion Audio Settings
+
+
     #region Inventory
 
     [Serializable]

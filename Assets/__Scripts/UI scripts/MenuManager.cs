@@ -351,24 +351,26 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     private Sprite questsSpriteOn, questsSpriteOff, claimsSpriteOn, claimsSpriteOff, relicsSpriteOn, relicsSpriteOff;
 
 
-    [ShowInInspector] [Title("Nofify Info")] [GUIColor(0.878f, 0.219f, 0.219f)]
+    [ShowInInspector] [Title("Nofify Info")]
+    [TabGroup("Nofify Group", "Nofify")] [SerializeField] [GUIColor(0.878f, 0.219f, 0.219f)]
     public int currentNewItems;
 
-    [GUIColor(0.878f, 0.219f, 0.219f)]
+    [TabGroup("Nofify Group", "Nofify")] [SerializeField] [GUIColor(0.878f, 0.219f, 0.219f)]
     public int notifyActiveQuest, notifyQuestReward, notifyRelicActive, totalQuestNotifications;
 
-    [GUIColor(0.878f, 0.219f, 0.219f)] [SerializeField]
+    [TabGroup("Nofify Group", "Nofify")] [SerializeField] [GUIColor(0.878f, 0.219f, 0.219f)]
     private TextMeshProUGUI newItemsText,
         newQuestActiveText,
         newClaimQuestRewardText,
         newQuestRelicActiveText,
         totalQuestNofifyText;
 
-    [GUIColor(0.878f, 0.219f, 0.219f)] public Item activeItem;
+    [TabGroup("Nofify Group", "Nofify")] [GUIColor(0.878f, 0.219f, 0.219f)]
+    public Item activeItem;
 
+    [TabGroup("Nofify Group", "Nofify")]
     [GUIColor(0.878f, 0.219f, 0.219f)]
     public CanvasGroup questsTabNofify, claimsTabNofify, relicsTabNofify, totalQuestNofify;
-
 
     [FoldoutGroup("UI Bools", false)] [GUIColor(0.4f, 0.886f, 0.780f)] [SerializeField]
     private bool[] isTeamMember;
