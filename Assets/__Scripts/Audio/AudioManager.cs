@@ -12,13 +12,16 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
 
     [SerializeField]
     private AudioSource[] soundFX;
+
     [GUIColor(0.778f, 0.219f, 0.619f)]
     public float musicVolume;
+
     [GUIColor(0.778f, 0.219f, 0.619f)]
     public float sfxVolume;
+
     [GUIColor(0.278f, 0.719f, 0.619f)]
     public Image sfxIconOn, sfxIconOff, musicIconOn, musicIconOff;
-    
+
     [SerializeField] [GUIColor(0.478f, 0.519f, 0.619f)]
     private Slider musicVolumeSlider = null;
 
@@ -31,10 +34,11 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     private const float TOLERANCE = 0.001f;
 
+    public AudioClip[] sfxClips;
+
 
     private void Start()
     {
-
     }
 
     public void SetMusicSound(float soundLevel)
@@ -44,7 +48,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
         PlayStopAudio();
         Debug.Log($"musicVolume: {musicVolume}");
     }
-    
+
     public void SetSfxSound(float soundLevel)
     {
         audioMixer.SetFloat("SFXVolume", Mathf.Log10(soundLevel) * 20);
@@ -56,14 +60,14 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
     public float GetMusicSound()
     {
         audioMixer.GetFloat("MusicVolume", out musicVolume);
-        musicVolume = Mathf.Pow(10f, musicVolume/20.0f);
+        musicVolume = Mathf.Pow(10f, musicVolume / 20.0f);
         return musicVolume;
     }
-    
+
     public float GetSfxSound()
     {
         audioMixer.GetFloat("SFXVolume", out sfxVolume);
-        sfxVolume = Mathf.Pow(10f, sfxVolume/20.0f);
+        sfxVolume = Mathf.Pow(10f, sfxVolume / 20.0f);
         return sfxVolume;
     }
 
@@ -86,25 +90,38 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
         PlayStopAudio();
     }
 
+    public static void PlayClip(AudioSource audio)
+    {
+        audio.PlayOneShot(audio.clip, 1.0f);
+    }
+
     private void PlayStopAudio()
     {
         musicVolumeSlider.value = musicVolume;
         sfxVolumeSlider.value = sfxVolume;
-        
+
         if (Math.Abs(sfxVolume - 0.0001f) < TOLERANCE)
-        { sfxIconOff.enabled = true;
-            sfxIconOn.enabled = false; }
+        {
+            sfxIconOff.enabled = true;
+            sfxIconOn.enabled = false;
+        }
         else
-        { sfxIconOff.enabled = false;
-            sfxIconOn.enabled = true; }
+        {
+            sfxIconOff.enabled = false;
+            sfxIconOn.enabled = true;
+        }
 
         if (Math.Abs(musicVolume - 0.0001f) < TOLERANCE)
-        { musicIconOff.enabled = true;
-            musicIconOn.enabled = false; }
+        {
+            musicIconOff.enabled = true;
+            musicIconOn.enabled = false;
+        }
         else
-        { musicIconOff.enabled = false;
+        {
+            musicIconOff.enabled = false;
             musicIconOn.enabled = true;
-            if (!mainMusic.isPlaying) { mainMusic.Play(); } }
+            if (!mainMusic.isPlaying) { mainMusic.Play(); }
+        }
     }
 
     #endregion

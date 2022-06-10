@@ -58,7 +58,7 @@ public class Item : MonoBehaviour, ISaveable
     public bool hasBeenDropped;
     public bool boughtFromShop;
     public bool isPrefab;
-
+    public AudioSource pickupSFX;
 
     [PreviewField(120, ObjectFieldAlignment.Center)]
     [GUIColor(0.2f, 0.286f, 0.680f)]
@@ -106,6 +106,7 @@ public class Item : MonoBehaviour, ISaveable
     {
         itemGuid = GetComponent<GenerateGUID>().GUID;
         GetItemDetailsFromScriptObject(this);
+        pickupSFX = GetComponent<AudioSource>();
     }
 
     public Item GetItemDetailsFromScriptObject(Item item)
@@ -163,6 +164,7 @@ public class Item : MonoBehaviour, ISaveable
 
         SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
         SelfDeactivate();
+        AudioManager.PlayClip(pickupSFX);
 
         if (pickUpNotice)
         {
