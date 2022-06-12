@@ -194,6 +194,9 @@ public class CoinsManager : MonoBehaviour
                     Thulgran.ThulgranGold++;
                 });
         }
+
+        AudioManager.Instance.PlayClipDelayed(AudioManager.Instance.sfxSource, AudioManager.Instance.coins,
+            0.2f);
     }
 
     public void AnimateHP(Vector2 sourceHP, int amountOfEffect, Vector2 receivedTarget)

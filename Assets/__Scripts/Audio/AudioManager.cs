@@ -7,46 +7,120 @@ using UnityEngine.UI;
 
 public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
 {
-    [SerializeField]
-    private AudioSource mainMusic;
+    [Header("Main")] [Space]
+    [SerializeField] private AudioSource musicSource;
 
-    [SerializeField]
-    private AudioSource[] soundFX;
+    [SerializeField] private AudioMixer audioMixer;
 
+
+    [Header("Sound Effects")] [Space]
     [GUIColor(0.778f, 0.219f, 0.619f)]
-    public float musicVolume;
+    public AudioSource sfxSource;
 
-    [GUIColor(0.778f, 0.219f, 0.619f)]
-    public float sfxVolume;
+    [GUIColor(0.778f, 0.219f, 0.619f)] public Slider sfxVolumeSlider;
 
-    [GUIColor(0.278f, 0.719f, 0.619f)]
-    public Image sfxIconOn, sfxIconOff, musicIconOn, musicIconOff;
+    [GUIColor(0.778f, 0.219f, 0.619f)] private float sfxVolume;
 
-    [SerializeField] [GUIColor(0.478f, 0.519f, 0.619f)]
-    private Slider musicVolumeSlider = null;
+    [GUIColor(0.778f, 0.219f, 0.619f)] public Image sfxIconOn, sfxIconOff;
 
-    [SerializeField] [GUIColor(0.478f, 0.519f, 0.619f)]
-    private Slider sfxVolumeSlider = null;
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip pickupItem;
 
-    [SerializeField]
-    private AudioMixer audioMixer;
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip openMenu;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip coins;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip buyItem;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip dropItem;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip button;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip streetLightsOn;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip itemSelect;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip bellAlarm;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip counterBell;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip shelfWhoosh;
+
+    [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
+    public AudioClip empty6;
+
+
+    [Header("Settings")] [Space]
+    [GUIColor(0.278f, 0.719f, 0.619f)] public Image musicIconOn;
+
+    [GUIColor(0.278f, 0.719f, 0.619f)] public Image musicIconOff;
+
+    [SerializeField] [GUIColor(0.278f, 0.719f, 0.619f)]
+    private Slider musicVolumeSlider;
+
+    [GUIColor(0.278f, 0.719f, 0.619f)] private float musicVolume;
+
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     private const float TOLERANCE = 0.001f;
 
-    public AudioClip[] sfxClips;
-
-
-    private void Start()
+    public void PlaySfxClip(int sfxNumber)
     {
+        switch (sfxNumber)
+        {
+            case 1 when pickupItem:
+                PlayClip(sfxSource, pickupItem);
+                break;
+            case 2 when openMenu:
+                PlayClip(sfxSource, openMenu);
+                break;
+            case 3 when coins:
+                PlayClip(sfxSource, coins);
+                break;
+            case 4 when buyItem:
+                PlayClip(sfxSource, buyItem);
+                break;
+            case 5 when dropItem:
+                PlayClip(sfxSource, dropItem);
+                break;
+            case 6 when button:
+                PlayClip(sfxSource, button);
+                break;
+            case 7 when streetLightsOn:
+                PlayClip(sfxSource, streetLightsOn);
+                break;
+            case 8 when itemSelect:
+                PlayClip(sfxSource, itemSelect);
+                break;
+            case 9 when bellAlarm:
+                PlayClip(sfxSource, counterBell);
+                PlayClipDelayed(sfxSource, bellAlarm, 1.2f);
+                break;
+            case 10 when counterBell:
+                PlayClip(sfxSource, counterBell);
+                break;
+            case 11 when empty6:
+                PlayClip(sfxSource, empty6);
+                break;
+        }
     }
+
 
     public void SetMusicSound(float soundLevel)
     {
         audioMixer.SetFloat("MusicVolume", Mathf.Log10(soundLevel) * 20);
         musicVolume = soundLevel;
         PlayStopAudio();
-        Debug.Log($"musicVolume: {musicVolume}");
     }
 
     public void SetSfxSound(float soundLevel)
@@ -54,7 +128,6 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
         audioMixer.SetFloat("SFXVolume", Mathf.Log10(soundLevel) * 20);
         sfxVolume = soundLevel;
         PlayStopAudio();
-        Debug.Log($"sfxVolume: {sfxVolume}");
     }
 
     public float GetMusicSound()
@@ -71,29 +144,22 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
         return sfxVolume;
     }
 
-    #region Implementation of ISaveable
-
-    public void PopulateSaveData(SaveData a_SaveData)
+    public static void PlayClip(AudioSource source, AudioClip audio)
     {
-        a_SaveData.audioData.musicVolume = GetMusicSound();
-        a_SaveData.audioData.sfxVolume = GetSfxSound();
-        Debug.Log($"Audio Data saved: {sfxVolume} | {musicVolume}");
+        source.PlayOneShot(audio);
     }
 
-    public void LoadFromSaveData(SaveData a_SaveData)
+    public void PlayClipDirect(AudioSource source, AudioClip audio)
     {
-        sfxVolume = a_SaveData.audioData.sfxVolume;
-        musicVolume = a_SaveData.audioData.musicVolume;
-        Debug.Log($"Audio Data loaded: {sfxVolume} | {musicVolume}");
-        SetSfxSound(sfxVolume);
-        SetMusicSound(musicVolume);
-        PlayStopAudio();
+        source.PlayOneShot(audio);
     }
 
-    public static void PlayClip(AudioSource audio)
+    public void PlayClipDelayed(AudioSource source, AudioClip clip, float delay)
     {
-        audio.PlayOneShot(audio.clip, 1.0f);
+        source.clip = clip;
+        source.PlayDelayed(delay);
     }
+
 
     private void PlayStopAudio()
     {
@@ -120,8 +186,26 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
         {
             musicIconOff.enabled = false;
             musicIconOn.enabled = true;
-            if (!mainMusic.isPlaying) { mainMusic.Play(); }
+            if (!musicSource.isPlaying) { musicSource.Play(); }
         }
+    }
+
+    #region Implementation of ISaveable
+
+    public void PopulateSaveData(SaveData a_SaveData)
+    {
+        a_SaveData.audioData.musicVolume = GetMusicSound();
+        a_SaveData.audioData.sfxVolume = GetSfxSound();
+    }
+
+
+    public void LoadFromSaveData(SaveData a_SaveData)
+    {
+        sfxVolume = a_SaveData.audioData.sfxVolume;
+        musicVolume = a_SaveData.audioData.musicVolume;
+        SetSfxSound(sfxVolume);
+        SetMusicSound(musicVolume);
+        PlayStopAudio();
     }
 
     #endregion

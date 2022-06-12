@@ -9,6 +9,7 @@ public class ItemButton : MonoBehaviour
     [Button]
     public void Press()
     {
+        AudioManager.Instance.PlaySfxClip(8);
         itemOnButton.GetItemDetailsFromScriptObject(itemOnButton);
 
         MenuManager.Instance.itemName.text = itemOnButton.itemName;

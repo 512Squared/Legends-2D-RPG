@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour, ISaveable
     public float startTime;
 
     private List<ISaveable> _saveables;
+    public Transform gridParent;
 
     #endregion
 

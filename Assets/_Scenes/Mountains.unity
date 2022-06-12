@@ -1179,7 +1179,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377237196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 59.899998, y: -8.52, z: 0}
+  m_LocalPosition: {x: 59.1, y: -8.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2078,7 +2078,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1660444129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 81ed02f4eb634e743935dc07b8d520d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3009,7 +3009,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 780190370}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0.88, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3813,7 +3813,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1660444129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2a35d5daaa4d6f9408f7d7817949cddf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7528,11 +7528,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.1500006
+      value: -8.25
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.8799996
+      value: -2.44
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805261132712, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_BoundingShape2D
@@ -7862,7 +7862,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1660444129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2a35d5daaa4d6f9408f7d7817949cddf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -8035,7 +8035,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1660444129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ecaf6739761bac640a5bd9f3a8852fb2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -9409,6 +9409,14 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 1343214270}
     m_ColliderPaths:
+    - - X: -255999984
+        Y: 204800016
+      - X: -281600000
+        Y: 204800016
+      - X: -281600000
+        Y: 153600000
+      - X: -255999984
+        Y: 153600000
     - - X: -153600000
         Y: 204800016
       - X: -179200000
@@ -9424,14 +9432,6 @@ CompositeCollider2D:
       - X: -51200000
         Y: 153600000
       - X: 0
-        Y: 153600000
-    - - X: -255999984
-        Y: 204800016
-      - X: -281600000
-        Y: 204800016
-      - X: -281600000
-        Y: 153600000
-      - X: -255999984
         Y: 153600000
     - - X: -307199968
         Y: 204800016
@@ -9457,6 +9457,14 @@ CompositeCollider2D:
         Y: 102400000
       - X: 25600000
         Y: 102400000
+    - - X: -307199968
+        Y: 153599984
+      - X: -332800000
+        Y: 153599984
+      - X: -332800000
+        Y: 76799992
+      - X: -307199968
+        Y: 76799992
     - - X: -153600000
         Y: 153599984
       - X: -179200000
@@ -9468,14 +9476,6 @@ CompositeCollider2D:
       - X: -204800000
         Y: 76799992
       - X: -153600000
-        Y: 76799992
-    - - X: -307199968
-        Y: 153599984
-      - X: -332800000
-        Y: 153599984
-      - X: -332800000
-        Y: 76799992
-      - X: -307199968
         Y: 76799992
     - - X: -230399968
         Y: 102400000
@@ -9505,50 +9505,18 @@ CompositeCollider2D:
         Y: -127999992
       - X: 127999992
         Y: -127999992
-    - - X: -307199868
-        Y: -25600041
-      - X: -307199868
-        Y: 41
-      - X: -307199927
-        Y: 100
-      - X: -307199968
-        Y: 100
-      - X: -307199968
-        Y: 25600000
-      - X: -332800000
-        Y: 25600000
-      - X: -332800000
-        Y: 100
-      - X: -332800041
-        Y: 100
-      - X: -332800100
-        Y: 41
-      - X: -332800100
-        Y: -25600041
-      - X: -332800041
-        Y: -25600100
-      - X: -307199927
-        Y: -25600100
     - - X: -307199968
-        Y: -76800100
-      - X: -307199927
-        Y: -76800100
-      - X: -307199868
-        Y: -76800041
-      - X: -307199868
-        Y: -51200041
-      - X: -307199927
-        Y: -51200100
-      - X: -332800041
-        Y: -51200100
-      - X: -332800100
-        Y: -51200041
-      - X: -332800100
-        Y: -76800041
-      - X: -332800041
-        Y: -76800100
+        Y: 25600000
       - X: -332800000
-        Y: -76800100
+        Y: 25600000
+      - X: -332800000
+        Y: -25600000
+      - X: -307199968
+        Y: -25600000
+    - - X: -307199968
+        Y: -51200000
+      - X: -332800000
+        Y: -51200000
       - X: -332800000
         Y: -127999992
       - X: -307199968
@@ -9565,14 +9533,6 @@ CompositeCollider2D:
         Y: -204800000
       - X: 127999992
         Y: -204800000
-    - - X: -179199984
-        Y: -128000000
-      - X: -204800000
-        Y: -128000000
-      - X: -204800000
-        Y: -204800000
-      - X: -179199984
-        Y: -204800000
     - - X: -128000000
         Y: -128000000
       - X: -153600000
@@ -9581,30 +9541,22 @@ CompositeCollider2D:
         Y: -204800000
       - X: -128000000
         Y: -204800000
-    - - X: -307199868
-        Y: -332800041
-      - X: -307199868
-        Y: -230399927
-      - X: -307199927
-        Y: -230399868
-      - X: -307199968
-        Y: -230399868
-      - X: -307199968
+    - - X: -179199984
+        Y: -128000000
+      - X: -204800000
+        Y: -128000000
+      - X: -204800000
+        Y: -204800000
+      - X: -179199984
+        Y: -204800000
+    - - X: -307199968
         Y: -128000000
       - X: -332800000
         Y: -128000000
       - X: -332800000
-        Y: -230399868
-      - X: -332800041
-        Y: -230399868
-      - X: -332800100
-        Y: -230399927
-      - X: -332800100
-        Y: -332800041
-      - X: -332800041
-        Y: -332800100
-      - X: -307199927
-        Y: -332800100
+        Y: -332800000
+      - X: -307199968
+        Y: -332800000
   m_CompositePaths:
     m_Paths:
     - - {x: 2.5599709, y: 10.24}
@@ -9647,14 +9599,14 @@ CompositeCollider2D:
       - {x: -2.5599709, y: -15.360001}
       - {x: 7.6799994, y: -15.360029}
       - {x: 7.680029, y: -20.48}
-    - - {x: -30.720022, y: -2.56001}
+    - - {x: -30.720026, y: -2.56}
       - {x: -30.720026, y: 2.56}
       - {x: -33.28, y: 2.5599709}
-      - {x: -33.279976, y: -2.56001}
-    - - {x: -30.720022, y: -33.28001}
-      - {x: -30.720022, y: -5.12001}
-      - {x: -33.28001, y: -5.1200337}
-      - {x: -33.279976, y: -33.28001}
+      - {x: -33.279972, y: -2.56}
+    - - {x: -30.720026, y: -33.28}
+      - {x: -30.720026, y: -5.12}
+      - {x: -33.28, y: -5.1200294}
+      - {x: -33.279972, y: -33.28}
     - - {x: -12.80003, y: -20.48}
       - {x: -12.80003, y: -12.8}
       - {x: -15.360001, y: -12.80003}
@@ -10029,7 +9981,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1660444129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: b9a3712976427c24a8002a7370517e7c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -10436,7 +10388,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1622174070}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 41.199997, y: -10.220001, z: 0}
+  m_LocalPosition: {x: 40.67, y: -10.220001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11433,7 +11385,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1660444129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 8059f27443706d44c8ab67f0e355015b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -29,4 +29,13 @@ public class LevelManager : MonoBehaviour
             npc.SetLimit(_bottomLeftEdge, _topRightEdge);
         }
     }
+
+    public void GetTilemapSize(out Vector3 origin, out int x, out int y, out float cellSize)
+    {
+        origin = tilemap.localBounds.min;
+        x = tilemap.size.x;
+        y = tilemap.size.y;
+        cellSize = 2.56f;
+        Debug.Log($"GetTilemapSize: {x} | {y}");
+    }
 }

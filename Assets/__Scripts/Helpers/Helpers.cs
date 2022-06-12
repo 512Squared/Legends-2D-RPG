@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System;
+using System.Collections;
 using UnityEngine;
 using System.Linq;
+using Object = UnityEngine.Object;
 
 
 public static class Helpers
@@ -344,6 +346,14 @@ public static class Helpers
                 // set path
                 collider.SetPath(i, path.ToArray());
             }
+        }
+    }
+
+    public static void DestroyAllChildObjects(this Transform transform)
+    {
+        while (transform.childCount > 0)
+        {
+            Object.DestroyImmediate(transform.GetChild(0).gameObject);
         }
     }
 }

@@ -1335,7 +1335,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         //    mainMenu 0
         //    shop 1
-        //    keys 2
+        //    path 2
         //    magic 3
         //    overview 4
         //    stats 5

@@ -58,7 +58,7 @@ public class Item : MonoBehaviour, ISaveable
     public bool hasBeenDropped;
     public bool boughtFromShop;
     public bool isPrefab;
-    public AudioSource pickupSFX;
+    public AudioManager audio;
 
     [PreviewField(120, ObjectFieldAlignment.Center)]
     [GUIColor(0.2f, 0.286f, 0.680f)]
@@ -106,7 +106,7 @@ public class Item : MonoBehaviour, ISaveable
     {
         itemGuid = GetComponent<GenerateGUID>().GUID;
         GetItemDetailsFromScriptObject(this);
-        pickupSFX = GetComponent<AudioSource>();
+        audio = FindObjectOfType<AudioManager>();
     }
 
     public Item GetItemDetailsFromScriptObject(Item item)
@@ -164,7 +164,7 @@ public class Item : MonoBehaviour, ISaveable
 
         SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
         SelfDeactivate();
-        AudioManager.PlayClip(pickupSFX);
+        audio.PlaySfxClip(1);
 
         if (pickUpNotice)
         {
@@ -330,6 +330,7 @@ public class Item : MonoBehaviour, ISaveable
         spriteRenderer.sortingOrder = 3;
 
         DropItemPosition(this);
+        AudioManager.Instance.PlaySfxClip(5);
         NotificationFader.instance.CallFadeInOut($"You dropped the {droppedItem.itemName}", droppedItem.itemsImage,
             3f, 1400f,
             30);

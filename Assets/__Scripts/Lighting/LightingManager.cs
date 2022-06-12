@@ -10,6 +10,9 @@ public class LightingManager : MonoBehaviour
 
     [Space] public GameObject[] sceneLighting;
 
+    private bool lightsOn;
+    private bool tripSwitch;
+
     #endregion
 
     private void OnEnable()
@@ -27,11 +30,24 @@ public class LightingManager : MonoBehaviour
         if (time.IsNight())
         {
             LightsOn();
+            lightsOn = true;
+            if (lightsOn && tripSwitch)
+            {
+                StartCoroutine(PlayerAudio());
+                tripSwitch = false;
+            }
         }
         else
         {
             LightsOff();
+            tripSwitch = true;
         }
+    }
+
+    private static IEnumerator PlayerAudio()
+    {
+        yield return new WaitForSeconds(1.5f);
+        AudioManager.Instance.PlaySfxClip(7);
     }
 
     private void LightsOn()

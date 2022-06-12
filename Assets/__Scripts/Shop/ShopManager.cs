@@ -161,6 +161,7 @@ public class ShopManager : MonoBehaviour
             activeItem.boughtFromShop = true;
             activeItem.isPickedUp = true;
             activeItem.isNewItem = true;
+            AudioManager.Instance.PlaySfxClip(4);
         }
 
         else if (activeItem.valueInCoins > Thulgran.ThulgranGold)

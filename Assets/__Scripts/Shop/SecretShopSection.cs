@@ -52,6 +52,7 @@ public class SecretShopSection : MonoBehaviour
                 if (hitNumber < 1)
                 {
                     OnClick.Invoke();
+                    AudioManager.Instance.PlaySfxClip(9);
                     StartCoroutine(ResetBell());
                     SetImageBool();
                     hitNumber++;
@@ -67,6 +68,7 @@ public class SecretShopSection : MonoBehaviour
                     if (hitNumber < 1)
                     {
                         OnClick.Invoke();
+                        AudioManager.Instance.PlaySfxClip(9);
                         StartCoroutine(ResetBell());
                         SetImageBool();
                         hitNumber++;
@@ -100,18 +102,20 @@ public class SecretShopSection : MonoBehaviour
 
     private IEnumerator OpenPanels()
     {
-        yield return null;
+        yield return new WaitForSeconds(5.2f);
 
         if (!isSecretPanelOpen)
         {
-            leftShopPanel.DOAnchorPos(new Vector2(-18.45f, -1.84f), 1.5f);
-            rightShopPanel.DOAnchorPos(new Vector2(5.72f, -1.84f), 1.5f);
+            AudioManager.Instance.PlayClipDirect(AudioManager.Instance.sfxSource, AudioManager.Instance.shelfWhoosh);
+            leftShopPanel.DOAnchorPos(new Vector2(-18.45f, -1.84f), 4f);
+            rightShopPanel.DOAnchorPos(new Vector2(5.72f, -1.84f), 4f);
             isSecretPanelOpen = true;
         }
         else if (isSecretPanelOpen)
         {
-            leftShopPanel.DOAnchorPos(new Vector2(-10.59f, -1.84f), 1.5f);
-            rightShopPanel.DOAnchorPos(new Vector2(-2.27f, -1.84f), 1.5f);
+            AudioManager.Instance.PlayClipDirect(AudioManager.Instance.sfxSource, AudioManager.Instance.shelfWhoosh);
+            leftShopPanel.DOAnchorPos(new Vector2(-10.59f, -1.84f), 4f);
+            rightShopPanel.DOAnchorPos(new Vector2(-2.27f, -1.84f), 4f);
             isSecretPanelOpen = false;
         }
     }
