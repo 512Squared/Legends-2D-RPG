@@ -356,4 +356,22 @@ public static class Helpers
             Object.DestroyImmediate(transform.GetChild(0).gameObject);
         }
     }
+
+    public static void DisableAllChildObjects(this Transform transform)
+    {
+        Transform[] allChildren = transform.GetComponentsInChildren<Transform>();
+        foreach (Transform child in allChildren)
+        {
+            child.gameObject.SetActive(false);
+        }
+    }
+
+    public static void EnableAllChildObjects(this Transform transform)
+    {
+        Transform[] allChildren = transform.GetComponentsInChildren<Transform>();
+        foreach (Transform child in allChildren)
+        {
+            child.gameObject.SetActive(true);
+        }
+    }
 }

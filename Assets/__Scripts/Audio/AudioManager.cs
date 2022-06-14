@@ -7,10 +7,14 @@ using UnityEngine.UI;
 
 public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
 {
-    [Header("Main")] [Space]
+    [Header("Main")] [Space] [GUIColor(0.368f, 0.796f, 0.831f)]
     [SerializeField] private AudioSource musicSource;
 
-    [SerializeField] private AudioMixer audioMixer;
+    [GUIColor(0.368f, 0.796f, 0.831f)]
+    [SerializeField] private AudioMixer audioMixerMain;
+
+    [GUIColor(0.368f, 0.796f, 0.831f)]
+    [SerializeField] private AudioMixerGroup mixerPickupItem, mixerSfx, mixerWalking;
 
 
     [Header("Sound Effects")] [Space]
@@ -79,37 +83,48 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
         switch (sfxNumber)
         {
             case 1 when pickupItem:
+                sfxSource.outputAudioMixerGroup = mixerPickupItem;
                 PlayClip(sfxSource, pickupItem);
                 break;
             case 2 when openMenu:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, openMenu);
                 break;
             case 3 when coins:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, coins);
                 break;
             case 4 when buyItem:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, buyItem);
                 break;
             case 5 when dropItem:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, dropItem);
                 break;
             case 6 when button:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, button);
                 break;
             case 7 when streetLightsOn:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, streetLightsOn);
                 break;
             case 8 when itemSelect:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, itemSelect);
                 break;
             case 9 when bellAlarm:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, counterBell);
                 PlayClipDelayed(sfxSource, bellAlarm, 1.2f);
                 break;
             case 10 when counterBell:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, counterBell);
                 break;
             case 11 when empty6:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, empty6);
                 break;
         }
@@ -118,28 +133,28 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
 
     public void SetMusicSound(float soundLevel)
     {
-        audioMixer.SetFloat("MusicVolume", Mathf.Log10(soundLevel) * 20);
+        audioMixerMain.SetFloat("MusicVolume", Mathf.Log10(soundLevel) * 20);
         musicVolume = soundLevel;
         PlayStopAudio();
     }
 
     public void SetSfxSound(float soundLevel)
     {
-        audioMixer.SetFloat("SFXVolume", Mathf.Log10(soundLevel) * 20);
+        audioMixerMain.SetFloat("SFXVolume", Mathf.Log10(soundLevel) * 20);
         sfxVolume = soundLevel;
         PlayStopAudio();
     }
 
     public float GetMusicSound()
     {
-        audioMixer.GetFloat("MusicVolume", out musicVolume);
+        audioMixerMain.GetFloat("MusicVolume", out musicVolume);
         musicVolume = Mathf.Pow(10f, musicVolume / 20.0f);
         return musicVolume;
     }
 
     public float GetSfxSound()
     {
-        audioMixer.GetFloat("SFXVolume", out sfxVolume);
+        audioMixerMain.GetFloat("SFXVolume", out sfxVolume);
         sfxVolume = Mathf.Pow(10f, sfxVolume / 20.0f);
         return sfxVolume;
     }

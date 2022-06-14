@@ -118,6 +118,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 015f6e29bace1fb44bd9d3ff3a0b0560
     name: MusicVolume
+  - guid: 51f0f694e52ea3e4383f52b76cd84609
+    name: MyExposedParam
   - guid: 6c68d501dcdcd6b4386acff54238eca4
     name: SFXVolume
   m_AudioMixerGroupViews:
@@ -126,7 +128,6 @@ AudioMixerController:
     - 3cbc2d21b9242534e967a011890faa07
     - e69fab6c1127e494383c35db9b4a53f1
     - 91e12f16173a43741b29c8e4ca8c7049
-    - 67773bfe0b9f99a4aa6582466fe5f395
     - fa1035617853ad540a29b250471cfb31
     - debabb6006477784fb2428d5a00d79ca
     name: Sound Effects
@@ -135,7 +136,6 @@ AudioMixerController:
     - 3cbc2d21b9242534e967a011890faa07
     - e69fab6c1127e494383c35db9b4a53f1
     - 91e12f16173a43741b29c8e4ca8c7049
-    - 67773bfe0b9f99a4aa6582466fe5f395
     - fa1035617853ad540a29b250471cfb31
     name: View
   m_CurrentViewIndex: 0
@@ -189,14 +189,15 @@ AudioMixerSnapshotController:
     aef9eef05617f944cad1f63262ae361b: 0.098000005
     6c68d501dcdcd6b4386acff54238eca4: 0.0417127
     1fd8113191d79fc4183c1fb02f924957: 0.04171297
+    d077e1611515e1e48af63b11a41cf25a: -80
     387548a1225c77a4aabd18eb7ce53946: 56
     62e65dc1c910b7b4588105d58cde36ca: 20
     9dd45b22625366348a8d7a699591128d: 5
     1bcd2b32f4959bf4e889750faa0b5507: -7279
-    41745752dffb47c42bc51c7874012b95: -54.2
+    41745752dffb47c42bc51c7874012b95: -16.9
     fcbf62739f69e684c8a391eac35ef480: 12.2
     0dd52ff39a18111499149895cdd230f9: -16.1
-    51f0f694e52ea3e4383f52b76cd84609: -4.9356413
+    51f0f694e52ea3e4383f52b76cd84609: -5.7224774
     1c119b9478f01a04b833163194e3ccec: 1.38
     cc25e156fc6b9164594e55564a3f64f3: 1
     61eefd8695bea80438a0130fd83c47e1: 6.04
@@ -207,12 +208,12 @@ AudioMixerSnapshotController:
     5e3d62a8b970cc642b704eb76d7c2618: 6806
     a46a2d19a2d5f704698db6bbec330bd9: 1.46
     015f6e29bace1fb44bd9d3ff3a0b0560: 0
-    1f431e391f918a94593d25d0b02f0769: 10
+    1f431e391f918a94593d25d0b02f0769: 52.1
     528e0ce91b71c0647a53040d18773688: 0.04171297
     39e5335a870cc06449a677fac4ab911c: -0.39762527
     2777d50ca9dbee442957d7f4e3e0642f: -9.926544
     4a9d575ca02b4b64faca5830be43d993: -13.6
-    0bb0358e829881f4688d79ac704934fe: 1000
+    0bb0358e829881f4688d79ac704934fe: 421
     0f2229be181a5cd428b8e789cab9c04f: 0
   m_TransitionOverrides: {}
 --- !u!243 &308034134780550073
@@ -234,25 +235,6 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
---- !u!243 &3012368520228262524
-AudioMixerGroupController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Bullets
-  m_AudioMixer: {fileID: 24100000}
-  m_GroupID: 67773bfe0b9f99a4aa6582466fe5f395
-  m_Children: []
-  m_Volume: 1b829aab1f25830458a3793d3b5b5bc6
-  m_Pitch: 34303b2c6b0ba654fb23e3587784538d
-  m_Send: 00000000000000000000000000000000
-  m_Effects:
-  - {fileID: 4064708331764145403}
-  m_UserColorIndex: 1
-  m_Mute: 0
-  m_Solo: 0
-  m_BypassEffects: 0
 --- !u!243 &3785799047908985622
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -264,7 +246,6 @@ AudioMixerGroupController:
   m_GroupID: e69fab6c1127e494383c35db9b4a53f1
   m_Children:
   - {fileID: 308034134780550073}
-  - {fileID: 3012368520228262524}
   - {fileID: -2624893391095638507}
   - {fileID: -448245998459290617}
   m_Volume: 6c68d501dcdcd6b4386acff54238eca4
@@ -272,24 +253,10 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: -8016235048821433049}
-  m_UserColorIndex: 0
+  m_UserColorIndex: 1
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
---- !u!244 &4064708331764145403
-AudioMixerEffectController:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_EffectID: 160f875b90537bb47a54fd8201736138
-  m_EffectName: Attenuation
-  m_MixLevel: b3a5c04269b3840439c17795e4bfb6de
-  m_Parameters: []
-  m_SendTarget: {fileID: 0}
-  m_EnableWetMix: 0
-  m_Bypass: 0
 --- !u!244 &7162724046538016915
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
