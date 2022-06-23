@@ -2,7 +2,7 @@
 using System.Collections;
 using CodeMonkey.Utils;
 
-
+[RequireComponent(typeof(GenerateGUID))]
 public class Testing : SingletonMonobehaviour<Testing>
 {
     private Grid<int> grid;
@@ -12,6 +12,7 @@ public class Testing : SingletonMonobehaviour<Testing>
     private int height;
     private Vector3 origin;
     private float cellSize;
+    private string guid;
 
     [SerializeField] private HeatMapVisual heatMapVisual;
 
@@ -41,7 +42,7 @@ public class Testing : SingletonMonobehaviour<Testing>
         level = FindObjectOfType<LevelManager>();
         level.GetTilemapSize(out origin, out width, out height, out cellSize);
         Debug.Log($"Grid specs: {width} | {height} | {cellSize} | {origin}");
-        grid = new Grid<int>(100, 100, 4, origin, 10);
+        //grid = new Grid<int>(100, 100, 4, origin, 10, () => );
         heatMapVisual.SetGrid(grid);
     }
 
@@ -61,7 +62,7 @@ public class Testing : SingletonMonobehaviour<Testing>
     {
         level = FindObjectOfType<LevelManager>();
         level.GetTilemapSize(out origin, out width, out height, out cellSize);
-        grid = new Grid<int>(width, height, cellSize, origin, 10);
+        //grid = new Grid<int>(width, height, cellSize, origin, 10);
         Debug.Log($"Grid: {grid?.GetWidth()} | {grid?.GetHeight()}");
     }
 

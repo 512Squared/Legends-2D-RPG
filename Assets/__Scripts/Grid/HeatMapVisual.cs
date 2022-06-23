@@ -59,11 +59,12 @@ public class HeatMapVisual : MonoBehaviour
                 int index = (x * grid.GetHeight()) + y;
                 Vector3 cellSize = new Vector3(1, 1) * grid.GetCellSize();
 
-                int gridValue = grid.GetValue(x, y);
+                int gridValue = grid.GetGridObject(x, y);
                 float gridValueNormalized = (float)gridValue / grid.HEAT_MAP_MAX_VALUE;
                 Vector2 gridValueUV = new(gridValueNormalized, 0f);
 
-                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + cellSize * 0.5f,
+                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index,
+                    grid.GetWorldPosition(x, y) + (cellSize * 0.5f),
                     0f,
                     cellSize, gridValueUV, gridValueUV);
             }
@@ -90,7 +91,7 @@ public class HeatMapVisual : MonoBehaviour
 
     public void AddValue(int x, int y, int value)
     {
-        grid.SetValue(x, y, grid.GetValue(x, y) + value);
+        grid.SetGridObject(x, y, grid.GetGridObject(x, y) + value);
     }
 
     public void AddValue(Vector3 worldPosition, int value, int fullValueRange, int totalRange)

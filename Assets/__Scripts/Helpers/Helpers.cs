@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System;
-using System.Collections;
+using System.IO;
 using UnityEngine;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Soap;
+using System.Text;
+using System.Text.RegularExpressions;
 using Object = UnityEngine.Object;
 
 
@@ -373,5 +376,191 @@ public static class Helpers
         {
             child.gameObject.SetActive(true);
         }
+    }
+
+    /// <summary>
+    /// Expand a flattened 1D array into a 2D multidimensional array [,]
+    /// </summary>
+    public static T[,] SingleToMulti<T>(IReadOnlyList<T> array, int x, int y)
+    {
+        int index = 0;
+        T[,] multi = new T[x, y];
+        for (int i = 0; i < x; i++)
+        {
+            for (int j = 0; j < y; j++)
+            {
+                if (index >= 0 && array.Count > index) { multi[i, j] = array[index]; }
+
+                index++;
+            }
+        }
+
+        return multi;
+    }
+
+
+    /// <summary>
+    /// string to a 2D multidimensional array [,]
+    /// </summary>
+    public static void StringToGrid(Grid<ComplexGridObject> inputGrid, string oneD, int width, int height)
+    {
+        string[] separator = {"_,"};
+        string[] newArray = oneD.Split(separator, StringSplitOptions.None);
+        int index = 0;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                inputGrid.gridArray[i, j].AddLetter(newArray[index]);
+                inputGrid.gridArray[i, j].AddNumber(newArray[index + 1]);
+                index += 2;
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Print multi-dimensional array to console
+    /// </summary>
+    public static void MultiArrayToConsole<T>(T[,] inputArray)
+    {
+        Debug.Log($"MultiArrayToConsole called");
+
+        StringBuilder sb = new();
+        for (int i = 0; i < inputArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < inputArray.GetLength(1); j++)
+            {
+                sb.Append(inputArray[i, j]);
+                sb.Append(", ");
+            }
+
+            sb.AppendLine();
+        }
+
+        Debug.Log($"ArrayList:\n{sb}");
+    }
+
+    /// <summary>
+    /// Print one-dimensional array to console
+    /// </summary>
+    public static void SingleArrayToConsole<T>(IEnumerable<T> inputArray)
+    {
+        StringBuilder sb = new();
+        foreach (T data in inputArray)
+        {
+            sb.Append(data);
+            sb.Append(",");
+        }
+
+        Debug.Log($"ArrayList:\n{sb}");
+    }
+
+    /// <summary>
+    /// Print one-dimensional array to console on one line
+    /// </summary>
+    public static void DebugArrayOneLine<T>(IEnumerable<T> inputArray)
+    {
+        string cleaned = string.Join("_,", inputArray);
+        cleaned = Regex.Replace(cleaned, @"[\r\n]+", "_,");
+        Debug.Log(cleaned);
+    }
+
+    /// <summary>
+    /// Create a string from an array
+    /// </summary>
+    public static string ArrayToString<T>(IEnumerable<T> inputArray)
+    {
+        string cleaned = string.Join("_,", inputArray);
+        cleaned = Regex.Replace(cleaned, @"[\r\n]+", "_,");
+        return cleaned;
+    }
+
+    /// <summary>
+    /// Print one-dimensional array to console on one line
+    /// </summary>
+    public static string[] StringToArray(string savedString)
+    {
+        string[] outputArray = savedString.Split("_,");
+        return outputArray;
+    }
+
+
+    /// <summary>
+    /// Flatten a 2D array
+    /// </summary>
+    public static T[] Flatten<T>(T[,] inputArray)
+    {
+        List<T> oneD = new();
+        for (int i = 0; i < inputArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < inputArray.GetLength(1); j++)
+            {
+                oneD.Add(inputArray[i, j]);
+            }
+        }
+
+        return oneD.ToArray();
+    }
+
+
+    /// <summary>
+    /// Flatten a 2D array to string
+    /// </summary>
+    public static string FlattenMultiToString<T>(T[,] inputArray, bool debug)
+    {
+        List<T> oneD = new();
+        for (int i = 0; i < inputArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < inputArray.GetLength(1); j++)
+            {
+                oneD.Add(inputArray[i, j]);
+            }
+        }
+
+        T[] oneArray = oneD.ToArray();
+        string cleaned = string.Join("_,", oneArray);
+        cleaned = Regex.Replace(cleaned, @"[\r\n]+", "_,");
+        if (debug) { Debug.Log(cleaned); }
+
+        return cleaned;
+    }
+
+
+    /// <summary>
+    /// Flatten a 2D array to 1D List
+    /// </summary>
+    public static List<T> FlattenToList<T>(T[,] inputArray)
+    {
+        List<T> oneD = new();
+        for (int i = 0; i < inputArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < inputArray.GetLength(1); j++)
+            {
+                oneD.Add(inputArray[i, j]);
+            }
+        }
+
+        return oneD;
+    }
+
+    public static string ObjectToString(Array ar)
+    {
+        using MemoryStream ms = new();
+        SoapFormatter formatter = new();
+        formatter.Serialize(ms, ar);
+        return Encoding.UTF8.GetString(ms.ToArray());
+    }
+
+    public static object ObjectFromString(string s)
+    {
+        using MemoryStream ms = new(Encoding.UTF8.GetBytes(s));
+        SoapFormatter formatter = new();
+        return formatter.Deserialize(ms) as Array;
+    }
+
+    public static T ObjectFromString<T>(string s)
+    {
+        return (T)ObjectFromString(s);
     }
 }

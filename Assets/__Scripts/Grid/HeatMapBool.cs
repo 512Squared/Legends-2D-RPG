@@ -59,10 +59,11 @@ public class HeatMapBool : MonoBehaviour
                 int index = (x * grid.GetHeight()) + y;
                 Vector3 cellSize = new Vector3(1, 1) * grid.GetCellSize();
 
-                bool gridValue = grid.GetValue(x, y);
+                bool gridValue = grid.GetGridObject(x, y);
                 float gridValueNormalized = gridValue ? 1f : 0f;
                 Vector2 gridValueUV = new(gridValueNormalized, 0f);
-                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + cellSize * 0.5f,
+                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index,
+                    grid.GetWorldPosition(x, y) + (cellSize * 0.5f),
                     0f,
                     cellSize, gridValueUV, gridValueUV);
             }
@@ -82,11 +83,8 @@ public class HeatMapBool : MonoBehaviour
             if (grid != null)
             {
                 Vector3 position = UtilsClass.GetMouseWorldPosition();
-                grid.SetValue(position, true);
+                grid.SetGridObject(position, true);
             }
         }
     }
-
-
-
 }

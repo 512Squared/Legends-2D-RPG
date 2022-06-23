@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.U2D;
+
 
 [Serializable]
 public class SaveData
@@ -21,6 +20,28 @@ public class SaveData
     }
 
     #endregion
+
+    #region ArrayData
+
+    [Serializable]
+    public struct GridData
+    {
+        // just some empty array slots to be used by complex objects
+
+        public string[] oneDim;
+        public bool isSaved;
+
+        public GridData(string[] oneDim, bool isSaved)
+        {
+            this.oneDim = oneDim;
+            this.isSaved = isSaved;
+        }
+    }
+
+    public GridData gridData;
+
+    #endregion
+
 
     #region Scene Data
 

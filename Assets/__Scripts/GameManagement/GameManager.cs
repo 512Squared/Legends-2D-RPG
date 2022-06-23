@@ -35,8 +35,12 @@ public class GameManager : MonoBehaviour, ISaveable
     public Transform pickedUpItems;
     public Transform deletedItems;
     public int objectInt = 1;
-    private SceneHandling _sceneHandler;
+    public SceneHandling sceneHandler;
     public ClockManager clockManager;
+
+    public string firstScene = "Homestead";
+    public float startTime;
+
 
     [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool isInterfaceOn, dialogueBoxOpened;
@@ -52,11 +56,7 @@ public class GameManager : MonoBehaviour, ISaveable
 
     [Title("Messaging")] [Space] public TextMeshProUGUI playerMessages;
 
-    private string _firstScene = "Homestead";
 
-    public float startTime;
-
-    private List<ISaveable> _saveables;
     public Transform gridParent;
 
     #endregion
@@ -95,19 +95,8 @@ public class GameManager : MonoBehaviour, ISaveable
     private void Start()
     {
         Instance = this;
-        _sceneHandler = GetComponent<SceneHandling>();
+        sceneHandler = GetComponent<SceneHandling>();
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
-        _saveables = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveable>().ToList();
-        Debug.Log($"Save items count: {_saveables.Count}");
-
-        StartCoroutine(Initialize());
-    }
-
-
-    private IEnumerator Initialize()
-    {
-        yield return null;
-        SaveDataManager.LoadJsonData(_saveables);
     }
 
     #endregion
@@ -133,31 +122,8 @@ public class GameManager : MonoBehaviour, ISaveable
 
     #region Methods
 
-    public void ResetGame()
-    {
-        SceneManager.UnloadSceneAsync(_firstScene);
-        SaveDataManager.DeleteJsonData(_saveables);
-    }
-
-    public void SaveGame()
-    {
-        SaveDataManager.SaveJsonData(_saveables);
-    }
-
-    public void QuitGame()
-    {
-        SaveDataManager.SaveJsonData(_saveables);
-        Application.Quit();
-    }
-
-    public void LoadGame()
-    {
-        SaveDataManager.LoadJsonData(_saveables);
-    }
-
     public void SceneChange(string scene, int indexFrom, int indexTo)
     {
-        _firstScene = scene;
         sceneObjects[indexTo].SetActive(true);
         sceneObjects[indexFrom].SetActive(false);
         objectInt = indexTo;
@@ -233,34 +199,35 @@ public class GameManager : MonoBehaviour, ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
-        a_SaveData.sceneData.currentScene = _firstScene;
+        a_SaveData.sceneData.currentScene = firstScene;
         a_SaveData.sceneData.sceneObjects = objectInt;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        _firstScene = a_SaveData.sceneData.currentScene;
-        // Load saved Scene
-        SceneManager.LoadScene(_firstScene, LoadSceneMode.Additive);
+        firstScene = a_SaveData.sceneData.currentScene;
 
         // Assign saved object data
-        _sceneHandler.SetSceneObjects(a_SaveData.sceneData.currentScene);
+        sceneHandler.SetSceneObjects(a_SaveData.sceneData.currentScene);
 
         // Load scene objects
-        sceneObjects[SceneHandling.SceneObjectsInt(_sceneHandler.sceneObjectsLoad)].SetActive(true);
+        sceneObjects[SceneHandling.SceneObjectsInt(sceneHandler.sceneObjectsLoad)].SetActive(true);
 
         // Initialise shop
-        if (_firstScene is "shop1" or "shop2" or "shop3")
+        if (firstScene is "shop1" or "shop2" or "shop3")
         {
-            Shop(_firstScene, _sceneHandler.sceneObjectsLoad);
-            clockManager.SceneChange(_firstScene, 0, 0);
+            Shop(firstScene, sceneHandler.sceneObjectsLoad);
+            clockManager.SceneChange(firstScene, 0, 0);
         }
 
-        // Initialise NPCs
-        ActivateCharacters(_firstScene);
+        // Load saved Scene
+        SceneManager.LoadScene(firstScene, LoadSceneMode.Additive);
 
-        Debug.Log($"Scene loaded from save: {_firstScene}");
+        // Initialise NPCs
+        ActivateCharacters(firstScene);
+
+        Debug.Log($"Scene loaded from save: {firstScene}");
     }
 
     #endregion

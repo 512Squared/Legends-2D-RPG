@@ -6,8 +6,8 @@ using __Scripts.Characters;
 
 public class LevelManager : MonoBehaviour
 {
-    private Vector3 _bottomLeftEdge;
-    private Vector3 _topRightEdge;
+    private Vector3 bottomLeftEdge;
+    private Vector3 topRightEdge;
 
     public NPCPhysics[] npcCharacters;
 
@@ -18,15 +18,16 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         Bounds localBounds = tilemap.localBounds;
-        _topRightEdge = localBounds.max + new Vector3(-0.2f, -1.1f, 0f);
-        _bottomLeftEdge = localBounds.min + new Vector3(1.5f, 1f, 0f);
-        PlayerGlobalData.Instance.SetLimit(_bottomLeftEdge, _topRightEdge);
+        topRightEdge = localBounds.max + new Vector3(-0.4f, 0f, 0f);
+        bottomLeftEdge = localBounds.min + new Vector3(0.7f, 0.1f, 0f);
+        PlayerGlobalData.Instance.SetLimit(bottomLeftEdge, topRightEdge);
         npcCharacters = FindObjectsOfType<NPCPhysics>(true).ToArray();
         Debug.Log($"NPCs added to NPC Physics array");
+        Testing2.Instance.UpdateLevelManager(this);
 
         foreach (NPCPhysics npc in npcCharacters)
         {
-            npc.SetLimit(_bottomLeftEdge, _topRightEdge);
+            npc.SetLimit(bottomLeftEdge, topRightEdge);
         }
     }
 
