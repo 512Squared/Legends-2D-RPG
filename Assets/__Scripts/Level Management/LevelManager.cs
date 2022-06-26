@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections;
@@ -14,6 +15,10 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private Tilemap tilemap;
 
+    private void Awake()
+    {
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -22,8 +27,6 @@ public class LevelManager : MonoBehaviour
         bottomLeftEdge = localBounds.min + new Vector3(0.7f, 0.1f, 0f);
         PlayerGlobalData.Instance.SetLimit(bottomLeftEdge, topRightEdge);
         npcCharacters = FindObjectsOfType<NPCPhysics>(true).ToArray();
-        Debug.Log($"NPCs added to NPC Physics array");
-        Testing2.Instance.UpdateLevelManager(this);
 
         foreach (NPCPhysics npc in npcCharacters)
         {
@@ -31,12 +34,12 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void GetTilemapSize(out Vector3 origin, out int x, out int y, out float cellSize)
+    public void GetTilemapSize(out Vector3 origin, out int x, out int y, out float cellSize, string scene)
     {
         origin = tilemap.localBounds.min;
         x = tilemap.size.x;
         y = tilemap.size.y;
         cellSize = 2.56f;
-        Debug.Log($"GetTilemapSize: {x} | {y}");
+        Debug.Log($"GetTilemapSize: {scene} | {x} | {y}");
     }
 }

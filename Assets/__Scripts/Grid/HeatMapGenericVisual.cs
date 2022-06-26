@@ -74,7 +74,4 @@ public class HeatMapGenericVisual : MonoBehaviour
         mesh.uv = uv;
         mesh.triangles = triangles;
     }
-
-
-    
 }

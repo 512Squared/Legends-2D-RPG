@@ -40,7 +40,7 @@ public class Testing : SingletonMonobehaviour<Testing>
     {
         yield return new WaitForSeconds(0.2f);
         level = FindObjectOfType<LevelManager>();
-        level.GetTilemapSize(out origin, out width, out height, out cellSize);
+        level.GetTilemapSize(out origin, out width, out height, out cellSize, "");
         Debug.Log($"Grid specs: {width} | {height} | {cellSize} | {origin}");
         //grid = new Grid<int>(100, 100, 4, origin, 10, () => );
         heatMapVisual.SetGrid(grid);
@@ -61,7 +61,7 @@ public class Testing : SingletonMonobehaviour<Testing>
     private void SetUpGrid()
     {
         level = FindObjectOfType<LevelManager>();
-        level.GetTilemapSize(out origin, out width, out height, out cellSize);
+        level.GetTilemapSize(out origin, out width, out height, out cellSize, "");
         //grid = new Grid<int>(width, height, cellSize, origin, 10);
         Debug.Log($"Grid: {grid?.GetWidth()} | {grid?.GetHeight()}");
     }

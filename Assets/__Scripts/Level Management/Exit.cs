@@ -32,7 +32,7 @@ public class Exit : MonoBehaviour
         SceneHandling sceneHandle = gameObject.GetComponent<SceneHandling>();
         StartCoroutine(LoadSceneCoroutine());
         PlayerGlobalData.Instance.arrivingAt = goingTo;
-        ShopMotherFucker(sceneToLoad, sceneHandle.sceneObjectsLoad, sceneHandle.sceneObjectsUnload);
+        ShopObjects(sceneToLoad, sceneHandle.sceneObjectsLoad, sceneHandle.sceneObjectsUnload);
     }
 
     private IEnumerator LoadSceneCoroutine()
@@ -65,7 +65,7 @@ public class Exit : MonoBehaviour
         arrivingFrom = SceneManager.GetActiveScene().name;
     }
 
-    private void ShopMotherFucker(string scene, SceneObjectsLoad sceneObjectsLoad,
+    private void ShopObjects(string scene, SceneObjectsLoad sceneObjectsLoad,
         SceneObjectsUnload sceneObjectsUnload)
     {
         if (sceneObjectsLoad is SceneObjectsLoad.shop1 or SceneObjectsLoad.shop2 or SceneObjectsLoad.shop3)

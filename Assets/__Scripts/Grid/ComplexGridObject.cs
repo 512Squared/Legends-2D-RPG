@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Events;
+
 
 [Serializable]
 public class ComplexGridObject
 {
-    public static UnityEvent OnSceneChange = new();
-
     public Grid<ComplexGridObject> complexGrid;
     private int x;
     private int y;
-    private string guid;
 
     private string letters;
     private string numbers;
@@ -23,7 +17,6 @@ public class ComplexGridObject
 
     public ComplexGridObject(Grid<ComplexGridObject> grid, int x, int y)
     {
-        guid = Guid.NewGuid().ToString();
         complexGrid = grid;
         this.x = x;
         this.y = y;
@@ -32,7 +25,6 @@ public class ComplexGridObject
         integers = 0;
         booleans = false;
         floatValues = 0f;
-        //OnSceneChange.AddListener(PopulateSaveData());
     }
 
 
@@ -60,6 +52,12 @@ public class ComplexGridObject
         complexGrid.TriggerGridObjectChanged(x, y);
     }
 
+    public void AddInteger(int integer)
+    {
+        integers += integer;
+        complexGrid.TriggerGridObjectChanged(x, y);
+    }
+
     public string GetLetters()
     {
         return letters;
@@ -80,22 +78,16 @@ public class ComplexGridObject
         return floatValues;
     }
 
-
-    public void RebuildComplexArray(int width, int row, int col, IReadOnlyList<string> lettersArray, IReadOnlyList<string> 
-    numbersArray, IReadOnlyList<bool> booleansArray, IReadOnlyList<float> floatsArray)
+    public int GetInterger()
     {
-        complexGrid.gridArray[row, col].AddLetter(lettersArray[width * row + col]);
-        complexGrid.gridArray[row, col].AddNumber(numbersArray[width * row + col]);
-        complexGrid.gridArray[row, col].SetBool(booleansArray[width * row + col]);
-        complexGrid.gridArray[row, col].AddFloat(floatsArray[width * row + col]);
+        return integers;
     }
-
 
     public ComplexGridObject[,] ReturnData(out int x, out int y)
     {
         x = this.x;
         y = this.y;
-        return complexGrid.gridArray;
+        return complexGrid.GridArray;
     }
 
     public override string ToString()

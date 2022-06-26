@@ -128,6 +128,7 @@ public class GameManager : MonoBehaviour, ISaveable
         sceneObjects[indexFrom].SetActive(false);
         objectInt = indexTo;
         ActivateCharacters(scene);
+        firstScene = scene;
     }
 
     public PlayerStats[] GetPlayerStats()

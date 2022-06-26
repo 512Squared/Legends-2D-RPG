@@ -30,11 +30,15 @@ public class SaveData
 
         public string[] oneDim;
         public bool isSaved;
+        public string activeScene;
+        public int sceneNumber;
 
-        public GridData(string[] oneDim, bool isSaved)
+        public GridData(string[] oneDim, bool isSaved, string activeScene, int sceneNumber)
         {
             this.oneDim = oneDim;
             this.isSaved = isSaved;
+            this.activeScene = activeScene;
+            this.sceneNumber = sceneNumber;
         }
     }
 
