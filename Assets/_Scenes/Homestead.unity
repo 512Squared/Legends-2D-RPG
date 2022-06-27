@@ -1053,6 +1053,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 1, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 20
+      m_TileSpriteIndex: 18
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 1, y: 1, z: 0}
     second:
       serializedVersion: 2
@@ -3075,7 +3085,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 4b562aa5be0f9a74eae25619caa6c9ea, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: a21ada3386a426c4d82088e83922e8e6, type: 2}
-  - m_RefCount: 2
+  - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: 3ef162c3417b8a042a6a68fb3914028f, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 16
@@ -3114,14 +3124,14 @@ Tilemap:
     m_Data: {fileID: -3761448819422433369, guid: c80b46b73f3bcba4886531ae4c8cdd54, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 9197145134257409992, guid: c80b46b73f3bcba4886531ae4c8cdd54, type: 3}
-  - m_RefCount: 2
+  - m_RefCount: 3
     m_Data: {fileID: 7271220488153355113, guid: c80b46b73f3bcba4886531ae4c8cdd54, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 4219511862731173744, guid: c80b46b73f3bcba4886531ae4c8cdd54, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 1678917814267889741, guid: c80b46b73f3bcba4886531ae4c8cdd54, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 211
+  - m_RefCount: 212
     m_Data:
       e00: 1
       e01: 0
@@ -3140,7 +3150,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 211
+  - m_RefCount: 212
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -3470,22 +3480,38 @@ CompositeCollider2D:
         Y: 153600000
       - X: -25600000
         Y: 153600000
-    - - X: 153599984
-        Y: 153599984
-      - X: 76799992
-        Y: 153599984
-      - X: 76799992
-        Y: 127999992
-      - X: 102400000
-        Y: 127999992
-      - X: 102400000
-        Y: 51200000
-      - X: 25600000
-        Y: 51200000
-      - X: 25600000
+    - - X: 51200100
+        Y: -41
+      - X: 51200100
+        Y: 25600041
+      - X: 51200041
         Y: 25600100
       - X: 153599984
         Y: 25600100
+      - X: 153599984
+        Y: 153599984
+      - X: 76799992
+        Y: 153599984
+      - X: 76799992
+        Y: 127999992
+      - X: 102400000
+        Y: 127999992
+      - X: 102400000
+        Y: 51200000
+      - X: 25600000
+        Y: 51200000
+      - X: 25600000
+        Y: 25600100
+      - X: 25599959
+        Y: 25600100
+      - X: 25599900
+        Y: 25600041
+      - X: 25599900
+        Y: -41
+      - X: 25599959
+        Y: -100
+      - X: 51200041
+        Y: -100
     - - X: -25600000
         Y: 153599984
       - X: -51200000
@@ -3560,7 +3586,9 @@ CompositeCollider2D:
         Y: -102400000
   m_CompositePaths:
     m_Paths:
-    - - {x: 20.479973, y: 2.56001}
+    - - {x: 5.119975, y: -0.00001}
+      - {x: 5.1200337, y: 2.56001}
+      - {x: 20.480001, y: 2.5600393}
       - {x: 20.479973, y: 56.319996}
       - {x: 10.24, y: 56.31996}
       - {x: 10.240029, y: 53.760002}
@@ -3575,7 +3603,7 @@ CompositeCollider2D:
       - {x: 10.24, y: 12.79997}
       - {x: 10.23997, y: 5.12}
       - {x: 2.56, y: 5.119971}
-      - {x: 2.5600293, y: 2.56001}
+      - {x: 2.5600252, y: -0.00001}
     - - {x: 7.67997, y: 53.760002}
       - {x: 7.67997, y: 56.319996}
       - {x: 5.12, y: 56.31996}
@@ -4562,11 +4590,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.1500745
+      value: -6.150076
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.2307982
+      value: -2.230823
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.z

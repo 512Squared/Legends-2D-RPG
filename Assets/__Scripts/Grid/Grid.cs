@@ -54,7 +54,7 @@ public class Grid<TGridObject>
             }
         }
 
-        const bool showDebug = true;
+        const bool showDebug = false;
         if (showDebug)
         {
             debugTextArray = new TextMeshPro[width, height];

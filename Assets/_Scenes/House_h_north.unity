@@ -1301,15 +1301,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6084064359167838722, guid: 24b015219f1adbf4886560c85cce0120, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6084064359167838722, guid: 24b015219f1adbf4886560c85cce0120, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -54.97
+      value: -58.08
       objectReference: {fileID: 0}
     - target: {fileID: 6084064359167838722, guid: 24b015219f1adbf4886560c85cce0120, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -33.79
+      value: -24.81
       objectReference: {fileID: 0}
     - target: {fileID: 6084064359167838722, guid: 24b015219f1adbf4886560c85cce0120, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1346,6 +1346,14 @@ PrefabInstance:
     - target: {fileID: 6084064359167838723, guid: 24b015219f1adbf4886560c85cce0120, type: 3}
       propertyPath: m_FlipY
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084064359167838723, guid: 24b015219f1adbf4886560c85cce0120, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084064359167838723, guid: 24b015219f1adbf4886560c85cce0120, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1660444129
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24b015219f1adbf4886560c85cce0120, type: 3}
@@ -2130,7 +2138,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1660444129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e5efd51ee76811343b108bfae1d175a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4291,7 +4299,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -851406847
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 3
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.78, y: 0.78, z: 0}

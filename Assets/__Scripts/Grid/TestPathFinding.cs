@@ -118,7 +118,7 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
                 {
                     Debug.DrawLine(pathFinding.GetGrid().GetWorldPositionCentered(path[i].x, path[i].y),
                         pathFinding.GetGrid().GetWorldPositionCentered(path[i + 1].x, path[i + 1].y), Color.green,
-                        120f,
+                        5f,
                         false);
                     Debug.Log($"Path : {path[i].x}, | {path[i].y}");
                 }

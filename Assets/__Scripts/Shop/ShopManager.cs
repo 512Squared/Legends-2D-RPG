@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -198,49 +199,46 @@ public class ShopManager : MonoBehaviour
             Destroy(itemSlot.gameObject);
         }
 
-        foreach (Item item in Inventory.Instance.GetShopList())
+        foreach (Item item in Inventory.Instance.GetShopList().Where(item => item && item.isShopItem))
         {
-            if (item.isShopItem)
+            if (item.isNewItem)
             {
-                if (item.isNewItem)
-                {
-                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                    _shopCurrentNewItems++;
-                }
+                GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                _shopCurrentNewItems++;
+            }
 
 
-                if (item.shop != shopType && item.isNewItem)
+            if (item.shop != shopType && item.isNewItem)
+            {
+                _shopCurrentNewItems--;
+                shopNewItemsText.text = _shopCurrentNewItems.ToString();
+            }
+
+            if (isShopArmouryOpen == false && item.shop == shopType && item.isNewItem)
+            {
+                if (item.itemType is ItemType.Weapon or ItemType.Armour or ItemType.Spell or ItemType.Shield
+                    or ItemType.Helmet)
                 {
                     _shopCurrentNewItems--;
-                    shopNewItemsText.text = _shopCurrentNewItems.ToString();
                 }
 
-                if (isShopArmouryOpen == false && item.shop == shopType && item.isNewItem)
-                {
-                    if (item.itemType is ItemType.Weapon or ItemType.Armour or ItemType.Spell or ItemType.Shield
-                        or ItemType.Helmet)
-                    {
-                        _shopCurrentNewItems--;
-                    }
+                shopNewItemsText.text = _shopCurrentNewItems.ToString();
+            }
 
-                    shopNewItemsText.text = _shopCurrentNewItems.ToString();
-                }
+            else if (isShopArmouryOpen && item.shop == shopType)
+            {
+                GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
+                shopNewItemsText.text = _shopCurrentNewItems.ToString();
+            }
 
-                else if (isShopArmouryOpen && item.shop == shopType)
-                {
-                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
-                    shopNewItemsText.text = _shopCurrentNewItems.ToString();
-                }
+            if (_shopCurrentNewItems == 0)
+            {
+                GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
+            }
 
-                if (_shopCurrentNewItems == 0)
-                {
-                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-                }
-
-                if (isPlayerInsideShop == false)
-                {
-                    GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
-                }
+            if (isPlayerInsideShop == false)
+            {
+                GameObject.FindGameObjectWithTag("NewShopItemsNofify").GetComponent<CanvasGroup>().alpha = 0;
             }
         }
     }

@@ -443,8 +443,7 @@ public class QuestElement : MonoBehaviour, ISaveable
         NotificationFader.instance.CallFadeInOut(
             $"You have activated a new quest: <color=#E0A515>{quest.questName}</color>.{quest.onActivateMessage}",
             quest.questImage,
-            5f,
-            1000, 30);
+            5f, 1000, 30);
     }
 
     private bool HasMetConditions()
