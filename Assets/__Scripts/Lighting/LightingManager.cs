@@ -12,6 +12,10 @@ public class LightingManager : MonoBehaviour
 
     private bool lightsOn;
     private bool tripSwitch;
+    [SerializeField] private GameObject[] candleLighting;
+
+    public Sprite candleOff;
+    public Sprite candleOn;
 
     #endregion
 
@@ -27,20 +31,16 @@ public class LightingManager : MonoBehaviour
 
     private void TimeFetch(_DateTime time, Continental empty)
     {
-        if (time.IsNight())
+        if (time.IsNight() && lightsOn)
         {
             LightsOn();
-            lightsOn = true;
-            if (lightsOn && tripSwitch)
-            {
-                StartCoroutine(PlayerAudio());
-                tripSwitch = false;
-            }
+            StartCoroutine(PlayerAudio());
+            lightsOn = false;
         }
-        else
+        else if (!time.IsNight() && !lightsOn)
         {
             LightsOff();
-            tripSwitch = true;
+            lightsOn = true;
         }
     }
 
@@ -58,17 +58,32 @@ public class LightingManager : MonoBehaviour
     private IEnumerator FlickTheSwitchBoy()
     {
         yield return new WaitForSeconds(2f);
-        for (int i = 0; i < sceneLighting.Length; i++)
+
+        foreach (GameObject t in sceneLighting) { t.GetComponent<Light2D>().enabled = true; }
+
+        foreach (GameObject s in candleLighting)
         {
-            sceneLighting[i].GetComponent<Light2D>().enabled = true;
+            s.GetComponent<SpriteRenderer>().sprite = candleOn;
+            s.GetComponent<Animator>().enabled = true;
+            s.GetComponentInChildren<Flicker>().enabled = true;
+            s.GetComponentInChildren<Light2D>().enabled = true;
         }
+
+        Debug.Log($"Lights switched on");
     }
 
     private void LightsOff()
     {
-        for (int i = 0; i < sceneLighting.Length; i++)
+        foreach (GameObject g in sceneLighting) { g.GetComponent<Light2D>().enabled = false; }
+
+        foreach (GameObject s in candleLighting)
         {
-            sceneLighting[i].GetComponent<Light2D>().enabled = false;
+            s.GetComponent<SpriteRenderer>().sprite = candleOff;
+            s.GetComponent<Animator>().enabled = false;
+            s.GetComponentInChildren<Flicker>().enabled = false;
+            s.GetComponentInChildren<Light2D>().enabled = false;
         }
+
+        Debug.Log($"Lights switched off");
     }
 }

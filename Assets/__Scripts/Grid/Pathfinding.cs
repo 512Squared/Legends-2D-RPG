@@ -17,7 +17,7 @@ public class Pathfinding
 
     private const float CellSize = 2.56f;
     private Vector3 originPosition = new(-33.28f, -10.24f, 0);
-    private const int DebugFontSize = 7;
+    private const int DebugFontSize = 5;
     private Transform gridParent;
 
 
