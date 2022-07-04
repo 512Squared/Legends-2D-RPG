@@ -8,8 +8,9 @@ public class ComplexGridObject
     private int x;
     private int y;
 
-    private string letters;
-    private string numbers;
+    private string gCost;
+    private string hCost;
+    private string fCost;
     private bool booleans;
     private int integers;
     private float floatValues;
@@ -20,17 +21,30 @@ public class ComplexGridObject
         complexGrid = grid;
         this.x = x;
         this.y = y;
-        letters = "";
-        numbers = "";
+        gCost = "";
+        hCost = "";
+        fCost = "";
         integers = 0;
         booleans = false;
         floatValues = 0f;
     }
 
 
-    public void AddLetter(string letter)
+    public void AddGCost(string letter)
     {
-        letters += letter;
+        gCost += letter;
+        complexGrid.TriggerGridObjectChanged(x, y);
+    }
+
+    public void AddFCost(string letter)
+    {
+        fCost += letter;
+        complexGrid.TriggerGridObjectChanged(x, y);
+    }
+
+    public void AddHCost(string letter)
+    {
+        hCost += letter;
         complexGrid.TriggerGridObjectChanged(x, y);
     }
 
@@ -48,7 +62,7 @@ public class ComplexGridObject
 
     public void AddNumber(string number)
     {
-        numbers += number;
+        hCost += number;
         complexGrid.TriggerGridObjectChanged(x, y);
     }
 
@@ -58,14 +72,19 @@ public class ComplexGridObject
         complexGrid.TriggerGridObjectChanged(x, y);
     }
 
-    public string GetLetters()
+    public string GetGCost()
     {
-        return letters;
+        return gCost;
     }
 
-    public string GetNumbers()
+    public string GetHCost()
     {
-        return numbers;
+        return hCost;
+    }
+
+    public string GetFCost()
+    {
+        return fCost;
     }
 
     public bool GetBool()
@@ -78,7 +97,7 @@ public class ComplexGridObject
         return floatValues;
     }
 
-    public int GetInterger()
+    public int GetInteger()
     {
         return integers;
     }
@@ -92,6 +111,6 @@ public class ComplexGridObject
 
     public override string ToString()
     {
-        return letters + "\n" + numbers;
+        return gCost + "\n" + fCost + "\n" + hCost;
     }
 }

@@ -411,7 +411,7 @@ public static class Helpers
         {
             for (int j = 0; j < height; j++)
             {
-                inputGrid.GridArray[i, j].AddLetter(newArray[index]);
+                inputGrid.GridArray[i, j].AddGCost(newArray[index]);
                 inputGrid.GridArray[i, j].AddNumber(newArray[index + 1]);
                 index += 2;
             }

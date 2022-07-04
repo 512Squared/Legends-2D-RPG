@@ -1,39 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 
 public class LightController : MonoBehaviour
 {
-    [Header ("LIGHT CONTROLS")]
+    [Header("LIGHT CONTROLS")]
     [Space]
     [Space]
-    [SerializeField] UnityEngine.Rendering.Universal.Light2D[] nearbyLights;
+    [SerializeField]
+    private Light2D[] nearbyLights;
+
     [Space]
+    [SerializeField]
+    private Light2D thulgranLight;
+
     public bool isShadowOn = true;
 
-    enum DoorwayType
+    private enum DoorwayType
     {
         EastWest,
         NorthSouth,
         WestEast,
         SouthNorth
     }
+
     [Space]
-    [SerializeField] DoorwayType doorwayType;
-    
+    [SerializeField]
+    private DoorwayType doorwayType;
+
     [Space]
-    [SerializeField] Tilemap shadowTileEbony;
-    [SerializeField] Tilemap shadowTileIvory;
-    
+    [SerializeField]
+    private Tilemap shadowTileEbony;
+
+    [SerializeField] private Tilemap shadowTileIvory;
+
     [Space]
     public bool isEbonyOn = false;
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         for (int i = 0; i < nearbyLights.Length; i++)
         {
@@ -47,6 +56,9 @@ public class LightController : MonoBehaviour
         {
             nearbyLights[i].shadowsEnabled = true;
         }
+
+        thulgranLight = FindObjectOfType<ThulgranLight>(true).GetComponent<Light2D>();
+        thulgranLight.gameObject.SetActive(true);
     }
 
     public void DisableShadows()
@@ -55,6 +67,9 @@ public class LightController : MonoBehaviour
         {
             nearbyLights[i].shadowsEnabled = false;
         }
+
+        thulgranLight = FindObjectOfType<ThulgranLight>(true).GetComponent<Light2D>();
+        thulgranLight.gameObject.SetActive(false);
     }
 
 
@@ -72,14 +87,14 @@ public class LightController : MonoBehaviour
             {
                 DisableShadows();
                 isShadowOn = !isShadowOn;
-                this.transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y);
+                transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y);
             }
 
             else if (col.CompareTag("Player") && !isShadowOn)
             {
                 EnableShadows();
                 isShadowOn = !isShadowOn;
-                this.transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y);
+                transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y);
             }
         }
 
@@ -89,14 +104,14 @@ public class LightController : MonoBehaviour
             {
                 DisableShadows();
                 isShadowOn = !isShadowOn;
-                this.transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f);
+                transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f);
             }
 
             else if (col.CompareTag("Player") && !isShadowOn)
             {
                 EnableShadows();
                 isShadowOn = !isShadowOn;
-                this.transform.position = new Vector3(transform.position.x, transform.position.y - 1.5f);
+                transform.position = new Vector3(transform.position.x, transform.position.y - 1.5f);
             }
         }
 
@@ -106,14 +121,14 @@ public class LightController : MonoBehaviour
             {
                 DisableShadows();
                 isShadowOn = !isShadowOn;
-                this.transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y);
+                transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y);
             }
 
             else if (col.CompareTag("Player") && !isShadowOn)
             {
                 EnableShadows();
                 isShadowOn = !isShadowOn;
-                this.transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y);
+                transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y);
             }
         }
 
@@ -123,16 +138,17 @@ public class LightController : MonoBehaviour
             {
                 DisableShadows();
                 isShadowOn = !isShadowOn;
-                this.transform.position = new Vector3(transform.position.x, transform.position.y - 1.5f);
+                transform.position = new Vector3(transform.position.x, transform.position.y - 1.5f);
             }
 
             else if (col.CompareTag("Player") && !isShadowOn)
             {
                 EnableShadows();
                 isShadowOn = !isShadowOn;
-                this.transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f);
+                transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f);
             }
         }
+
         ShadowBinary(col);
     }
 
@@ -140,22 +156,17 @@ public class LightController : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-
             if (isEbonyOn == false)
             {
-                shadowTileEbony.GetComponent<TilemapBlack>().gameObject.SetActive(true);
-                
+                //shadowTileEbony.GetComponent<TilemapBlack>().gameObject.SetActive(true);
             }
 
             if (isEbonyOn == true)
             {
-                shadowTileIvory.GetComponent<TilemapWhite>().gameObject.SetActive(false);
-                
+                //shadowTileIvory.GetComponent<TilemapWhite>().gameObject.SetActive(false);
             }
+
             isEbonyOn = !isEbonyOn;
         }
-
-
     }
-
 }

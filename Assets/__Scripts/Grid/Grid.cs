@@ -20,6 +20,7 @@ public class Grid<TGridObject>
     {
         public int x;
         public int y;
+        public TextMeshPro[,] Array;
     }
 
 
@@ -31,7 +32,8 @@ public class Grid<TGridObject>
     private Transform gridParent;
     private int debugFontSize;
 
-    private TextMeshPro[,] debugTextArray;
+    private TextMeshPro[,] fCostArray;
+
 
     public Grid(int width, int height, float cellSize, Vector3 originPosition, int debugFontSize,
         Func<Grid<TGridObject>, int, int, TGridObject> createGridObject, Transform gridParent)
@@ -54,21 +56,23 @@ public class Grid<TGridObject>
             }
         }
 
-        const bool showDebug = true;
+        const bool showDebug = false;
         if (showDebug)
         {
-            debugTextArray = new TextMeshPro[width, height];
+            fCostArray = new TextMeshPro[width, height];
 
             for (int x = 0; x < GridArray.GetLength(0); x++)
             {
                 for (int y = 0; y < GridArray.GetLength(1); y++)
                 {
-                    debugTextArray[x, y] = UtilsClass.CreateWorldText(gridParent, GridArray[x, y]?.ToString(),
-                        sortingOrder: debugFontSize, color: Color.white,
+                    fCostArray[x, y] = UtilsClass.CreateWorldText(gridParent, GridArray[x, y]?.ToString(),
+                        sortingOrder: debugFontSize - 3, color: Color.white,
                         localPosition: GetWorldPosition(x, y) + (new Vector3(cellSize, cellSize) * 0.5f));
-                    debugTextArray[x, y].GetComponent<MeshRenderer>().sortingLayerName = "Test";
-                    debugTextArray[x, y].horizontalAlignment = HorizontalAlignmentOptions.Center;
-                    debugTextArray[x, y].verticalAlignment = VerticalAlignmentOptions.Middle;
+                    fCostArray[x, y].GetComponent<MeshRenderer>().sortingLayerName = "Test";
+                    fCostArray[x, y].horizontalAlignment = HorizontalAlignmentOptions.Center;
+                    fCostArray[x, y].verticalAlignment = VerticalAlignmentOptions.Middle;
+
+
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 120f, false);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 120f, false);
                 }
@@ -79,7 +83,7 @@ public class Grid<TGridObject>
 
             OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) =>
             {
-                debugTextArray[eventArgs.x, eventArgs.y].text = GridArray[eventArgs.x, eventArgs.y]?.ToString();
+                fCostArray[eventArgs.x, eventArgs.y].text = GridArray[eventArgs.x, eventArgs.y]?.ToString();
             };
         }
     }

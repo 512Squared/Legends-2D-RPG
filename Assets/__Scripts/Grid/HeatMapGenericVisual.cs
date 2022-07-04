@@ -20,10 +20,6 @@ public class HeatMapGenericVisual : MonoBehaviour
         meshRenderer.sortingOrder = -1;
     }
 
-    private void Update()
-    {
-        //HandleHeatMapMouseMove();
-    }
 
     public void SetGrid(Grid<HeatMapGridObject> testGrid)
     {
@@ -43,7 +39,7 @@ public class HeatMapGenericVisual : MonoBehaviour
         if (updateMesh)
         {
             updateMesh = false;
-            //UpdateHeatMapVisual();
+            UpdateHeatMapVisual();
         }
     }
 

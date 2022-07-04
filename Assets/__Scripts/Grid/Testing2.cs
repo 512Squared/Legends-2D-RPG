@@ -139,21 +139,21 @@ public class Testing2 : SingletonMonobehaviour<Testing2>, ISaveable
         {
             stringGrid[sceneNumber]
                 .GetGridObject(position)
-                .AddLetter("A");
+                .AddGCost("A");
         }
 
         if (Input.GetKeyDown(KeyCode.T))
         {
             stringGrid[sceneNumber]
                 .GetGridObject(position)
-                .AddLetter("B");
+                .AddGCost("B");
         }
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
             stringGrid[sceneNumber]
                 .GetGridObject(position)
-                .AddLetter("C");
+                .AddGCost("C");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -250,7 +250,7 @@ public class Testing2 : SingletonMonobehaviour<Testing2>, ISaveable
         {
             for (int j = 0; j < height; j++)
             {
-                inputGrid.GridArray[i, j].AddLetter(newArray[index]);
+                inputGrid.GridArray[i, j].AddGCost(newArray[index]);
                 inputGrid.GridArray[i, j].AddNumber(newArray[index + 1]);
                 index += 2;
             }

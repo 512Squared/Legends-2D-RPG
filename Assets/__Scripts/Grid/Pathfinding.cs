@@ -13,7 +13,7 @@ public class Pathfinding
     private const int MOVE_DIAGONAL_COST = 14;
 
 
-    private Grid<PathNode> grid;
+    public Grid<PathNode> grid;
 
     private const float CellSize = 2.56f;
     private Vector3 originPosition = new(-33.28f, -10.24f, 0);
@@ -72,6 +72,12 @@ public class Pathfinding
             foreach (PathNode neighbourNode in GetNeighbourList(currentNode))
             {
                 if (closedList.Contains(neighbourNode)) { continue; }
+
+                if (!neighbourNode.isWalkable)
+                {
+                    closedList.Add(neighbourNode);
+                    continue;
+                }
 
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
                 if (tentativeGCost < neighbourNode.gCost)
@@ -137,7 +143,7 @@ public class Pathfinding
         return neighbourList;
     }
 
-    private PathNode GetNode(int x, int y)
+    public PathNode GetNode(int x, int y)
     {
         return grid.GetGridObject(x, y);
     }
@@ -149,14 +155,12 @@ public class Pathfinding
         while (currentNode.cameFromNode != null)
         {
             path.Add(currentNode.cameFromNode);
-            Debug.Log($"Node: {currentNode.x}, {currentNode.y}");
             currentNode = currentNode.cameFromNode;
         }
 
         // debug info
         Vector3 playerPosition = PlayerGlobalData.Instance.transform.position;
         grid.GetXY(playerPosition, out int sX, out int sY);
-        Debug.Log($"Node: {sX}, {sY}");
 
         path.Reverse();
         return path;

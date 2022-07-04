@@ -29,7 +29,6 @@ public class HeatMapVisual : MonoBehaviour
     {
         grid = testGrid;
         UpdateHeatMapVisual();
-
         grid.OnGridValueChanged += Grid_OnGridValueChanged;
     }
 

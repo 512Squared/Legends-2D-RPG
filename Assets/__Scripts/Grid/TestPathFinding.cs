@@ -16,6 +16,8 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
 
     private Pathfinding pathFinding;
 
+    [SerializeField] private PathfindingVisual pathfindingVisual;
+
     [SerializeField] private int[] width = new int[13];
     [SerializeField] private int[] height = new int[13];
     [SerializeField] private Vector3[] origin = new Vector3[13];
@@ -28,9 +30,8 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
     [SerializeField]
     private int fontSize = 10;
 
-    [SerializeField] private HeatMapVisual heatMapVisual;
     [SerializeField] private HeatMapBool heatMapBool;
-    [SerializeField] private HeatMapGenericVisual heatMapGenericVisual;
+    [SerializeField] private HeatMapGenericVisual heatMapVisual;
 
 
     [SerializeField] private int sceneNumber;
@@ -99,6 +100,7 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
     {
         SetSceneName("Homestead", 0, 0);
         pathFinding = new Pathfinding(21, 26, new Vector3(-33.28f, -10.24f, 0f), gridParent[0]);
+        pathfindingVisual.SetGrid(pathFinding.GetGrid());
     }
 
 
@@ -120,9 +122,15 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
                         pathFinding.GetGrid().GetWorldPositionCentered(path[i + 1].x, path[i + 1].y), Color.green,
                         5f,
                         false);
-                    Debug.Log($"Path : {path[i].x}, | {path[i].y}");
                 }
             }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
+            pathFinding.GetGrid().GetXY(mouseWorldPosition, out int x, out int y);
+            pathFinding.GetNode(x, y).SetIsWalkable(!pathFinding.GetNode(x, y).isWalkable);
         }
     }
 
