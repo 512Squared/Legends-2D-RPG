@@ -1,18 +1,23 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 using CodeMonkey.Utils;
+using UnityEngine.Tilemaps;
 
 
 public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
 {
+    // TODO Create a method to set the obstacle tilemaps to unwalkable.
+
     #region Fields
 
     private Grid<PathNode>[] pathGrids = new Grid<PathNode>[13];
+
+    [SerializeField] private Grid tilemapGrid;
+    [SerializeField] private Tilemap tilemap;
+
 
     private Pathfinding pathFinding;
 
@@ -101,6 +106,7 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
         SetSceneName("Homestead", 0, 0);
         pathFinding = new Pathfinding(21, 26, new Vector3(-33.28f, -10.24f, 0f), gridParent[0]);
         pathfindingVisual.SetGrid(pathFinding.GetGrid());
+        StartCoroutine(SetupIsWalkable());
     }
 
 
@@ -109,18 +115,24 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 position = UtilsClass.GetMouseWorldPosition();
-            Vector3 thulgranPosition = PlayerGlobalData.Instance.transform.position;
+            Vector3 thulgranPosition = new(PlayerGlobalData.Instance.transform.position.x, PlayerGlobalData
+                .Instance.transform.position.y + (2.56f / 2), 0);
+
             pathFinding.GetGrid().GetXY(thulgranPosition, out int startX, out int startY);
             pathFinding.GetGrid().GetXY(position, out int x, out int y);
             List<PathNode> path = pathFinding.FindPath(startX, startY, x, y);
-            Debug.Log($"Update called {position} | Grid X,Y: {startX}, {startY} | End X,Y: {x}, {y}");
+            if (GameManager.Instance.gridDebug)
+            {
+                Debug.Log($"Update called {position} | Grid X,Y: {startX}, {startY} | End X,Y:{x},{y}");
+            }
+
             if (path != null)
             {
                 for (int i = 0; i < path.Count - 1; i++)
                 {
                     Debug.DrawLine(pathFinding.GetGrid().GetWorldPositionCentered(path[i].x, path[i].y),
                         pathFinding.GetGrid().GetWorldPositionCentered(path[i + 1].x, path[i + 1].y), Color.green,
-                        5f,
+                        10f,
                         false);
                 }
             }
@@ -131,6 +143,23 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
             Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
             pathFinding.GetGrid().GetXY(mouseWorldPosition, out int x, out int y);
             pathFinding.GetNode(x, y).SetIsWalkable(!pathFinding.GetNode(x, y).isWalkable);
+        }
+    }
+
+
+    public IEnumerator SetupIsWalkable()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        tilemap = GameObject.FindWithTag("Pathfinding").GetComponent<Tilemap>();
+
+        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
+        {
+            if (tilemap.HasTile(pos))
+            {
+                pathFinding.GetNode(pos.x + (tilemap.origin.x * -1), pos.y + (tilemap.origin.y * -1))
+                    .SetIsWalkable(false);
+            }
         }
     }
 

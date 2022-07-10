@@ -56,8 +56,7 @@ public class Grid<TGridObject>
             }
         }
 
-        const bool showDebug = false;
-        if (showDebug)
+        if (GameManager.Instance.gridDebug)
         {
             fCostArray = new TextMeshPro[width, height];
 

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour, ISaveable
 {
     public static GameManager Instance;
 
+
     #region Serialized Fields
 
     [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
@@ -53,6 +54,13 @@ public class GameManager : MonoBehaviour, ISaveable
 
     [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool keyboardKeyI;
+
+    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
+    public bool pathfindingDebug;
+
+    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
+    public bool gridDebug;
+
 
     [Title("Messaging")] [Space] public TextMeshProUGUI playerMessages;
 

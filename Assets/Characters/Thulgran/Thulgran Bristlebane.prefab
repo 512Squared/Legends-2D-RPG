@@ -10,13 +10,15 @@ GameObject:
   m_Component:
   - component: {fileID: 802941915}
   - component: {fileID: 802941916}
+  - component: {fileID: 802941917}
+  - component: {fileID: 802941918}
   m_Layer: 3
-  m_Name: Light 2D
+  m_Name: ThulgranLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &802941915
 Transform:
   m_ObjectHideFlags: 0
@@ -39,7 +41,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802941914}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
@@ -687,6 +689,32 @@ MonoBehaviour:
   - {x: 0.42573482, y: 0.47221482, z: 0}
   - {x: 0.47193974, y: 0.55865824, z: 0}
   - {x: 0.5003927, y: 0.65245485, z: 0}
+--- !u!114 &802941917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802941914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a67955c14014f308fbef475a8ad6b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &802941918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802941914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e1b944cc650451d8771348a3781aeaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thulgranLight: {fileID: 802941916}
+  questElement: {fileID: 0}
 --- !u!1 &4283112051484239550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,7 +1061,7 @@ MonoBehaviour:
   - {x: -0.21, y: 0.06999999, z: 0}
   m_ShapePathHash: 1230505302
   m_Mesh: {fileID: 0}
-  m_InstanceId: 768258
+  m_InstanceId: 2502310
 --- !u!114 &7880525699793495158
 MonoBehaviour:
   m_ObjectHideFlags: 0
