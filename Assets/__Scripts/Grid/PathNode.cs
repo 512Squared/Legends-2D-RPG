@@ -15,6 +15,10 @@ public class PathNode
 
     public bool isWalkable;
 
+    public bool isBridge;
+    public bool isBridgeStart;
+    public bool isBridgeMiddle;
+
     public PathNode(Grid<PathNode> grid, int x, int y)
     {
         pathGrid = grid;
@@ -36,6 +40,31 @@ public class PathNode
     public void SetIsWalkable(bool isWalkable)
     {
         this.isWalkable = isWalkable;
+        pathGrid.TriggerGridObjectChanged(x, y);
+    }
+
+    public void SetIsBridge(bool isKey)
+    {
+        isBridge = isKey;
+        pathGrid.TriggerGridObjectChanged(x, y);
+    }
+
+    public void SetIsBridgeStart(bool isBridgeStart)
+    {
+        this.isBridgeStart = isBridgeStart;
+        pathGrid.TriggerGridObjectChanged(x, y);
+    }
+
+    public void SetIsBridgeMiddle(bool isBridgeMiddle)
+    {
+        this.isBridgeMiddle = isBridgeMiddle;
+        pathGrid.TriggerGridObjectChanged(x, y);
+    }
+
+
+    public void SwitchNodeLock()
+    {
+        isWalkable = !isWalkable;
         pathGrid.TriggerGridObjectChanged(x, y);
     }
 }

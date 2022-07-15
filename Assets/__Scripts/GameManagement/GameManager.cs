@@ -6,6 +6,7 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using Pathfinding;
 
 
 public class GameManager : MonoBehaviour, ISaveable
@@ -14,6 +15,9 @@ public class GameManager : MonoBehaviour, ISaveable
 
 
     #region Serialized Fields
+
+    private AstarPath path;
+
 
     [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
     public Item activeItem; // this is just for tracking activeItems in UI
@@ -56,7 +60,7 @@ public class GameManager : MonoBehaviour, ISaveable
     public bool keyboardKeyI;
 
     [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
-    public bool pathfindingDebug;
+    public bool pathfindingObstacleDebug;
 
     [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool gridDebug;
@@ -230,13 +234,23 @@ public class GameManager : MonoBehaviour, ISaveable
             clockManager.SceneChange(firstScene, 0, 0);
         }
 
-        // Load saved Scene
-        SceneManager.LoadScene(firstScene, LoadSceneMode.Additive);
+        StartCoroutine(ActivateFirstScene());
 
         // Initialise NPCs
         ActivateCharacters(firstScene);
+    }
 
-        Debug.Log($"Scene loaded from save: {firstScene}");
+    private IEnumerator ActivateFirstScene()
+    {
+        AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(firstScene, LoadSceneMode.Additive);
+
+        while (asyncLoadLevel is {isDone: false})
+        {
+            yield return new WaitForEndOfFrame();
+            AstarPath.active.data.LoadFromCache();
+        }
+
+        Debug.Log($"First scene loaded and grid updated: {PlayerGlobalData.Instance.currentSceneIndex}");
     }
 
     #endregion

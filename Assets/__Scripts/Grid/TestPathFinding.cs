@@ -18,8 +18,11 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
     [SerializeField] private Grid tilemapGrid;
     [SerializeField] private Tilemap tilemap;
 
+    [SerializeField]
+    private ZombieController zombie;
 
-    private Pathfinding pathFinding;
+
+    private AiPathfinding pathFinding;
 
     [SerializeField] private PathfindingVisual pathfindingVisual;
 
@@ -50,7 +53,21 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
         "House_h_west", "House_m_north", "House_m_south", "House_m_west", "Town"
     };
 
+    public bool showPath;
+
     #endregion
+
+
+    private void OnEnable()
+    {
+        Actions.OnSceneChange += SetSceneName;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnSceneChange -= SetSceneName;
+    }
+
 
     protected override void Awake()
     {
@@ -104,7 +121,7 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
     private void Start()
     {
         SetSceneName("Homestead", 0, 0);
-        pathFinding = new Pathfinding(21, 26, new Vector3(-33.28f, -10.24f, 0f), gridParent[0]);
+        pathFinding = new AiPathfinding(21, 26, new Vector3(-33.28f, -10.24f, 0f), gridParent[0]);
         pathfindingVisual.SetGrid(pathFinding.GetGrid());
         StartCoroutine(SetupIsWalkable());
     }
@@ -118,22 +135,25 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
             Vector3 thulgranPosition = new(PlayerGlobalData.Instance.transform.position.x, PlayerGlobalData
                 .Instance.transform.position.y + (2.56f / 2), 0);
 
-            pathFinding.GetGrid().GetXY(thulgranPosition, out int startX, out int startY);
-            pathFinding.GetGrid().GetXY(position, out int x, out int y);
-            List<PathNode> path = pathFinding.FindPath(startX, startY, x, y);
-            if (GameManager.Instance.gridDebug)
+            if (showPath)
             {
-                Debug.Log($"Update called {position} | Grid X,Y: {startX}, {startY} | End X,Y:{x},{y}");
-            }
-
-            if (path != null)
-            {
-                for (int i = 0; i < path.Count - 1; i++)
+                pathFinding.GetGrid().GetXY(thulgranPosition, out int startX, out int startY);
+                pathFinding.GetGrid().GetXY(position, out int x, out int y);
+                List<PathNode> path = pathFinding.FindPath(startX, startY, x, y);
+                if (GameManager.Instance.gridDebug)
                 {
-                    Debug.DrawLine(pathFinding.GetGrid().GetWorldPositionCentered(path[i].x, path[i].y),
-                        pathFinding.GetGrid().GetWorldPositionCentered(path[i + 1].x, path[i + 1].y), Color.green,
-                        10f,
-                        false);
+                    //Debug.Log($"Update called {position} | Grid X,Y: {startX}, {startY} | End X,Y:{x},{y}");
+                }
+
+                if (path != null)
+                {
+                    for (int i = 0; i < path.Count - 1; i++)
+                    {
+                        Debug.DrawLine(pathFinding.GetGrid().GetWorldPositionCentered(path[i].x, path[i].y),
+                            pathFinding.GetGrid().GetWorldPositionCentered(path[i + 1].x, path[i + 1].y), Color.green,
+                            10f,
+                            false);
+                    }
                 }
             }
         }
@@ -161,7 +181,72 @@ public class TestPathFinding : SingletonMonobehaviour<TestPathFinding>
                     .SetIsWalkable(false);
             }
         }
+
+        SetupBridges();
     }
+
+    public void SetupBridges()
+    {
+        Tilemap isBridgeMap = GameObject.FindWithTag("isBridge").GetComponent<Tilemap>();
+
+        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
+        {
+            if (isBridgeMap.HasTile(pos))
+            {
+                pathFinding.GetNode(pos.x + (tilemap.origin.x * -1), pos.y + (tilemap.origin.y * -1))
+                    .SetIsBridge(true);
+            }
+        }
+
+        Tilemap locks1Map = GameObject.FindWithTag("locks").GetComponent<Tilemap>();
+
+        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
+        {
+            if (locks1Map.HasTile(pos))
+            {
+                pathFinding.GetNode(pos.x + (tilemap.origin.x * -1), pos.y + (tilemap.origin.y * -1))
+                    .SetIsWalkable(true);
+            }
+        }
+
+        Tilemap locks2Map = GameObject.FindWithTag("locks2").GetComponent<Tilemap>();
+
+        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
+        {
+            if (locks2Map.HasTile(pos))
+            {
+                pathFinding.GetNode(pos.x + (tilemap.origin.x * -1), pos.y + (tilemap.origin.y * -1))
+                    .SetIsWalkable(false);
+            }
+        }
+    }
+
+
+    public void SwitchAllLocks()
+    {
+        Tilemap locks1 = GameObject.FindWithTag("locks").GetComponent<Tilemap>();
+
+        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
+        {
+            if (locks1.HasTile(pos))
+            {
+                pathFinding.GetNode(pos.x + (tilemap.origin.x * -1), pos.y + (tilemap.origin.y * -1))
+                    .SwitchNodeLock();
+            }
+        }
+
+        Tilemap locks2 = GameObject.FindWithTag("locks2").GetComponent<Tilemap>();
+
+        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
+        {
+            if (locks2.HasTile(pos))
+            {
+                pathFinding.GetNode(pos.x + (tilemap.origin.x * -1), pos.y + (tilemap.origin.y * -1))
+                    .SwitchNodeLock();
+            }
+        }
+    }
+
 
     [Button(ButtonSizes.Large)]
     [GUIColor(0.282f, 0.286f, 0.556f)]

@@ -44,7 +44,7 @@ public class PathfindingVisual : SingletonMonobehaviour<PathfindingVisual>
             out Vector2[] uv, out int[] triangles);
 
 
-        switch (GameManager.Instance.pathfindingDebug)
+        switch (GameManager.Instance.pathfindingObstacleDebug)
         {
             case true:
                 {

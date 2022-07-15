@@ -201,6 +201,12 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
     }
 
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+
     #endregion
 
     #region Implementation of ISaveable

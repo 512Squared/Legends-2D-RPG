@@ -48,6 +48,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         _toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
         currentSceneIndex = 1;
         audioSrc = GetComponent<AudioSource>();
+        DamagePopup.Create(Vector3.zero, 300);
     }
 
 
@@ -171,4 +172,10 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     }
 
     #endregion
+
+    public Vector3 GetPosition()
+    {
+        Debug.Log($"Thulgran's position: {transform.position}");
+        return transform.position;
+    }
 }

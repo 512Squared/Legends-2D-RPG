@@ -5,12 +5,11 @@ using UnityEngine;
 public class Mainside : MonoBehaviour
 {
     public bool isOnBridge = false;
-    [SerializeField] BridgeController onBridge;
+    [SerializeField] private BridgeController onBridge;
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-
-        if (col.tag == "Player")
+        if (col.tag is "Player" or "Enemy")
         {
             onBridge.BridgeActivation(onBridge.playerName);
             Debug.Log($"{onBridge.playerName} activated the bridge. isOnBridge: {isOnBridge}");
