@@ -257,13 +257,14 @@ public class SaveData
     [Serializable]
     public struct CharacterData
     {
-        public CharacterData(string npcGuid, int characterLevel, int characterMana, int characterHp,
+        public CharacterData(string playerName, string npcGuid, int characterLevel, int characterMana, int characterHp,
             int characterIntelligence, int characterPerception, int characterBaseAttack, int characterBaseDefence,
             bool isTeamMember, bool isAvailable, bool isNew, Item characterWeapon, Item characterArmour,
             Item characterHelmet, Item characterShield, int characterAttackTotal, int characterDefenceTotal,
             Sprite characterWeaponImage, Sprite characterArmourImage, Sprite characterHelmetImage,
             Sprite characterShieldImage, Sprite[] skills, Vector3 position)
         {
+            this.playerName = playerName;
             this.npcGuid = npcGuid;
             this.characterLevel = characterLevel;
             this.characterMana = characterMana;
@@ -300,6 +301,7 @@ public class SaveData
         public Sprite characterWeaponImage, characterArmourImage, characterHelmetImage, characterShieldImage;
         public Sprite[] skills;
         public Vector3 position;
+        public string playerName;
     }
 
     public List<CharacterData> characterDataList = new();

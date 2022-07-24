@@ -1092,6 +1092,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 playerStats[character].isTeamMember = true;
                 playerStats[character].isNew = false;
+                playerStats[character].npc.IsTeamMember(true);
                 teamNofifyCount--;
                 CharacterActivationButtons(character);
                 InventoryStats();
@@ -1422,7 +1423,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             if (i == character)
             {
                 playerStats[character].isTeamMember = false;
-
+                playerStats[character].npc.IsTeamMember(false);
                 characterCards[character].SetActive(false);
                 teamCharacterWeaponry[character].SetActive(false);
                 characterEquip[character].SetActive(false);

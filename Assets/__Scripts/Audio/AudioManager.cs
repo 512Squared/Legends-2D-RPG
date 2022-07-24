@@ -61,7 +61,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
     public AudioClip shelfWhoosh;
 
     [FoldoutGroup("SFX Clips")] [GUIColor(1, 0.874f, 0.301f)]
-    public AudioClip empty6;
+    public AudioClip fireCrackle;
 
 
     [Header("Settings")] [Space]
@@ -74,9 +74,92 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
 
     [GUIColor(0.278f, 0.719f, 0.619f)] private float musicVolume;
 
-
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     private const float TOLERANCE = 0.001f;
+
+    private DynamicAudio[] dynamicAudios;
+
+    private void OnEnable()
+    {
+        Actions.OnSceneLoad += SetSceneDynamicAudio;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnSceneLoad -= SetSceneDynamicAudio;
+    }
+
+    private void Start()
+    {
+        dynamicAudios = FindObjectsOfType<DynamicAudio>(true);
+        Debug.Log($"DynamicAudios: {dynamicAudios.Length}");
+    }
+
+    public void SetSceneDynamicAudio(string currentScene, string arrivingFrom)
+    {
+        foreach (DynamicAudio da in dynamicAudios)
+        {
+            da.SetScene(currentScene, arrivingFrom);
+        }
+    }
+
+
+    public void PlaySfxClip(int sfxNumber, bool isLooping)
+    {
+        switch (sfxNumber)
+        {
+            case 1 when pickupItem:
+                sfxSource.outputAudioMixerGroup = mixerPickupItem;
+                PlayClip(sfxSource, pickupItem, isLooping);
+                break;
+            case 2 when openMenu:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, openMenu, isLooping);
+                break;
+            case 3 when coins:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, coins, isLooping);
+                break;
+            case 4 when buyItem:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, buyItem, isLooping);
+                break;
+            case 5 when dropItem:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, dropItem, isLooping);
+                break;
+            case 6 when button:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, button, isLooping);
+                break;
+            case 7 when streetLightsOn:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, streetLightsOn, isLooping);
+                break;
+            case 8 when itemSelect:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, itemSelect, isLooping);
+                break;
+            case 9 when bellAlarm:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, counterBell, isLooping);
+                PlayClipDelayed(sfxSource, bellAlarm, 1.2f);
+                break;
+            case 10 when counterBell:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                PlayClip(sfxSource, counterBell, isLooping);
+                break;
+            case 11 when fireCrackle:
+                sfxSource.outputAudioMixerGroup = mixerSfx;
+                sfxSource.rolloffMode = AudioRolloffMode.Linear;
+                float oldVolume = sfxSource.volume;
+                audioMixerMain.SetFloat("MixerSFX", Mathf.Log10(0.5f) * 20);
+                PlayClip(sfxSource, fireCrackle, isLooping);
+                sfxSource.rolloffMode = AudioRolloffMode.Logarithmic;
+                sfxSource.volume = oldVolume;
+                break;
+        }
+    }
 
     public void PlaySfxClip(int sfxNumber)
     {
@@ -123,9 +206,14 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
                 sfxSource.outputAudioMixerGroup = mixerSfx;
                 PlayClip(sfxSource, counterBell);
                 break;
-            case 11 when empty6:
+            case 11 when fireCrackle:
                 sfxSource.outputAudioMixerGroup = mixerSfx;
-                PlayClip(sfxSource, empty6);
+                sfxSource.rolloffMode = AudioRolloffMode.Linear;
+                float oldVolume = sfxSource.volume;
+                audioMixerMain.SetFloat("MixerSFX", Mathf.Log10(0.5f) * 20);
+                PlayClip(sfxSource, fireCrackle);
+                sfxSource.rolloffMode = AudioRolloffMode.Logarithmic;
+                sfxSource.volume = oldVolume;
                 break;
         }
     }
@@ -157,6 +245,16 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
         audioMixerMain.GetFloat("SFXVolume", out sfxVolume);
         sfxVolume = Mathf.Pow(10f, sfxVolume / 20.0f);
         return sfxVolume;
+    }
+
+    public static void PlayClip(AudioSource source, AudioClip audio, bool isLooping)
+    {
+        if (isLooping)
+        {
+            source.loop = isLooping;
+            source.PlayOneShot(audio);
+        }
+        else { source.PlayOneShot(audio); }
     }
 
     public static void PlayClip(AudioSource source, AudioClip audio)

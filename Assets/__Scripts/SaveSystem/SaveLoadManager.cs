@@ -6,34 +6,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>, ISaveable
+public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>
 {
-    private string firstScene;
+    private string currentScene;
 
 
     public List<ISaveable> Saveables;
 
     private void Start()
     {
-        firstScene = GameManager.Instance.firstScene;
+        // currentScene = GameManager.Instance.firstScene;
         StartCoroutine(Initialize());
         Saveables = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveable>().ToList();
         Debug.Log($"Save items count: {Saveables.Count}");
-    }
-
-    private void OnEnable()
-    {
-        Actions.OnSceneChange += SceneChange;
-    }
-
-    private void SceneChange(string scene, int arg2, int arg3)
-    {
-        firstScene = scene;
-    }
-
-    private void OnDisable()
-    {
-        Actions.OnSceneChange -= SceneChange;
     }
 
 
@@ -46,8 +31,8 @@ public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>, ISaveabl
 
     public void ResetGame()
     {
-        SceneManager.UnloadSceneAsync(firstScene);
         SaveDataManager.DeleteJsonData(Saveables);
+        SceneManager.LoadScene(0);
     }
 
     public void SaveGame()
@@ -59,26 +44,6 @@ public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>, ISaveabl
     {
         SaveDataManager.SaveJsonData(Saveables);
         Application.Quit();
+        Debug.Log($"Quit Application");
     }
-
-    public void LoadGame()
-    {
-        SaveDataManager.LoadJsonData(Saveables);
-    }
-
-    #region Implementation of ISaveable
-
-    public void PopulateSaveData(SaveData a_SaveData)
-    {
-        firstScene = GameManager.Instance.firstScene;
-        a_SaveData.sceneData.currentScene = firstScene;
-    }
-
-    // ReSharper disable Unity.PerformanceAnalysis
-    public void LoadFromSaveData(SaveData a_SaveData)
-    {
-        firstScene = a_SaveData.sceneData.currentScene;
-    }
-
-    #endregion
 }

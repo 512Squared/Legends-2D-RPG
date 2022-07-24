@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Numerics;
+using CodeMonkey.Utils;
+using UnityEngine;
 using Pathfinding;
+using Vector3 = UnityEngine.Vector3;
 
 public class ZombieController : MonoBehaviour
 {
@@ -38,7 +41,7 @@ public class ZombieController : MonoBehaviour
     {
         speed = 3.0f;
         aiPath.maxSpeed = speed;
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
         anim.SetFloat(MoveY, -1);
         anim.SetBool(IsWalking, false);
         //transform.localScale = new Vector3(transform.localScale.x, -1, 0);
@@ -51,7 +54,7 @@ public class ZombieController : MonoBehaviour
         isInAttackRange = Physics2D.OverlapCircle(transform.position, attackRadius, playerLayer);
 
         if (isInChaseRange && !isInAttackRange)
-        { 
+        {
             dir = aiPath.desiredVelocity; // desired velocity points in the direction of movement
         }
         else if (isInAttackRange) { dir = target.position - transform.position; }
@@ -67,6 +70,12 @@ public class ZombieController : MonoBehaviour
         anim.SetBool(InAttackRange, isInAttackRange);
 
         aiPath.canMove = isInChaseRange;
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            bool boolean = Random.Range(0, 100) < 30;
+            DamagePopup.Create(PlayerGlobalData.Instance.GetPositionOfHead(), 10, boolean);
+        }
     }
 
     private void FixedUpdate()

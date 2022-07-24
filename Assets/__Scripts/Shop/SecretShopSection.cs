@@ -126,9 +126,9 @@ public class SecretShopSection : MonoBehaviour
         ShopManager.Instance.ShopArmouryBool();
     }
 
-    public void ShopId(Shop parsed_shopType_enum)
+    public void ShopId(string scene)
     {
-        ShopManager.Instance.ShopType(parsed_shopType_enum);
+        ShopManager.Instance.ShopType(scene);
     }
 
     public void SetImageBool()
@@ -147,10 +147,10 @@ public class SecretShopSection : MonoBehaviour
     public void SetShopType(string scene)
     {
         Debug.Log($"SetShopType called: {scene}");
-        Shop _enum_shopType = (Shop)Enum.Parse(typeof(Shop), scene);
-        shopType = _enum_shopType;
-        ShopId(_enum_shopType);
-        ShopManager.Instance.shopType = _enum_shopType;
+        Shop enumShopType = (Shop)Enum.Parse(typeof(Shop), scene);
+        shopType = enumShopType;
+        ShopId(scene);
+        ShopManager.Instance.shopType = enumShopType;
         Debug.Log("Shop type now set: " + shopType); // don't forget to change onclick string
     }
 }

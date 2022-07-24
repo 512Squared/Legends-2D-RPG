@@ -39,6 +39,10 @@ public class Exit : MonoBehaviour
     {
         yield return null;
 
+        PlayerGlobalData.Instance.isLoaded = false;
+        Actions.OnSceneLoad?.Invoke(sceneToLoad, arrivingFrom);
+
+
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
         while (asyncLoadLevel is {isDone: false})
@@ -52,9 +56,9 @@ public class Exit : MonoBehaviour
 
             _unloaded = true;
             SceneManager.UnloadSceneAsync(arrivingFrom);
-            Actions.OnSceneChange?.Invoke(sceneToLoad, indexFrom, indexTo);
+            Actions.OnSceneChange?.Invoke(sceneToLoad, arrivingFrom, indexFrom, indexTo);
             PlayerGlobalData.Instance.currentSceneIndex = indexTo;
-
+            GameManager.Instance.ActivateCharacters(sceneToLoad);
             Debug.Log($"currentSceneIndex: {PlayerGlobalData.Instance.currentSceneIndex}");
         }
     }
@@ -68,17 +72,14 @@ public class Exit : MonoBehaviour
     private void ShopObjects(string scene, SceneObjectsLoad sceneObjectsLoad,
         SceneObjectsUnload sceneObjectsUnload)
     {
-        if (sceneObjectsLoad is SceneObjectsLoad.shop1 or SceneObjectsLoad.shop2 or SceneObjectsLoad.shop3)
+        if (sceneObjectsLoad is SceneObjectsLoad.Shop1 or SceneObjectsLoad.Shop2 or SceneObjectsLoad.Shop3)
         {
             ShopManager.Instance.isPlayerInsideShop = true;
-            Debug.Log($"Scene Name: {scene}");
-            Shop enumShopType = (Shop)System.Enum.Parse(typeof(Shop), scene);
-            Debug.Log($"Enum shop type: {enumShopType}");
-            ShopManager.Instance.ShopType(enumShopType);
+            ShopManager.Instance.ShopType(scene);
             ShopManager.Instance.UpdateShopItemsInventory();
         }
 
-        else if (sceneObjectsUnload is SceneObjectsUnload.shop1 or SceneObjectsUnload.shop2 or SceneObjectsUnload.shop3)
+        else if (sceneObjectsUnload is SceneObjectsUnload.Shop1 or SceneObjectsUnload.Shop2 or SceneObjectsUnload.Shop3)
         {
             ShopManager.Instance.isShopArmouryOpen = false;
             ShopManager.Instance.isPlayerInsideShop = false;

@@ -93,11 +93,10 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
 
     private IEnumerator InitializeQuestManager()
     {
-        yield return null;
+        yield return new WaitForEndOfFrame();
         InitializeQuestID();
         GetQuestList();
         UpdateQuestProgress("");
-        Debug.Log($"Initialization complete");
     }
 
     #endregion COROUTINES

@@ -17,7 +17,7 @@ public class QuestElement : MonoBehaviour, ISaveable
     [ShowIf("isItem")] [Required] [GUIColor(.5f, 0.8f, 0.215f)] [PropertyTooltip("drag Item component into this box")]
     public Item questItem;
 
-    [TitleGroup("GameObject", AnimateVisibility = true, HorizontalLine = true)]
+    [TitleGroup("Objects & Colliders", AnimateVisibility = true, HorizontalLine = true)]
     [Space]
     [GUIColor(.1f, 0.8f, 0.215f)]
     public PolygonCollider2D polyCollider;
@@ -26,10 +26,17 @@ public class QuestElement : MonoBehaviour, ISaveable
     public SpriteRenderer spriteRenderer;
 
     [ShowIf("changeAnObject", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
-    public PolygonCollider2D changedObjectCollider;
+    public PolygonCollider2D changeObjectCollider;
 
     [ShowIf("changeAnObject", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
-    public SpriteRenderer changedObjectRenderer;
+    public SpriteRenderer changeObjectRenderer;
+
+    [ShowIf("changeAnotherObject", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
+    public PolygonCollider2D changeAnotherObjectCollider;
+
+    [ShowIf("changeAnotherObject", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
+    public SpriteRenderer changeAnotherObjectRenderer;
+
 
     [ShowIf("secondaryCollider", false)] [Required] [GUIColor(.1f, 0.8f, 0.215f)]
     public PolygonCollider2D secondCollider;
@@ -113,15 +120,33 @@ public class QuestElement : MonoBehaviour, ISaveable
     public bool hideObject;
 
 
+    [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Right")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    public bool changeAnotherObject;
+
+    [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Right")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [ShowIf("changeAnotherObject", false)] [Indent]
+    public bool revealAnObject;
+
+    [HorizontalGroup("Quest Bools/Split")] [VerticalGroup("Quest Bools/Split/Right")]
+    [GUIColor(0.4f, 0.886f, 0.780f)]
+    [ShowIf("changeAnotherObject", false)] [Indent]
+    public bool hideAnObject;
+
+
     [TitleGroup("For information only")] [Space]
     [GUIColor(0.1f, 0.886f, 1)] [IconTag("@EditorIcons.Info")]
     public bool elementActivated;
 
+
     [GUIColor(0.1f, 0.886f, 1)] [IconTag("@EditorIcons.Info")]
     public bool elementCompleted;
 
+
     [GUIColor(0.1f, 0.886f, 1)] [IconTag("@EditorIcons.Info")]
     public bool hasTriggered;
+
 
     [HideInInspector]
     public string questElementGUID;
@@ -187,6 +212,7 @@ public class QuestElement : MonoBehaviour, ISaveable
             EnableSubElements();
             HandleMasterQuest();
             HideOrRevealAnObject();
+            HideOrRevealAnotherObject();
             SecondaryCollider();
             hasTriggered = true;
             if (isLoading) { Debug.Log($"Loading of element completed: {quest.questName}"); }
@@ -224,20 +250,45 @@ public class QuestElement : MonoBehaviour, ISaveable
 
         if (revealObject)
         {
-            if (changedObjectRenderer) { changedObjectRenderer.enabled = revealObject; }
+            if (changeObjectRenderer) { changeObjectRenderer.enabled = revealObject; }
 
-            if (changedObjectCollider) { changedObjectCollider.enabled = revealObject; }
+            if (changeObjectCollider) { changeObjectCollider.enabled = revealObject; }
 
-            Debug.Log($"Reveal Notification: object visible: {changedObjectRenderer.enabled}");
+            Debug.Log($"Reveal Notification: object visible: {changeObjectRenderer.enabled}");
         }
 
         if (hideObject)
         {
-            if (changedObjectRenderer) { changedObjectRenderer.enabled = !hideObject; }
+            if (changeObjectRenderer) { changeObjectRenderer.enabled = !hideObject; }
 
-            if (changedObjectCollider) { changedObjectCollider.enabled = !hideObject; }
+            if (changeObjectCollider) { changeObjectCollider.enabled = !hideObject; }
 
-            Debug.Log($"Hide Notification - Object visible: {changedObjectRenderer.enabled}");
+            Debug.Log($"Hide Notification - Object visible: {changeObjectRenderer.enabled}");
+        }
+
+        changeAnObject = false;
+    }
+
+    private void HideOrRevealAnotherObject()
+    {
+        if (!changeAnotherObject) { return; }
+
+        if (revealAnObject)
+        {
+            if (changeAnotherObjectRenderer) { changeAnotherObjectRenderer.enabled = revealAnObject; }
+
+            if (changeAnotherObjectCollider) { changeAnotherObjectCollider.enabled = revealAnObject; }
+
+            Debug.Log($"Reveal Notification: object visible: {changeAnotherObjectRenderer.enabled}");
+        }
+
+        if (hideObject)
+        {
+            if (changeObjectRenderer) { changeObjectRenderer.enabled = !hideObject; }
+
+            if (changeObjectCollider) { changeObjectCollider.enabled = !hideObject; }
+
+            Debug.Log($"Hide Notification - Object visible: {changeAnotherObjectRenderer.enabled}");
         }
 
         changeAnObject = false;
@@ -441,7 +492,7 @@ public class QuestElement : MonoBehaviour, ISaveable
         Debug.Log($"ActivateMessage called");
         yield return new WaitForSeconds(0.2f);
         NotificationFader.instance.CallFadeInOut(
-            $"You have activated a new quest: <color=#E0A515>{quest.questName}</color>.{quest.onActivateMessage}",
+            $"New quest activated: <color=#E0A515>{quest.questName}</color>.{quest.onActivateMessage}",
             quest.questImage,
             5f, 1000, 30);
     }

@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour, ISaveable
 
     public GameObject[] sceneObjects;
 
+    public Transform[] itemsForPickup;
     public Transform pickedUpItems;
     public Transform deletedItems;
     public int objectInt = 1;
@@ -109,6 +110,13 @@ public class GameManager : MonoBehaviour, ISaveable
         Instance = this;
         sceneHandler = GetComponent<SceneHandling>();
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
+        StartCoroutine(DelayedInitialisation());
+    }
+
+    private static IEnumerator DelayedInitialisation()
+    {
+        yield return new WaitForEndOfFrame();
+        MenuManager.Instance.HomeScreenStats();
     }
 
     #endregion
@@ -134,13 +142,15 @@ public class GameManager : MonoBehaviour, ISaveable
 
     #region Methods
 
-    public void SceneChange(string scene, int indexFrom, int indexTo)
+    public void SceneChange(string scene, string previousScene, int indexFrom, int indexTo)
     {
         sceneObjects[indexTo].SetActive(true);
         sceneObjects[indexFrom].SetActive(false);
         objectInt = indexTo;
         ActivateCharacters(scene);
         firstScene = scene;
+        Debug.Log($"OnSceneLoad Invoke: {scene}");
+        Actions.OnSceneLoad?.Invoke(scene, previousScene);
     }
 
     public PlayerStats[] GetPlayerStats()
@@ -153,19 +163,21 @@ public class GameManager : MonoBehaviour, ISaveable
         int playersActivated = 0;
         foreach (PlayerStats t in playerStats)
         {
-            if (sceneToLoad == t.homeScene)
+            if (t.playerName != "Thulgran")
             {
-                t.gameObject.SetActive(true);
-                playersActivated++;
-            }
-            else if (sceneToLoad != t.homeScene)
-            {
-                t.gameObject.SetActive(false);
+                if (sceneToLoad == t.homeScene.ToString())
+                {
+                    t.gameObject.SetActive(true);
+                    playersActivated++;
+                }
+                else if (sceneToLoad != t.homeScene.ToString())
+                {
+                    t.gameObject.SetActive(false);
+                }
             }
         }
 
-        Debug.Log($"Players activated in Scene: {playersActivated}");
-        playerStats[0].gameObject.SetActive(true); // Thulgran
+        Debug.Log($"Players activated in {sceneToLoad}: {playersActivated}");
     }
 
     private void IsInterfaceOn()
@@ -176,13 +188,10 @@ public class GameManager : MonoBehaviour, ISaveable
 
     private void Shop(string scene, SceneObjectsLoad sceneObjectsLoad)
     {
-        if (sceneObjectsLoad is SceneObjectsLoad.shop1 or SceneObjectsLoad.shop2 or SceneObjectsLoad.shop3)
+        if (sceneObjectsLoad is SceneObjectsLoad.Shop1 or SceneObjectsLoad.Shop2 or SceneObjectsLoad.Shop3)
         {
             ShopManager.Instance.isPlayerInsideShop = true;
-            Debug.Log($"Scene Name: {scene}");
-            Shop enumShopType = (Shop)Enum.Parse(typeof(Shop), scene);
-            Debug.Log($"Enum shop type: {enumShopType}");
-            ShopManager.Instance.ShopType(enumShopType);
+            ShopManager.Instance.ShopType(scene);
             ShopManager.Instance.UpdateShopItemsInventory();
             StartCoroutine(SecretShopSetup(scene));
         }
@@ -204,6 +213,18 @@ public class GameManager : MonoBehaviour, ISaveable
     {
         yield return null;
         SecretShopSection.Instance.SetShopType(scene);
+    }
+
+
+    private IEnumerator ActivateFirstScene()
+    {
+        AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(firstScene, LoadSceneMode.Additive);
+
+        while (asyncLoadLevel is {isDone: false})
+        {
+            yield return new WaitForEndOfFrame();
+            AstarPath.active.data.LoadFromCache();
+        }
     }
 
     #endregion
@@ -231,26 +252,16 @@ public class GameManager : MonoBehaviour, ISaveable
         if (firstScene is "shop1" or "shop2" or "shop3")
         {
             Shop(firstScene, sceneHandler.sceneObjectsLoad);
-            clockManager.SceneChange(firstScene, 0, 0);
+            clockManager.SceneChange(firstScene, "", 0, 0);
         }
 
         StartCoroutine(ActivateFirstScene());
 
         // Initialise NPCs
         ActivateCharacters(firstScene);
-    }
 
-    private IEnumerator ActivateFirstScene()
-    {
-        AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(firstScene, LoadSceneMode.Additive);
-
-        while (asyncLoadLevel is {isDone: false})
-        {
-            yield return new WaitForEndOfFrame();
-            AstarPath.active.data.LoadFromCache();
-        }
-
-        Debug.Log($"First scene loaded and grid updated: {PlayerGlobalData.Instance.currentSceneIndex}");
+        // Initialise Scene Audio
+        AudioManager.Instance.SetSceneDynamicAudio(firstScene, "");
     }
 
     #endregion

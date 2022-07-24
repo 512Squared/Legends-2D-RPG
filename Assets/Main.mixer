@@ -28,6 +28,20 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!244 &-7584454359217643573
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 02ad5deff4257114fa07783ff5e617f2
+  m_EffectName: Attenuation
+  m_MixLevel: b036466aa2a21834680966f8df8db093
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &-5443851506822416192
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -116,6 +130,8 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: 9998adbbb77a4c94bb44294a9dc0c2c0
+    name: SFXFire
   - guid: 015f6e29bace1fb44bd9d3ff3a0b0560
     name: MusicVolume
   - guid: 51f0f694e52ea3e4383f52b76cd84609
@@ -130,6 +146,7 @@ AudioMixerController:
     - 91e12f16173a43741b29c8e4ca8c7049
     - fa1035617853ad540a29b250471cfb31
     - debabb6006477784fb2428d5a00d79ca
+    - 1af6a83dbe735344eb5c94b06fc204b4
     name: Sound Effects
   - guids:
     - 4a5a447364273044dac304ffb3945e4d
@@ -187,7 +204,7 @@ AudioMixerSnapshotController:
   m_FloatValues:
     d46ce760e7113e147862a488226a06cb: 10
     aef9eef05617f944cad1f63262ae361b: 0.098000005
-    6c68d501dcdcd6b4386acff54238eca4: 0.0417127
+    6c68d501dcdcd6b4386acff54238eca4: 0.44032478
     1fd8113191d79fc4183c1fb02f924957: 0.04171297
     d077e1611515e1e48af63b11a41cf25a: -80
     387548a1225c77a4aabd18eb7ce53946: 56
@@ -209,8 +226,9 @@ AudioMixerSnapshotController:
     a46a2d19a2d5f704698db6bbec330bd9: 1.46
     015f6e29bace1fb44bd9d3ff3a0b0560: 0
     1f431e391f918a94593d25d0b02f0769: 52.1
-    528e0ce91b71c0647a53040d18773688: 0.04171297
+    528e0ce91b71c0647a53040d18773688: -0.025776565
     39e5335a870cc06449a677fac4ab911c: -0.39762527
+    9998adbbb77a4c94bb44294a9dc0c2c0: -80
     2777d50ca9dbee442957d7f4e3e0642f: -9.926544
     4a9d575ca02b4b64faca5830be43d993: -13.6
     0bb0358e829881f4688d79ac704934fe: 421
@@ -248,6 +266,7 @@ AudioMixerGroupController:
   - {fileID: 308034134780550073}
   - {fileID: -2624893391095638507}
   - {fileID: -448245998459290617}
+  - {fileID: 8836698927240541441}
   m_Volume: 6c68d501dcdcd6b4386acff54238eca4
   m_Pitch: cc25e156fc6b9164594e55564a3f64f3
   m_Send: 00000000000000000000000000000000
@@ -285,6 +304,25 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &8836698927240541441
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Fire
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 1af6a83dbe735344eb5c94b06fc204b4
+  m_Children: []
+  m_Volume: 9998adbbb77a4c94bb44294a9dc0c2c0
+  m_Pitch: 86b239e86a7479641974f50e304767cb
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -7584454359217643573}
+  m_UserColorIndex: 1
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &8938173653956349166
 AudioMixerEffectController:
   m_ObjectHideFlags: 3

@@ -11,11 +11,13 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
 
     #region Serialized Fields
 
-    public string homeScene;
+    public SceneObjectsLoad homeScene;
 
     public string playerName;
     public string playerDesc;
     public string playerMoniker;
+
+    [SerializeField] public NpcPhysics npc;
 
 
     [TabGroup("Images")] [GUIColor(0.670f, 1, 0.560f)] [PreviewField] [Required]
@@ -68,9 +70,14 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
 
     private string _npcGuid;
     private Vector3 position;
+    private bool firstSave = true;
 
     #endregion
 
+    private void Awake()
+    {
+        position = transform.position;
+    }
 
     // Start is called before the first frame update
     private void Start()
@@ -206,10 +213,19 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
 
     private IEnumerator Initialize()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         characterDefenceTotal = characterBaseDefence + characterArmour.itemDefence + characterShield.itemDefence +
                                 characterHelmet.itemDefence;
         characterAttackTotal = characterBaseAttack + characterWeapon.itemAttack;
+        if (playerName == "Thulgran")
+        {
+            if (PlayerGlobalData.Instance.playerTrans != null)
+            {
+                transform.position = PlayerGlobalData.Instance.playerTrans;
+            }
+
+            position = transform.position;
+        }
     }
 
     #region Implementation of ISaveable
@@ -218,7 +234,8 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
     {
         position = transform.position;
 
-        SaveData.CharacterData cd = new(_npcGuid, characterLevel, characterMana, characterHp, characterIntelligence,
+        SaveData.CharacterData cd = new(playerName, _npcGuid, characterLevel, characterMana, characterHp,
+            characterIntelligence,
             characterPerception, characterBaseAttack, characterBaseDefence, isTeamMember, isAvailable, isNew,
             characterWeapon, characterArmour, characterHelmet, characterShield, characterAttackTotal,
             characterDefenceTotal, characterWeaponImage, characterArmourImage, characterHelmetImage,
@@ -231,29 +248,8 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
     {
         foreach (SaveData.CharacterData cd in a_SaveData.characterDataList.Where(cd => cd.npcGuid == _npcGuid))
         {
-            characterLevel = cd.characterLevel;
-            characterMana = cd.characterMana;
-            characterHp = cd.characterHp;
-            characterIntelligence = cd.characterIntelligence;
-            characterPerception = cd.characterPerception;
-            characterBaseAttack = cd.characterBaseAttack;
-            characterBaseDefence = cd.characterBaseDefence;
             isTeamMember = cd.isTeamMember;
-            isAvailable = cd.isAvailable;
-            isNew = cd.isNew;
-            characterWeapon = cd.characterWeapon;
-            characterArmour = cd.characterArmour;
-            characterHelmet = cd.characterHelmet;
-            characterShield = cd.characterShield;
-            characterAttackTotal = cd.characterAttackTotal;
-            characterDefenceTotal = cd.characterDefenceTotal;
-            characterWeaponImage = cd.characterWeaponImage;
-            characterArmourImage = cd.characterArmourImage;
-            characterHelmetImage = cd.characterHelmetImage;
-            characterShieldImage = cd.characterShieldImage;
-            skills = cd.skills;
-            position = cd.position;
-            transform.position = position;
+            playerName = cd.playerName;
 
             if (isTeamMember)
             {
@@ -274,7 +270,36 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
                 }
             }
 
-            break;
+            characterLevel = cd.characterLevel;
+            characterMana = cd.characterMana;
+            characterHp = cd.characterHp;
+            characterIntelligence = cd.characterIntelligence;
+            characterPerception = cd.characterPerception;
+            characterBaseAttack = cd.characterBaseAttack;
+            characterBaseDefence = cd.characterBaseDefence;
+            isAvailable = cd.isAvailable;
+            isNew = cd.isNew;
+            characterWeapon = cd.characterWeapon;
+            characterArmour = cd.characterArmour;
+            characterHelmet = cd.characterHelmet;
+            characterShield = cd.characterShield;
+            characterAttackTotal = cd.characterAttackTotal;
+            characterDefenceTotal = cd.characterDefenceTotal;
+            characterWeaponImage = cd.characterWeaponImage;
+            characterArmourImage = cd.characterArmourImage;
+            characterHelmetImage = cd.characterHelmetImage;
+            characterShieldImage = cd.characterShieldImage;
+            skills = cd.skills;
+            if (playerName != "Thulgran")
+            {
+                position = cd.position;
+                transform.position = position;
+            }
+            else if (playerName == "Thulgran")
+            {
+                position = PlayerGlobalData.Instance.playerTrans;
+                transform.position = position;
+            }
         }
     }
 

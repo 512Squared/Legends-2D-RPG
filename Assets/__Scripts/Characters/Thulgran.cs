@@ -1,6 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System;
+using System.Collections.Generic;
 
 public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
 {
@@ -214,7 +215,6 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     public void PopulateSaveData(SaveData a_SaveData)
     {
         a_SaveData.thulgranData.hitPoints = ThulgranHp;
-        a_SaveData.thulgranData.position = transform.position;
         a_SaveData.thulgranData.gold = ThulgranGold;
         a_SaveData.thulgranData.mana = ThulgranMana;
         a_SaveData.thulgranData.trophies = ThulgranTrophies;
@@ -226,7 +226,6 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     public void LoadFromSaveData(SaveData a_SaveData)
     {
         ThulgranHp = a_SaveData.thulgranData.hitPoints;
-        transform.position = a_SaveData.thulgranData.position;
         ThulgranGold = a_SaveData.thulgranData.gold;
         ThulgranMana = a_SaveData.thulgranData.mana;
         ThulgranTrophies = a_SaveData.thulgranData.trophies;

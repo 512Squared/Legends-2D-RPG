@@ -30,6 +30,8 @@ public class Item : MonoBehaviour, ISaveable
 
     public Shop shop; // pickUpItem, shop1, shop2, shop3
 
+    public SceneObjectsUnload itemHome;
+
     public int itemCodeSo = 1000;
 
     public int valueInCoins;
@@ -164,7 +166,7 @@ public class Item : MonoBehaviour, ISaveable
 
         SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
         SelfDeactivate();
-        audio.PlaySfxClip(1);
+        audio.PlaySfxClip(1, false);
 
         if (pickUpNotice)
         {
@@ -308,7 +310,6 @@ public class Item : MonoBehaviour, ISaveable
         isDeletedStack = true;
     }
 
-
     private void DropAnItem(Item droppedItem)
     {
         if (droppedItem.itemGuid != itemGuid) { return; }
@@ -362,6 +363,19 @@ public class Item : MonoBehaviour, ISaveable
     {
         transform.SetParent(newParent, worldSpace);
     }
+
+    private void OnValidate()
+    {
+        ResetSpritePolygonCollider();
+    }
+
+    [Button(ButtonSizes.Large)]
+    [GUIColor(0.482f, 0.486f, 0.156f)]
+    public void ResetSpritePolygonCollider()
+    {
+        polyCollider.TryUpdateShapeToAttachedSprite();
+    }
+
 
     #region Implementation of ISaveable
 

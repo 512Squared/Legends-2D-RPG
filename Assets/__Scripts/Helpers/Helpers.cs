@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using UnityEngine;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Soap;
 using System.Text;
 using System.Text.RegularExpressions;
 using Object = UnityEngine.Object;
@@ -141,10 +140,7 @@ public static class Helpers
     /// <returns></returns>
     public static T[] GetInterfaces<T>(this GameObject gObj)
     {
-        if (!typeof(T).IsInterface)
-        {
-            throw new SystemException("Specified type is not an interface!");
-        }
+        if (!typeof(T).IsInterface) { throw new SystemException("Specified type is not an interface!"); }
 
         MonoBehaviour[] mObjs = gObj.GetComponents<MonoBehaviour>();
 
@@ -160,10 +156,7 @@ public static class Helpers
     /// <returns></returns>
     public static T GetInterface<T>(this GameObject gObj)
     {
-        if (!typeof(T).IsInterface)
-        {
-            throw new SystemException("Specified type is not an interface!");
-        }
+        if (!typeof(T).IsInterface) { throw new SystemException("Specified type is not an interface!"); }
 
         return gObj.GetInterfaces<T>().FirstOrDefault();
     }
@@ -176,10 +169,7 @@ public static class Helpers
     /// <returns></returns>
     public static T GetInterfaceInChildren<T>(this GameObject gObj)
     {
-        if (!typeof(T).IsInterface)
-        {
-            throw new SystemException("Specified type is not an interface!");
-        }
+        if (!typeof(T).IsInterface) { throw new SystemException("Specified type is not an interface!"); }
 
         return gObj.GetInterfacesInChildren<T>().FirstOrDefault();
     }
@@ -192,10 +182,7 @@ public static class Helpers
     /// <returns></returns>
     public static T[] GetInterfacesInChildren<T>(this GameObject gObj)
     {
-        if (!typeof(T).IsInterface)
-        {
-            throw new SystemException("Specified type is not an interface!");
-        }
+        if (!typeof(T).IsInterface) { throw new SystemException("Specified type is not an interface!"); }
 
         MonoBehaviour[] mObjs = gObj.GetComponentsInChildren<MonoBehaviour>();
 
@@ -299,10 +286,7 @@ public static class Helpers
             {
                 tComponent = collider2DArray[i].gameObject.GetComponent<T>();
 
-                if (tComponent != null)
-                {
-                    componentArray[i] = tComponent;
-                }
+                if (tComponent != null) { componentArray[i] = tComponent; }
             }
         }
 
@@ -354,28 +338,19 @@ public static class Helpers
 
     public static void DestroyAllChildObjects(this Transform transform)
     {
-        while (transform.childCount > 0)
-        {
-            Object.DestroyImmediate(transform.GetChild(0).gameObject);
-        }
+        while (transform.childCount > 0) { Object.DestroyImmediate(transform.GetChild(0).gameObject); }
     }
 
     public static void DisableAllChildObjects(this Transform transform)
     {
         Transform[] allChildren = transform.GetComponentsInChildren<Transform>();
-        foreach (Transform child in allChildren)
-        {
-            child.gameObject.SetActive(false);
-        }
+        foreach (Transform child in allChildren) { child.gameObject.SetActive(false); }
     }
 
     public static void EnableAllChildObjects(this Transform transform)
     {
         Transform[] allChildren = transform.GetComponentsInChildren<Transform>();
-        foreach (Transform child in allChildren)
-        {
-            child.gameObject.SetActive(true);
-        }
+        foreach (Transform child in allChildren) { child.gameObject.SetActive(true); }
     }
 
     /// <summary>
@@ -402,21 +377,17 @@ public static class Helpers
     /// <summary>
     /// string to a 2D multidimensional array [,]
     /// </summary>
-    public static void StringToGrid(Grid<ComplexGridObject> inputGrid, string oneD, int width, int height)
-    {
-        string[] separator = {"_,"};
-        string[] newArray = oneD.Split(separator, StringSplitOptions.None);
-        int index = 0;
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                inputGrid.GridArray[i, j].AddGCost(newArray[index]);
-                inputGrid.GridArray[i, j].AddNumber(newArray[index + 1]);
-                index += 2;
-            }
-        }
-    }
+    // public static void StringToGrid(Grid<ComplexGridObject> inputGrid, string oneD, int width, int height)
+    // {
+    //     string[] separator = {"_,"};
+    //     string[] newArray = oneD.Split(separator, StringSplitOptions.None);
+    //     int index = 0;
+    //     for (int i = 0; i < width; i++)
+    //     { for (int j = 0; j < height; j++)
+    //       { inputGrid.GridArray[i, j].AddGCost(newArray[index]);
+    //         inputGrid.GridArray[i, j].AddNumber(newArray[index + 1]);
+    //         index += 2; } }
+    // }
 
 
     /// <summary>
@@ -494,10 +465,7 @@ public static class Helpers
         List<T> oneD = new();
         for (int i = 0; i < inputArray.GetLength(0); i++)
         {
-            for (int j = 0; j < inputArray.GetLength(1); j++)
-            {
-                oneD.Add(inputArray[i, j]);
-            }
+            for (int j = 0; j < inputArray.GetLength(1); j++) { oneD.Add(inputArray[i, j]); }
         }
 
         return oneD.ToArray();
@@ -512,10 +480,7 @@ public static class Helpers
         List<T> oneD = new();
         for (int i = 0; i < inputArray.GetLength(0); i++)
         {
-            for (int j = 0; j < inputArray.GetLength(1); j++)
-            {
-                oneD.Add(inputArray[i, j]);
-            }
+            for (int j = 0; j < inputArray.GetLength(1); j++) { oneD.Add(inputArray[i, j]); }
         }
 
         T[] oneArray = oneD.ToArray();
@@ -535,16 +500,13 @@ public static class Helpers
         List<T> oneD = new();
         for (int i = 0; i < inputArray.GetLength(0); i++)
         {
-            for (int j = 0; j < inputArray.GetLength(1); j++)
-            {
-                oneD.Add(inputArray[i, j]);
-            }
+            for (int j = 0; j < inputArray.GetLength(1); j++) { oneD.Add(inputArray[i, j]); }
         }
 
         return oneD;
     }
 
-    public static string ObjectToString(Array ar)
+    /*public static string ObjectToString(Array ar)
     {
         using MemoryStream ms = new();
         SoapFormatter formatter = new();
@@ -561,6 +523,6 @@ public static class Helpers
 
     public static T ObjectFromString<T>(string s)
     {
-        return (T)ObjectFromString(s);
-    }
+        return (T) ObjectFromString(s);
+    }*/
 }

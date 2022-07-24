@@ -58,7 +58,7 @@ public class ClockManager : SingletonMonobehaviour<ClockManager>
         Actions.OnSceneChange -= SceneChange;
     }
 
-    public void SceneChange(string scene, int empty, int empty2) // change daylight by scene type
+    public void SceneChange(string scene, string arrivingFrom, int empty, int empty2) // change daylight by scene type
     {
         this.scene = scene;
 

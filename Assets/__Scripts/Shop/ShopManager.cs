@@ -308,7 +308,6 @@ public class ShopManager : MonoBehaviour
 
         isShopInstantiated = true; // armoury is instantiated on first shop onload
         Debug.Log("Shops fully Instantiated");
-        //Instance.UpdateShopItemsInventory();
     }
 
     public void ShopArmouryBool()
@@ -406,9 +405,11 @@ public class ShopManager : MonoBehaviour
         Debug.Log("Sort by item initiated: " + boolName);
     }
 
-    public void ShopType(Shop setShopType)
+    public void ShopType(string scene)
     {
-        shopType = setShopType;
+        Shop enumShopType = (Shop)System.Enum.Parse(typeof(Shop), scene);
+        Debug.Log($"Enum shop type: {enumShopType}");
+        shopType = enumShopType;
     }
 
     public void UpdateShopItemsInventory()

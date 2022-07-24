@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 public class PlayerGlobalData : MonoBehaviour, ISaveable
 {
@@ -10,6 +8,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private int moveSpeed = 1;
     [SerializeField] private Animator playerAnimator;
+    public Vector3 playerTrans;
 
     [SerializeField]
     private AudioSource audioSrc;
@@ -18,51 +17,55 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 
     public string arrivingAt;
 
-    private Toggle _toggle;
+    private Toggle toggle;
 
     public bool deactivedMovement;
 
-    private Vector3 _bottomLeftEdge;
-    private Vector3 _topRightEdge;
+    private Vector3 bottomLeftEdge;
+    private Vector3 topRightEdge;
 
     public bool controllerSwitch;
     public bool isMoving;
+    public bool isLoaded;
 
-    private float _horizontalMovement;
-    private float _verticalMovement;
+    private float horizontalMovement;
+    private float verticalMovement;
 
-    private int _characterParty;
+    private int characterParty;
 
     private static readonly int LastX = Animator.StringToHash("lastX");
     private static readonly int LastY = Animator.StringToHash("lastY");
     private static readonly int MovementX = Animator.StringToHash("movementX");
     private static readonly int MovementY = Animator.StringToHash("movementY");
 
-
-    // Start is called before the first frame update
-
-
     private void Start()
     {
         Instance = this;
-        _toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
+        toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
         currentSceneIndex = 1;
         audioSrc = GetComponent<AudioSource>();
-        DamagePopup.Create(Vector3.zero, 300);
     }
 
+    private void OnEnable()
+    {
+        Actions.OnSceneChange += SetLimitBool;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnSceneChange -= SetLimitBool;
+    }
 
     private void Update()
     {
         AndroidController();
-
         if (deactivedMovement)
         {
             rb.velocity = Vector2.zero;
         }
         else
         {
-            rb.velocity = new Vector2(_horizontalMovement, _verticalMovement) * moveSpeed;
+            rb.velocity = new Vector2(horizontalMovement, verticalMovement) * moveSpeed;
         }
 
         if (rb.velocity.x != 0 || rb.velocity.y != 0) { isMoving = true; }
@@ -80,22 +83,23 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         playerAnimator.SetFloat(MovementX, rb.velocity.x);
         playerAnimator.SetFloat(MovementY, rb.velocity.y);
 
-        if (_horizontalMovement is 1 or -1 || _verticalMovement is 1 or -1)
+        if (horizontalMovement is 1 or -1 || verticalMovement is 1 or -1)
         {
             if (!deactivedMovement)
             {
-                playerAnimator.SetFloat(LastX, _horizontalMovement);
-                playerAnimator.SetFloat(LastY, _verticalMovement);
+                playerAnimator.SetFloat(LastX, horizontalMovement);
+                playerAnimator.SetFloat(LastY, verticalMovement);
             }
         }
 
-        transform.position = new Vector3(
-            Mathf.Clamp(transform.position.x, _bottomLeftEdge.x, _topRightEdge.x),
-            Mathf.Clamp(transform.position.y, _bottomLeftEdge.y, _topRightEdge.y),
-            Mathf.Clamp(transform.position.z, _bottomLeftEdge.z, _topRightEdge.z)
-        );
-
-        MenuManager.Instance.HomeScreenStats();
+        if (isLoaded)
+        {
+            transform.position = new Vector3(
+                Mathf.Clamp(transform.position.x, bottomLeftEdge.x, topRightEdge.x),
+                Mathf.Clamp(transform.position.y, bottomLeftEdge.y, topRightEdge.y),
+                Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)
+            );
+        }
     }
 
     private void AndroidController()
@@ -103,20 +107,27 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         switch (controllerSwitch)
         {
             case false:
-                _horizontalMovement = Input.GetAxisRaw("Horizontal");
-                _verticalMovement = Input.GetAxisRaw("Vertical");
+                horizontalMovement = Input.GetAxisRaw("Horizontal");
+                verticalMovement = Input.GetAxisRaw("Vertical");
                 break;
             case true:
-                _horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
-                _verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
+                horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
+                verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
                 break;
         }
     }
 
     public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
     {
-        _bottomLeftEdge = bottomEdgeToSet;
-        _topRightEdge = topEdgeToSet;
+        bottomLeftEdge = bottomEdgeToSet;
+        topRightEdge = topEdgeToSet;
+        isLoaded = true;
+    }
+
+    private void SetLimitBool(string arg1, string arg4, int arg2, int arg3)
+    {
+        isLoaded = true;
+        Debug.Log($"isLoaded set to true: {isLoaded}");
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -145,37 +156,50 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 
     private void AddTwoToPartyQuest()
     {
-        if (_characterParty < 3)
+        if (characterParty < 3)
         {
-            _characterParty++;
-            Debug.Log($"Player added to character party: {_characterParty}");
+            characterParty++;
+            Debug.Log($"Player added to character party: {characterParty}");
         }
 
-        if (_characterParty == 2)
+        if (characterParty == 2)
         {
             Actions.MarkQuestCompleted?.Invoke("e32408e2-2d2f-4413-a6a9-75eb6e9a4331");
         }
+    }
+
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+
+    public Vector3 GetPositionOfHead()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        float height = sr.sprite.bounds.size.y + 0.2f;
+        Vector3 headPosition = new(transform.position.x, transform.position.y + height, 0);
+        return headPosition;
     }
 
     #region Implementation of ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
+        playerTrans = transform.position;
         a_SaveData.thulgranData.controllerSwitch = controllerSwitch;
         a_SaveData.thulgranData.moveSpeed = moveSpeed;
+        a_SaveData.thulgranData.position = playerTrans;
+        Debug.Log($"Thulgran's save position: {playerTrans}");
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        _toggle.isOn = a_SaveData.thulgranData.controllerSwitch;
+        toggle.isOn = a_SaveData.thulgranData.controllerSwitch;
         moveSpeed = a_SaveData.thulgranData.moveSpeed;
+        playerTrans = a_SaveData.thulgranData.position;
+        transform.position = playerTrans;
     }
 
     #endregion
-
-    public Vector3 GetPosition()
-    {
-        Debug.Log($"Thulgran's position: {transform.position}");
-        return transform.position;
-    }
 }

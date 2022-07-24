@@ -788,7 +788,7 @@ public partial class MenuManager
     {
         MainMenuPanel(15);
         DoPunch(menuPanels[15].gameObject, new Vector3(0.15f, 0.15f, 0), 0.1f);
-        questCompleted.text = quest.questDescription + " " + quest.onDoneMessage;
+        questCompleted.text = quest.onDoneMessage;
         questCompletedName.text = quest.questName;
         questCompletedPanelSprite.sprite = quest.questImage;
         questRewardSprite.sprite = quest.questReward;
