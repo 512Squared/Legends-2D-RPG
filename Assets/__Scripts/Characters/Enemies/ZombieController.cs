@@ -1,7 +1,12 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 using CodeMonkey.Utils;
 using UnityEngine;
 using Pathfinding;
+using Sirenix.Utilities;
+using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
 public class ZombieController : MonoBehaviour
@@ -21,13 +26,27 @@ public class ZombieController : MonoBehaviour
     private float lastX;
     private float lastY;
 
+    private bool isUpdated;
+
     public bool isInChaseRange;
     public bool isInAttackRange;
 
     private bool increasedChaseRadius;
 
     [SerializeField]
-    private Transform target;
+    private AIDestinationSetter aiDestinationSetter;
+
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
+    public Transform target;
+
+    [SerializeField]
+    private List<Transform> positions;
+
+    [SerializeField]
+    private List<PlayerStats> playerList;
+
 
     public LayerMask playerLayer;
 
@@ -44,6 +63,9 @@ public class ZombieController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         anim.SetFloat(MoveY, -1);
         anim.SetBool(IsWalking, false);
+        playerList = GameManager.Instance.GetPlayerStats().ToList();
+        positions = new List<Transform>();
+        GetClosestTarget();
         //transform.localScale = new Vector3(transform.localScale.x, -1, 0);
     }
 
@@ -78,8 +100,51 @@ public class ZombieController : MonoBehaviour
         }
     }
 
+    private void GetClosestTarget()
+    {
+        playerList.Clear();
+        positions.Clear();
+        playerList = GameManager.Instance.GetPlayerStats().ToList();
+
+        foreach (PlayerStats player in playerList)
+        {
+            if (player.isTeamMember)
+            {
+                Transform position = player.GetComponent<Transform>();
+                if (position != null) { positions.Add(position); }
+            }
+        }
+
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+        foreach (Transform potentialTarget in positions)
+        {
+            Vector3 directionToTarget = potentialTarget.position - currentPosition;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+            if (dSqrToTarget < closestDistanceSqr)
+            {
+                closestDistanceSqr = dSqrToTarget;
+                bestTarget = potentialTarget;
+            }
+        }
+
+        if (playerList.Count == 1)
+        {
+            target = PlayerGlobalData.Instance.transform;
+            aiDestinationSetter.target = target;
+        }
+        else if (playerList.Count > 1)
+        {
+            target = bestTarget;
+            aiDestinationSetter.target = bestTarget;
+        }
+    }
+
     private void FixedUpdate()
     {
+        GetClosestTarget();
+
         aiPath.maxSpeed = speed;
         if (isInAttackRange)
         {
@@ -91,6 +156,15 @@ public class ZombieController : MonoBehaviour
             }
 
             aiPath.maxSpeed = 0f;
+        }
+
+        if (transform.position.y < target.transform.position.y)
+        {
+            spriteRenderer.sortingOrder = target.GetComponent<SpriteRenderer>().sortingOrder + 1;
+        }
+        else
+        {
+            spriteRenderer.sortingOrder = target.GetComponent<SpriteRenderer>().sortingOrder - 1;
         }
     }
 }

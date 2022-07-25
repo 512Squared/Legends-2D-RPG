@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7981820923161695604}
   - component: {fileID: 7981820923161695608}
   - component: {fileID: 7981820923161695605}
-  - component: {fileID: 7981820923161695609}
   m_Layer: 3
   m_Name: Zombie_sprite
   m_TagString: Enemy
@@ -27,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7981820923161695603}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.12, y: 1.94, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -106,22 +105,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!70 &7981820923161695609
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7981820923161695603}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.09, y: -0.98160934}
-  m_Size: {x: 2.5665035, y: 3.0567818}
-  m_Direction: 0
 --- !u!1 &7981820923390881852
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +118,7 @@ GameObject:
   - component: {fileID: 7981820923390881856}
   - component: {fileID: 7981820923390881855}
   - component: {fileID: 7981820923390881854}
-  - component: {fileID: 7981820923390881858}
+  - component: {fileID: 2019175499}
   - component: {fileID: 1136506051}
   m_Layer: 3
   m_Name: pfZombie
@@ -260,7 +243,7 @@ MonoBehaviour:
   version: 1
   unwrap: 1
   splitAtEveryPortal: 1
---- !u!50 &7981820923390881858
+--- !u!50 &2019175499
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -272,7 +255,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -301,7 +284,11 @@ MonoBehaviour:
   dir: {x: 0, y: 0, z: 0}
   isInChaseRange: 0
   isInAttackRange: 0
+  aiDestinationSetter: {fileID: 7981820923390881855}
+  spriteRenderer: {fileID: 7981820923161695608}
   target: {fileID: 0}
+  positions: []
+  playerList: []
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -330,7 +317,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8898676868495929618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.044, y: -0.238, z: 0}
+  m_LocalPosition: {x: -0.044, y: -2.34, z: 0}
   m_LocalScale: {x: 1.1098655, y: 0.33338344, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
