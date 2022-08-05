@@ -62,7 +62,7 @@ public class ClockManager : SingletonMonobehaviour<ClockManager>
     {
         this.scene = scene;
 
-        lightScaler = scene is "shop1" or "shop2" or "shop3" ? 1.2f : 0f;
+        lightScaler = scene is "Shop1" or "Shop2" or "Shop3" ? 1.2f : 0f;
     }
 
 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public interface IDamageable 
+public interface IDamageable
 {
+    void Damage(int damage);
 
-
+    Vector3 GetPositionOfHead();
+    string Combatant { get; }
 }

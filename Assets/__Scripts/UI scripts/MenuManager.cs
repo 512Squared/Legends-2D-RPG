@@ -125,7 +125,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [FoldoutGroup("Miscellaneous", false)] [GUIColor(1f, 0.8f, 0.315f)] [SerializeField]
     private CanvasGroup teamNofify, fadeResume;
 
-    [SerializeField] private TextMeshProUGUI teamMemberCount;
+    [SerializeField] private TextMeshProUGUI teamMemberCount, youDied;
 
 
     [TabGroup("Char Stats")] [GUIColor(1f, 1f, 0.215f)] [SerializeField]
@@ -1092,7 +1092,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             {
                 playerStats[character].isTeamMember = true;
                 playerStats[character].isNew = false;
-                if (character != 0) { playerStats[character].npc.IsTeamMember(true); }
+                if (character != 0) { playerStats[character].teamMemberBase.IsTeamMember(true); }
 
                 teamNofifyCount--;
                 CharacterActivationButtons(character);
@@ -1424,7 +1424,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             if (i == character)
             {
                 playerStats[character].isTeamMember = false;
-                playerStats[character].npc.IsTeamMember(false);
+                playerStats[character].teamMemberBase.IsTeamMember(false);
                 characterCards[character].SetActive(false);
                 teamCharacterWeaponry[character].SetActive(false);
                 characterEquip[character].SetActive(false);
@@ -2108,4 +2108,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     }
 
     #endregion
+
+    public void DeathScene()
+    {
+        youDied.gameObject.SetActive(true);
+        youDied.DOFaceFade(255, 10f);
+    }
 }

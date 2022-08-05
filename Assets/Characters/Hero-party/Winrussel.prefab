@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &260137939
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 260137940}
+  - component: {fileID: 260137941}
+  m_Layer: 3
+  m_Name: AITarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &260137940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260137939}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4609134914631721}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &260137941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260137939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e4fa51cf3594c938c96ea19656a5fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1024602169351611
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +165,7 @@ GameObject:
   - component: {fileID: 1052899261}
   m_Layer: 3
   m_Name: Winrussel
-  m_TagString: Untagged
+  m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -144,6 +188,7 @@ Transform:
   - {fileID: 8953310148703794819}
   - {fileID: 2542469599029839826}
   - {fileID: 7027000918795108157}
+  - {fileID: 260137940}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -163,17 +208,13 @@ MonoBehaviour:
   Back: {fileID: 2030559484747321289}
   Left: {fileID: 1262752341622952123}
   Right: {fileID: 3328341159372996117}
-  BodyColor: {r: 0.8862745, g: 0.6666667, b: 0.5294118, a: 1}
+  BodyColor: {r: 0, g: 0, b: 0, a: 0}
   Parts:
   - {fileID: 2465060579485367423}
   - {fileID: 2030559484747321289}
   - {fileID: 1262752341622952123}
   - {fileID: 3328341159372996117}
-  Shadows:
-  - {fileID: 1116477097228808253}
-  - {fileID: 983184150786730115}
-  - {fileID: 8918425207334094619}
-  - {fileID: 2834565331791153322}
+  Shadows: []
   Animator: {fileID: 95412965467830687}
   AnimationManager: {fileID: 114299398731787475}
   LayerManager: {fileID: 114391165069629187}
@@ -217,165 +258,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dbda98e8614ec8a935809c1a0ace8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
-  - {fileID: 6377183563118432909}
-  - {fileID: 4454123556864183359}
-  - {fileID: 1046591596625846790}
-  - {fileID: 3327782803930567677}
-  - {fileID: 581927602552809873}
-  - {fileID: 8351101906686311009}
-  - {fileID: 2832284468474052304}
-  - {fileID: 8664501416707907211}
-  - {fileID: 212530927989118023}
-  - {fileID: 1202384687291707165}
-  - {fileID: 218520351531535314}
-  - {fileID: 340871801628354365}
-  - {fileID: 457072194820592925}
-  - {fileID: 4020173745644517703}
-  - {fileID: 4426712859676731761}
-  - {fileID: 7593284450192766455}
-  - {fileID: 3257662602690845537}
-  - {fileID: 7174304928573495052}
-  - {fileID: 4541166493312667198}
-  - {fileID: 212444024247562481}
-  - {fileID: 18282727071621866}
-  - {fileID: 2410151517864955872}
-  - {fileID: 6943949993285981074}
-  - {fileID: 5718689662002438453}
-  - {fileID: 212144198268063225}
-  - {fileID: 5101221468415902806}
-  - {fileID: 2760353579756443607}
-  - {fileID: 755930553864412715}
-  - {fileID: 8605066768467781373}
-  - {fileID: 700531947224714513}
-  - {fileID: 2097919206937291166}
-  - {fileID: 448197358241820620}
-  - {fileID: 8985766711625657451}
-  - {fileID: 8757013947375677429}
-  - {fileID: 2713239814479768750}
-  - {fileID: 7479589102105729624}
-  - {fileID: 1933108230624773271}
-  - {fileID: 4946711802634314893}
-  - {fileID: 6425404748799036641}
-  - {fileID: 202297042418221137}
-  - {fileID: 8737215626409716489}
-  - {fileID: 2194877905859613012}
-  - {fileID: 9101145333777141644}
-  - {fileID: 3371072417991166077}
-  - {fileID: 2535888265022453792}
-  - {fileID: 7925520355760849339}
-  - {fileID: 3179199760498284665}
-  - {fileID: 1709456178626067942}
-  - {fileID: 7445330264936463017}
-  - {fileID: 7815246261777922419}
-  - {fileID: 7525694918019080429}
-  - {fileID: 4911119050266574434}
-  - {fileID: 5489282132246433710}
-  - {fileID: 6177346895001038099}
-  - {fileID: 7212659572647376918}
-  - {fileID: 2033086929503006325}
-  - {fileID: 3207744034671628587}
-  - {fileID: 3786447010862536190}
-  - {fileID: 7679081741786697368}
-  - {fileID: 1948801394297928116}
-  - {fileID: 4064463372002673781}
-  - {fileID: 3528758244078476627}
-  - {fileID: 4061228200562804767}
-  - {fileID: 8323166403987809258}
-  - {fileID: 2010299606075231298}
-  - {fileID: 1470929397722258372}
-  - {fileID: 4733174743661795249}
-  - {fileID: 287639139741093499}
-  - {fileID: 8648680224978815162}
-  - {fileID: 8310141277918148525}
-  - {fileID: 4387467745568254253}
-  - {fileID: 149889272789667729}
-  - {fileID: 8039245498147273464}
-  - {fileID: 3347520441975170513}
-  - {fileID: 5797214421585728314}
-  - {fileID: 8660161278782911562}
-  - {fileID: 8943794436122367715}
-  - {fileID: 5718562241417692339}
-  - {fileID: 7855730081566670617}
-  - {fileID: 5264083127214469381}
-  - {fileID: 177872334611042285}
-  - {fileID: 7615526371552094956}
-  - {fileID: 685835407969397424}
-  - {fileID: 829689413675536618}
-  - {fileID: 4818098934214083900}
-  - {fileID: 6828907146970354151}
-  - {fileID: 212253762676601503}
-  - {fileID: 864641235262540790}
-  - {fileID: 4689781212217613808}
-  - {fileID: 203640428524096365}
-  - {fileID: 4873631792061256456}
-  - {fileID: 3878491890955330934}
-  - {fileID: 21534803684774422}
-  - {fileID: 3861533954033574561}
-  - {fileID: 1434478913733699550}
-  - {fileID: 212032242104598589}
-  - {fileID: 4848642171055743173}
-  - {fileID: 6114837049940693424}
-  - {fileID: 134708717100592585}
-  - {fileID: 4153933824399136190}
-  - {fileID: 2754884685880382720}
-  - {fileID: 6160895744132462906}
-  - {fileID: 212543371714974525}
-  - {fileID: 3565275729992069941}
-  - {fileID: 3254302491343047735}
-  - {fileID: 9085711018784012994}
-  - {fileID: 13780683319314698}
-  - {fileID: 1858213157671812870}
-  - {fileID: 9005397838416310871}
-  - {fileID: 6082078104806119265}
-  - {fileID: 212277928235868223}
-  - {fileID: 7899965496391797972}
-  - {fileID: 1670929247528665081}
-  - {fileID: 1920470580630084647}
-  - {fileID: 1575016740458338291}
-  - {fileID: 5241850754282467208}
-  - {fileID: 212059472636140563}
-  - {fileID: 313446403873287154}
-  - {fileID: 9045030295582556129}
-  - {fileID: 3931459822396459615}
-  - {fileID: 4570969020266250792}
-  - {fileID: 4711553832797541}
-  - {fileID: 212002389385728225}
-  - {fileID: 5205093143717066925}
-  - {fileID: 1027341462021213783}
-  - {fileID: 3570701932254305345}
-  - {fileID: 119980180800225762}
-  - {fileID: 3489128420876976720}
-  - {fileID: 149473337632614743}
-  - {fileID: 8375912871773087102}
-  - {fileID: 212324264982563229}
-  - {fileID: 7986890816249755822}
-  - {fileID: 3795813669726807385}
-  - {fileID: 2140531626699816043}
-  - {fileID: 212010833355210461}
-  - {fileID: 7516468027525291442}
-  - {fileID: 10757105484428268}
-  - {fileID: 2637456951493961740}
-  - {fileID: 2416094447239304611}
-  - {fileID: 2868625000154983845}
-  - {fileID: 212341795810948967}
-  - {fileID: 203373012578108375}
-  - {fileID: 1325558513030226687}
-  - {fileID: 78320155098434306}
-  - {fileID: 133038726858756013}
-  - {fileID: 6788701444459989}
-  - {fileID: 212127210852072737}
-  - {fileID: 1627631618083741565}
-  - {fileID: 4992909852617450}
-  - {fileID: 1887023267935508550}
-  - {fileID: 75145906990537706}
-  - {fileID: 212102519499489307}
-  - {fileID: 1225610899512930044}
+  Sprites: []
   SortingGroup: {fileID: 210585854458822717}
-  SortingOrderOffset: 100
+  SortingOrderOffset: 0
   SortingOrderStep: 5
   ZStep: 0.00001
-  CopyTo: {fileID: 0}
+  CopyTo: {fileID: 114391165069629187}
 --- !u!95 &95412965467830687
 Animator:
   serializedVersion: 4
@@ -456,11 +344,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4d316748e947769db156f3bab96e9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 0
   changeTime: 0
-  startLeft: 1
-  vertical: 0
-  characterTransform: {fileID: 4609134914631721}
+  startLeft: 0
   playerStats: {fileID: 1052899260}
   teamBase: {fileID: 7027000918795108156}
 --- !u!114 &1052899260
@@ -481,9 +367,9 @@ MonoBehaviour:
     and venomous as a snake.
   playerMoniker: Warrior of the Wind
   npc: {fileID: 1052899258}
-  characterImage: {fileID: 21300000, guid: 7a13821c9e742f4438d7772e8ceeca28, type: 3}
-  characterMug: {fileID: 21300000, guid: b4a52da71b67a064285582596c0dd038, type: 3}
-  characterPlain: {fileID: 21300000, guid: 7aaeaa62cc3ccb247b9a8a332e5e9ccc, type: 3}
+  characterImage: {fileID: 21300000, guid: 4ecfbf371c0a0f043bb1cd1047886cee, type: 3}
+  characterMug: {fileID: 21300000, guid: def43ead5c41ce54789d8b9bc0a9029e, type: 3}
+  characterPlain: {fileID: 21300000, guid: e1a512a0bf732cd4ba81082c3e33cb80, type: 3}
   maxLevel: 10
   baseLevelXp: 0
   characterXp: 0
@@ -539,7 +425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df8e19077a70654ba67388acbaee80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gUID: 0181db84-338d-4e8e-89a6-cd1ea4a85b6f
+  _gUID: 6e02ed32-88bd-4691-beee-e62344a89b0d
 --- !u!1 &1075058740947095
 GameObject:
   m_ObjectHideFlags: 0
@@ -5467,178 +5353,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteCollection: {fileID: 11400000, guid: ed0b296bc13a33144a4e9ea08d0ad5d5, type: 2}
-  Ears:
-  - {fileID: 21300002, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  - {fileID: 21300000, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  - {fileID: 21300004, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  Hair: {fileID: -8137581963233685907, guid: c412691657a842443801b4565afac4e6, type: 3}
-  HairCropped: {fileID: 21300002, guid: 72aa7dbf531a6314080711e386cb4984, type: 3}
+  Ears: []
+  Hair: {fileID: 0}
+  HairCropped: {fileID: 0}
   Beard: {fileID: 0}
-  Body:
-  - {fileID: 21300016, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300020, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300018, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300086, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300084, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300066, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300056, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300012, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300022, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300024, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300006, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300002, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300004, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300054, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300062, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300000, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300010, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300008, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300070, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300076, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300100, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300092, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300094, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300108, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300102, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300104, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300090, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300098, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300096, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300106, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  Head: {fileID: 21300012, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
+  Body: []
+  Head: {fileID: 0}
   Expression: Default
-  Expressions:
-  - Name: Default
-    Eyebrows: {fileID: 0}
-    Eyes: {fileID: 0}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 0}
-  - Name: Angry
-    Eyebrows: {fileID: 0}
-    Eyes: {fileID: 0}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 0}
-  - Name: Dead
-    Eyebrows: {fileID: 0}
-    Eyes: {fileID: 0}
-    EyesColor: {r: 1, g: 1, b: 1, a: 1}
-    Mouth: {fileID: 0}
-  - Name: Happy
-    Eyebrows: {fileID: 0}
-    Eyes: {fileID: 0}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 0}
-  Helmet: {fileID: 21300036, guid: b70b996fcdb3ad74a8aa2ec95d49e4dd, type: 3}
+  Expressions: []
+  Helmet: {fileID: 0}
   PrimaryWeapon: {fileID: 0}
-  SecondaryWeapon: {fileID: 21300006, guid: c336dd2e7aa511948b9e90834a88e859, type: 3}
+  SecondaryWeapon: {fileID: 0}
   Cape: {fileID: 0}
   Back: {fileID: 0}
   Shield: []
-  Armor:
-  - {fileID: 21300040, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300044, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300042, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300074, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300020, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300072, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300008, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300036, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300046, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300048, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300030, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300026, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300028, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300006, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300068, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300024, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300060, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300032, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300018, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300070, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300092, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300084, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300086, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300100, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300094, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300096, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300082, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300090, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300088, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300098, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
+  Armor: []
   CompositeWeapon: []
   Makeup: {fileID: 0}
   Mask: {fileID: 0}
   Earrings: []
-  BodyRenderers:
-  - {fileID: 202297042418221137}
-  - {fileID: 340871801628354365}
-  - {fileID: 457072194820592925}
-  - {fileID: 212444024247562481}
-  - {fileID: 3327782803930567677}
-  - {fileID: 581927602552809873}
-  - {fileID: 212530927989118023}
-  - {fileID: 8757013947375677429}
-  - {fileID: 700531947224714513}
-  HeadRenderer: {fileID: 7925520355760849339}
-  EarsRenderers:
-  - {fileID: 7525694918019080429}
-  - {fileID: 5489282132246433710}
-  HairRenderer: {fileID: 7212659572647376918}
+  BodyRenderers: []
+  HeadRenderer: {fileID: 0}
+  EarsRenderers: []
+  HairRenderer: {fileID: 0}
   BeardRenderer: {fileID: 0}
   EyebrowsRenderer: {fileID: 0}
   EyesRenderer: {fileID: 0}
   MouthRenderer: {fileID: 0}
-  HelmetRenderer: {fileID: 3786447010862536190}
-  PrimaryWeaponRenderer: {fileID: 8664501416707907211}
-  SecondaryWeaponRenderer: {fileID: 7174304928573495052}
-  ArmorRenderers:
-  - {fileID: 9101145333777141644}
-  - {fileID: 7593284450192766455}
-  - {fileID: 4020173745644517703}
-  - {fileID: 755930553864412715}
-  - {fileID: 2832284468474052304}
-  - {fileID: 8351101906686311009}
-  - {fileID: 1202384687291707165}
-  - {fileID: 1933108230624773271}
-  - {fileID: 448197358241820620}
-  VestRenderers:
-  - {fileID: 9101145333777141644}
-  BracersRenderers:
-  - {fileID: 7593284450192766455}
-  - {fileID: 4020173745644517703}
-  - {fileID: 755930553864412715}
-  - {fileID: 2832284468474052304}
-  - {fileID: 8351101906686311009}
-  - {fileID: 1202384687291707165}
-  LeggingsRenderers:
-  - {fileID: 1933108230624773271}
-  - {fileID: 448197358241820620}
+  HelmetRenderer: {fileID: 0}
+  PrimaryWeaponRenderer: {fileID: 0}
+  SecondaryWeaponRenderer: {fileID: 0}
+  ArmorRenderers: []
+  VestRenderers: []
+  BracersRenderers: []
+  LeggingsRenderers: []
   CapeRenderer: {fileID: 0}
   BackRenderer: {fileID: 0}
-  ShieldRenderers:
-  - {fileID: 218520351531535314}
-  BowRenderers:
-  - {fileID: 5101221468415902806}
-  - {fileID: 2410151517864955872}
-  - {fileID: 5718689662002438453}
-  - {fileID: 8648680224978815162}
-  - {fileID: 8039245498147273464}
+  ShieldRenderers: []
+  BowRenderers: []
   FirearmsRenderers: []
-  MakeupRenderer: {fileID: 3179199760498284665}
-  MaskRenderer: {fileID: 7679081741786697368}
-  EarringsRenderers:
-  - {fileID: 4911119050266574434}
-  - {fileID: 6177346895001038099}
-  DefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  EyesPaintMaterial: {fileID: 2100000, guid: 3e78a9b3616c45e5a6cbd9fca765b55f, type: 2}
-  EquipmentPaintMaterial: {fileID: 2100000, guid: b67e1036325c49a4a378ba14ec243c30, type: 2}
-  WeaponType: 2
+  MakeupRenderer: {fileID: 0}
+  MaskRenderer: {fileID: 0}
+  EarringsRenderers: []
+  DefaultMaterial: {fileID: 0}
+  EyesPaintMaterial: {fileID: 0}
+  EquipmentPaintMaterial: {fileID: 0}
+  WeaponType: 0
   HideEars: 0
-  CropHair: 1
-  AnchorBody: {fileID: 264195487960680673}
-  AnchorSword: {fileID: 1069607373241066992}
-  AnchorBow: {fileID: 7426613980581824929}
-  LayerManager: {fileID: 2030468303612176807}
+  CropHair: 0
+  AnchorBody: {fileID: 0}
+  AnchorSword: {fileID: 0}
+  AnchorBow: {fileID: 0}
+  LayerManager: {fileID: 0}
   Underwear: []
   UnderwearColor: {r: 0, g: 0, b: 0, a: 0}
   ShowHelmet: 1
@@ -5654,39 +5420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dbda98e8614ec8a935809c1a0ace8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
-  - {fileID: 3327782803930567677}
-  - {fileID: 581927602552809873}
-  - {fileID: 8351101906686311009}
-  - {fileID: 2832284468474052304}
-  - {fileID: 8664501416707907211}
-  - {fileID: 212530927989118023}
-  - {fileID: 1202384687291707165}
-  - {fileID: 218520351531535314}
-  - {fileID: 340871801628354365}
-  - {fileID: 457072194820592925}
-  - {fileID: 4020173745644517703}
-  - {fileID: 7593284450192766455}
-  - {fileID: 7174304928573495052}
-  - {fileID: 212444024247562481}
-  - {fileID: 2410151517864955872}
-  - {fileID: 5718689662002438453}
-  - {fileID: 5101221468415902806}
-  - {fileID: 755930553864412715}
-  - {fileID: 700531947224714513}
-  - {fileID: 448197358241820620}
-  - {fileID: 8757013947375677429}
-  - {fileID: 1933108230624773271}
-  - {fileID: 202297042418221137}
-  - {fileID: 9101145333777141644}
-  - {fileID: 7925520355760849339}
-  - {fileID: 7212659572647376918}
-  - {fileID: 3786447010862536190}
-  - {fileID: 7525694918019080429}
-  - {fileID: 5489282132246433710}
-  - {fileID: 8648680224978815162}
-  - {fileID: 8039245498147273464}
-  SortingGroup: {fileID: 210585854458822717}
+  Sprites: []
+  SortingGroup: {fileID: 0}
   SortingOrderOffset: 0
   SortingOrderStep: 5
   ZStep: 0.00001
@@ -5703,11 +5438,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac5cde981f663e49855fc6a42c56c96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Body: {fileID: 264195487960680673}
-  PrimaryWeapon: {fileID: 1069607373241066992}
-  Bow: {fileID: 7426613980581824929}
-  Shield: {fileID: 2833084392006956191}
-  Status: {fileID: 935095482914998835}
+  Body: {fileID: 0}
+  PrimaryWeapon: {fileID: 0}
+  Bow: {fileID: 0}
+  Shield: {fileID: 0}
+  Status: {fileID: 0}
   Custom: []
 --- !u!1 &1924061225659830920
 GameObject:
@@ -5826,7 +5561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7835773861246177518
 Transform:
   m_ObjectHideFlags: 0
@@ -5857,176 +5592,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteCollection: {fileID: 11400000, guid: ed0b296bc13a33144a4e9ea08d0ad5d5, type: 2}
-  Ears:
-  - {fileID: 21300002, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  - {fileID: 21300000, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  - {fileID: 21300004, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  Hair: {fileID: 6591478365344907407, guid: c412691657a842443801b4565afac4e6, type: 3}
-  HairCropped: {fileID: 21300000, guid: 72aa7dbf531a6314080711e386cb4984, type: 3}
+  Ears: []
+  Hair: {fileID: 0}
+  HairCropped: {fileID: 0}
   Beard: {fileID: 0}
-  Body:
-  - {fileID: 21300016, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300020, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300018, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300086, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300084, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300066, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300056, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300012, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300022, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300024, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300006, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300002, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300004, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300054, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300062, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300000, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300010, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300008, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300070, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300076, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300100, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300092, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300094, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300108, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300102, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300104, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300090, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300098, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300096, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300106, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  Head: {fileID: 21300000, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
+  Body: []
+  Head: {fileID: 0}
   Expression: Default
-  Expressions:
-  - Name: Default
-    Eyebrows: {fileID: 21300000, guid: b7d62034cf94b4c4c94e51a37d76ab48, type: 3}
-    Eyes: {fileID: 21300000, guid: 7d29a6168b8188249a81304debfac1f6, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300000, guid: b92b127d86d71e147980d8c86a8a7c6a, type: 3}
-  - Name: Angry
-    Eyebrows: {fileID: 21300000, guid: de83117efe1db20419ded60f35f02595, type: 3}
-    Eyes: {fileID: 21300000, guid: 73461b69252e31e45aa9fd164956078d, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300000, guid: 9e1c0aaeb0040164cbd5285bb580695d, type: 3}
-  - Name: Dead
-    Eyebrows: {fileID: 21300000, guid: 498faabeb919ac24b8c2272faadfae32, type: 3}
-    Eyes: {fileID: 21300000, guid: 2e095cf31cb1de947b7843cabcc26986, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300000, guid: aa79e67174ca46c49b51b5e14b1e72d8, type: 3}
-  - Name: Happy
-    Eyebrows: {fileID: 21300000, guid: 498faabeb919ac24b8c2272faadfae32, type: 3}
-    Eyes: {fileID: 21300000, guid: 9a749df01cafb4b4bb058b787309f261, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300000, guid: 5c190d61cd55f964ea24dbd0def87104, type: 3}
-  Helmet: {fileID: 21300024, guid: b70b996fcdb3ad74a8aa2ec95d49e4dd, type: 3}
+  Expressions: []
+  Helmet: {fileID: 0}
   PrimaryWeapon: {fileID: 0}
-  SecondaryWeapon: {fileID: 21300006, guid: c336dd2e7aa511948b9e90834a88e859, type: 3}
+  SecondaryWeapon: {fileID: 0}
   Cape: {fileID: 0}
   Back: {fileID: 0}
   Shield: []
-  Armor:
-  - {fileID: 21300040, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300044, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300042, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300074, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300020, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300072, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300008, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300036, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300046, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300048, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300030, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300026, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300028, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300006, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300068, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300024, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300060, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300032, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300018, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300070, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300092, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300084, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300086, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300100, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300094, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300096, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300082, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300090, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300088, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300098, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
+  Armor: []
   CompositeWeapon: []
   Makeup: {fileID: 0}
   Mask: {fileID: 0}
   Earrings: []
-  BodyRenderers:
-  - {fileID: 203640428524096365}
-  - {fileID: 212277928235868223}
-  - {fileID: 212059472636140563}
-  - {fileID: 212324264982563229}
-  - {fileID: 212010833355210461}
-  - {fileID: 149889272789667729}
-  - {fileID: 177872334611042285}
-  HeadRenderer: {fileID: 212341795810948967}
-  EarsRenderers:
-  - {fileID: 212127210852072737}
-  - {fileID: 4992909852617450}
-  HairRenderer: {fileID: 75145906990537706}
-  BeardRenderer: {fileID: 1325558513030226687}
-  EyebrowsRenderer: {fileID: 6788701444459989}
-  EyesRenderer: {fileID: 133038726858756013}
-  MouthRenderer: {fileID: 203373012578108375}
-  HelmetRenderer: {fileID: 212102519499489307}
-  PrimaryWeaponRenderer: {fileID: 149473337632614743}
-  SecondaryWeaponRenderer: {fileID: 134708717100592585}
-  ArmorRenderers:
-  - {fileID: 21534803684774422}
-  - {fileID: 1920470580630084647}
-  - {fileID: 9045030295582556129}
-  - {fileID: 4711553832797541}
-  - {fileID: 3795813669726807385}
-  - {fileID: 10757105484428268}
-  - {fileID: 2416094447239304611}
-  - {fileID: 8943794436122367715}
-  - {fileID: 829689413675536618}
-  VestRenderers:
-  - {fileID: 21534803684774422}
-  BracersRenderers:
-  - {fileID: 1920470580630084647}
-  - {fileID: 9045030295582556129}
-  - {fileID: 4711553832797541}
-  - {fileID: 3795813669726807385}
-  - {fileID: 10757105484428268}
-  - {fileID: 2416094447239304611}
-  LeggingsRenderers:
-  - {fileID: 8943794436122367715}
-  - {fileID: 829689413675536618}
+  BodyRenderers: []
+  HeadRenderer: {fileID: 0}
+  EarsRenderers: []
+  HairRenderer: {fileID: 0}
+  BeardRenderer: {fileID: 0}
+  EyebrowsRenderer: {fileID: 0}
+  EyesRenderer: {fileID: 0}
+  MouthRenderer: {fileID: 0}
+  HelmetRenderer: {fileID: 0}
+  PrimaryWeaponRenderer: {fileID: 0}
+  SecondaryWeaponRenderer: {fileID: 0}
+  ArmorRenderers: []
+  VestRenderers: []
+  BracersRenderers: []
+  LeggingsRenderers: []
   CapeRenderer: {fileID: 0}
   BackRenderer: {fileID: 0}
-  ShieldRenderers:
-  - {fileID: 212002389385728225}
-  BowRenderers:
-  - {fileID: 13780683319314698}
-  - {fileID: 212543371714974525}
-  - {fileID: 212032242104598589}
-  - {fileID: 119980180800225762}
-  - {fileID: 212253762676601503}
+  ShieldRenderers: []
+  BowRenderers: []
   FirearmsRenderers: []
-  MakeupRenderer: {fileID: 78320155098434306}
-  MaskRenderer: {fileID: 1225610899512930044}
-  EarringsRenderers:
-  - {fileID: 1627631618083741565}
-  - {fileID: 1887023267935508550}
-  DefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  EyesPaintMaterial: {fileID: 2100000, guid: 3e78a9b3616c45e5a6cbd9fca765b55f, type: 2}
-  EquipmentPaintMaterial: {fileID: 2100000, guid: b67e1036325c49a4a378ba14ec243c30, type: 2}
-  WeaponType: 2
+  MakeupRenderer: {fileID: 0}
+  MaskRenderer: {fileID: 0}
+  EarringsRenderers: []
+  DefaultMaterial: {fileID: 0}
+  EyesPaintMaterial: {fileID: 0}
+  EquipmentPaintMaterial: {fileID: 0}
+  WeaponType: 0
   HideEars: 0
-  CropHair: 1
-  AnchorBody: {fileID: 501698858255964440}
-  AnchorSword: {fileID: 366803500552955660}
-  AnchorBow: {fileID: 218824339583522612}
-  LayerManager: {fileID: 7907994632873299598}
+  CropHair: 0
+  AnchorBody: {fileID: 0}
+  AnchorSword: {fileID: 0}
+  AnchorBow: {fileID: 0}
+  LayerManager: {fileID: 0}
   Underwear: []
   UnderwearColor: {r: 0, g: 0, b: 0, a: 0}
   ShowHelmet: 1
@@ -6042,41 +5659,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dbda98e8614ec8a935809c1a0ace8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
-  - {fileID: 149889272789667729}
-  - {fileID: 8943794436122367715}
-  - {fileID: 177872334611042285}
-  - {fileID: 829689413675536618}
-  - {fileID: 212253762676601503}
-  - {fileID: 203640428524096365}
-  - {fileID: 21534803684774422}
-  - {fileID: 212032242104598589}
-  - {fileID: 134708717100592585}
-  - {fileID: 212543371714974525}
-  - {fileID: 13780683319314698}
-  - {fileID: 212277928235868223}
-  - {fileID: 1920470580630084647}
-  - {fileID: 212059472636140563}
-  - {fileID: 9045030295582556129}
-  - {fileID: 4711553832797541}
-  - {fileID: 212002389385728225}
-  - {fileID: 212341795810948967}
-  - {fileID: 203373012578108375}
-  - {fileID: 133038726858756013}
-  - {fileID: 6788701444459989}
-  - {fileID: 119980180800225762}
-  - {fileID: 75145906990537706}
-  - {fileID: 212102519499489307}
-  - {fileID: 212127210852072737}
-  - {fileID: 4992909852617450}
-  - {fileID: 149473337632614743}
-  - {fileID: 212324264982563229}
-  - {fileID: 3795813669726807385}
-  - {fileID: 212010833355210461}
-  - {fileID: 10757105484428268}
-  - {fileID: 2416094447239304611}
-  SortingGroup: {fileID: 210585854458822717}
-  SortingOrderOffset: 300
+  Sprites: []
+  SortingGroup: {fileID: 0}
+  SortingOrderOffset: 0
   SortingOrderStep: 5
   ZStep: 0.00001
   CopyTo: {fileID: 0}
@@ -6092,11 +5677,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac5cde981f663e49855fc6a42c56c96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Body: {fileID: 501698858255964440}
-  PrimaryWeapon: {fileID: 366803500552955660}
-  Bow: {fileID: 218824339583522612}
-  Shield: {fileID: 4663669065370313}
-  Status: {fileID: 1768775924058676258}
+  Body: {fileID: 0}
+  PrimaryWeapon: {fileID: 0}
+  Bow: {fileID: 0}
+  Shield: {fileID: 0}
+  Status: {fileID: 0}
   Custom: []
 --- !u!1 &1977970646527668467
 GameObject:
@@ -8693,7 +8278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8953310148703794819
 Transform:
   m_ObjectHideFlags: 0
@@ -8724,178 +8309,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteCollection: {fileID: 11400000, guid: ed0b296bc13a33144a4e9ea08d0ad5d5, type: 2}
-  Ears:
-  - {fileID: 21300002, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  - {fileID: 21300000, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  - {fileID: 21300004, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  Hair: {fileID: 8968894577945027273, guid: c412691657a842443801b4565afac4e6, type: 3}
-  HairCropped: {fileID: 21300006, guid: 72aa7dbf531a6314080711e386cb4984, type: 3}
+  Ears: []
+  Hair: {fileID: 0}
+  HairCropped: {fileID: 0}
   Beard: {fileID: 0}
-  Body:
-  - {fileID: 21300016, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300020, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300018, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300086, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300084, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300066, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300056, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300012, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300022, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300024, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300006, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300002, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300004, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300054, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300062, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300000, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300010, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300008, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300070, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300076, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300100, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300092, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300094, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300108, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300102, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300104, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300090, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300098, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300096, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300106, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  Head: {fileID: 21300090, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
+  Body: []
+  Head: {fileID: 0}
   Expression: Default
-  Expressions:
-  - Name: Default
-    Eyebrows: {fileID: 21300004, guid: b7d62034cf94b4c4c94e51a37d76ab48, type: 3}
-    Eyes: {fileID: 21300004, guid: 7d29a6168b8188249a81304debfac1f6, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300004, guid: b92b127d86d71e147980d8c86a8a7c6a, type: 3}
-  - Name: Angry
-    Eyebrows: {fileID: 21300002, guid: de83117efe1db20419ded60f35f02595, type: 3}
-    Eyes: {fileID: 21300004, guid: 73461b69252e31e45aa9fd164956078d, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300002, guid: 9e1c0aaeb0040164cbd5285bb580695d, type: 3}
-  - Name: Dead
-    Eyebrows: {fileID: 21300004, guid: 498faabeb919ac24b8c2272faadfae32, type: 3}
-    Eyes: {fileID: 21300004, guid: 2e095cf31cb1de947b7843cabcc26986, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300004, guid: aa79e67174ca46c49b51b5e14b1e72d8, type: 3}
-  - Name: Happy
-    Eyebrows: {fileID: 21300004, guid: 498faabeb919ac24b8c2272faadfae32, type: 3}
-    Eyes: {fileID: 21300004, guid: 9a749df01cafb4b4bb058b787309f261, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300004, guid: 5c190d61cd55f964ea24dbd0def87104, type: 3}
-  Helmet: {fileID: 21300038, guid: b70b996fcdb3ad74a8aa2ec95d49e4dd, type: 3}
+  Expressions: []
+  Helmet: {fileID: 0}
   PrimaryWeapon: {fileID: 0}
-  SecondaryWeapon: {fileID: 21300006, guid: c336dd2e7aa511948b9e90834a88e859, type: 3}
+  SecondaryWeapon: {fileID: 0}
   Cape: {fileID: 0}
   Back: {fileID: 0}
   Shield: []
-  Armor:
-  - {fileID: 21300040, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300044, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300042, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300074, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300020, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300072, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300008, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300036, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300046, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300048, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300030, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300026, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300028, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300006, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300068, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300024, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300060, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300032, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300018, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300070, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300092, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300084, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300086, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300100, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300094, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300096, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300082, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300090, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300088, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300098, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
+  Armor: []
   CompositeWeapon: []
   Makeup: {fileID: 0}
   Mask: {fileID: 0}
   Earrings: []
-  BodyRenderers:
-  - {fileID: 1434478913733699550}
-  - {fileID: 3207744034671628587}
-  - {fileID: 3528758244078476627}
-  - {fileID: 4387467745568254253}
-  - {fileID: 8375912871773087102}
-  - {fileID: 2140531626699816043}
-  - {fileID: 685835407969397424}
-  - {fileID: 4689781212217613808}
-  HeadRenderer: {fileID: 3254302491343047735}
-  EarsRenderers:
-  - {fileID: 2754884685880382720}
-  - {fileID: 5205093143717066925}
-  HairRenderer: {fileID: 313446403873287154}
-  BeardRenderer: {fileID: 6082078104806119265}
-  EyebrowsRenderer: {fileID: 5241850754282467208}
-  EyesRenderer: {fileID: 1670929247528665081}
-  MouthRenderer: {fileID: 9005397838416310871}
-  HelmetRenderer: {fileID: 3931459822396459615}
-  PrimaryWeaponRenderer: {fileID: 3489128420876976720}
-  SecondaryWeaponRenderer: {fileID: 8660161278782911562}
-  ArmorRenderers:
-  - {fileID: 6114837049940693424}
-  - {fileID: 2010299606075231298}
-  - {fileID: 4733174743661795249}
-  - {fileID: 5264083127214469381}
-  - {fileID: 7986890816249755822}
-  - {fileID: 2637456951493961740}
-  - {fileID: 7516468027525291442}
-  - {fileID: 6828907146970354151}
-  - {fileID: 3878491890955330934}
-  VestRenderers:
-  - {fileID: 6114837049940693424}
-  BracersRenderers:
-  - {fileID: 2010299606075231298}
-  - {fileID: 4733174743661795249}
-  - {fileID: 5264083127214469381}
-  - {fileID: 7986890816249755822}
-  - {fileID: 2637456951493961740}
-  - {fileID: 7516468027525291442}
-  LeggingsRenderers:
-  - {fileID: 6828907146970354151}
-  - {fileID: 3878491890955330934}
+  BodyRenderers: []
+  HeadRenderer: {fileID: 0}
+  EarsRenderers: []
+  HairRenderer: {fileID: 0}
+  BeardRenderer: {fileID: 0}
+  EyebrowsRenderer: {fileID: 0}
+  EyesRenderer: {fileID: 0}
+  MouthRenderer: {fileID: 0}
+  HelmetRenderer: {fileID: 0}
+  PrimaryWeaponRenderer: {fileID: 0}
+  SecondaryWeaponRenderer: {fileID: 0}
+  ArmorRenderers: []
+  VestRenderers: []
+  BracersRenderers: []
+  LeggingsRenderers: []
   CapeRenderer: {fileID: 0}
   BackRenderer: {fileID: 0}
-  ShieldRenderers:
-  - {fileID: 7815246261777922419}
-  - {fileID: 3570701932254305345}
-  BowRenderers:
-  - {fileID: 2535888265022453792}
-  - {fileID: 6425404748799036641}
-  - {fileID: 2194877905859613012}
-  - {fileID: 2868625000154983845}
-  - {fileID: 7479589102105729624}
+  ShieldRenderers: []
+  BowRenderers: []
   FirearmsRenderers: []
-  MakeupRenderer: {fileID: 9085711018784012994}
-  MaskRenderer: {fileID: 4570969020266250792}
-  EarringsRenderers:
-  - {fileID: 6160895744132462906}
-  - {fileID: 1027341462021213783}
-  DefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  EyesPaintMaterial: {fileID: 2100000, guid: 3e78a9b3616c45e5a6cbd9fca765b55f, type: 2}
-  EquipmentPaintMaterial: {fileID: 2100000, guid: b67e1036325c49a4a378ba14ec243c30, type: 2}
-  WeaponType: 2
+  MakeupRenderer: {fileID: 0}
+  MaskRenderer: {fileID: 0}
+  EarringsRenderers: []
+  DefaultMaterial: {fileID: 0}
+  EyesPaintMaterial: {fileID: 0}
+  EquipmentPaintMaterial: {fileID: 0}
+  WeaponType: 0
   HideEars: 0
-  CropHair: 1
-  AnchorBody: {fileID: 3543601519865733123}
-  AnchorSword: {fileID: 350012311310568404}
-  AnchorBow: {fileID: 2438634425335448914}
-  LayerManager: {fileID: 6401600357600331550}
+  CropHair: 0
+  AnchorBody: {fileID: 0}
+  AnchorSword: {fileID: 0}
+  AnchorBow: {fileID: 0}
+  LayerManager: {fileID: 0}
   Underwear: []
   UnderwearColor: {r: 0, g: 0, b: 0, a: 0}
   ShowHelmet: 1
@@ -8911,43 +8376,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dbda98e8614ec8a935809c1a0ace8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
-  - {fileID: 7479589102105729624}
-  - {fileID: 6425404748799036641}
-  - {fileID: 2194877905859613012}
-  - {fileID: 2535888265022453792}
-  - {fileID: 7815246261777922419}
-  - {fileID: 3207744034671628587}
-  - {fileID: 3528758244078476627}
-  - {fileID: 2010299606075231298}
-  - {fileID: 4733174743661795249}
-  - {fileID: 4387467745568254253}
-  - {fileID: 8660161278782911562}
-  - {fileID: 5264083127214469381}
-  - {fileID: 685835407969397424}
-  - {fileID: 6828907146970354151}
-  - {fileID: 4689781212217613808}
-  - {fileID: 3878491890955330934}
-  - {fileID: 1434478913733699550}
-  - {fileID: 6114837049940693424}
-  - {fileID: 2754884685880382720}
-  - {fileID: 3254302491343047735}
-  - {fileID: 9005397838416310871}
-  - {fileID: 1670929247528665081}
-  - {fileID: 5241850754282467208}
-  - {fileID: 313446403873287154}
-  - {fileID: 3931459822396459615}
-  - {fileID: 5205093143717066925}
-  - {fileID: 3570701932254305345}
-  - {fileID: 3489128420876976720}
-  - {fileID: 8375912871773087102}
-  - {fileID: 7986890816249755822}
-  - {fileID: 2140531626699816043}
-  - {fileID: 7516468027525291442}
-  - {fileID: 2637456951493961740}
-  - {fileID: 2868625000154983845}
-  SortingGroup: {fileID: 210585854458822717}
-  SortingOrderOffset: 200
+  Sprites: []
+  SortingGroup: {fileID: 0}
+  SortingOrderOffset: 0
   SortingOrderStep: 5
   ZStep: 0.00001
   CopyTo: {fileID: 0}
@@ -8963,14 +8394,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac5cde981f663e49855fc6a42c56c96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Body: {fileID: 3543601519865733123}
-  PrimaryWeapon: {fileID: 350012311310568404}
-  Bow: {fileID: 2438634425335448914}
-  Shield: {fileID: 3442574928125518798}
-  Status: {fileID: 902930172392560667}
-  Custom:
-  - {fileID: 660954328346368479}
-  - {fileID: 3018834110046374040}
+  Body: {fileID: 0}
+  PrimaryWeapon: {fileID: 0}
+  Bow: {fileID: 0}
+  Shield: {fileID: 0}
+  Status: {fileID: 0}
+  Custom: []
 --- !u!1 &3712168748911313948
 GameObject:
   m_ObjectHideFlags: 0
@@ -11980,7 +11409,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5052516506146237137}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -13766,7 +13195,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6331061521359431564}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -15996,177 +15425,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteCollection: {fileID: 11400000, guid: ed0b296bc13a33144a4e9ea08d0ad5d5, type: 2}
-  Ears:
-  - {fileID: 21300002, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  - {fileID: 21300000, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  - {fileID: 21300004, guid: 6b6db86dcfc529646bcb51eaa36f6a6a, type: 3}
-  Hair: {fileID: 8968894577945027273, guid: c412691657a842443801b4565afac4e6, type: 3}
-  HairCropped: {fileID: 21300006, guid: 72aa7dbf531a6314080711e386cb4984, type: 3}
+  Ears: []
+  Hair: {fileID: 0}
+  HairCropped: {fileID: 0}
   Beard: {fileID: 0}
-  Body:
-  - {fileID: 21300016, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300020, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300018, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300086, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300084, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300066, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300056, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300012, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300022, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300024, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300006, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300002, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300004, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300054, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300062, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300000, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300010, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300008, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300070, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300076, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300100, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300092, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300094, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300108, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300102, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300104, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300090, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300098, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300096, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  - {fileID: 21300106, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
-  Head: {fileID: 21300090, guid: 76ca77e0c084c82499f6224377bce39c, type: 3}
+  Body: []
+  Head: {fileID: 0}
   Expression: Default
-  Expressions:
-  - Name: Default
-    Eyebrows: {fileID: 21300004, guid: b7d62034cf94b4c4c94e51a37d76ab48, type: 3}
-    Eyes: {fileID: 21300004, guid: 7d29a6168b8188249a81304debfac1f6, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300004, guid: b92b127d86d71e147980d8c86a8a7c6a, type: 3}
-  - Name: Angry
-    Eyebrows: {fileID: 21300002, guid: de83117efe1db20419ded60f35f02595, type: 3}
-    Eyes: {fileID: 21300004, guid: 73461b69252e31e45aa9fd164956078d, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300002, guid: 9e1c0aaeb0040164cbd5285bb580695d, type: 3}
-  - Name: Dead
-    Eyebrows: {fileID: 21300004, guid: 498faabeb919ac24b8c2272faadfae32, type: 3}
-    Eyes: {fileID: 21300004, guid: 2e095cf31cb1de947b7843cabcc26986, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300004, guid: aa79e67174ca46c49b51b5e14b1e72d8, type: 3}
-  - Name: Happy
-    Eyebrows: {fileID: 21300004, guid: 498faabeb919ac24b8c2272faadfae32, type: 3}
-    Eyes: {fileID: 21300004, guid: 9a749df01cafb4b4bb058b787309f261, type: 3}
-    EyesColor: {r: 0, g: 0.78431374, b: 1, a: 1}
-    Mouth: {fileID: 21300004, guid: 5c190d61cd55f964ea24dbd0def87104, type: 3}
-  Helmet: {fileID: 21300038, guid: b70b996fcdb3ad74a8aa2ec95d49e4dd, type: 3}
+  Expressions: []
+  Helmet: {fileID: 0}
   PrimaryWeapon: {fileID: 0}
-  SecondaryWeapon: {fileID: 21300006, guid: c336dd2e7aa511948b9e90834a88e859, type: 3}
+  SecondaryWeapon: {fileID: 0}
   Cape: {fileID: 0}
   Back: {fileID: 0}
   Shield: []
-  Armor:
-  - {fileID: 21300040, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300044, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300042, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300074, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300020, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300072, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300008, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300036, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300046, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300048, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300030, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300026, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300028, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300006, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300068, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300024, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300060, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300032, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300018, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300070, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300092, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300084, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300086, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300100, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300094, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300096, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300082, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300090, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300088, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
-  - {fileID: 21300098, guid: 7442cadca65ff9144a159d14fda75c4e, type: 3}
+  Armor: []
   CompositeWeapon: []
   Makeup: {fileID: 0}
   Mask: {fileID: 0}
   Earrings: []
-  BodyRenderers:
-  - {fileID: 8737215626409716489}
-  - {fileID: 4426712859676731761}
-  - {fileID: 4541166493312667198}
-  - {fileID: 212144198268063225}
-  - {fileID: 4873631792061256456}
-  - {fileID: 4153933824399136190}
-  - {fileID: 8605066768467781373}
-  - {fileID: 2713239814479768750}
-  HeadRenderer: {fileID: 2033086929503006325}
-  EarsRenderers:
-  - {fileID: 5718562241417692339}
-  - {fileID: 1709456178626067942}
-  HairRenderer: {fileID: 8310141277918148525}
-  BeardRenderer: {fileID: 4064463372002673781}
-  EyebrowsRenderer: {fileID: 1470929397722258372}
-  EyesRenderer: {fileID: 8323166403987809258}
-  MouthRenderer: {fileID: 1948801394297928116}
-  HelmetRenderer: {fileID: 3347520441975170513}
-  PrimaryWeaponRenderer: {fileID: 6943949993285981074}
-  SecondaryWeaponRenderer: {fileID: 3861533954033574561}
-  ArmorRenderers:
-  - {fileID: 3371072417991166077}
-  - {fileID: 3257662602690845537}
-  - {fileID: 18282727071621866}
-  - {fileID: 2760353579756443607}
-  - {fileID: 4848642171055743173}
-  - {fileID: 1858213157671812870}
-  - {fileID: 3565275729992069941}
-  - {fileID: 2097919206937291166}
-  - {fileID: 4946711802634314893}
-  VestRenderers:
-  - {fileID: 3371072417991166077}
-  BracersRenderers:
-  - {fileID: 3257662602690845537}
-  - {fileID: 18282727071621866}
-  - {fileID: 2760353579756443607}
-  - {fileID: 4848642171055743173}
-  - {fileID: 1858213157671812870}
-  - {fileID: 3565275729992069941}
-  LeggingsRenderers:
-  - {fileID: 2097919206937291166}
-  - {fileID: 4946711802634314893}
+  BodyRenderers: []
+  HeadRenderer: {fileID: 0}
+  EarsRenderers: []
+  HairRenderer: {fileID: 0}
+  BeardRenderer: {fileID: 0}
+  EyebrowsRenderer: {fileID: 0}
+  EyesRenderer: {fileID: 0}
+  MouthRenderer: {fileID: 0}
+  HelmetRenderer: {fileID: 0}
+  PrimaryWeaponRenderer: {fileID: 0}
+  SecondaryWeaponRenderer: {fileID: 0}
+  ArmorRenderers: []
+  VestRenderers: []
+  BracersRenderers: []
+  LeggingsRenderers: []
   CapeRenderer: {fileID: 0}
   BackRenderer: {fileID: 0}
-  ShieldRenderers:
-  - {fileID: 7899965496391797972}
-  BowRenderers:
-  - {fileID: 864641235262540790}
-  - {fileID: 7615526371552094956}
-  - {fileID: 4818098934214083900}
-  - {fileID: 1575016740458338291}
-  - {fileID: 8985766711625657451}
+  ShieldRenderers: []
+  BowRenderers: []
   FirearmsRenderers: []
-  MakeupRenderer: {fileID: 4061228200562804767}
-  MaskRenderer: {fileID: 5797214421585728314}
-  EarringsRenderers:
-  - {fileID: 7855730081566670617}
-  - {fileID: 7445330264936463017}
-  DefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  EyesPaintMaterial: {fileID: 2100000, guid: 3e78a9b3616c45e5a6cbd9fca765b55f, type: 2}
-  EquipmentPaintMaterial: {fileID: 2100000, guid: b67e1036325c49a4a378ba14ec243c30, type: 2}
-  WeaponType: 2
+  MakeupRenderer: {fileID: 0}
+  MaskRenderer: {fileID: 0}
+  EarringsRenderers: []
+  DefaultMaterial: {fileID: 0}
+  EyesPaintMaterial: {fileID: 0}
+  EquipmentPaintMaterial: {fileID: 0}
+  WeaponType: 0
   HideEars: 0
-  CropHair: 1
-  AnchorBody: {fileID: 8407958611781825887}
-  AnchorSword: {fileID: 4438390600935775504}
-  AnchorBow: {fileID: 19050111577195227}
-  LayerManager: {fileID: 1262167654364448827}
+  CropHair: 0
+  AnchorBody: {fileID: 0}
+  AnchorSword: {fileID: 0}
+  AnchorBow: {fileID: 0}
+  LayerManager: {fileID: 0}
   Underwear: []
   UnderwearColor: {r: 0, g: 0, b: 0, a: 0}
   ShowHelmet: 1
@@ -16182,42 +15492,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dbda98e8614ec8a935809c1a0ace8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
-  - {fileID: 4426712859676731761}
-  - {fileID: 3257662602690845537}
-  - {fileID: 4541166493312667198}
-  - {fileID: 18282727071621866}
-  - {fileID: 6943949993285981074}
-  - {fileID: 212144198268063225}
-  - {fileID: 2760353579756443607}
-  - {fileID: 8605066768467781373}
-  - {fileID: 2097919206937291166}
-  - {fileID: 8985766711625657451}
-  - {fileID: 2713239814479768750}
-  - {fileID: 4946711802634314893}
-  - {fileID: 8737215626409716489}
-  - {fileID: 3371072417991166077}
-  - {fileID: 1709456178626067942}
-  - {fileID: 2033086929503006325}
-  - {fileID: 1948801394297928116}
-  - {fileID: 8323166403987809258}
-  - {fileID: 1470929397722258372}
-  - {fileID: 8310141277918148525}
-  - {fileID: 3347520441975170513}
-  - {fileID: 5718562241417692339}
-  - {fileID: 7615526371552094956}
-  - {fileID: 4818098934214083900}
-  - {fileID: 864641235262540790}
-  - {fileID: 4873631792061256456}
-  - {fileID: 3861533954033574561}
-  - {fileID: 4848642171055743173}
-  - {fileID: 4153933824399136190}
-  - {fileID: 3565275729992069941}
-  - {fileID: 1858213157671812870}
-  - {fileID: 7899965496391797972}
-  - {fileID: 1575016740458338291}
-  SortingGroup: {fileID: 210585854458822717}
-  SortingOrderOffset: 100
+  Sprites: []
+  SortingGroup: {fileID: 0}
+  SortingOrderOffset: 0
   SortingOrderStep: 5
   ZStep: 0.00001
   CopyTo: {fileID: 0}
@@ -16233,11 +15510,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac5cde981f663e49855fc6a42c56c96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Body: {fileID: 8407958611781825887}
-  PrimaryWeapon: {fileID: 4438390600935775504}
-  Bow: {fileID: 19050111577195227}
-  Shield: {fileID: 6949795234123820164}
-  Status: {fileID: 6092535163762848293}
+  Body: {fileID: 0}
+  PrimaryWeapon: {fileID: 0}
+  Bow: {fileID: 0}
+  Shield: {fileID: 0}
+  Status: {fileID: 0}
   Custom: []
 --- !u!1 &8131199264583474991
 GameObject:
@@ -16878,7 +16155,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8305329678422880032}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -18254,73 +17531,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4609134914631721}
     m_Modifications:
-    - target: {fileID: 7027000917168024113, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000917168024119, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000917168024119, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingLayer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000917168024119, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000917168024119, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000917381588856, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingLayer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000917381588856, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000917381588856, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000917381588858, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918379803496, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918379803502, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918379803502, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingLayer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918379803502, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918379803502, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
       propertyPath: m_RootOrder
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.14
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18367,19 +17580,7 @@ PrefabInstance:
       value: TeamMemberBase
       objectReference: {fileID: 0}
     - target: {fileID: 7027000918798671781, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918798671787, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingLayer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918798671787, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7027000918798671787, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
-      propertyPath: m_SortingLayerID
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

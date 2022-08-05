@@ -542,9 +542,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de21f0e123ee75f4782a6b2c6744e3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxIntensity: 0.2
-  minIntensity: 0
-  maxFlickerFrequency: 0.2
+  maxIntensity: 1
+  minIntensity: 0.2
+  maxFlickerFrequency: 0.1
   minFlickerFrequency: 0
   strength: 5
 --- !u!1 &1946876662
@@ -671,8 +671,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de21f0e123ee75f4782a6b2c6744e3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxIntensity: 0.5
-  minIntensity: 0
+  maxIntensity: 1
+  minIntensity: 0.2
   maxFlickerFrequency: 0.1
   minFlickerFrequency: 0
   strength: 5
@@ -724,7 +724,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   sceneHome: 8
   target: {fileID: 9031785905601748559}
-  sfxRadius: 35
+  sfxRadius: 0
   player: {fileID: 0}
 --- !u!1 &9031785904712600879
 GameObject:

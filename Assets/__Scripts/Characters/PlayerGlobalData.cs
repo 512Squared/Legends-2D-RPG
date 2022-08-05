@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class PlayerGlobalData : MonoBehaviour, ISaveable
 {
+    #region Fields
+
     public static PlayerGlobalData Instance;
 
     [SerializeField] private Rigidbody2D rb;
@@ -37,6 +39,12 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     private static readonly int LastY = Animator.StringToHash("lastY");
     private static readonly int MovementX = Animator.StringToHash("movementX");
     private static readonly int MovementY = Animator.StringToHash("movementY");
+    private static readonly int Deceasement = Animator.StringToHash("deceasement");
+    private static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
+    private bool isAttacking;
+
+    #endregion
+
 
     private void Start()
     {
@@ -80,17 +88,17 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         }
         else { audioSrc.Stop(); }
 
-        playerAnimator.SetFloat(MovementX, rb.velocity.x);
-        playerAnimator.SetFloat(MovementY, rb.velocity.y);
+        //playerAnimator.SetFloat(MovementX, rb.velocity.x);
+        //playerAnimator.SetFloat(MovementY, rb.velocity.y);
 
-        if (horizontalMovement is 1 or -1 || verticalMovement is 1 or -1)
-        {
-            if (!deactivedMovement)
-            {
-                playerAnimator.SetFloat(LastX, horizontalMovement);
-                playerAnimator.SetFloat(LastY, verticalMovement);
-            }
-        }
+        // if (horizontalMovement is 1 or -1 || verticalMovement is 1 or -1)
+        // {
+        //     if (!deactivedMovement)
+        //     {
+        //         playerAnimator.SetFloat(LastX, horizontalMovement);
+        //         playerAnimator.SetFloat(LastY, verticalMovement);
+        //     }
+        // }
 
         if (isLoaded)
         {
@@ -139,6 +147,12 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         if (collision.gameObject.GetComponent<PlayerStats>().isAvailable) { return; }
 
         AddToParty(collision);
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            isAttacking = true;
+            Debug.Log($"Player attack started");
+        }
     }
 
     private static void AddToParty(Collision2D collision)
@@ -168,13 +182,20 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         }
     }
 
+    public void DeathAnimation()
+    {
+        playerAnimator.SetBool(Deceasement, true);
+        MenuManager.Instance.DeathScene();
+        //Time.timeScale = 0;
+    }
+
 
     public Vector3 GetPosition()
     {
         return transform.position;
     }
 
-    public Vector3 GetPositionOfHead()
+    public Vector3 GetHeadPosition()
     {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         float height = sr.sprite.bounds.size.y + 0.2f;

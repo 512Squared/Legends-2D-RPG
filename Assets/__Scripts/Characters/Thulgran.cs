@@ -1,9 +1,8 @@
-using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 
-public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
+
+public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
 {
     #region Core stats
 
@@ -20,7 +19,7 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         }
     }
 
-    private static int _thulgranHp = 10;
+    private static int _thulgranHp = 300;
 
     [ShowInInspector]
     public static int ThulgranHp
@@ -30,7 +29,19 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         {
             _thulgranHp = value;
             UI.instance.UpdateHPUI(_thulgranHp);
+            PlayerStats[] playerStats = GameManager.Instance.GetPlayerStats();
+            for (int i = 0; i < playerStats.Length; i++)
+            {
+                if (i == 0) { playerStats[0].characterHp = _thulgranHp; }
+            }
+
+            if (_thulgranHp <= 0) { ThulgranDies(); }
         }
+    }
+
+    private static void ThulgranDies()
+    {
+        PlayerGlobalData.Instance.DeathAnimation();
     }
 
     private static int _thulgranMana = 10;
@@ -63,6 +74,19 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     public static int MaxThulgranHp { get; private set; } = 300;
 
     public static int MaxThulgranMana { get; private set; } = 200;
+
+    [Header("Attack properties")]
+    [SerializeField]
+    private Transform attackPoint;
+
+    [SerializeField]
+    private float attackRange;
+
+    [SerializeField]
+    private LayerMask attackMask;
+
+    [SerializeField]
+    private PlayerStats stats;
 
     public bool immuneToDragonBreath;
 
@@ -203,9 +227,12 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
     }
 
 
-    public Vector3 GetPosition()
+    public Vector3 GetHeadPosition()
     {
-        return transform.position;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        float height = sr.sprite.bounds.size.y + 0.2f;
+        Vector3 headPosition = new(transform.position.x, transform.position.y + height, 0);
+        return headPosition;
     }
 
     #endregion
@@ -232,6 +259,24 @@ public class Thulgran : Rewardable<QuestRewards>, IDamageable, ISaveable
         MaxThulgranMana = a_SaveData.thulgranData.maxMana;
         MaxThulgranHp = a_SaveData.thulgranData.maxHp;
     }
+
+    #endregion
+
+    #region Implementation of IDamageable
+
+    public void Damage(int damage)
+    {
+        ThulgranHp -= damage;
+        Debug.Log($"Thulgran HP: {_thulgranHp}");
+    }
+
+    public Vector3 GetPositionOfHead()
+    {
+        Vector3 head = GetHeadPosition();
+        return head;
+    }
+
+    public string Combatant => "Thulgran";
 
     #endregion
 }

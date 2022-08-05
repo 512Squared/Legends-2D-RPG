@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &244038884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 244038885}
+  - component: {fileID: 244038886}
+  m_Layer: 3
+  m_Name: AITarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &244038885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244038884}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5395600298549809363}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &244038886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244038884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e4fa51cf3594c938c96ea19656a5fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5400538080924564127
 GameObject:
   m_ObjectHideFlags: 0
@@ -4138,6 +4182,8 @@ GameObject:
   - component: {fileID: 1746456514}
   - component: {fileID: 511754610}
   - component: {fileID: 1484726905}
+  - component: {fileID: 453822572}
+  - component: {fileID: 453822565}
   m_Layer: 0
   m_Name: Grumpy Greta
   m_TagString: Character
@@ -4154,10 +4200,12 @@ Transform:
   m_GameObject: {fileID: 5402020453281205075}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -14.34, y: -6.44, z: 4}
-  m_LocalScale: {x: -0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5404001469887631007}
+  - {fileID: 7027000917336474825}
+  - {fileID: 244038885}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4195,7 +4243,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.4142554, y: -4.7546015}
+  m_Offset: {x: -0.6751845, y: 0.6738472}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4206,7 +4254,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.83353853, y: 4.382189}
+  m_Size: {x: 3.3736424, y: 4.0954027}
   m_EdgeRadius: 0
 --- !u!70 &5400177692799745370
 CapsuleCollider2D:
@@ -4236,28 +4284,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f055898eb8403145a3c0dd4ea07ee5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  homeScene: 2
+  homeScene: 1
   playerName: Grumpy Greta
-  playerDesc: Retired assassin. Could play a barmaid or flower seller with equal
-    guile. Legend has it she took out a dozen bodyguards with a knitting needle.
-  playerMoniker: Pugilist - Brown Order
+  playerDesc: 'Cracks heads as easily as she cracks eggs. '
+  playerMoniker: Don't mess with her!
+  npc: {fileID: 453822565}
   characterImage: {fileID: 21300000, guid: bd4e1af4b99f51f4a99f8d5d1fa61426, type: 3}
   characterMug: {fileID: 21300000, guid: e0a0b070f7cc697488e8caad0f4c3b08, type: 3}
   characterPlain: {fileID: 21300000, guid: d99c706db841dae408c3976084a701f3, type: 3}
-  maxLevel: 10
+  maxLevel: 5
   baseLevelXp: 0
   characterXp: 0
   maxMana: 200
   maxHp: 300
-  characterLevel: 5
-  characterMana: 207
-  characterHp: 10
-  characterIntelligence: 70
-  characterPerception: 79
-  characterBaseAttack: 12
-  characterBaseDefence: 14
-  characterSpeed: 11
-  characterJumpAbility: 10
+  characterLevel: 4
+  characterMana: 122
+  characterHp: 195
+  characterIntelligence: 34
+  characterPerception: 50
+  characterBaseAttack: 5
+  characterBaseDefence: 10
+  characterSpeed: 6
+  characterJumpAbility: 9
   isTeamMember: 0
   isAvailable: 0
   isNew: 1
@@ -4279,10 +4327,10 @@ MonoBehaviour:
     lucky.
   characterAttackTotal: 0
   characterDefenceTotal: 0
-  characterWeaponImage: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
-  characterArmourImage: {fileID: 21300000, guid: fc8542cdc3ac66d46901a4eca96d7870, type: 3}
-  characterHelmetImage: {fileID: 21300000, guid: 6d91d533c905b47459cf4c3f1a3f618e, type: 3}
-  characterShieldImage: {fileID: 21300000, guid: c67f6060700f79d4f842b3632c073ff9, type: 3}
+  characterWeaponImage: {fileID: 0}
+  characterArmourImage: {fileID: 0}
+  characterHelmetImage: {fileID: 0}
+  characterShieldImage: {fileID: 0}
   skills: []
   xpLevelUp: 
   skillBonus: 
@@ -4317,7 +4365,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShadowGroup: 0
   m_ComponentVersion: 1
-  m_HasRenderer: 0
+  m_HasRenderer: 1
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1
   m_SelfShadows: 0
@@ -4357,7 +4405,7 @@ MonoBehaviour:
   - {x: 0.38219857, y: -1.0304282, z: 0}
   m_ShapePathHash: 1481211734
   m_Mesh: {fileID: 0}
-  m_InstanceId: 2412642
+  m_InstanceId: -3878
 --- !u!114 &1484726905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4370,7 +4418,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df8e19077a70654ba67388acbaee80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gUID: 203a76c4-ba58-4fbd-923d-d8cce161c230
+  _gUID: 5051d3d5-727b-4a4b-9e98-f1df8b07c6b9
+--- !u!212 &453822572
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5402020453281205075}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 538720991
+  m_SortingLayer: 2
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &453822565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5402020453281205075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4d316748e947769db156f3bab96e9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  changeTime: 0
+  startLeft: 0
+  playerStats: {fileID: 5463134322546827992}
+  teamBase: {fileID: 7027000917336474824}
 --- !u!1 &5402037402990206465
 GameObject:
   m_ObjectHideFlags: 0
@@ -4509,3 +4626,70 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1803148141
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5395600298549809363}
+    m_Modifications:
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99996835
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.0056721643
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.0055849045
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000031679498
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027000918798671781, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+      propertyPath: m_Name
+      value: TeamMemberBase
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+--- !u!1 &7027000917336474824 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7027000918798671781, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+  m_PrefabInstance: {fileID: 1803148141}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7027000917336474825 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7027000918798671780, guid: b7a3c92479fc7c64cad730387c681f67, type: 3}
+  m_PrefabInstance: {fileID: 1803148141}
+  m_PrefabAsset: {fileID: 0}

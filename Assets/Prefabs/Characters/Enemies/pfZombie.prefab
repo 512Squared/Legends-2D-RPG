@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7981820923161695604}
   - component: {fileID: 7981820923161695608}
   - component: {fileID: 7981820923161695605}
-  m_Layer: 3
+  - component: {fileID: 1166596555}
+  m_Layer: 10
   m_Name: Zombie_sprite
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7981820923161695603}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -105,6 +106,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1166596555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7981820923161695603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd1c33839b94689a8745cea39892324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7981820923161695605}
+  zombie: {fileID: 1136506051}
 --- !u!1 &7981820923390881852
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,12 +130,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7981820923390881853}
   - component: {fileID: 7981820923390881857}
-  - component: {fileID: 7981820923390881856}
-  - component: {fileID: 7981820923390881855}
-  - component: {fileID: 7981820923390881854}
   - component: {fileID: 2019175499}
+  - component: {fileID: 7981820923390881856}
+  - component: {fileID: 7981820923390881854}
   - component: {fileID: 1136506051}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: pfZombie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -162,7 +176,7 @@ MonoBehaviour:
   startEndModifier:
     addPoints: 0
     exactStartPoint: 3
-    exactEndPoint: 3
+    exactEndPoint: 1
     useRaycasting: 0
     mask:
       serializedVersion: 2
@@ -171,7 +185,28 @@ MonoBehaviour:
   traversableTags: -1
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
-    value: 3
+    value: 1
+--- !u!50 &2019175499
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7981820923390881852}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 10
+  m_LinearDrag: 10
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: a542bd928fffe4f479fd45fd7db9d672, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &7981820923390881856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,8 +220,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 5
-  radius: 0.76
-  height: 2.99
+  radius: 1.24
+  height: 1.65
   canMove: 0
   maxSpeed: 2
   gravity: {x: NaN, y: NaN, z: NaN}
@@ -202,32 +237,18 @@ MonoBehaviour:
     mode: 2
     interval: 0.5
     sensitivity: 10
-    maximumInterval: 2
+    maximumInterval: 1
     visualizeSensitivity: 1
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 360
   slowdownDistance: 1
-  pickNextWaypointDist: 0.5
-  endReachedDistance: 0.2
+  pickNextWaypointDist: 1
+  endReachedDistance: 0.1
   alwaysDrawGizmos: 1
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 1
   constrainInsideGraph: 1
---- !u!114 &7981820923390881855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7981820923390881852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9679e68a0f1144e79c664d9a11ca121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  target: {fileID: 0}
 --- !u!114 &7981820923390881854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,27 +264,6 @@ MonoBehaviour:
   version: 1
   unwrap: 1
   splitAtEveryPortal: 1
---- !u!50 &2019175499
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7981820923390881852}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 10
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!114 &1136506051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,21 +277,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  chaseRadius: 5
-  attackRadius: 0.5
-  aiPath: {fileID: 7981820923390881856}
-  shouldRotate: 1
-  dir: {x: 0, y: 0, z: 0}
+  chaseRange: 15
+  attackRange: 0.1
+  attackRadius: 5
+  damageAmount: 30
   isInChaseRange: 0
   isInAttackRange: 0
-  aiDestinationSetter: {fileID: 7981820923390881855}
+  debuggingOn: 0
+  anim: {fileID: 7981820923161695605}
   spriteRenderer: {fileID: 7981820923161695608}
   target: {fileID: 0}
-  positions: []
-  playerList: []
+  crossHairs: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  offset: 1
+  hitBonus: 10
+  positions: []
+  playerList: []
+  positionList: []
 --- !u!1 &8898676868495929618
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,7 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4901279563705418114}
   - component: {fileID: 244942904245608665}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -317,7 +324,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8898676868495929618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.044, y: -2.34, z: 0}
+  m_LocalPosition: {x: -0.044, y: -0.96, z: 0}
   m_LocalScale: {x: 1.1098655, y: 0.33338344, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []

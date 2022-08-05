@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour, ISaveable
         sceneObjects[SceneHandling.SceneObjectsInt(sceneHandler.sceneObjectsLoad)].SetActive(true);
 
         // Initialise shop
-        if (firstScene is "shop1" or "shop2" or "shop3")
+        if (firstScene is "Shop1" or "Shop2" or "Shop3")
         {
             Shop(firstScene, sceneHandler.sceneObjectsLoad);
             clockManager.SceneChange(firstScene, "", 0, 0);

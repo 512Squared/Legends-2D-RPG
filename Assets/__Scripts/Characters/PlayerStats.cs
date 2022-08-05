@@ -18,6 +18,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
     public string playerMoniker;
 
     [SerializeField] public NpcPhysics npc;
+    [SerializeField] public TeamMemberBase teamMemberBase;
 
 
     [TabGroup("Images")] [GUIColor(0.670f, 1, 0.560f)] [PreviewField] [Required]

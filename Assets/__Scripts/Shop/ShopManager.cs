@@ -112,7 +112,7 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
         Instance = this;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        //FindObjectOfType<PlayerStats>();
         InitializeShopAndArmoury();
     }
 
