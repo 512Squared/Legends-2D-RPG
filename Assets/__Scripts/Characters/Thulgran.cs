@@ -6,9 +6,16 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
 {
     #region Core stats
 
-    private static int _thulgranGold = 10;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
     [ShowInInspector]
+    [Title("Stats")]
+    [SerializeField]
+    private PlayerStats stats;
+
+    private static int _thulgranGold = 10;
+
     public static int ThulgranGold
     {
         get => _thulgranGold;
@@ -19,9 +26,9 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
         }
     }
 
+    [ShowInInspector]
     private static int _thulgranHp = 300;
 
-    [ShowInInspector]
     public static int ThulgranHp
     {
         get => _thulgranHp;
@@ -30,19 +37,11 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
             _thulgranHp = value;
             UI.instance.UpdateHPUI(_thulgranHp);
             PlayerStats[] playerStats = GameManager.Instance.GetPlayerStats();
-            for (int i = 0; i < playerStats.Length; i++)
-            {
-                if (i == 0) { playerStats[0].characterHp = _thulgranHp; }
-            }
-
+            playerStats[0].characterHp = _thulgranHp;
             if (_thulgranHp <= 0) { ThulgranDies(); }
         }
     }
 
-    private static void ThulgranDies()
-    {
-        PlayerGlobalData.Instance.DeathAnimation();
-    }
 
     private static int _thulgranMana = 10;
 
@@ -70,12 +69,11 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
         }
     }
 
-
     public static int MaxThulgranHp { get; private set; } = 300;
 
     public static int MaxThulgranMana { get; private set; } = 200;
 
-    [Header("Attack properties")]
+    [Title("Attack properties")]
     [SerializeField]
     private Transform attackPoint;
 
@@ -85,9 +83,8 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
     [SerializeField]
     private LayerMask attackMask;
 
-    [SerializeField]
-    private PlayerStats stats;
 
+    [Title("Special abilities")]
     public bool immuneToDragonBreath;
 
     #endregion
@@ -129,6 +126,11 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
         {
             immuneToDragonBreath = true;
         }
+    }
+
+    private static void ThulgranDies()
+    {
+        PlayerGlobalData.Instance.DeathAnimation();
     }
 
     private static void UseItem(Item item, int character, Vector2 target)
@@ -229,8 +231,7 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
 
     public Vector3 GetHeadPosition()
     {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        float height = sr.sprite.bounds.size.y + 0.2f;
+        float height = spriteRenderer.sprite.bounds.size.y + 0.2f;
         Vector3 headPosition = new(transform.position.x, transform.position.y + height, 0);
         return headPosition;
     }

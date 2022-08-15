@@ -1,26 +1,19 @@
-﻿using Assets.HeroEditor4D.Common.CharacterScripts;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TeamMemberBase : MonoBehaviour
 {
     [SerializeField]
     private GameObject teamBase;
-    
-    
+
     [SerializeField]
     private PlayerStats playerStats;
-
-    [SerializeField]
-    private Character4D character4D;
-
-   public Movement movement;
 
 
     private void Start()
     {
         teamBase.SetActive(playerStats.isTeamMember);
     }
-    
+
     public void IsTeamMember(bool isTeamMember)
     {
         playerStats.isTeamMember = isTeamMember;
@@ -29,6 +22,6 @@ public class TeamMemberBase : MonoBehaviour
 
     private void Update()
     {
-        transform.position = playerStats.transform.position; 
+        transform.position = playerStats.transform.position;
     }
 }

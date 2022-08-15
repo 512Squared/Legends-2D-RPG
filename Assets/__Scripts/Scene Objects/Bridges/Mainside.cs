@@ -9,10 +9,21 @@ public class Mainside : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.tag is "Player" or "Enemy")
+        switch (col.tag)
         {
-            onBridge.BridgeActivation(onBridge.playerName);
-            Debug.Log($"{onBridge.playerName} activated the bridge. isOnBridge: {isOnBridge}");
+            case "Player":
+                onBridge.BridgeActivation();
+                Debug.Log($"{col.name} activated the bridge. isOnBridge: {isOnBridge}");
+                break;
+            case "Enemy":
+                col.GetComponent<ZombieController>().ChangeBridgeSortingLayer("over");
+                Debug.Log($"{col.name} activated the bridge. isOnBridge: {isOnBridge}");
+                break;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.otherCollider.CompareTag("Enemy")) { Debug.Log($"Collision activated: {col.otherCollider.name}"); }
     }
 }

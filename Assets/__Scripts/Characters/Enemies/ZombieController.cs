@@ -46,6 +46,9 @@ public class ZombieController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     [SerializeField]
+    private CircleCollider2D collider;
+
+    [SerializeField]
     private Transform target;
 
     [SerializeField]
@@ -133,7 +136,6 @@ public class ZombieController : MonoBehaviour
 
         if (isInAttackRange)
         {
-            //collider.enabled = isInAttackRange;
             Attacking();
             dir = aiPath.desiredVelocity;
             dir.Normalize();
@@ -150,6 +152,8 @@ public class ZombieController : MonoBehaviour
             anim.SetFloat(IdleX, dir.x);
             anim.SetFloat(IdleY, dir.y);
         }
+
+        collider.enabled = isInAttackRange;
     }
 
 
@@ -221,7 +225,7 @@ public class ZombieController : MonoBehaviour
 
             if (sortGroup) { spriteRenderer.sortingOrder = sortGroup.sortingOrder + 1; }
 
-            if (sortingGroup) { spriteRenderer.sortingOrder = sortingGroup.sortingOrder = +1; }
+            if (sortingGroup) { spriteRenderer.sortingOrder = sortingGroup.sortingOrder + 1; }
         }
         else
         {
@@ -230,7 +234,7 @@ public class ZombieController : MonoBehaviour
 
             if (sortGroup) { spriteRenderer.sortingOrder = sortGroup.sortingOrder - 1; }
 
-            if (sortingGroup) { spriteRenderer.sortingOrder = sortingGroup.sortingOrder = -1; }
+            if (sortingGroup) { spriteRenderer.sortingOrder = sortingGroup.sortingOrder - 1; }
         }
     }
 
@@ -306,6 +310,16 @@ public class ZombieController : MonoBehaviour
         }
 
         return Vector3.zero;
+    }
+
+    public void ChangeBridgeSortingLayer(string position)
+    {
+        spriteRenderer.sortingOrder = position switch
+        {
+            "over" => 3,
+            "under" => -1,
+            _ => spriteRenderer.sortingOrder
+        };
     }
 
     private static Vector2 PickRandomPoint()

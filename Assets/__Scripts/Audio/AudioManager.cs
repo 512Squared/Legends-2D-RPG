@@ -14,7 +14,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
     [SerializeField] private AudioMixer audioMixerMain;
 
     [GUIColor(0.368f, 0.796f, 0.831f)]
-    [SerializeField] private AudioMixerGroup mixerPickupItem, mixerSfx, mixerWalking;
+    public AudioMixerGroup mixerPickupItem, mixerSfx, mixerWalking;
 
 
     [Header("Sound Effects")] [Space]

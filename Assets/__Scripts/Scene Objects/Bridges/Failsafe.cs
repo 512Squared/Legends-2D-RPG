@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Failsafe : MonoBehaviour
@@ -8,9 +6,14 @@ public class Failsafe : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag is "Player" or "Enemy")
+        switch (other.tag)
         {
-            onBridge.Failsafe(onBridge.playerName);
+            case "Player":
+                onBridge.Failsafe();
+                break;
+            case "Enemy":
+                other.GetComponent<ZombieController>().ChangeBridgeSortingLayer("under");
+                break;
         }
     }
 }

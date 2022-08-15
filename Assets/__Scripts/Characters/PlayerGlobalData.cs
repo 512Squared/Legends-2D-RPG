@@ -1,19 +1,29 @@
+using System.Numerics;
+using Assets.HeroEditor4D.Common.CharacterScripts;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
-public class PlayerGlobalData : MonoBehaviour, ISaveable
+public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 {
     #region Fields
 
     public static PlayerGlobalData Instance;
 
+    [Title("Components")]
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private int moveSpeed = 1;
-    [SerializeField] private Animator playerAnimator;
+
+    [SerializeField] private Character4D character;
+    [SerializeField] private AnimationManager anim;
+    [SerializeField] private AudioSource audioSrc;
+
+    [Space]
+    [Title("Fields")]
     public Vector3 playerTrans;
 
-    [SerializeField]
-    private AudioSource audioSrc;
+    [SerializeField] private int moveSpeed;
 
     public int currentSceneIndex;
 
@@ -21,30 +31,33 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 
     private Toggle toggle;
 
-    public bool deactivedMovement;
+    private int accelerate;
+
 
     private Vector3 bottomLeftEdge;
     private Vector3 topRightEdge;
 
+    [Space]
+    [Title("Bools")]
+    public bool deactivedMovement;
+
     public bool controllerSwitch;
-    public bool isMoving;
+
+    private bool isMoving;
+    public bool isWalking;
+    public bool isRunning;
     public bool isLoaded;
 
-    private float horizontalMovement;
-    private float verticalMovement;
+
+    private float xMove;
+    private float yMove;
 
     private int characterParty;
 
-    private static readonly int LastX = Animator.StringToHash("lastX");
-    private static readonly int LastY = Animator.StringToHash("lastY");
-    private static readonly int MovementX = Animator.StringToHash("movementX");
-    private static readonly int MovementY = Animator.StringToHash("movementY");
-    private static readonly int Deceasement = Animator.StringToHash("deceasement");
-    private static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
-    private bool isAttacking;
-
     #endregion
 
+    private static readonly int moveX = Animator.StringToHash("moveX");
+    private static readonly int moveY = Animator.StringToHash("moveY");
 
     private void Start()
     {
@@ -52,6 +65,8 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
         currentSceneIndex = 1;
         audioSrc = GetComponent<AudioSource>();
+        character.SetDirection(Vector2.down);
+        anim.SetState(CharacterState.Idle);
     }
 
     private void OnEnable()
@@ -67,38 +82,71 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     private void Update()
     {
         AndroidController();
+
+        switch (xMove)
+        {
+            case > 0:
+                character.SetDirection(Vector2.right);
+                break;
+            case < 0:
+                character.SetDirection(Vector2.left);
+                break;
+        }
+
+        switch (yMove)
+        {
+            case > 0:
+                character.SetDirection(Vector2.up);
+                break;
+            case < 0:
+                character.SetDirection(Vector2.down);
+                break;
+        }
+
         if (deactivedMovement)
         {
             rb.velocity = Vector2.zero;
+            anim.SetState(CharacterState.Idle);
         }
         else
         {
-            rb.velocity = new Vector2(horizontalMovement, verticalMovement) * moveSpeed;
+            moveSpeed = Input.GetKey(KeyCode.LeftShift) ? 8 : 4;
+            rb.velocity = new Vector2(xMove, yMove) * moveSpeed;
+            anim.Animator.SetFloat(moveX, rb.velocity.x);
+            anim.Animator.SetFloat(moveY, rb.velocity.y);
         }
 
-        if (rb.velocity.x != 0 || rb.velocity.y != 0) { isMoving = true; }
-        else { isMoving = false; }
+        if (rb.velocity.x != 0 || rb.velocity.y != 0)
+        {
+            isMoving = isWalking = true;
+            anim.SetState(CharacterState.Walk);
+            //Debug.Log($"Character state: Walk");
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                anim.SetState(CharacterState.Run);
+                isRunning = true;
+                isWalking = false;
+                //Debug.Log($"Character state: Run");
+            }
+        }
+        else
+        {
+            isMoving = isRunning = isWalking = false;
+            anim.SetState(CharacterState.Idle);
+            //Debug.Log($"Character state: Idle");
+        }
 
         if (isMoving)
         {
             if (!audioSrc.isPlaying)
             {
                 audioSrc.Play();
+                if (isWalking) { AudioManager.Instance.mixerWalking.audioMixer.SetFloat("SFXWalking", 1.56f); }
+                else if (isRunning) { AudioManager.Instance.mixerWalking.audioMixer.SetFloat("SFXWalking", 2.50f); }
             }
         }
         else { audioSrc.Stop(); }
-
-        //playerAnimator.SetFloat(MovementX, rb.velocity.x);
-        //playerAnimator.SetFloat(MovementY, rb.velocity.y);
-
-        // if (horizontalMovement is 1 or -1 || verticalMovement is 1 or -1)
-        // {
-        //     if (!deactivedMovement)
-        //     {
-        //         playerAnimator.SetFloat(LastX, horizontalMovement);
-        //         playerAnimator.SetFloat(LastY, verticalMovement);
-        //     }
-        // }
 
         if (isLoaded)
         {
@@ -115,12 +163,12 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         switch (controllerSwitch)
         {
             case false:
-                horizontalMovement = Input.GetAxisRaw("Horizontal");
-                verticalMovement = Input.GetAxisRaw("Vertical");
+                xMove = Input.GetAxisRaw("Horizontal");
+                yMove = Input.GetAxisRaw("Vertical");
                 break;
             case true:
-                horizontalMovement = UltimateJoystick.GetHorizontalAxis("Joy");
-                verticalMovement = UltimateJoystick.GetVerticalAxis("Joy");
+                xMove = UltimateJoystick.GetHorizontalAxis("Joy");
+                yMove = UltimateJoystick.GetVerticalAxis("Joy");
                 break;
         }
     }
@@ -150,7 +198,6 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            isAttacking = true;
             Debug.Log($"Player attack started");
         }
     }
@@ -184,7 +231,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 
     public void DeathAnimation()
     {
-        playerAnimator.SetBool(Deceasement, true);
+        character.AnimationManager.Die();
         MenuManager.Instance.DeathScene();
         //Time.timeScale = 0;
     }
@@ -209,7 +256,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     {
         playerTrans = transform.position;
         a_SaveData.thulgranData.controllerSwitch = controllerSwitch;
-        a_SaveData.thulgranData.moveSpeed = moveSpeed;
+        //a_SaveData.thulgranData.moveSpeed = moveSpeed;
         a_SaveData.thulgranData.position = playerTrans;
         Debug.Log($"Thulgran's save position: {playerTrans}");
     }
@@ -217,10 +264,26 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     public void LoadFromSaveData(SaveData a_SaveData)
     {
         toggle.isOn = a_SaveData.thulgranData.controllerSwitch;
-        moveSpeed = a_SaveData.thulgranData.moveSpeed;
+        //moveSpeed = a_SaveData.thulgranData.moveSpeed;
         playerTrans = a_SaveData.thulgranData.position;
         transform.position = playerTrans;
     }
+
+    #endregion
+
+    #region Implementation of IDamageable
+
+    public void Damage(int damage)
+    {
+        character.AnimationManager.Hit(); // hit animation
+    }
+
+    public Vector3 GetPositionOfHead()
+    {
+        return default;
+    }
+
+    public string Combatant => GetComponent<PlayerStats>().playerName;
 
     #endregion
 }

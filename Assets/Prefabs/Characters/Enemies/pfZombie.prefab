@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7981820923161695603}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.54, z: 0}
+  m_LocalPosition: {x: 0, y: 1.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 538720991
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 21745b8d9837a574baa808a0fe084888, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 7981820923390881856}
   - component: {fileID: 7981820923390881854}
   - component: {fileID: 1136506051}
+  - component: {fileID: 1171889385}
+  - component: {fileID: 1211072057}
   m_Layer: 10
   m_Name: pfZombie
   m_TagString: Enemy
@@ -175,7 +177,7 @@ MonoBehaviour:
   detailedGizmos: 1
   startEndModifier:
     addPoints: 0
-    exactStartPoint: 3
+    exactStartPoint: 0
     exactEndPoint: 1
     useRaycasting: 0
     mask:
@@ -286,6 +288,7 @@ MonoBehaviour:
   debuggingOn: 0
   anim: {fileID: 7981820923161695605}
   spriteRenderer: {fileID: 7981820923161695608}
+  collider: {fileID: 1211072057}
   target: {fileID: 0}
   crossHairs: {fileID: 0}
   playerLayer:
@@ -293,12 +296,55 @@ MonoBehaviour:
     m_Bits: 8
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 8
   offset: 1
   hitBonus: 10
   positions: []
   playerList: []
   positionList: []
+--- !u!114 &1171889385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7981820923390881852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560112f876f5746c780eca0d404e7139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 2
+  radiusBackingField: 0.5
+  heightBackingField: 2
+  centerBackingField: 1
+  locked: 0
+  lockWhenNotMoving: 0
+  agentTimeHorizon: 2
+  obstacleTimeHorizon: 2
+  maxNeighbours: 10
+  layer: 1024
+  collidesWith: 1035
+  wallAvoidForce: 1
+  wallAvoidFalloff: 1
+  priority: 0.5
+  debug: 1
+--- !u!58 &1211072057
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7981820923390881852}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.08280754, y: -0.4586258}
+  serializedVersion: 2
+  m_Radius: 0.5445862
 --- !u!1 &8898676868495929618
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,7 +357,7 @@ GameObject:
   - component: {fileID: 244942904245608665}
   m_Layer: 10
   m_Name: shadow
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

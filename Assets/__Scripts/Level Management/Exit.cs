@@ -69,7 +69,7 @@ public class Exit : MonoBehaviour
         arrivingFrom = SceneManager.GetActiveScene().name;
     }
 
-    private void ShopObjects(string scene, SceneObjectsLoad sceneObjectsLoad,
+    private static void ShopObjects(string scene, SceneObjectsLoad sceneObjectsLoad,
         SceneObjectsUnload sceneObjectsUnload)
     {
         if (sceneObjectsLoad is SceneObjectsLoad.Shop1 or SceneObjectsLoad.Shop2 or SceneObjectsLoad.Shop3)
@@ -84,22 +84,6 @@ public class Exit : MonoBehaviour
             ShopManager.Instance.isShopArmouryOpen = false;
             ShopManager.Instance.isPlayerInsideShop = false;
             ShopManager.Instance.UpdateShopItemsInventory();
-        }
-
-        else if (scene == "Dungeon")
-        {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size =
-                new Vector2(1.12f, 1.8f);
-            Debug.Log(
-                $"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
-        }
-
-        else if (scene != "Dungeon")
-        {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size =
-                new Vector2(1.12f, 1.31f);
-            Debug.Log(
-                $"SceneName: {scene} | CapsuleSize: {GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size}");
         }
     }
 }
