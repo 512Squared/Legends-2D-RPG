@@ -2,6 +2,7 @@ using System.Numerics;
 using Assets.HeroEditor4D.Common.CharacterScripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -18,6 +19,8 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
     [SerializeField] private Character4D character;
     [SerializeField] private AnimationManager anim;
     [SerializeField] private AudioSource audioSrc;
+    [SerializeField] private SortingGroup sortingGroup;
+
 
     [Space]
     [Title("Fields")]
@@ -64,7 +67,6 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
         Instance = this;
         toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
         currentSceneIndex = 1;
-        audioSrc = GetComponent<AudioSource>();
         character.SetDirection(Vector2.down);
         anim.SetState(CharacterState.Idle);
     }
@@ -83,25 +85,30 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
     {
         AndroidController();
 
-        switch (xMove)
-        {
-            case > 0:
-                character.SetDirection(Vector2.right);
-                break;
-            case < 0:
-                character.SetDirection(Vector2.left);
-                break;
-        }
-
         switch (yMove)
         {
             case > 0:
-                character.SetDirection(Vector2.up);
+                if (yMove > xMove) { character.SetDirection(Vector2.up); }
+
                 break;
             case < 0:
-                character.SetDirection(Vector2.down);
+                if (yMove < xMove) { character.SetDirection(Vector2.down); }
+
                 break;
         }
+
+        switch (xMove)
+        {
+            case > 0:
+                if (xMove > yMove) { character.SetDirection(Vector2.right); }
+
+                break;
+            case < 0:
+                if (xMove < yMove) { character.SetDirection(Vector2.left); }
+
+                break;
+        }
+
 
         if (deactivedMovement)
         {

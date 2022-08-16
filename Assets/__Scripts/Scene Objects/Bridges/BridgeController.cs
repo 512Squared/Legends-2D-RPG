@@ -61,9 +61,12 @@ public class BridgeController : MonoBehaviour
     }
 
 
-    public void Failsafe()
+    public void Failsafe(Renderer player)
     {
-        foreach (Tilemap t in bridgeTilemap) { t.GetComponent<Renderer>().sortingOrder = +3; }
+        foreach (Tilemap t in bridgeTilemap)
+        {
+            t.GetComponent<TilemapRenderer>().sortingLayerName = "LitObjects";
+        }
 
         // ON
         foreach (GameObject t in startTheseCollidersOn)
@@ -116,10 +119,10 @@ public class BridgeController : MonoBehaviour
         // OTHER STUFF
         foreach (Tilemap t in bridgeTilemap)
         {
-            t.GetComponent<Renderer>().sortingOrder = mainside.isOnBridge switch
+            t.GetComponent<Renderer>().sortingLayerName = mainside.isOnBridge switch
             {
-                false => +3,
-                true => -3
+                false => "LitObjects",
+                true => "Player"
             };
         }
     }

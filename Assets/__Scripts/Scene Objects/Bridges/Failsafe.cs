@@ -9,7 +9,7 @@ public class Failsafe : MonoBehaviour
         switch (other.tag)
         {
             case "Player":
-                onBridge.Failsafe();
+                onBridge.Failsafe(other.GetComponent<Renderer>());
                 break;
             case "Enemy":
                 other.GetComponent<ZombieController>().ChangeBridgeSortingLayer("under");
