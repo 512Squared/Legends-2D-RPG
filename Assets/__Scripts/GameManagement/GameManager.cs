@@ -6,7 +6,7 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using Pathfinding;
+using UnityEditor;
 
 
 public class GameManager : MonoBehaviour, ISaveable

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Reflection;
 
 public class GameAssets : MonoBehaviour
 {
@@ -15,6 +14,12 @@ public class GameAssets : MonoBehaviour
         }
     }
 
+    public GameObject skelly;
+    public GameObject zombie;
+    public GameObject goblin;
+
+
     public Transform pdDamagePopup;
-    
+    public GameObject crosshairs;
+    public GameObject itemPrefab;
 }

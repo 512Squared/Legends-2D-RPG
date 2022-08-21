@@ -1,11 +1,14 @@
-using System.Numerics;
 using Assets.HeroEditor4D.Common.CharacterScripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Rendering;
+using HeroEditor4D.Common.Enums;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using DG.Tweening;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
+
+// ReSharper disable InconsistentNaming
 
 public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 {
@@ -13,13 +16,19 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 
     public static PlayerGlobalData Instance;
 
+    [Space]
+    [ShowInInspector]
+    public bool debugOn;
+
+
     [Title("Components")]
     [SerializeField] private Rigidbody2D rb;
 
     [SerializeField] private Character4D character;
-    [SerializeField] private AnimationManager anim;
     [SerializeField] private AudioSource audioSrc;
-    [SerializeField] private SortingGroup sortingGroup;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private GameObject activeBase;
+    [SerializeField] private CapsuleCollider2D collider;
 
 
     [Space]
@@ -27,6 +36,11 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
     public Vector3 playerTrans;
 
     [SerializeField] private int moveSpeed;
+    [SerializeField] private float damageOffset;
+    [SerializeField] private float jumpPower;
+    [SerializeField] private float jumpTime;
+    [SerializeField] private float jumpDistance;
+
 
     public int currentSceneIndex;
 
@@ -49,6 +63,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
     private bool isMoving;
     public bool isWalking;
     public bool isRunning;
+    public bool isAttacking;
     public bool isLoaded;
 
 
@@ -61,6 +76,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 
     private static readonly int moveX = Animator.StringToHash("moveX");
     private static readonly int moveY = Animator.StringToHash("moveY");
+    private bool isJumping;
 
     private void Start()
     {
@@ -68,7 +84,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
         toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
         currentSceneIndex = 1;
         character.SetDirection(Vector2.down);
-        anim.SetState(CharacterState.Idle);
+        character.AnimationManager.SetState(CharacterState.Idle);
     }
 
     private void OnEnable()
@@ -109,41 +125,6 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
                 break;
         }
 
-
-        if (deactivedMovement)
-        {
-            rb.velocity = Vector2.zero;
-            anim.SetState(CharacterState.Idle);
-        }
-        else
-        {
-            moveSpeed = Input.GetKey(KeyCode.LeftShift) ? 8 : 4;
-            rb.velocity = new Vector2(xMove, yMove) * moveSpeed;
-            anim.Animator.SetFloat(moveX, rb.velocity.x);
-            anim.Animator.SetFloat(moveY, rb.velocity.y);
-        }
-
-        if (rb.velocity.x != 0 || rb.velocity.y != 0)
-        {
-            isMoving = isWalking = true;
-            anim.SetState(CharacterState.Walk);
-            //Debug.Log($"Character state: Walk");
-
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                anim.SetState(CharacterState.Run);
-                isRunning = true;
-                isWalking = false;
-                //Debug.Log($"Character state: Run");
-            }
-        }
-        else
-        {
-            isMoving = isRunning = isWalking = false;
-            anim.SetState(CharacterState.Idle);
-            //Debug.Log($"Character state: Idle");
-        }
-
         if (isMoving)
         {
             if (!audioSrc.isPlaying)
@@ -163,6 +144,85 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
                 Mathf.Clamp(transform.position.z, bottomLeftEdge.z, topRightEdge.z)
             );
         }
+
+        if (Input.GetMouseButtonDown(0)) { AttackAnimation(); }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isJumping = true;
+            character.AnimationManager.SetState(CharacterState.Jump);
+            float yPos = transform.position.y;
+            if (character.Direction == Vector2.left)
+            {
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(rb.DOJump(new Vector3(transform.position.x - jumpDistance, transform.position.y, 0),
+                        jumpPower, 1,
+                        jumpTime))
+                    .SetEase(Ease.Linear);
+                sequence.Insert(0,
+                    activeBase.transform.DOMove(new Vector3(transform.position.x - jumpDistance, yPos, 0), jumpTime));
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isJumping = true;
+            character.AnimationManager.SetState(CharacterState.Jump);
+            float yPos = transform.position.y;
+            if (character.Direction == Vector2.left)
+            {
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(rb.DOJump(new Vector3(transform.position.x - jumpDistance, transform.position.y, 0),
+                        jumpPower, 1,
+                        jumpTime))
+                    .SetEase(Ease.Linear);
+                sequence.Insert(0,
+                    activeBase.transform.DOMove(new Vector3(transform.position.x - jumpDistance, yPos, 0), jumpTime));
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (deactivedMovement)
+        {
+            rb.velocity = Vector2.zero;
+            if (!IsDead) { character.AnimationManager.SetState(CharacterState.Idle); }
+        }
+        else
+        {
+            moveSpeed = Input.GetKey(KeyCode.LeftShift) ? 8 : 4;
+            rb.velocity = new Vector2(xMove, yMove) * moveSpeed;
+            character.AnimationManager.Animator.SetFloat(moveX, rb.velocity.x);
+            character.AnimationManager.Animator.SetFloat(moveY, rb.velocity.y);
+        }
+
+        if (rb.velocity.x != 0 || rb.velocity.y != 0)
+        {
+            isMoving = isWalking = true;
+            if (!IsDead) { character.AnimationManager.SetState(CharacterState.Walk); }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                if (!IsDead)
+                {
+                    character.AnimationManager.SetState(CharacterState.Run);
+                    isRunning = true;
+                    isWalking = false;
+                }
+            }
+        }
+        else
+        {
+            isMoving = isRunning = isWalking = false;
+            if (!IsDead) { character.AnimationManager.SetState(CharacterState.Idle); }
+        }
+    }
+
+    private void AttackAnimation()
+    {
+        character.AnimationManager.Slash1H();
     }
 
     private void AndroidController()
@@ -190,7 +250,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
     private void SetLimitBool(string arg1, string arg4, int arg2, int arg3)
     {
         isLoaded = true;
-        Debug.Log($"isLoaded set to true: {isLoaded}");
+        if (debugOn) { Debug.Log($"isLoaded set to true: {isLoaded}"); }
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -238,23 +298,23 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 
     public void DeathAnimation()
     {
-        character.AnimationManager.Die();
+        character.AnimationManager.SetState(CharacterState.Death);
+        Debug.Log($"Death animation called");
         MenuManager.Instance.DeathScene();
-        //Time.timeScale = 0;
+        PlayerStats player = GetComponent<PlayerStats>();
+        player.isTeamMember = false;
+        player.isAvailable = false;
+        deactivedMovement = true;
+        IsDead = true;
+        GetComponent<ShadowCaster2D>().enabled = false;
+        activeBase.SetActive(false);
+        collider.enabled = false;
     }
 
 
     public Vector3 GetPosition()
     {
         return transform.position;
-    }
-
-    public Vector3 GetHeadPosition()
-    {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        float height = sr.sprite.bounds.size.y + 0.2f;
-        Vector3 headPosition = new(transform.position.x, transform.position.y + height, 0);
-        return headPosition;
     }
 
     #region Implementation of ISaveable
@@ -282,15 +342,45 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 
     public void Damage(int damage)
     {
-        character.AnimationManager.Hit(); // hit animation
+        character.AnimationManager.Hit();
+        Thulgran thul = GetComponent<Thulgran>();
+        thul.Damage(damage);
     }
 
     public Vector3 GetPositionOfHead()
     {
-        return default;
+        float height = spriteRenderer.sprite.bounds.size.y + damageOffset;
+        Vector3 headPosition = new(transform.position.x, transform.position.y + height, 0);
+        return headPosition;
     }
 
     public string Combatant => GetComponent<PlayerStats>().playerName;
+
+    public bool IsDead
+    {
+        get => false;
+        set { }
+    }
+
+
+    public void HitEnemy(Collider2D col, string colGuid)
+    {
+        Character apex = character.GetComponentInChildren<Character>(false);
+        string guid = apex.AnchorSword.GetComponent<GenerateGUID>().GUID;
+        PlayerStats player = GetComponent<PlayerStats>();
+
+        if (guid == colGuid && isAttacking)
+        {
+            col.GetComponent<IDamageable>().Damage(player.characterAttackTotal);
+            if (debugOn)
+            {
+                Debug.Log(
+                    $"Enemy found: {col.name}  | Hit by: {player.playerName} | Damage: {player.characterAttackTotal} | Enemy HP: {col.GetComponent<ZombieController>().hitPoints}");
+            }
+
+            isAttacking = false;
+        }
+    }
 
     #endregion
 }

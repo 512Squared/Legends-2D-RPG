@@ -22,24 +22,7 @@ public class CharacterAnimationEvents : MonoBehaviour
         if (evt.animatorClipInfo.weight > 0.5)
         {
             string dir = evt.stringParameter;
-            switch (dir)
-            { 
-                case "front":
-                    Debug.Log($"Front attack hit");
-                    zombie.Attack("front");
-                    break;
-                case "back": Debug.Log($"Back attack hit");
-                    zombie.Attack("back");
-                    break;
-                case "left": Debug.Log($"Left attack hit");
-                    zombie.Attack("left");
-                    break;
-                case "right": Debug.Log($"Right attack hit");
-                    zombie.Attack("right");
-                    break;
-            }
+            zombie.AttackTarget();
         }
     }
-    
-    
 }

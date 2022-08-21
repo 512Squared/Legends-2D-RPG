@@ -43,8 +43,8 @@ public static class SaveDataManager
     {
         _initialData = new SaveData {sceneData = default, thulgranData = default, inventoryDatas = default};
         _initialData.thulgranData.trophies = 0;
-        _initialData.thulgranData.hitPoints = 10;
-        _initialData.thulgranData.gold = 10;
+        _initialData.thulgranData.hitPoints = 300;
+        _initialData.thulgranData.gold = 200;
         _initialData.thulgranData.moveSpeed = 5;
         _initialData.thulgranData.maxHp = 300;
         _initialData.thulgranData.maxMana = 200;

@@ -89,3 +89,9 @@ public enum ItemType
     Helmet,
     Relic
 }
+
+public enum SceneType
+{
+    Indoor,
+    Outdoor
+}

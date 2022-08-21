@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254540235}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.09, y: -2.48, z: 0}
+  m_LocalPosition: {x: 0, y: -0.48, z: 0}
   m_LocalScale: {x: 1.12, y: 1.12, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Intensity: 0.85
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000df3a1c2001cc6cc4
+  m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c2075abecbd1322fbbe
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -3618,6 +3618,7 @@ GameObject:
   - component: {fileID: 996435253968823869}
   - component: {fileID: 6999181851003157329}
   - component: {fileID: 24150107139240528}
+  - component: {fileID: 420504740437357453}
   - component: {fileID: 942153813102583975}
   - component: {fileID: 1038875467033894815}
   - component: {fileID: 941507070331663217}
@@ -3814,6 +3815,58 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!212 &420504740437357453
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902182442966991285}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -100
+  m_Sprite: {fileID: 21300000, guid: 620b5e6e4d92b6e42b3dcc6dd587bea8, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 5.12, y: 5.12}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &942153813102583975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3844,8 +3897,7 @@ MonoBehaviour:
   Animator: {fileID: 996435253968823869}
   AnimationManager: {fileID: 941507070331663217}
   LayerManager: {fileID: 941414135897966753}
-  material: {fileID: 0}
-  eyes: {fileID: 0}
+  direction: 0
 --- !u!210 &1038875467033894815
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -4068,11 +4120,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 7945046943727836288}
   character: {fileID: 942153813102583975}
-  anim: {fileID: 941507070331663217}
   audioSrc: {fileID: 24150107139240528}
-  sortingGroup: {fileID: 0}
+  spriteRenderer: {fileID: 420504740437357453}
+  activeBase: {fileID: 7027000917929022771}
+  collider: {fileID: 6999181851003157329}
   playerTrans: {x: -10.25, y: -4.25, z: 0.75}
   moveSpeed: 0
+  damageOffset: 0
+  jumpPower: 0
+  jumpTime: 0
+  jumpDistance: 0
+  primaryWeaponDir: []
+  secondaryWeaponDir: []
+  weaponApexPrimary: {fileID: 0}
+  weaponApexSecondary: {fileID: 0}
   currentSceneIndex: 1
   arrivingAt: 
   deactivedMovement: 0
@@ -4092,7 +4153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa56baec31caa049a8cde5bb318d426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 2758712665553660836}
   stats: {fileID: 24150107139240533}
   attackPoint: {fileID: 689561829114247342}
   attackRange: 20
@@ -4150,9 +4210,9 @@ MonoBehaviour:
     life's ambition is to defeat a dragon.
   playerMoniker: Dwarf Lord - PARTY LEADER
   teamMemberBase: {fileID: 6337332445658013664}
-  characterImage: {fileID: 21300000, guid: 41dd776a2bccc344eafb45a3dc58ef12, type: 3}
-  characterMug: {fileID: 21300000, guid: 9e42d1329b457d244a4c1801f623c403, type: 3}
-  characterPlain: {fileID: 21300000, guid: 40c1501ed8955a74b941601138ebd9a3, type: 3}
+  characterImage: {fileID: 21300000, guid: 136b73e3d1f92184cb188d64ffaa89e5, type: 3}
+  characterMug: {fileID: 21300000, guid: a4665d27e0f86a54e960c3652a2ec868, type: 3}
+  characterPlain: {fileID: 21300000, guid: 80144005b1153d3468e3ab5a3f56bd22, type: 3}
   maxLevel: 10
   baseLevelXp: 0
   characterXp: 0
@@ -4226,28 +4286,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShadowGroup: 0
   m_ComponentVersion: 1
-  m_HasRenderer: 0
+  m_HasRenderer: 1
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1
   m_SelfShadows: 0
   m_ApplyToSortingLayers: 0000000001cc6cc4df3a1c2075abecbd1322fbbe1fa2079d019040cd49a089fa8f21222ecd4c3175752dda93
   m_ShapePath:
   - {x: -0.43193188, y: 0.34288907, z: 0}
-  - {x: -0.3893094, y: 0.66369164, z: 0}
-  - {x: -0.29966366, y: 0.86224693, z: 0}
-  - {x: -0.06888319, y: 1.0867804, z: 0}
-  - {x: -0.07413774, y: 1.2181973, z: 0}
-  - {x: 0.1083005, y: 1.225034, z: 0}
-  - {x: 0.08253646, y: 1.0867804, z: 0}
-  - {x: 0.25576273, y: 0.8949801, z: 0}
-  - {x: 0.45475677, y: 0.5804651, z: 0}
-  - {x: 0.36919782, y: 0.28586864, z: 0}
-  - {x: 0.14402236, y: 0.16369376, z: 0}
-  - {x: 0.018969776, y: 0.13290915, z: 0}
-  - {x: -0.14346617, y: 0.1386949, z: 0}
-  m_ShapePathHash: -1886076074
+  - {x: -0.25175238, y: 0.7200451, z: 0}
+  - {x: -0.5244131, y: 0.894495, z: 0}
+  - {x: -0.53609467, y: 1.1887474, z: 0}
+  - {x: -0.5248575, y: 1.6665993, z: 0}
+  - {x: -0.33871555, y: 1.8768253, z: 0}
+  - {x: 0.0015664101, y: 1.9697514, z: 0}
+  - {x: 0.29969692, y: 1.8667755, z: 0}
+  - {x: 0.5307212, y: 1.6263638, z: 0}
+  - {x: 0.5441394, y: 1.143074, z: 0}
+  - {x: 0.53159857, y: 0.8724613, z: 0}
+  - {x: 0.29713583, y: 0.70430946, z: 0}
+  - {x: 0.46140814, y: 0.42725945, z: 0}
+  - {x: 0.27311707, y: 0.089925766, z: 0}
+  - {x: 0.012822628, y: 0.08987808, z: 0}
+  - {x: -0.1803503, y: 0.07722092, z: 0}
+  m_ShapePathHash: -1991058034
   m_Mesh: {fileID: 0}
-  m_InstanceId: -2998
+  m_InstanceId: 1980080
 --- !u!114 &6337332445658013664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13695,7 +13758,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3444795916886120560
 Transform:
   m_ObjectHideFlags: 0

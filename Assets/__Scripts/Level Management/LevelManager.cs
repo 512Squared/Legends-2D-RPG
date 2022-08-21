@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
 
     public NpcPhysics[] npcCharacters;
 
+    public SceneObjectsLoad scene;
+
 
     [SerializeField] private Tilemap tilemap;
 

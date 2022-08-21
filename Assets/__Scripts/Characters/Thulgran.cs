@@ -2,19 +2,16 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 
 
-public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
+public class Thulgran : Rewardable<QuestRewards>, ISaveable
 {
     #region Core stats
-
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
 
     [ShowInInspector]
     [Title("Stats")]
     [SerializeField]
     private PlayerStats stats;
 
-    private static int _thulgranGold = 10;
+    private static int _thulgranGold = 300;
 
     public static int ThulgranGold
     {
@@ -27,7 +24,7 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
     }
 
     [ShowInInspector]
-    private static int _thulgranHp = 300;
+    private static int _thulgranHp;
 
     public static int ThulgranHp
     {
@@ -228,13 +225,13 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
         Debug.Log($"Added Mana: | Amount: {item.amountOfEffect}");
     }
 
-
-    public Vector3 GetHeadPosition()
+    public void Damage(int damage)
     {
-        float height = spriteRenderer.sprite.bounds.size.y + 0.2f;
-        Vector3 headPosition = new(transform.position.x, transform.position.y + height, 0);
-        return headPosition;
+        ThulgranHp -= damage;
     }
+
+
+    public string Combatant => "Thulgran";
 
     #endregion
 
@@ -260,24 +257,6 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable, IDamageable
         MaxThulgranMana = a_SaveData.thulgranData.maxMana;
         MaxThulgranHp = a_SaveData.thulgranData.maxHp;
     }
-
-    #endregion
-
-    #region Implementation of IDamageable
-
-    public void Damage(int damage)
-    {
-        ThulgranHp -= damage;
-        Debug.Log($"Thulgran HP: {_thulgranHp}");
-    }
-
-    public Vector3 GetPositionOfHead()
-    {
-        Vector3 head = GetHeadPosition();
-        return head;
-    }
-
-    public string Combatant => "Thulgran";
 
     #endregion
 }

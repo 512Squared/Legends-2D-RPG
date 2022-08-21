@@ -93,7 +93,7 @@ public class UI : MonoBehaviour
     {
         for (int i = 0; i < manaStats.Length; i++)
         {
-            if (i == 0 || i == 1) // front screen format
+            if (i is 0 or 1) // front screen format
             {
                 manaStats[i].text = Thulgran.ThulgranMana.ToString() + " / " + Thulgran.MaxThulgranMana;
             }
@@ -122,7 +122,7 @@ public class UI : MonoBehaviour
 
         for (int i = 0; i < hpSliders.Length; i++)
         {
-            hpSliders[i].value = Thulgran.ThulgranMana;
+            hpSliders[i].value = Thulgran.ThulgranHp;
         }
 
         for (int i = 0; i < manaSliders.Length; i++)

@@ -21,6 +21,45 @@ public class SaveData
 
     #endregion
 
+
+    #region EnemyData
+
+    [Serializable]
+    public struct EnemySpawnData
+    {
+        public EnemySpawnData(List<GameObject> spawnedZombies, List<GameObject> spawnedSkellies, List<GameObject>
+            spawnedGoblins)
+        {
+            this.spawnedZombies = spawnedZombies;
+            this.spawnedSkellies = spawnedSkellies;
+            this.spawnedGoblins = spawnedGoblins;
+        }
+
+        public List<GameObject> spawnedZombies;
+        public List<GameObject> spawnedSkellies;
+        public List<GameObject> spawnedGoblins;
+    }
+
+    public List<EnemySpawnData> enemySpawnData = new();
+
+
+    [Serializable]
+    public struct EnemyData
+    {
+        public EnemyData(string guid, SceneObjectsLoad homeScene)
+        {
+            GUID = guid;
+            this.homeScene = homeScene;
+        }
+
+        public string GUID;
+        public SceneObjectsLoad homeScene;
+    }
+
+    public List<EnemyData> enemies = new();
+
+    #endregion
+
     #region ArrayData
 
     [Serializable]
@@ -45,7 +84,6 @@ public class SaveData
     public GridData gridData;
 
     #endregion
-
 
     #region Scene Data
 
@@ -342,7 +380,6 @@ public class SaveData
     public AudioData audioData;
 
     #endregion Audio Settings
-
 
     #region Inventory
 

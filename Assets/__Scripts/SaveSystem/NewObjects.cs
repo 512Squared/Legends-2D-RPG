@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
 {
-    public GameObject itemPrefab;
-
     public List<Item> Objects { get; set; }
 
     private void Start()
     {
-        itemPrefab = Resources.Load("itemPrefab") as GameObject;
         Objects = new List<Item>();
     }
 
@@ -27,7 +24,7 @@ public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
 
     public void InstantiateDroppedObject(Item item)
     {
-        GameObject newObject = Instantiate(itemPrefab,
+        GameObject newObject = Instantiate(GameAssets.Fetch.itemPrefab,
             GameManager.Instance.pickupParents[PlayerGlobalData.Instance.currentSceneIndex]);
         newObject.name = $"{item.itemName}_new";
         Item it = newObject.GetComponent<Item>();
@@ -92,7 +89,8 @@ public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
         {
             string guid = did.itemGuid[..8];
 
-            GameObject newObj = Instantiate(itemPrefab, GameManager.Instance.pickupParents[did.itemPickupPlace]);
+            GameObject newObj = Instantiate(GameAssets.Fetch.itemPrefab, GameManager.Instance.pickupParents[did
+                .itemPickupPlace]);
             newObj.name = $"{did.itemName}_rebuilt";
             newObj.transform.position = did.itemPosition;
             newObj.GetComponent<GenerateGUID>().GUID = did.itemGuid;

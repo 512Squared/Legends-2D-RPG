@@ -499,8 +499,8 @@ Transform:
   - {fileID: 145455882}
   - {fileID: 1807605534}
   - {fileID: 1604590141}
-  - {fileID: 1589165828}
   - {fileID: 1483100220}
+  - {fileID: 1589165828}
   - {fileID: 1586727103}
   - {fileID: 1845939484}
   - {fileID: 1023159879}
@@ -1377,7 +1377,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 377237197}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -14.394}
 --- !u!61 &1483100221
 BoxCollider2D:
@@ -2201,11 +2201,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.240691
+      value: -6.150171
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -28.52245
+      value: -1.3208642
       objectReference: {fileID: 0}
     - target: {fileID: 4489525805091259504, guid: 5eee83bda7449a24d86f712b5b7fc721, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2231,6 +2231,10 @@ PrefabInstance:
     - target: {fileID: 3794756513026914377, guid: 3fd18f2e9b0fa8d488f768358ab3db8d, type: 3}
       propertyPath: m_Name
       value: Level Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3794756513026914378, guid: 3fd18f2e9b0fa8d488f768358ab3db8d, type: 3}
+      propertyPath: scene
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3794756513026914378, guid: 3fd18f2e9b0fa8d488f768358ab3db8d, type: 3}
       propertyPath: tilemap

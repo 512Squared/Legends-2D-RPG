@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Inspector
+  m_Title: Game
   m_RootView: {fileID: 7}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -41,9 +41,9 @@ MonoBehaviour:
     x: 1920
     y: 0
     width: 1600
-    height: 1160
+    height: 1080
   m_ShowMode: 0
-  m_Title: Hierarchy
+  m_Title: Console Pro
   m_RootView: {fileID: 6}
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
@@ -66,9 +66,9 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 354
-    height: 1160
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+    height: 1080
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -89,10 +89,10 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1074
+    x: 1085
     y: 0
-    width: 526
-    height: 1160
+    width: 515
+    height: 1080
   m_MinSize: {x: 231, y: 271}
   m_MaxSize: {x: 10001, y: 10021}
   m_ActualView: {fileID: 17}
@@ -117,8 +117,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 354
     y: 0
-    width: 720
-    height: 1160
+    width: 731
+    height: 1080
   m_MinSize: {x: 202, y: 141}
   m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 16}
@@ -147,11 +147,11 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 1600
-    height: 1160
+    height: 1080
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 128
+  controlID: 51
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 0
-  controlID: 133
+  controlID: 3310
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -267,12 +267,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1202
+    width: 1354
     height: 947
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 134
+  controlID: 3311
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -283,23 +283,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: GameView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1202
-    height: 644
+    width: 1354
+    height: 509
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 20}
+  m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 20}
   - {fileID: 19}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -310,24 +310,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: AudioMixerWindow
+  m_Name: AnimatorControllerTool
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 644
-    width: 1202
-    height: 303
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 22}
+    y: 509
+    width: 1354
+    height: 438
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 21}
   - {fileID: 22}
   - {fileID: 15}
-  m_Selected: 1
-  m_LastSelected: 2
+  m_Selected: 2
+  m_LastSelected: 0
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -343,9 +343,9 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1202
+    x: 1354
     y: 0
-    width: 718
+    width: 566
     height: 947
   m_MinSize: {x: 276, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
@@ -375,9 +375,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 717
-    width: 1201
-    height: 282
+    y: 582
+    width: 1353
+    height: 417
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -391,15 +391,55 @@ MonoBehaviour:
     - {fileID: 1102235810838777544, guid: c0fbc9a82051e94429aa17cc4b2f48e5, type: 2}
     - {fileID: 1107477839740767600, guid: c0fbc9a82051e94429aa17cc4b2f48e5, type: 2}
     - {fileID: 1102091625167358218, guid: c0fbc9a82051e94429aa17cc4b2f48e5, type: 2}
+    - {fileID: -6505711280997343146, guid: 34e1b8ad24fde614693b479c6f891252, type: 2}
+    - {fileID: 1107919661003834822, guid: bf3986f8b8f13bf4f8a47f8ce8e49734, type: 2}
+    - {fileID: 1456891585369095756, guid: 436dfbf5140239f4cb020b15fb345bee, type: 2}
+    - {fileID: 4336583170622384767, guid: 436dfbf5140239f4cb020b15fb345bee, type: 2}
+    - {fileID: 2793542167003216023, guid: 436dfbf5140239f4cb020b15fb345bee, type: 2}
+    - {fileID: 1102373507809713874, guid: c0fbc9a82051e94429aa17cc4b2f48e5, type: 2}
+    - {fileID: 6749938078697619860, guid: 796f4daa0d05400f8f0ad80124026388, type: 2}
+    - {fileID: -4252192953298640937, guid: 796f4daa0d05400f8f0ad80124026388, type: 2}
     m_ValueSerializationHelper:
+    - e00: 0.65471697
+      e01: 0
+      e02: 0
+      e03: 423.5094
+      e10: 0
+      e11: 0.65471697
+      e12: 0
+      e13: 159.03773
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 0.88974357
+      e01: 0
+      e02: 0
+      e03: 116.128204
+      e10: 0
+      e11: 0.88974357
+      e12: 0
+      e13: 222.43588
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
     - e00: 1
       e01: 0
       e02: 0
-      e03: 390.5
+      e03: 101
       e10: 0
       e11: 1
       e12: 0
-      e13: 94.5
+      e13: 204
       e20: 0
       e21: 0
       e22: 1
@@ -408,46 +448,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.5871795
+    - e00: 0.8121293
       e01: 0
       e02: 0
-      e03: 196.91025
+      e03: 214.76389
       e10: 0
-      e11: 0.5871795
+      e11: 0.8121293
       e12: 0
-      e13: 144.17949
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    - e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    - e00: 0.4107602
-      e01: 0
-      e02: 0
-      e03: 226.24411
-      e10: 0
-      e11: 0.4107602
-      e12: 0
-      e13: 117.36009
+      e13: 60.55787
       e20: 0
       e21: 0
       e22: 1
@@ -504,12 +512,138 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
+    - e00: 0.9526316
+      e01: 0
+      e02: 0
+      e03: -32.63159
+      e10: 0
+      e11: 0.9526316
+      e12: 0
+      e13: 31.5
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 0.65471697
+      e01: 0
+      e02: 0
+      e03: 416.96222
+      e10: 0
+      e11: 0.65471697
+      e12: 0
+      e13: 159.03773
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: 252.25
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 76
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: 252.25
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 76
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: 252.25
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 76
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: 252.25
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 76
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: 252.25
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 76
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: 252.25
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 76
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
   m_PreviewAnimator: {fileID: 0}
-  m_AnimatorController: {fileID: 9100000, guid: c0fbc9a82051e94429aa17cc4b2f48e5, type: 2}
+  m_AnimatorController: {fileID: 9100000, guid: 436dfbf5140239f4cb020b15fb345bee, type: 2}
   m_BreadCrumbs:
-  - m_Target: {fileID: 1107919661003834822, guid: c0fbc9a82051e94429aa17cc4b2f48e5, type: 2}
-    m_ScrollPosition: {x: 0, y: 0}
-  - m_Target: {fileID: 1102091625167358218, guid: c0fbc9a82051e94429aa17cc4b2f48e5, type: 2}
+  - m_Target: {fileID: 3727232143617515977, guid: 436dfbf5140239f4cb020b15fb345bee, type: 2}
     m_ScrollPosition: {x: 0, y: 0}
   stateMachineGraph: {fileID: 0}
   stateMachineGraphGUI: {fileID: 0}
@@ -519,7 +653,7 @@ MonoBehaviour:
   m_MiniTool: 0
   m_LockTracker:
     m_IsLocked: 0
-  m_CurrentEditor: 0
+  m_CurrentEditor: 1
   m_LayerEditor:
     m_SelectedLayerIndex: 0
 --- !u!114 &16
@@ -544,107 +678,134 @@ MonoBehaviour:
     serializedVersion: 2
     x: 2274
     y: 0
-    width: 718
-    height: 1139
+    width: 729
+    height: 1059
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
-  logPanelScroll: {x: 0, y: 0}
+  logPanelScroll: {x: 0, y: -416}
   logPanelSelectedIndex: -1
   logPanelAutoScroll: 1
-  currentFrame: 1644608
+  currentFrame: 1952812
   logs:
-    lastGrabbedIndex: 4
-    lastGrabbedCount: 5
-    proEntries: []
-    newEntries:
-    - logType: 5
+    lastGrabbedIndex: 0
+    lastGrabbedCount: 1
+    proEntries:
+    - logType: 1
       ignore: 0
       processed: 1
       tempFilterProcessed: 1
       remoteEndPoint: Local
       logPanelVisible: 1
       logPanelIndex: 0
-      logOutputHeight: -1
+      logOutputHeight: 27
       listIndex: 0
-      nativeIndex: 4
-      nativeIdentifier: 1234
-      originalLog: 'Assets\__Scripts\Characters\PlayerGlobalData.cs(38,23): warning
-        CS0108: ''PlayerGlobalData.rigidbody'' hides inherited member ''Component.rigidbody''.
-        Use the new keyword if hiding was intended.
-
-'
-      originalStackTrace: 'Assets\__Scripts\Characters\PlayerGlobalData.cs(38,23):
-        warning CS0108: ''PlayerGlobalData.rigidbody'' hides inherited member ''Component.rigidbody''.
-        Use the new keyword if hiding was intended.
-
-'
-      nativeFileName: Assets\__Scripts\Characters\PlayerGlobalData.cs
+      nativeIndex: 0
+      nativeIdentifier: 0
+      originalLog: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color>
+        REPORT \u25BA</color> Max overall simultaneous active Tweeners/Sequences:
+        1/1"
+      originalStackTrace: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color>
+        REPORT \u25BA</color> Max overall simultaneous active Tweeners/Sequences:
+        1/1\nUnityEngine.Debug:Log (object)\nDG.Tweening.Core.Debugger:LogReport
+        (object) (at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs:73)\nDG.Tweening.Core.DOTweenComponent:OnDestroy
+        () (at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs:132)\n"
+      nativeFileName: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs
       nativeFileNamePretty: 
-      nativeLineNumber: 38
+      nativeLineNumber: 73
       watchName: 
-      logText: '[CS0108] ''PlayerGlobalData.rigidbody'' hides inherited member ''Component.rigidbody''.
-        Use the new keyword if hiding was intended.'
-      logTruncatedText: '[CS0108] ''PlayerGlobalData.rigidbody'' hides inherited
-        member ''Component.rigidbody''. Use the new keyword if hiding was intended.'
-      logColumnText: 
+      logText: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color> REPORT
+        \u25BA</color> Max overall simultaneous active Tweeners/Sequences: 1/1"
+      logTruncatedText: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color>
+        REPORT \u25BA</color> Max overall simultaneous active Tweeners/Sequences:
+        1/1"
+      logColumnText: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color>
+        REPORT \u25BA</color> Max overall simultaneous active Tweeners/Sequences:
+        1/1"
       fileName: 
       className: 
       namespaceName: 
       lineCount: 1
-      hasSourceCode: 0
-      timeStamp: 21:56:30
+      hasSourceCode: 1
+      timeStamp: 11:43:42
       timeFrame: -1
       timeStampDateTimeNow: 
       instanceID: 0
       collapsedCount: 0
-      cachedHeight: -1
-      cachedHeightLogWidth: 0
+      cachedHeight: 34
+      cachedHeightLogWidth: 381
       stackEntries:
-      - fileName: Assets\__Scripts\Characters\PlayerGlobalData.cs
-        fileNameWithoutAssets: Assets\__Scripts\Characters\PlayerGlobalData.cs
-        fileNameWithoutAssetsPlusLineNumber: Assets\__Scripts\Characters\PlayerGlobalData.cs:38
-        fileNameWithoutPath: PlayerGlobalData.cs
-        fileNameWithoutPathPlusLineNumber: PlayerGlobalData.cs:38
-        fileNamePretty: PlayerGlobalData
+      - fileName: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs
+        fileNameWithoutAssets: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs
+        fileNameWithoutAssetsPlusLineNumber: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs:73
+        fileNameWithoutPath: Debugger.cs
+        fileNameWithoutPathPlusLineNumber: Debugger.cs:73
+        fileNamePretty: Debugger
         instanceID: -1
-        className: Compiler
-        methodName: Compiler
-        namespaceName: None
-        lineNumberString: 38
-        charNumber: 23
-        stackLabel: Compiler Warning
-        stackLabel2: ' at Assets\__Scripts\Characters\PlayerGlobalData.cs:38 column
-          23'
+        className: Debugger
+        methodName: LogReport
+        namespaceName: DG.Tweening.Core
+        lineNumberString: 73
+        charNumber: 0
+        stackLabel: Debugger.LogReport()
+        stackLabel2: ' at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs:73'
         stackLabel1Content:
-          m_Text: 
+          m_Text: Debugger.LogReport()
           m_Image: {fileID: 0}
           m_Tooltip: 
-        stackLabel1Width: 0
-        stackLabel1Height: 0
+        stackLabel1Width: 134
+        stackLabel1Height: 25
         stackLabel2Content:
-          m_Text: 
+          m_Text: ' at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs:73'
           m_Image: {fileID: 0}
           m_Tooltip: 
-        stackLabel2Width: 0
-        stackLabel2Height: 0
-        stackSourceLineHeight: 0
+        stackLabel2Width: 694
+        stackLabel2Height: 25
+        stackSourceLineHeight: 17
         sourceCode: []
-        sourceCodeUpdated: 0
+        sourceCodeUpdated: 1
+        showSource: 1
+      - fileName: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs
+        fileNameWithoutAssets: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs
+        fileNameWithoutAssetsPlusLineNumber: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs:132
+        fileNameWithoutPath: DOTweenComponent.cs
+        fileNameWithoutPathPlusLineNumber: DOTweenComponent.cs:132
+        fileNamePretty: DOTweenComponent
+        instanceID: -1
+        className: DOTweenComponent
+        methodName: OnDestroy
+        namespaceName: DG.Tweening.Core
+        lineNumberString: 132
+        charNumber: 0
+        stackLabel: DOTweenComponent.OnDestroy()
+        stackLabel2: ' at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs:132'
+        stackLabel1Content:
+          m_Text: DOTweenComponent.OnDestroy()
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        stackLabel1Width: 201
+        stackLabel1Height: 25
+        stackLabel2Content:
+          m_Text: ' at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs:132'
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        stackLabel2Width: 766
+        stackLabel2Height: 25
+        stackSourceLineHeight: 17
+        sourceCode: []
+        sourceCodeUpdated: 1
         showSource: 1
       ignoredStackEntries: []
-      lastMatchedCount: 0
-      belongsToFilters: []
-      belongsToStandardFilters: []
-      assignedTempFilter:
-        name: 
+      lastMatchedCount: 1
+      belongsToFilters:
+      - name: Log
         isEnabled: 1
-        collapsed: 0
-        itemGUID: 
+        collapsed: 1
+        itemGUID: 7f3c24bb-79d8-495c-a753-27183066508f
         filterName: 
         mainColor: {r: 1, g: 1, b: 1, a: 1}
-        isStandardFilter: 0
+        isStandardFilter: 1
         isTempFilter: 0
         filterOnly: 0
         useAdvancedColors: 0
@@ -662,186 +823,6 @@ MonoBehaviour:
         useIconSymbol: 0
         useIconLetter: 0
         useIconTexture: 0
-        filterFormatVersion: -1
-        iconColorize: 0
-        useAndOpForSearchList: 0
-        searchList:
-          list: []
-          selectionList: 0
-          collapsable: 1
-          collapsed: 0
-        iconLetter:
-          name: 
-          isEnabled: 1
-          collapsed: 0
-          itemGUID: 
-          iconType: 1
-          iconType2: 1
-          iconText: A
-          useIconTextFirstLetter: 1
-          useIconLogColor: 1
-          iconColor: {r: 1, g: 1, b: 1, a: 1}
-          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
-          iconTextureGUID: 
-          useIconShadow: 1
-          iconOffset: {x: 0, y: 0}
-          iconShadowOffset: {x: 0.5, y: 0.5}
-          iconSize: 13
-        iconSymbol:
-          name: 
-          isEnabled: 1
-          collapsed: 0
-          itemGUID: 
-          iconType: 1
-          iconType2: 1
-          iconText: A
-          useIconTextFirstLetter: 1
-          useIconLogColor: 1
-          iconColor: {r: 1, g: 1, b: 1, a: 1}
-          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
-          iconTextureGUID: 
-          useIconShadow: 1
-          iconOffset: {x: 0, y: 0}
-          iconShadowOffset: {x: 0.5, y: 0.5}
-          iconSize: 13
-        iconBackground:
-          name: 
-          isEnabled: 1
-          collapsed: 0
-          itemGUID: 
-          iconType: 1
-          iconType2: 1
-          iconText: A
-          useIconTextFirstLetter: 1
-          useIconLogColor: 1
-          iconColor: {r: 1, g: 1, b: 1, a: 1}
-          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
-          iconTextureGUID: 
-          useIconShadow: 1
-          iconOffset: {x: 0, y: 0}
-          iconShadowOffset: {x: 0.5, y: 0.5}
-          iconSize: 13
-        iconTexture:
-          name: 
-          isEnabled: 1
-          collapsed: 0
-          itemGUID: 
-          iconType: 1
-          iconType2: 1
-          iconText: A
-          useIconTextFirstLetter: 1
-          useIconLogColor: 1
-          iconColor: {r: 1, g: 1, b: 1, a: 1}
-          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
-          iconTextureGUID: 
-          useIconShadow: 1
-          iconOffset: {x: 0, y: 0}
-          iconShadowOffset: {x: 0.5, y: 0.5}
-          iconSize: 13
-        showInToolbar: 1
-        hideLabelInToolbar: 0
-        hideWhenNoMatches: 0
-    resetCompilerErrorEntries: 0
-    compilerErrorEntries:
-    - logType: 6
-      ignore: 0
-      processed: 1
-      tempFilterProcessed: 1
-      remoteEndPoint: Local
-      logPanelVisible: 1
-      logPanelIndex: 0
-      logOutputHeight: 27
-      listIndex: 0
-      nativeIndex: 3
-      nativeIdentifier: 1234
-      originalLog: 'Assets\__Scripts\Characters\Movement.cs(16,20): error CS0723:
-        Cannot declare a variable of static type ''Actions''
-
-'
-      originalStackTrace: 'Assets\__Scripts\Characters\Movement.cs(16,20): error
-        CS0723: Cannot declare a variable of static type ''Actions''
-
-'
-      nativeFileName: Assets\__Scripts\Characters\Movement.cs
-      nativeFileNamePretty: 
-      nativeLineNumber: 16
-      watchName: 
-      logText: Cannot declare a variable of static type 'Actions'
-      logTruncatedText: Cannot declare a variable of static type 'Actions'
-      logColumnText: Cannot declare a variable of static type 'Actions'
-      fileName: 
-      className: 
-      namespaceName: 
-      lineCount: 1
-      hasSourceCode: 1
-      timeStamp: 21:56:30
-      timeFrame: -1
-      timeStampDateTimeNow: 
-      instanceID: 0
-      collapsedCount: 0
-      cachedHeight: 19
-      cachedHeightLogWidth: 370
-      stackEntries:
-      - fileName: Assets\__Scripts\Characters\Movement.cs
-        fileNameWithoutAssets: Assets\__Scripts\Characters\Movement.cs
-        fileNameWithoutAssetsPlusLineNumber: Assets\__Scripts\Characters\Movement.cs:16
-        fileNameWithoutPath: Movement.cs
-        fileNameWithoutPathPlusLineNumber: Movement.cs:16
-        fileNamePretty: Movement
-        instanceID: -1
-        className: Compiler
-        methodName: Compiler
-        namespaceName: None
-        lineNumberString: 16
-        charNumber: 20
-        stackLabel: Compiler Error
-        stackLabel2: ' at Assets\__Scripts\Characters\Movement.cs:16 column 20'
-        stackLabel1Content:
-          m_Text: Compiler Error
-          m_Image: {fileID: 0}
-          m_Tooltip: 
-        stackLabel1Width: 85
-        stackLabel1Height: 25
-        stackLabel2Content:
-          m_Text: ' at Assets\__Scripts\Characters\Movement.cs:16 column 20'
-          m_Image: {fileID: 0}
-          m_Tooltip: 
-        stackLabel2Width: 355
-        stackLabel2Height: 25
-        stackSourceLineHeight: 17
-        sourceCode:
-        - '14:   public Transform greenBase;'
-        - '16:   public Actions action;'
-        - '18:   [SerializeField]'
-        sourceCodeUpdated: 1
-        showSource: 1
-      ignoredStackEntries: []
-      lastMatchedCount: 0
-      belongsToFilters:
-      - name: Error
-        isEnabled: 1
-        collapsed: 1
-        itemGUID: 4a223a76-eb7b-4abd-b8bd-26502829451e
-        filterName: 
-        mainColor: {r: 1, g: 0, b: 0, a: 0.7}
-        isStandardFilter: 1
-        isTempFilter: 0
-        filterOnly: 0
-        useAdvancedColors: 1
-        customTextColor: {r: 1, g: 1, b: 1, a: 1}
-        customBackgroundColor: {r: 1, g: 0, b: 0, a: 0.7}
-        swallowStandard: 1
-        standardCanSwallow: 0
-        overrideStandardColors: 1
-        overrideStandardIcon: 1
-        collapseIconBackground: 0
-        collapseIconSymbol: 0
-        collapseIconLetter: 0
-        collapseIconTexture: 0
-        useIconBackground: 1
-        useIconSymbol: 0
-        useIconLetter: 1
-        useIconTexture: 0
         filterFormatVersion: 1
         iconColorize: 0
         useAndOpForSearchList: 0
@@ -850,7 +831,7 @@ MonoBehaviour:
           - name: 
             isEnabled: 1
             collapsed: 0
-            itemGUID: 5ac23822-eda9-484f-8289-61e822da24db
+            itemGUID: eefd5b05-1194-46ae-9bcb-cc76c7652c9e
             searchString: <Any>
             searchType: 1
             removeSearchStringFromLog: 0
@@ -859,13 +840,8 @@ MonoBehaviour:
               - name: 
                 isEnabled: 1
                 collapsed: 0
-                itemGUID: 34852459-04ea-4e2a-85b7-d939fe919224
-                logType: 3
-              - name: 
-                isEnabled: 1
-                collapsed: 0
-                itemGUID: dcb3e8c1-4cd7-4e65-a2b4-2133085670eb
-                logType: 6
+                itemGUID: 7d9ec938-38f9-46a2-b42f-6b424a3652f6
+                logType: 1
               selectionList: 0
               collapsable: 1
               collapsed: 0
@@ -874,7 +850,7 @@ MonoBehaviour:
               - name: 
                 isEnabled: 1
                 collapsed: 0
-                itemGUID: 30243bda-31a5-46e1-82c2-b0248549b9b2
+                itemGUID: 68bd1a1c-94bf-493c-bb4b-463c2f5ab2f1
                 columnType: 1
               selectionList: 0
               collapsable: 1
@@ -892,18 +868,18 @@ MonoBehaviour:
           isEnabled: 1
           collapsed: 0
           itemGUID: 
-          iconType: 3
+          iconType: 1
           iconType2: 1
-          iconText: X
-          useIconTextFirstLetter: 0
-          useIconLogColor: 0
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
           iconColor: {r: 1, g: 1, b: 1, a: 1}
           iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
           iconTextureGUID: 
           useIconShadow: 1
           iconOffset: {x: 0, y: 0}
           iconShadowOffset: {x: 0.5, y: 0.5}
-          iconSize: 7
+          iconSize: 13
         iconSymbol:
           name: 
           isEnabled: 1
@@ -932,7 +908,7 @@ MonoBehaviour:
           useIconTextFirstLetter: 1
           useIconLogColor: 1
           iconColor: {r: 1, g: 1, b: 1, a: 1}
-          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
+          iconBuiltInID: BACKGROUNDS_ECPLOGICON
           iconTextureGUID: 
           useIconShadow: 1
           iconOffset: {x: 0, y: 0}
@@ -957,8 +933,143 @@ MonoBehaviour:
           iconSize: 13
         showInToolbar: 1
         hideLabelInToolbar: 0
-        hideWhenNoMatches: 1
-      belongsToStandardFilters: []
+        hideWhenNoMatches: 0
+      belongsToStandardFilters:
+      - name: Log
+        isEnabled: 1
+        collapsed: 1
+        itemGUID: 7f3c24bb-79d8-495c-a753-27183066508f
+        filterName: 
+        mainColor: {r: 1, g: 1, b: 1, a: 1}
+        isStandardFilter: 1
+        isTempFilter: 0
+        filterOnly: 0
+        useAdvancedColors: 0
+        customTextColor: {r: 1, g: 1, b: 1, a: 1}
+        customBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+        swallowStandard: 1
+        standardCanSwallow: 0
+        overrideStandardColors: 1
+        overrideStandardIcon: 1
+        collapseIconBackground: 0
+        collapseIconSymbol: 0
+        collapseIconLetter: 0
+        collapseIconTexture: 0
+        useIconBackground: 1
+        useIconSymbol: 0
+        useIconLetter: 0
+        useIconTexture: 0
+        filterFormatVersion: 1
+        iconColorize: 0
+        useAndOpForSearchList: 0
+        searchList:
+          list:
+          - name: 
+            isEnabled: 1
+            collapsed: 0
+            itemGUID: eefd5b05-1194-46ae-9bcb-cc76c7652c9e
+            searchString: <Any>
+            searchType: 1
+            removeSearchStringFromLog: 0
+            logTypeList:
+              list:
+              - name: 
+                isEnabled: 1
+                collapsed: 0
+                itemGUID: 7d9ec938-38f9-46a2-b42f-6b424a3652f6
+                logType: 1
+              selectionList: 0
+              collapsable: 1
+              collapsed: 0
+            columnTypeList:
+              list:
+              - name: 
+                isEnabled: 1
+                collapsed: 0
+                itemGUID: 68bd1a1c-94bf-493c-bb4b-463c2f5ab2f1
+                columnType: 1
+              selectionList: 0
+              collapsable: 1
+              collapsed: 0
+            sourceCodeList:
+              list: []
+              selectionList: 0
+              collapsable: 1
+              collapsed: 0
+          selectionList: 0
+          collapsable: 1
+          collapsed: 0
+        iconLetter:
+          name: 
+          isEnabled: 1
+          collapsed: 0
+          itemGUID: 
+          iconType: 1
+          iconType2: 1
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
+          iconColor: {r: 1, g: 1, b: 1, a: 1}
+          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
+          iconTextureGUID: 
+          useIconShadow: 1
+          iconOffset: {x: 0, y: 0}
+          iconShadowOffset: {x: 0.5, y: 0.5}
+          iconSize: 13
+        iconSymbol:
+          name: 
+          isEnabled: 1
+          collapsed: 0
+          itemGUID: 
+          iconType: 1
+          iconType2: 1
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
+          iconColor: {r: 1, g: 1, b: 1, a: 1}
+          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
+          iconTextureGUID: 
+          useIconShadow: 1
+          iconOffset: {x: 0, y: 0}
+          iconShadowOffset: {x: 0.5, y: 0.5}
+          iconSize: 13
+        iconBackground:
+          name: 
+          isEnabled: 1
+          collapsed: 0
+          itemGUID: 
+          iconType: 1
+          iconType2: 1
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
+          iconColor: {r: 1, g: 1, b: 1, a: 1}
+          iconBuiltInID: BACKGROUNDS_ECPLOGICON
+          iconTextureGUID: 
+          useIconShadow: 1
+          iconOffset: {x: 0, y: 0}
+          iconShadowOffset: {x: 0.5, y: 0.5}
+          iconSize: 13
+        iconTexture:
+          name: 
+          isEnabled: 1
+          collapsed: 0
+          itemGUID: 
+          iconType: 1
+          iconType2: 1
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
+          iconColor: {r: 1, g: 1, b: 1, a: 1}
+          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
+          iconTextureGUID: 
+          useIconShadow: 1
+          iconOffset: {x: 0, y: 0}
+          iconShadowOffset: {x: 0.5, y: 0.5}
+          iconSize: 13
+        showInToolbar: 1
+        hideLabelInToolbar: 0
+        hideWhenNoMatches: 0
       assignedTempFilter:
         name: 
         isEnabled: 1
@@ -1063,9 +1174,12 @@ MonoBehaviour:
         showInToolbar: 1
         hideLabelInToolbar: 0
         hideWhenNoMatches: 0
+    newEntries: []
+    resetCompilerErrorEntries: 1
+    compilerErrorEntries: []
     timeFrames: 
     _filteredEntries:
-    - logType: 6
+    - logType: 1
       ignore: 0
       processed: 1
       tempFilterProcessed: 1
@@ -1074,84 +1188,116 @@ MonoBehaviour:
       logPanelIndex: 0
       logOutputHeight: 27
       listIndex: 0
-      nativeIndex: 3
-      nativeIdentifier: 1234
-      originalLog: 'Assets\__Scripts\Characters\Movement.cs(16,20): error CS0723:
-        Cannot declare a variable of static type ''Actions''
-
-'
-      originalStackTrace: 'Assets\__Scripts\Characters\Movement.cs(16,20): error
-        CS0723: Cannot declare a variable of static type ''Actions''
-
-'
-      nativeFileName: Assets\__Scripts\Characters\Movement.cs
+      nativeIndex: 0
+      nativeIdentifier: 0
+      originalLog: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color>
+        REPORT \u25BA</color> Max overall simultaneous active Tweeners/Sequences:
+        1/1"
+      originalStackTrace: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color>
+        REPORT \u25BA</color> Max overall simultaneous active Tweeners/Sequences:
+        1/1\nUnityEngine.Debug:Log (object)\nDG.Tweening.Core.Debugger:LogReport
+        (object) (at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs:73)\nDG.Tweening.Core.DOTweenComponent:OnDestroy
+        () (at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs:132)\n"
+      nativeFileName: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs
       nativeFileNamePretty: 
-      nativeLineNumber: 16
+      nativeLineNumber: 73
       watchName: 
-      logText: Cannot declare a variable of static type 'Actions'
-      logTruncatedText: Cannot declare a variable of static type 'Actions'
-      logColumnText: Cannot declare a variable of static type 'Actions'
+      logText: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color> REPORT
+        \u25BA</color> Max overall simultaneous active Tweeners/Sequences: 1/1"
+      logTruncatedText: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color>
+        REPORT \u25BA</color> Max overall simultaneous active Tweeners/Sequences:
+        1/1"
+      logColumnText: "<color=#00B500FF><color=#0099bc><b>DOTWEEN \u25BA </b></color>
+        REPORT \u25BA</color> Max overall simultaneous active Tweeners/Sequences:
+        1/1"
       fileName: 
       className: 
       namespaceName: 
       lineCount: 1
       hasSourceCode: 1
-      timeStamp: 21:56:30
+      timeStamp: 11:43:42
       timeFrame: -1
       timeStampDateTimeNow: 
       instanceID: 0
       collapsedCount: 0
-      cachedHeight: 19
-      cachedHeightLogWidth: 370
+      cachedHeight: 34
+      cachedHeightLogWidth: 381
       stackEntries:
-      - fileName: Assets\__Scripts\Characters\Movement.cs
-        fileNameWithoutAssets: Assets\__Scripts\Characters\Movement.cs
-        fileNameWithoutAssetsPlusLineNumber: Assets\__Scripts\Characters\Movement.cs:16
-        fileNameWithoutPath: Movement.cs
-        fileNameWithoutPathPlusLineNumber: Movement.cs:16
-        fileNamePretty: Movement
+      - fileName: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs
+        fileNameWithoutAssets: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs
+        fileNameWithoutAssetsPlusLineNumber: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs:73
+        fileNameWithoutPath: Debugger.cs
+        fileNameWithoutPathPlusLineNumber: Debugger.cs:73
+        fileNamePretty: Debugger
         instanceID: -1
-        className: Compiler
-        methodName: Compiler
-        namespaceName: None
-        lineNumberString: 16
-        charNumber: 20
-        stackLabel: Compiler Error
-        stackLabel2: ' at Assets\__Scripts\Characters\Movement.cs:16 column 20'
+        className: Debugger
+        methodName: LogReport
+        namespaceName: DG.Tweening.Core
+        lineNumberString: 73
+        charNumber: 0
+        stackLabel: Debugger.LogReport()
+        stackLabel2: ' at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs:73'
         stackLabel1Content:
-          m_Text: Compiler Error
+          m_Text: Debugger.LogReport()
           m_Image: {fileID: 0}
           m_Tooltip: 
-        stackLabel1Width: 85
+        stackLabel1Width: 134
         stackLabel1Height: 25
         stackLabel2Content:
-          m_Text: ' at Assets\__Scripts\Characters\Movement.cs:16 column 20'
+          m_Text: ' at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/Debugger.cs:73'
           m_Image: {fileID: 0}
           m_Tooltip: 
-        stackLabel2Width: 355
+        stackLabel2Width: 694
         stackLabel2Height: 25
         stackSourceLineHeight: 17
-        sourceCode:
-        - '14:   public Transform greenBase;'
-        - '16:   public Actions action;'
-        - '18:   [SerializeField]'
+        sourceCode: []
+        sourceCodeUpdated: 1
+        showSource: 1
+      - fileName: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs
+        fileNameWithoutAssets: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs
+        fileNameWithoutAssetsPlusLineNumber: D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs:132
+        fileNameWithoutPath: DOTweenComponent.cs
+        fileNameWithoutPathPlusLineNumber: DOTweenComponent.cs:132
+        fileNamePretty: DOTweenComponent
+        instanceID: -1
+        className: DOTweenComponent
+        methodName: OnDestroy
+        namespaceName: DG.Tweening.Core
+        lineNumberString: 132
+        charNumber: 0
+        stackLabel: DOTweenComponent.OnDestroy()
+        stackLabel2: ' at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs:132'
+        stackLabel1Content:
+          m_Text: DOTweenComponent.OnDestroy()
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        stackLabel1Width: 201
+        stackLabel1Height: 25
+        stackLabel2Content:
+          m_Text: ' at D:/DG/_Develop/__UNITY3_CLASSES/_Holoville/__DOTween/_DOTween.Assembly/DOTween/Core/DOTweenComponent.cs:132'
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        stackLabel2Width: 766
+        stackLabel2Height: 25
+        stackSourceLineHeight: 17
+        sourceCode: []
         sourceCodeUpdated: 1
         showSource: 1
       ignoredStackEntries: []
-      lastMatchedCount: 0
+      lastMatchedCount: 1
       belongsToFilters:
-      - name: Error
+      - name: Log
         isEnabled: 1
         collapsed: 1
-        itemGUID: 4a223a76-eb7b-4abd-b8bd-26502829451e
+        itemGUID: 7f3c24bb-79d8-495c-a753-27183066508f
         filterName: 
-        mainColor: {r: 1, g: 0, b: 0, a: 0.7}
+        mainColor: {r: 1, g: 1, b: 1, a: 1}
         isStandardFilter: 1
         isTempFilter: 0
         filterOnly: 0
-        useAdvancedColors: 1
+        useAdvancedColors: 0
         customTextColor: {r: 1, g: 1, b: 1, a: 1}
-        customBackgroundColor: {r: 1, g: 0, b: 0, a: 0.7}
+        customBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
         swallowStandard: 1
         standardCanSwallow: 0
         overrideStandardColors: 1
@@ -1162,7 +1308,7 @@ MonoBehaviour:
         collapseIconTexture: 0
         useIconBackground: 1
         useIconSymbol: 0
-        useIconLetter: 1
+        useIconLetter: 0
         useIconTexture: 0
         filterFormatVersion: 1
         iconColorize: 0
@@ -1172,7 +1318,7 @@ MonoBehaviour:
           - name: 
             isEnabled: 1
             collapsed: 0
-            itemGUID: 5ac23822-eda9-484f-8289-61e822da24db
+            itemGUID: eefd5b05-1194-46ae-9bcb-cc76c7652c9e
             searchString: <Any>
             searchType: 1
             removeSearchStringFromLog: 0
@@ -1181,13 +1327,8 @@ MonoBehaviour:
               - name: 
                 isEnabled: 1
                 collapsed: 0
-                itemGUID: 34852459-04ea-4e2a-85b7-d939fe919224
-                logType: 3
-              - name: 
-                isEnabled: 1
-                collapsed: 0
-                itemGUID: dcb3e8c1-4cd7-4e65-a2b4-2133085670eb
-                logType: 6
+                itemGUID: 7d9ec938-38f9-46a2-b42f-6b424a3652f6
+                logType: 1
               selectionList: 0
               collapsable: 1
               collapsed: 0
@@ -1196,7 +1337,7 @@ MonoBehaviour:
               - name: 
                 isEnabled: 1
                 collapsed: 0
-                itemGUID: 30243bda-31a5-46e1-82c2-b0248549b9b2
+                itemGUID: 68bd1a1c-94bf-493c-bb4b-463c2f5ab2f1
                 columnType: 1
               selectionList: 0
               collapsable: 1
@@ -1214,18 +1355,18 @@ MonoBehaviour:
           isEnabled: 1
           collapsed: 0
           itemGUID: 
-          iconType: 3
+          iconType: 1
           iconType2: 1
-          iconText: X
-          useIconTextFirstLetter: 0
-          useIconLogColor: 0
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
           iconColor: {r: 1, g: 1, b: 1, a: 1}
           iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
           iconTextureGUID: 
           useIconShadow: 1
           iconOffset: {x: 0, y: 0}
           iconShadowOffset: {x: 0.5, y: 0.5}
-          iconSize: 7
+          iconSize: 13
         iconSymbol:
           name: 
           isEnabled: 1
@@ -1254,7 +1395,7 @@ MonoBehaviour:
           useIconTextFirstLetter: 1
           useIconLogColor: 1
           iconColor: {r: 1, g: 1, b: 1, a: 1}
-          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
+          iconBuiltInID: BACKGROUNDS_ECPLOGICON
           iconTextureGUID: 
           useIconShadow: 1
           iconOffset: {x: 0, y: 0}
@@ -1279,8 +1420,143 @@ MonoBehaviour:
           iconSize: 13
         showInToolbar: 1
         hideLabelInToolbar: 0
-        hideWhenNoMatches: 1
-      belongsToStandardFilters: []
+        hideWhenNoMatches: 0
+      belongsToStandardFilters:
+      - name: Log
+        isEnabled: 1
+        collapsed: 1
+        itemGUID: 7f3c24bb-79d8-495c-a753-27183066508f
+        filterName: 
+        mainColor: {r: 1, g: 1, b: 1, a: 1}
+        isStandardFilter: 1
+        isTempFilter: 0
+        filterOnly: 0
+        useAdvancedColors: 0
+        customTextColor: {r: 1, g: 1, b: 1, a: 1}
+        customBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+        swallowStandard: 1
+        standardCanSwallow: 0
+        overrideStandardColors: 1
+        overrideStandardIcon: 1
+        collapseIconBackground: 0
+        collapseIconSymbol: 0
+        collapseIconLetter: 0
+        collapseIconTexture: 0
+        useIconBackground: 1
+        useIconSymbol: 0
+        useIconLetter: 0
+        useIconTexture: 0
+        filterFormatVersion: 1
+        iconColorize: 0
+        useAndOpForSearchList: 0
+        searchList:
+          list:
+          - name: 
+            isEnabled: 1
+            collapsed: 0
+            itemGUID: eefd5b05-1194-46ae-9bcb-cc76c7652c9e
+            searchString: <Any>
+            searchType: 1
+            removeSearchStringFromLog: 0
+            logTypeList:
+              list:
+              - name: 
+                isEnabled: 1
+                collapsed: 0
+                itemGUID: 7d9ec938-38f9-46a2-b42f-6b424a3652f6
+                logType: 1
+              selectionList: 0
+              collapsable: 1
+              collapsed: 0
+            columnTypeList:
+              list:
+              - name: 
+                isEnabled: 1
+                collapsed: 0
+                itemGUID: 68bd1a1c-94bf-493c-bb4b-463c2f5ab2f1
+                columnType: 1
+              selectionList: 0
+              collapsable: 1
+              collapsed: 0
+            sourceCodeList:
+              list: []
+              selectionList: 0
+              collapsable: 1
+              collapsed: 0
+          selectionList: 0
+          collapsable: 1
+          collapsed: 0
+        iconLetter:
+          name: 
+          isEnabled: 1
+          collapsed: 0
+          itemGUID: 
+          iconType: 1
+          iconType2: 1
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
+          iconColor: {r: 1, g: 1, b: 1, a: 1}
+          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
+          iconTextureGUID: 
+          useIconShadow: 1
+          iconOffset: {x: 0, y: 0}
+          iconShadowOffset: {x: 0.5, y: 0.5}
+          iconSize: 13
+        iconSymbol:
+          name: 
+          isEnabled: 1
+          collapsed: 0
+          itemGUID: 
+          iconType: 1
+          iconType2: 1
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
+          iconColor: {r: 1, g: 1, b: 1, a: 1}
+          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
+          iconTextureGUID: 
+          useIconShadow: 1
+          iconOffset: {x: 0, y: 0}
+          iconShadowOffset: {x: 0.5, y: 0.5}
+          iconSize: 13
+        iconBackground:
+          name: 
+          isEnabled: 1
+          collapsed: 0
+          itemGUID: 
+          iconType: 1
+          iconType2: 1
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
+          iconColor: {r: 1, g: 1, b: 1, a: 1}
+          iconBuiltInID: BACKGROUNDS_ECPLOGICON
+          iconTextureGUID: 
+          useIconShadow: 1
+          iconOffset: {x: 0, y: 0}
+          iconShadowOffset: {x: 0.5, y: 0.5}
+          iconSize: 13
+        iconTexture:
+          name: 
+          isEnabled: 1
+          collapsed: 0
+          itemGUID: 
+          iconType: 1
+          iconType2: 1
+          iconText: A
+          useIconTextFirstLetter: 1
+          useIconLogColor: 1
+          iconColor: {r: 1, g: 1, b: 1, a: 1}
+          iconBuiltInID: BACKGROUNDS_ECPBGROUNDEDSQUARE
+          iconTextureGUID: 
+          useIconShadow: 1
+          iconOffset: {x: 0, y: 0}
+          iconShadowOffset: {x: 0.5, y: 0.5}
+          iconSize: 13
+        showInToolbar: 1
+        hideLabelInToolbar: 0
+        hideWhenNoMatches: 0
       assignedTempFilter:
         name: 
         isEnabled: 1
@@ -1405,10 +1681,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2994
+    x: 3005
     y: 0
-    width: 525
-    height: 1139
+    width: 514
+    height: 1059
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1426,22 +1702,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/HeroEditor4D/Common/Animation/Lower
+    - Assets/__Scripts/Characters/Enemies
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/HeroEditor4D/Common/Animation/Lower
+  - Assets/__Scripts/Characters/Enemies
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Mark\Unity\Legends 2D RPG
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: de140100
-    m_LastClickedID: 70878
-    m_ExpandedIDs: 000000008ed2000090d20000381401003a1401003c1401003e14010040140100421401004414010046140100481401004a1401004c1401004e14010050140100521401005414010056140100581401005a1401005c1401005e1401006014010000ca9a3b
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 162f0100
+    m_LastClickedID: 77590
+    m_ExpandedIDs: 00000000a8d20000aad200007a1501007c1501007e15010080150100821501008415010086150100881501008a1501008c1501008e15010090150100921501009415010096150100981501009a1501009c1501009e150100a0150100a2150100c4150100f2150100081601000c160100201601005816010066160100701601009c190100d0360100a6510100dc660100de6d01005e940100be96010072a801004abb0100bcec0100a4b2140090c714009cc71400bcc7140000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1469,7 +1745,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000008ed2000090d20000381401003a1401003c1401003e14010040140100421401004414010046140100481401004a1401004c1401004e14010050140100521401005414010056140100581401005a1401005c1401005e14010060140100
+    m_ExpandedIDs: 00000000a8d20000aad200007a1501007c1501007e15010080150100821501008415010086150100881501008a1501008c1501008e15010090150100921501009415010096150100981501009a1501009c1501009e150100a0150100a2150100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1497,7 +1773,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000201c0100ac5f0100d6ca000008c30000b6e90000ae410100b41d0100563a0100cc790100a40f01000472010088670100b248010006360100ae66010052f400007c0c0100325101005e250100de480100d073010072190100682601005e2801001e50010002e70000126201001e3701006c4f0100a03f0100d64b01005c260100e2740100d0e7000038e70000ce1d01009ece000022c3000014c30000d00f520010f002004acc000072cd0000e4cb0300e8cb0300eccb0300f0cb0300f4cb03003acc03003ecc030042cc030046cc03004acc030090cb030094cb030098cb03009ccb0300a0cb03003acb03003ecb030042cb030046cb03004acb0300b015010020ed00001ce03a004c353b00c24d0300f25f03000e4203004256030000000000
+    m_ExpandedInstanceIDs: c6230000201c0100ac5f0100d6ca000008c30000b6e90000ae410100b41d0100563a0100cc790100a40f01000472010088670100b248010006360100ae66010052f400007c0c0100325101005e250100de480100d073010072190100682601005e2801001e50010002e70000126201001e3701006c4f0100a03f0100d64b01005c260100e2740100d0e7000038e70000ce1d01009ece000022c3000014c30000d00f520010f002004acc000072cd0000e4cb0300e8cb0300eccb0300f0cb0300f4cb03003acc03003ecc030042cc030046cc03004acc030090cb030094cb030098cb03009ccb0300a0cb03003acb03003ecb030042cb030046cb03004acb0300b015010020ed00001ce03a004c353b00c24d0300f25f03000e420300425603000000000050e40100f4b50100188701000ef90000389c0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1524,7 +1800,7 @@ MonoBehaviour:
     m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 16
   m_SkipHiddenPackages: 0
-  m_DirectoriesAreaWidth: 191
+  m_DirectoriesAreaWidth: 236
 --- !u!114 &18
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1548,7 +1824,7 @@ MonoBehaviour:
     x: 1920
     y: 0
     width: 353
-    height: 1139
+    height: 1059
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1556,9 +1832,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 68f4ffff
-      m_LastClickedID: -2968
-      m_ExpandedIDs: a2edfeffced8ffff32f0ffff3cf0ffff68f4ffff08fbffff2c71000024740000dc740000b677000070890000508a0000488b0000c4b400000a2602008e7d0300
+      m_SelectedIDs: c277efff
+      m_LastClickedID: -1083454
+      m_ExpandedIDs: da77efff0899efffecf3efff4a13f1ff5413f1ff5e13f1ff7613f1ff3827f5ff3a27f5ff1e6ef5ff826ef5ff866ef5ff866ff5ffe211fcffcea7fcff26c0fcff0af9fcff0cf9fcff16f9fcffdc6cfdff0c6ffdff186ffdff266ffdffce74fdff2278fdffaa78fdff587efdffe47efdff5e7ffdfffe7ffdff7e80fdffd881fdff5282fdff0e83fdff3283fdffec83fdffce87fdffea89fdff808bfdffb894fdff4a05feff6c19feff1427feffbe2efeffa2f3ffff08fbffffec74000044ad0000fc241200e0281200dc2a1200322f120038301200443112001c3412007c4412004e471200fc4d1200ea511200665312001c551200985b12006a5e12002e5f120006611200b271120046741200da741200f2791200967d1200ca8412008c881200a2301500
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1604,8 +1880,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 73
-    width: 1201
-    height: 623
+    width: 1353
+    height: 488
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1645,7 +1921,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -1654,23 +1930,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 1201
-      height: 602
-    m_Scale: {x: 0.50166667, y: 0.50166667}
-    m_Translation: {x: 600.5, y: 301}
+      width: 1353
+      height: 467
+    m_Scale: {x: 0.38916665, y: 0.38916665}
+    m_Translation: {x: 676.5, y: 233.49998}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -1197.01
+      x: -1738.3298
       y: -600
-      width: 2394.02
+      width: 3476.6597
       height: 1200
     m_MinimalGUI: 1
-  m_defaultScale: 0.50166667
-  m_LastWindowPixelSize: {x: 1201, y: 623}
+  m_defaultScale: 0.38916665
+  m_LastWindowPixelSize: {x: 1353, y: 488}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000001000000000000
@@ -1698,8 +1974,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 73
-    width: 1201
-    height: 623
+    width: 1353
+    height: 489
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1923,9 +2199,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -12.634549, y: -3.38442, z: 0.037886385}
+    m_Target: {x: -11.532379, y: 1.5553612, z: 0.054589182}
     speed: 2
-    m_Value: {x: -12.634549, y: -3.38442, z: 0.037886385}
+    m_Value: {x: -11.532379, y: 1.5553612, z: 0.054589182}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1976,9 +2252,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 3.3141055
+    m_Target: 4.5411024
     speed: 2
-    m_Value: 3.3141055
+    m_Value: 4.5411024
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -2024,16 +2300,16 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 534
-    width: 1201
-    height: 465
+    y: 583
+    width: 1353
+    height: 416
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 35212
+  m_LastSelectedObjectID: 1198428
 --- !u!114 &22
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -2181,7 +2457,7 @@ MonoBehaviour:
       oldMaxSizes: 
       oldSplitSize: 0
     m_HorizontalSplitter:
-      ID: 3892
+      ID: 30
       splitterInitialOffset: 0
       currentActiveSplitter: -1
       realSizes:
@@ -2230,9 +2506,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1202
+    x: 1354
     y: 73
-    width: 717
+    width: 565
     height: 926
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -2241,11 +2517,11 @@ MonoBehaviour:
   m_ObjectsLockedBeforeSerialization: []
   m_InstanceIDsLockedBeforeSerialization: 
   m_PreviewResizer:
-    m_CachedPref: 151
+    m_CachedPref: 202
     m_ControlHash: 1412526313
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 432
+  m_LastVerticalScrollValue: 540
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:

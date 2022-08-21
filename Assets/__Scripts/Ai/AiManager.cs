@@ -7,6 +7,7 @@ public class AiManager : SingletonMonobehaviour<AiManager>
 {
     [SerializeField] private AIPath aiPath;
     private AstarPath path;
+    public bool deBugging;
 
     private void Start()
     {
@@ -15,7 +16,7 @@ public class AiManager : SingletonMonobehaviour<AiManager>
         Debug.Log($"Active scan completed");
         foreach (NavGraph t in path.data.graphs)
         {
-            Debug.Log($"Graph name: {t.name} | Index: {path.data.GetGraphIndex(t)}");
+            if (deBugging) { Debug.Log($"Graph name: {t.name} | Index: {path.data.GetGraphIndex(t)}"); }
         }
     }
 

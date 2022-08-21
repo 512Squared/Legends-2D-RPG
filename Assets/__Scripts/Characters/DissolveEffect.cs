@@ -1,0 +1,38 @@
+﻿using UnityEngine;
+
+public class DissolveEffect : MonoBehaviour
+{
+    [SerializeField] private Material material;
+
+    private float dissolveAmount;
+    [SerializeField] protected bool isDissolving;
+    private static readonly int DissolveAmount = Shader.PropertyToID("_DissolveAmount");
+    private float dissolveSpeed;
+
+    private void Update()
+    {
+        if (isDissolving)
+        {
+            dissolveAmount = Mathf.Clamp01(dissolveAmount + dissolveSpeed * Time.deltaTime);
+            material.SetFloat(DissolveAmount, dissolveAmount);
+        }
+        
+        else 
+        {
+            dissolveAmount = Mathf.Clamp01(dissolveAmount - dissolveSpeed * Time.deltaTime);
+            material.SetFloat(DissolveAmount, dissolveAmount);
+        }
+    }
+
+    public void StartDissolve(float dissolveSpeed)
+    {
+        isDissolving = true;
+        this.dissolveSpeed = dissolveSpeed;
+    }
+    
+    public void StopDissolve(float dissolveSpeed)
+    {
+        isDissolving = false;
+        this.dissolveSpeed = dissolveSpeed;
+    }
+}

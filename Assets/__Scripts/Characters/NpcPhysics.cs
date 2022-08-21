@@ -5,9 +5,6 @@ public class NpcPhysics : MonoBehaviour
     private Vector3 bottomLeftEdge;
     private Vector3 topRightEdge;
 
-    public float speed;
-
-    public float changeTime;
 
     private int direction = 1;
     public bool startLeft;

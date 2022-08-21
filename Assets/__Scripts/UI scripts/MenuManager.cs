@@ -2112,6 +2112,5 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public void DeathScene()
     {
         youDied.gameObject.SetActive(true);
-        youDied.DOFaceFade(255, 10f);
     }
 }
