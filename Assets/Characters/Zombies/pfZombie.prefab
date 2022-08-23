@@ -486,28 +486,32 @@ MonoBehaviour:
   hitPoints: 100
   guid: 
   homeScene: 1
-  attackAnimationsRange: 0
-  attackDamageRadius: 0
-  damageAmount: 30
+  attackAnimationsRange: 1
+  attackDamageRadius: 1
+  damageAmount: 15
   isInChaseRange: 0
   isInAttackRange: 0
+  crosshairsOn: 0
   anim: {fileID: 2643366380071398811}
   spriteRenderer: {fileID: 2643366380071398806}
   capsuleCollider: {fileID: 1596754939}
   target: {fileID: 0}
   healthBar: {fileID: 2660892325027144594}
+  dissolveEffect: {fileID: 5362098722902985766}
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8
-  offsetY: 0.9
-  offsetX: 0.98
+  offsetY: 1
+  offsetX: 0.95
   hitBonus: 10
   positions: []
   playerList: []
   positionList: []
+  isPaused: 0
+  dissolveSpeed: 0.8
 --- !u!114 &5362098722871272455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,8 +551,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3e87516d4d48158f7134e7711cfaf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 34169a42025092a4793ba5864a4744ef, type: 2}
   isDissolving: 0
+  sprite: {fileID: 2643366380071398806}
 --- !u!114 &2660892325027144594
 MonoBehaviour:
   m_ObjectHideFlags: 0

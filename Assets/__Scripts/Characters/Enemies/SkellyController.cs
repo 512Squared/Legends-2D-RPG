@@ -61,6 +61,7 @@ public class SkellyController : MonoBehaviour, IDamageable, ISaveable
 
     [Header("Components")]
     [SerializeField] private Animator anim;
+
     [SerializeField] private LayerManager layerManager;
     [SerializeField] private CapsuleCollider2D capsuleCollider;
     [SerializeField] private Transform target;
@@ -208,7 +209,7 @@ public class SkellyController : MonoBehaviour, IDamageable, ISaveable
         aiPath.destination = GetClosestTarget();
         aiPath.SearchPath();
         aiPath.maxSpeed = speed;
-        if (IsDead) { aiPath.canMove = false; }
+        if (IsAlive) { aiPath.canMove = false; }
     }
 
     private void Attacking()
@@ -317,6 +318,7 @@ public class SkellyController : MonoBehaviour, IDamageable, ISaveable
                     {
                         crosshairs.transform.position = target.position;
                     }
+
                     return aiTarget.transform.position;
                 }
 
@@ -346,7 +348,7 @@ public class SkellyController : MonoBehaviour, IDamageable, ISaveable
             if (node.Walkable)
             {
                 Vector3 pos = (Vector3)node.position;
-                Debug.Log($"New random point found: {pos} | Scene: {GameManager.Instance.objectInt}");
+                Debug.Log($"New random point found: {pos} | Scene: {GameManager.Instance.sceneIndex}");
 
                 return pos;
             }
@@ -400,13 +402,14 @@ public class SkellyController : MonoBehaviour, IDamageable, ISaveable
         {
             hitPoints -= damage;
             if (hitPoints < 0) { hitPoints = 0; }
+
             healthBar.SetHealth(hitPoints);
         }
 
         if (hitPoints <= 0 && isAlive)
         {
             isAlive = false;
-            IsDead = true;
+            IsAlive = true;
             SpawnEnemies.Instance.SpawnSkelly();
             DeathDissolve();
         }
@@ -420,7 +423,7 @@ public class SkellyController : MonoBehaviour, IDamageable, ISaveable
     public string Combatant => "Zombie";
 
 
-    public bool IsDead { get; set; }
+    public bool IsAlive { get; set; }
 
     #endregion
 

@@ -53,6 +53,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     private bool increasedChaseRadius;
 
     private bool isAlive;
+    public bool crosshairsOn;
 
 
     // ReSharper disable once InconsistentNaming
@@ -65,6 +66,8 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] private CapsuleCollider2D capsuleCollider;
     [SerializeField] private Transform target;
     [SerializeField] private HealthBar healthBar;
+    [SerializeField] private DissolveEffect dissolveEffect;
+
 
     [Space]
     public LayerMask playerLayer;
@@ -103,6 +106,9 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
 
     private GameObject crosshairs;
     private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
+    [SerializeField] private bool isPaused;
+    private static readonly int IsDead = Animator.StringToHash("isDead");
+    [SerializeField] private float dissolveSpeed;
 
     #endregion
 
@@ -111,7 +117,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     {
         guid = GetComponent<GenerateGUID>().GUID;
         speed = 2.0f;
-        isAlive = true;
+        IsAlive = true;
         aiPath = GetComponent<IAstarAI>();
         aiPath.maxSpeed = speed;
         playerList = GameManager.Instance.GetPlayerStats().ToList();
@@ -129,6 +135,21 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
 
     private void FixedUpdate()
     {
+        if (hitPoints == 0)
+        {
+            anim.SetBool(IsAttacking, false);
+            anim.SetBool(IsWalking, false);
+            isPaused = true;
+        }
+
+        if (GameManager.Instance.isPaused)
+        {
+            aiPath.canMove = false;
+            return;
+        }
+
+        aiPath.canMove = true;
+
         isInChaseRange = Physics2D.OverlapCircle(transform.position, chaseRange, playerLayer);
         isInAttackRange = Physics2D.OverlapCircle(transform.position, attackAnimationsRange, playerLayer);
 
@@ -150,42 +171,23 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
             Attacking();
         }
 
-        else if (!isInAttackRange && aiPath.reachedDestination && isAlive)
-        {
-            Idling();
-        }
-
         capsuleCollider.enabled = isInAttackRange;
-    }
-
-    private void Idling()
-    {
-        anim.SetBool(IsWalking, false);
-        anim.SetBool(IsAttacking, false);
-        if (debugOn) { Debug.Log("Is waiting for new path"); }
+        crosshairs.GetComponent<SpriteRenderer>().enabled = crosshairsOn;
     }
 
     private void Attacking()
     {
-        if (target == null)
-        {
-            aiPath.destination = GetClosestTarget();
-            return;
-        }
-
         aiPath.maxSpeed = speed;
         dir = target.transform.position - transform.position;
         anim.SetBool(IsWalking, false);
-        anim.SetBool(IsAttacking, isAlive);
+        anim.SetBool(IsAttacking, true);
         anim.SetFloat(AttackX, dir.x);
         anim.SetFloat(AttackY, dir.y);
         IncreaseAttackRadius();
-        if (IsDead)
+        if (!IsAlive)
         {
             aiPath.canMove = false;
         }
-
-        if (debugOn) { Debug.Log("Is Attacking"); }
     }
 
     private void Wandering()
@@ -198,13 +200,17 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
             if (randomInt != 0) { }
             else
             {
-                if (!isAttacking && !aiPath.pathPending && (aiPath.reachedEndOfPath || !aiPath.hasPath))
+                if (!isAttacking && !aiPath.pathPending && (aiPath.reachedDestination || !aiPath.hasPath))
                 {
                     aiPath.destination = PickRandomPoint();
                     aiPath.SearchPath();
+                    Debug.Log(
+                        $"Random Path called. PathPending: {aiPath.pathPending} | Reached end of path: {aiPath.reachedEndOfPath}| Reached destination: {aiPath.reachedDestination} | Has path:{aiPath.hasPath}");
                 }
             }
         }
+
+        updateCount++; // this is a clock tick for random destination calculations
 
         dir = aiPath.desiredVelocity;
         dir.Normalize();
@@ -213,9 +219,8 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
         anim.SetBool(IsAttacking, false);
         anim.SetFloat(MoveX, dir.x);
         anim.SetFloat(MoveY, dir.y);
-        aiPath.canMove = true;
 
-        updateCount++;
+        aiPath.canMove = true;
         if (debugOn) { Debug.Log("Is Wandering"); }
     }
 
@@ -231,7 +236,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
         anim.SetFloat(MoveX, dir.x);
         anim.SetFloat(MoveY, dir.y);
         aiPath.maxSpeed = 1f;
-        if (IsDead) { aiPath.canMove = false; }
+        if (!IsAlive) { aiPath.canMove = false; }
 
         if (debugOn) { Debug.Log("Is Chasing"); }
     }
@@ -373,8 +378,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
             if (node.Walkable)
             {
                 Vector3 pos = (Vector3)node.position;
-                Debug.Log($"New random point found: {pos} | Scene: {GameManager.Instance.objectInt}");
-
+                Debug.Log($"New random point found: {pos} | Scene: {GameManager.Instance.sceneIndex}");
                 return pos;
             }
         }
@@ -391,16 +395,15 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
 
         foreach (Collider2D obj in objs)
         {
-            if (obj.TryGetComponent(out PlayerStats player))
+            if (obj.TryGetComponent(out PlayerStats player) && isAlive && player.characterHp > 1 &&
+                obj.TryGetComponent(out IDamageable hit))
             {
-                if (isAlive && player.characterHp > 1 && obj.TryGetComponent(out IDamageable hit))
-                {
-                    int critical = Random.Range(0, hitBonus);
-                    bool criticalHit = critical > hitBonus / 2;
-                    DamagePopup.Create(hit.GetPositionOfHead(), damageAmount + critical, criticalHit);
-                    hit.Damage(damageAmount + critical);
-                    if (debugOn) { Debug.Log($"Target has been hit: {hit.Combatant}"); }
-                }
+                int critical = Random.Range(0, hitBonus);
+                bool criticalHit = critical > hitBonus / 2;
+                DamagePopup.Create(hit.GetPositionOfHead(), damageAmount + critical, criticalHit);
+                hit.Damage(damageAmount + critical);
+                isAttacking = false;
+                if (debugOn) { Debug.Log($"Target has been hit: {hit.Combatant}"); }
             }
         }
     }
@@ -410,35 +413,39 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
 
     public void Damage(int damage)
     {
-        if (hitPoints > 0 && isAlive)
+        if (hitPoints > 0 && IsAlive)
         {
             hitPoints -= damage;
-            if (hitPoints < 0) { hitPoints = 0; }
+            if (hitPoints <= 0)
+            {
+                hitPoints = 0;
+                anim.SetBool(IsDead, true);
+                SpawnEnemies.Instance.SpawnZombie(25.5f, 100);
+                IsAlive = false;
+                isPaused = true;
+                DeathDissolve();
+                GameObject potion = Instantiate(Fetch.healingPotion,
+                    GameManager.Instance.itemsForPickup[GameManager.Instance.sceneIndex], true);
+                potion.transform.position = transform.position;
+                Debug.Log($"Potion home: {potion.name}");
+            }
 
             healthBar.SetHealth(hitPoints);
-        }
-
-        if (hitPoints == 0 && isAlive)
-        {
-            SpawnEnemies.Instance.SpawnZombie(25.5f, 1000);
-            isAlive = false;
-            IsDead = true;
-            DeathDissolve();
         }
     }
 
     public void DeathDissolve()
     {
-        Debug.Log($"Death dissolve called");
         StartCoroutine(DissolveBody());
     }
 
     private IEnumerator DissolveBody()
     {
-        GetComponent<DissolveEffect>().StartDissolve(0.2f);
-        yield return new WaitForSeconds(7f);
+        yield return null;
+        dissolveEffect.StartDissolve(dissolveSpeed);
+        yield return new WaitForSeconds(3f);
         this.SetActive(false);
-        transform.position = Vector3.zero;
+        Destroy(this);
     }
 
     public Vector3 GetPositionOfHead()
@@ -448,7 +455,13 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
 
     public string Combatant => "Zombie";
 
-    public bool IsDead { get; set; }
+
+    [ShowInInspector]
+    public bool IsAlive
+    {
+        get => isAlive;
+        set => isAlive = value;
+    }
 
     #endregion
 

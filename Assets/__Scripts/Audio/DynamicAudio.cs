@@ -13,7 +13,7 @@ public class DynamicAudio : MonoBehaviour
     private SceneObjectsLoad sceneHome;
 
     private string currentScene;
-    
+
     [Space]
     [SerializeField]
     private Transform target;
@@ -31,6 +31,7 @@ public class DynamicAudio : MonoBehaviour
 
     private void Start()
     {
+        player = GameObject.FindWithTag("Player").GetComponent<Transform>();
         targetPos = target.position;
         playerPos = player.position;
         audioMixerMain.SetFloat("SFXFire", Mathf.Log10(0) * 20);
@@ -40,11 +41,8 @@ public class DynamicAudio : MonoBehaviour
     {
         playerPos = player.position;
         float dist = Vector2.Distance(playerPos, targetPos);
-        
-        if (dist < sfxRadius)
-        {
-            audioMixerMain.SetFloat("SFXFire", Mathf.Log10(1 - (dist/sfxRadius)) * 20);
-        }
+
+        if (dist < sfxRadius) { audioMixerMain.SetFloat("SFXFire", Mathf.Log10(1 - (dist / sfxRadius)) * 20); }
     }
 
     public void SetScene(string scene, string arrivingFrom)
@@ -52,10 +50,11 @@ public class DynamicAudio : MonoBehaviour
         if (sceneHome.ToString() == scene)
         {
             audioSource.enabled = true;
-            Debug.Log($"Audio source: {audioSource.name} | SFXHome Enum: {sceneHome.ToString()} | Scene: {scene} | Arriving from: {arrivingFrom} | status: {audioSource.enabled}");
+            Debug.Log(
+                $"Audio source: {audioSource.name} | SFXHome Enum: {sceneHome.ToString()} | Scene: {scene} | Arriving from: {arrivingFrom} | status: {audioSource.enabled}");
             return;
         }
-        
+
         audioSource.enabled = false;
     }
 }

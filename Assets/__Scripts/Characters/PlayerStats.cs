@@ -2,14 +2,18 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Linq;
+using Assets.HeroEditor4D.Common.CharacterScripts;
 using Sirenix.OdinInspector;
 
 
-public class PlayerStats : Rewardable<QuestRewards>, ISaveable
+public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 {
     public static PlayerStats Instance;
 
     #region Serialized Fields
+
+    public Character4D character;
+    public Transform damagePoint;
 
     public SceneObjectsLoad homeScene;
 
@@ -70,6 +74,9 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
     private string _npcGuid;
     private Vector3 position;
     private bool firstSave = true;
+    public float uiDamageOffset;
+    public bool isAttacking;
+    [SerializeField] private bool debugOn;
 
     #endregion
 
@@ -83,8 +90,8 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
     {
         xpLevelUp = new int[maxLevel];
         xpLevelUp[1] = baseLevelXp;
-
         _npcGuid = GetComponent<GenerateGUID>().GUID;
+        character = GetComponent<Character4D>();
 
         for (int i = 1; i < xpLevelUp.Length; i++)
         {
@@ -210,6 +217,24 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
         characterShieldDescription = characterShield.itemDescription;
     }
 
+    public void HitEnemy(Collider2D col, string colGuid, Character apex)
+    {
+        string guid = apex.AnchorSword.GetComponent<GenerateGUID>().GUID;
+
+        if (guid == colGuid && isAttacking)
+        {
+            col.GetComponent<IDamageable>().Damage(characterAttackTotal);
+            if (debugOn)
+            {
+                Debug.Log(
+                    $"Enemy found: {col.name}  | Hit by: {playerName} | Damage: {characterAttackTotal} | Enemy HP: {col.GetComponent<ZombieController>().hitPoints}");
+            }
+
+            isAttacking = false;
+        }
+    }
+
+
     private IEnumerator Initialize()
     {
         yield return new WaitForSeconds(0.5f);
@@ -218,11 +243,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
         characterAttackTotal = characterBaseAttack + characterWeapon.itemAttack;
         if (playerName == "Thulgran")
         {
-            if (PlayerGlobalData.Instance.playerTrans != null)
-            {
-                transform.position = PlayerGlobalData.Instance.playerTrans;
-            }
-
+            transform.position = PlayerGlobalData.Instance.playerTrans;
             position = transform.position;
         }
     }
@@ -300,6 +321,37 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable
                 transform.position = position;
             }
         }
+    }
+
+    #endregion
+
+    #region Implementation of IDamageable
+
+    public void Damage(int damage)
+    {
+        if (playerName != "Thulgran") { characterHp -= damage; }
+        else { GetComponent<Thulgran>().Damage(damage); }
+
+        character.AnimationManager.Hit();
+        if (characterHp <= 1)
+        {
+            IsAlive = false;
+            GetComponent<PlayerGlobalData>().isAlive = false;
+        }
+    }
+
+    public Vector3 GetPositionOfHead()
+    {
+        Vector3 headPosition = new(transform.position.x, transform.position.y + uiDamageOffset, 0);
+        return headPosition;
+    }
+
+    public string Combatant => playerName;
+
+    public bool IsAlive
+    {
+        get => false;
+        set { }
     }
 
     #endregion

@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour, ISaveable
     public Transform[] itemsForPickup;
     public Transform pickedUpItems;
     public Transform deletedItems;
-    public int objectInt = 1;
+    public int sceneIndex = 1;
     public SceneHandling sceneHandler;
     public ClockManager clockManager;
 
@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour, ISaveable
 
 
     public Transform gridParent;
+    [SerializeField] public bool isPaused;
 
     #endregion
 
@@ -98,10 +99,12 @@ public class GameManager : MonoBehaviour, ISaveable
         if (isInterfaceOn || dialogueBoxOpened)
         {
             PlayerGlobalData.Instance.deactivedMovement = true;
+            isPaused = true;
         }
         else
         {
             PlayerGlobalData.Instance.deactivedMovement = false;
+            isPaused = false;
         }
     }
 
@@ -109,6 +112,7 @@ public class GameManager : MonoBehaviour, ISaveable
     {
         Instance = this;
         sceneHandler = GetComponent<SceneHandling>();
+        sceneIndex = 0;
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
         StartCoroutine(DelayedInitialisation());
     }
@@ -146,7 +150,7 @@ public class GameManager : MonoBehaviour, ISaveable
     {
         sceneObjects[indexTo].SetActive(true);
         sceneObjects[indexFrom].SetActive(false);
-        objectInt = indexTo;
+        sceneIndex = indexTo;
         ActivateCharacters(scene);
         firstScene = scene;
         Debug.Log($"OnSceneLoad Invoke: {scene}");
@@ -234,7 +238,7 @@ public class GameManager : MonoBehaviour, ISaveable
     public void PopulateSaveData(SaveData a_SaveData)
     {
         a_SaveData.sceneData.currentScene = firstScene;
-        a_SaveData.sceneData.sceneObjects = objectInt;
+        a_SaveData.sceneData.sceneObjects = sceneIndex;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis

@@ -10,7 +10,7 @@ using Vector3 = UnityEngine.Vector3;
 
 // ReSharper disable InconsistentNaming
 
-public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
+public class PlayerGlobalData : MonoBehaviour, ISaveable
 {
     #region Fields
 
@@ -28,7 +28,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
     [SerializeField] private AudioSource audioSrc;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private GameObject activeBase;
-    [SerializeField] private CapsuleCollider2D collider;
+    [SerializeField] private CapsuleCollider2D capsuleCollider;
 
 
     [Space]
@@ -36,7 +36,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
     public Vector3 playerTrans;
 
     [SerializeField] private int moveSpeed;
-    [SerializeField] private float damageOffset;
+    [SerializeField] private float uiDamageOffset;
     [SerializeField] private float jumpPower;
     [SerializeField] private float jumpTime;
     [SerializeField] private float jumpDistance;
@@ -60,6 +60,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 
     public bool controllerSwitch;
 
+    public bool isAlive;
     private bool isMoving;
     public bool isWalking;
     public bool isRunning;
@@ -81,10 +82,12 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
     private void Start()
     {
         Instance = this;
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
         toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
         currentSceneIndex = 1;
         character.SetDirection(Vector2.down);
         character.AnimationManager.SetState(CharacterState.Idle);
+        isAlive = true;
     }
 
     private void OnEnable()
@@ -99,6 +102,8 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 
     private void Update()
     {
+        if (deactivedMovement && !isAlive) { return; }
+
         AndroidController();
 
         switch (yMove)
@@ -147,24 +152,6 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 
         if (Input.GetMouseButtonDown(0)) { AttackAnimation(); }
 
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isJumping = true;
-            character.AnimationManager.SetState(CharacterState.Jump);
-            float yPos = transform.position.y;
-            if (character.Direction == Vector2.left)
-            {
-                Sequence sequence = DOTween.Sequence();
-                sequence.Append(rb.DOJump(new Vector3(transform.position.x - jumpDistance, transform.position.y, 0),
-                        jumpPower, 1,
-                        jumpTime))
-                    .SetEase(Ease.Linear);
-                sequence.Insert(0,
-                    activeBase.transform.DOMove(new Vector3(transform.position.x - jumpDistance, yPos, 0), jumpTime));
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             isJumping = true;
@@ -185,10 +172,16 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
 
     private void FixedUpdate()
     {
+        if (!isAlive)
+        {
+            deactivedMovement = true;
+            return;
+        }
+
         if (deactivedMovement)
         {
             rb.velocity = Vector2.zero;
-            if (!IsDead) { character.AnimationManager.SetState(CharacterState.Idle); }
+            if (isAlive) { character.AnimationManager.SetState(CharacterState.Idle); }
         }
         else
         {
@@ -201,11 +194,11 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
         if (rb.velocity.x != 0 || rb.velocity.y != 0)
         {
             isMoving = isWalking = true;
-            if (!IsDead) { character.AnimationManager.SetState(CharacterState.Walk); }
+            if (isAlive) { character.AnimationManager.SetState(CharacterState.Walk); }
 
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                if (!IsDead)
+                if (isAlive)
                 {
                     character.AnimationManager.SetState(CharacterState.Run);
                     isRunning = true;
@@ -216,7 +209,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
         else
         {
             isMoving = isRunning = isWalking = false;
-            if (!IsDead) { character.AnimationManager.SetState(CharacterState.Idle); }
+            if (isAlive) { character.AnimationManager.SetState(CharacterState.Idle); }
         }
     }
 
@@ -296,25 +289,24 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
         }
     }
 
-    public void DeathAnimation()
+    public void Death()
     {
+        isAlive = false;
+        deactivedMovement = true;
         character.AnimationManager.SetState(CharacterState.Death);
-        Debug.Log($"Death animation called");
+        foreach (Transform child in transform) { child.gameObject.layer = 0; }
+
+        transform.gameObject.layer = 0;
+        Debug.Log("Death animation called");
         MenuManager.Instance.DeathScene();
         PlayerStats player = GetComponent<PlayerStats>();
         player.isTeamMember = false;
         player.isAvailable = false;
         deactivedMovement = true;
-        IsDead = true;
         GetComponent<ShadowCaster2D>().enabled = false;
         activeBase.SetActive(false);
-        collider.enabled = false;
-    }
-
-
-    public Vector3 GetPosition()
-    {
-        return transform.position;
+        capsuleCollider.enabled = false;
+        Debug.Log("Death method completed");
     }
 
     #region Implementation of ISaveable
@@ -334,52 +326,6 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, IDamageable
         //moveSpeed = a_SaveData.thulgranData.moveSpeed;
         playerTrans = a_SaveData.thulgranData.position;
         transform.position = playerTrans;
-    }
-
-    #endregion
-
-    #region Implementation of IDamageable
-
-    public void Damage(int damage)
-    {
-        character.AnimationManager.Hit();
-        Thulgran thul = GetComponent<Thulgran>();
-        thul.Damage(damage);
-    }
-
-    public Vector3 GetPositionOfHead()
-    {
-        float height = spriteRenderer.sprite.bounds.size.y + damageOffset;
-        Vector3 headPosition = new(transform.position.x, transform.position.y + height, 0);
-        return headPosition;
-    }
-
-    public string Combatant => GetComponent<PlayerStats>().playerName;
-
-    public bool IsDead
-    {
-        get => false;
-        set { }
-    }
-
-
-    public void HitEnemy(Collider2D col, string colGuid)
-    {
-        Character apex = character.GetComponentInChildren<Character>(false);
-        string guid = apex.AnchorSword.GetComponent<GenerateGUID>().GUID;
-        PlayerStats player = GetComponent<PlayerStats>();
-
-        if (guid == colGuid && isAttacking)
-        {
-            col.GetComponent<IDamageable>().Damage(player.characterAttackTotal);
-            if (debugOn)
-            {
-                Debug.Log(
-                    $"Enemy found: {col.name}  | Hit by: {player.playerName} | Damage: {player.characterAttackTotal} | Enemy HP: {col.GetComponent<ZombieController>().hitPoints}");
-            }
-
-            isAttacking = false;
-        }
     }
 
     #endregion

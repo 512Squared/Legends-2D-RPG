@@ -10,5 +10,5 @@ public interface IDamageable
     Vector3 GetPositionOfHead();
     string Combatant { get; }
 
-    bool IsDead { get; set; }
+    bool IsAlive { get; set; }
 }

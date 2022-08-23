@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493424781893218020}
   m_RootOrder: 0
@@ -113,6 +114,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: -0.47693634, w: 0.87893784}
   m_LocalPosition: {x: -9.23, y: -5.25, z: -5.13}
   m_LocalScale: {x: 0.70000005, y: 0.70000005, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7801041261652023051}
   m_Father: {fileID: 0}
@@ -131,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -164,11 +166,17 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 1}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.5877852, y: -0.80901706}
-      - {x: 0.58778536, y: -0.80901694}
-      - {x: 0.9510565, y: 0.30901712}
+    - - {x: 0.475, y: 0.385}
+      - {x: 0.42499998, y: 0.465}
+      - {x: 0.205, y: 0.465}
+      - {x: 0.085, y: 0.435}
+      - {x: -0.475, y: -0.24499999}
+      - {x: -0.475, y: -0.42499998}
+      - {x: -0.42499998, y: -0.465}
+      - {x: -0.265, y: -0.465}
+      - {x: -0.195, y: -0.405}
+      - {x: 0.415, y: 0.095}
+      - {x: 0.475, y: 0.235}
 --- !u!114 &4493424781893218028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,22 +206,35 @@ MonoBehaviour:
   itemCode: 1039
   spriteRenderer: {fileID: 7374143234025316578}
   polyCollider: {fileID: 2532410841087230137}
-  _so:
-    itemType: 0
-    affectType: 0
-    shop: 0
-    itemCode: 1000
-    valueInCoins: 0
-    amountOfEffect: 0
-    itemAttack: 0
-    itemDefence: 0
-    itemName: 
-    itemDescription: 
-    itemSelected: 0
-    isNewItem: 1
-    isShopItem: 0
-    isQuestObject: 0
-    pickUpNotice: 1
-    isRelic: 0
-    isStackable: 0
-    itemsImage: {fileID: 0}
+  itemGuid: 
+  itemType: 0
+  affectType: 0
+  shop: 0
+  itemHome: 0
+  itemCodeSo: 1000
+  valueInCoins: 0
+  amountOfEffect: 0
+  itemAttack: 0
+  itemDefence: 0
+  itemName: 
+  itemDescription: 
+  itemSelected: 0
+  isNewItem: 1
+  isShopItem: 0
+  isQuestObject: 0
+  pickUpNotice: 1
+  isRelic: 0
+  isStackable: 0
+  isPickedUp: 0
+  isDeletedStack: 0
+  hasBeenDropped: 0
+  boughtFromShop: 0
+  isPrefab: 0
+  audio: {fileID: 0}
+  itemsImage: {fileID: 0}
+  pickup: 0
+  itemDefenceModifier: 0
+  itemAttackModifier: 0
+  amountOfEffectModifier: 0
+  itemPickupPlace: 0
+  itemPosition: {x: 0, y: 0, z: 0}

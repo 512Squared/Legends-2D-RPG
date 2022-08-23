@@ -2,25 +2,25 @@
 
 public class DissolveEffect : MonoBehaviour
 {
-    [SerializeField] private Material material;
-
     private float dissolveAmount;
     [SerializeField] protected bool isDissolving;
     private static readonly int DissolveAmount = Shader.PropertyToID("_DissolveAmount");
     private float dissolveSpeed;
 
+    [SerializeField] private SpriteRenderer sprite;
+
     private void Update()
     {
         if (isDissolving)
         {
-            dissolveAmount = Mathf.Clamp01(dissolveAmount + dissolveSpeed * Time.deltaTime);
-            material.SetFloat(DissolveAmount, dissolveAmount);
+            dissolveAmount = Mathf.Clamp01(dissolveAmount + (dissolveSpeed * Time.deltaTime));
+            sprite.material.SetFloat(DissolveAmount, dissolveAmount);
         }
-        
-        else 
+
+        else
         {
-            dissolveAmount = Mathf.Clamp01(dissolveAmount - dissolveSpeed * Time.deltaTime);
-            material.SetFloat(DissolveAmount, dissolveAmount);
+            dissolveAmount = Mathf.Clamp01(dissolveAmount - (dissolveSpeed * Time.deltaTime));
+            sprite.material.SetFloat(DissolveAmount, dissolveAmount);
         }
     }
 
@@ -29,7 +29,7 @@ public class DissolveEffect : MonoBehaviour
         isDissolving = true;
         this.dissolveSpeed = dissolveSpeed;
     }
-    
+
     public void StopDissolve(float dissolveSpeed)
     {
         isDissolving = false;

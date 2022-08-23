@@ -22,4 +22,5 @@ public class GameAssets : MonoBehaviour
     public Transform pdDamagePopup;
     public GameObject crosshairs;
     public GameObject itemPrefab;
+    public GameObject healingPotion;
 }

@@ -14,17 +14,17 @@ public class SpawnEnemies : SingletonMonobehaviour<SpawnEnemies>, ISaveable
     [Space] public Transform[] houseHNorthSpawnPoints;
     [Space] public Transform[] houseHSouthSpawnPoints;
     [Space] public Transform[] houseHWestSpawnPoints;
-    [Space]public Transform[] houseMNorthSpawnPoints;
+    [Space] public Transform[] houseMNorthSpawnPoints;
     [Space] public Transform[] houseMSouthSpawnPoints;
     [Space] public Transform[] houseMWestSpawnPoints;
     [Space] public Transform[] townSpawnPoints;
-    
+
     private List<GameObject> spawnedZombies;
     private List<GameObject> spawnedSkellies;
     private List<GameObject> spawnedGoblins;
 
     public List<Transform[]> sceneSpawnArrays;
-       
+
     private int index;
 
 
@@ -33,16 +33,29 @@ public class SpawnEnemies : SingletonMonobehaviour<SpawnEnemies>, ISaveable
         spawnedZombies = new List<GameObject>();
         spawnedSkellies = new List<GameObject>();
         spawnedGoblins = new List<GameObject>();
-        sceneSpawnArrays = new List<Transform[]> {homesteadSpawnPoints, mountainsSpawnPoints, dungeonSpawnPoints, 
-        shop1SpawnPoints, shop2SpawnPoints, shop3SpawnPoints, houseHNorthSpawnPoints, houseHSouthSpawnPoints, 
-        houseHWestSpawnPoints, houseMNorthSpawnPoints, houseMSouthSpawnPoints, houseMWestSpawnPoints, townSpawnPoints};
+        sceneSpawnArrays = new List<Transform[]>
+        {
+            homesteadSpawnPoints,
+            mountainsSpawnPoints,
+            dungeonSpawnPoints,
+            shop1SpawnPoints,
+            shop2SpawnPoints,
+            shop3SpawnPoints,
+            houseHNorthSpawnPoints,
+            houseHSouthSpawnPoints,
+            houseHWestSpawnPoints,
+            houseMNorthSpawnPoints,
+            houseMSouthSpawnPoints,
+            houseMWestSpawnPoints,
+            townSpawnPoints
+        };
     }
-    
+
 
     public void SpawnZombie(float chaseRange, int hitPoints)
     {
         Transform zombieRandomSpawnPoint = GetRandomSpawnPoint();
-        GameObject newZombie = Instantiate(GameAssets.Fetch.zombie, zombieRandomSpawnPoint);
+        GameObject newZombie = Instantiate(GameAssets.Fetch.zombie, zombieRandomSpawnPoint, true);
         newZombie.transform.position = zombieRandomSpawnPoint.position;
         newZombie.transform.SetParent(SpawnPoints()[index]);
         spawnedZombies.Add(newZombie);
@@ -65,7 +78,7 @@ public class SpawnEnemies : SingletonMonobehaviour<SpawnEnemies>, ISaveable
         Debug.Log($"Skelly spawned at {SpawnPoints()[index].name}");
     }
 
-    
+
     public void SpawnGoblin()
     {
         Transform goblinRandomSpawnPoint = GetRandomSpawnPoint();
@@ -77,8 +90,8 @@ public class SpawnEnemies : SingletonMonobehaviour<SpawnEnemies>, ISaveable
         newGoblin.GetComponent<GenerateGUID>().CreateNewGUID();
         Debug.Log($"Goblin spawned at {SpawnPoints()[index].name}");
     }
-    
-    
+
+
     private Transform GetRandomSpawnPoint()
     {
         index = Random.Range(0, SpawnPoints().Length);
@@ -92,8 +105,7 @@ public class SpawnEnemies : SingletonMonobehaviour<SpawnEnemies>, ISaveable
         Transform[] currentSceneSpawnArray = sceneSpawnArrays[SceneManager.GetActiveScene().buildIndex];
         return currentSceneSpawnArray;
     }
-    
-    
+
 
     #region Implementation of ISaveable
 

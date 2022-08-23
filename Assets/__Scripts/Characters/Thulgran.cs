@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
@@ -8,8 +9,7 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
 
     [ShowInInspector]
     [Title("Stats")]
-    [SerializeField]
-    private PlayerStats stats;
+    private static PlayerStats stats;
 
     private static int _thulgranGold = 300;
 
@@ -32,9 +32,8 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
         set
         {
             _thulgranHp = value;
+            stats.characterHp = ThulgranHp;
             UI.instance.UpdateHPUI(_thulgranHp);
-            PlayerStats[] playerStats = GameManager.Instance.GetPlayerStats();
-            playerStats[0].characterHp = _thulgranHp;
             if (_thulgranHp <= 0) { ThulgranDies(); }
         }
     }
@@ -89,6 +88,11 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
 
     #region Callbacks
 
+    private void Start()
+    {
+        stats = GetComponent<PlayerStats>();
+    }
+
     private void OnEnable()
     {
         Actions.OnUseItem += UseItem;
@@ -101,7 +105,6 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
 
     #endregion
 
-    #region Methods
 
     public override void Reward(QuestRewards rewards)
     {
@@ -127,7 +130,7 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
 
     private static void ThulgranDies()
     {
-        PlayerGlobalData.Instance.DeathAnimation();
+        PlayerGlobalData.Instance.Death();
     }
 
     private static void UseItem(Item item, int character, Vector2 target)
@@ -145,6 +148,11 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
                 AddMana(item);
                 UI.instance.UpdateManaUI(0);
                 break;
+            case AffectType.Defence: break;
+            case AffectType.Attack: break;
+            case AffectType.Perception: break;
+            case AffectType.Speed: break;
+            default: throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -230,10 +238,6 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
         ThulgranHp -= damage;
     }
 
-
-    public string Combatant => "Thulgran";
-
-    #endregion
 
     #region Implementation of ISaveable
 
