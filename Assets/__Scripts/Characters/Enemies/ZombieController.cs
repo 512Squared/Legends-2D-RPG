@@ -131,6 +131,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     private void Update()
     {
         Foregrounding();
+        crosshairsOn = GameManager.Instance.crosshairsOn;
     }
 
     private void FixedUpdate()

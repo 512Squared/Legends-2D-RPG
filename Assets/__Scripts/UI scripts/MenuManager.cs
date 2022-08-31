@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -146,7 +147,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     private GameObject[] characterCards, characterParty, characterEquip, characterWeaponry, teamCharacterWeaponry;
 
     [TabGroup("Images")] [GUIColor(0.670f, 1, 0.560f)] [PreviewField] [Required] [SerializeField]
-    private Image[] characterImage, characterMug, characterPlain;
+    private Image[] imageFront, teamOverview;
 
     [TabGroup("Images")] [GUIColor(0.670f, 1, 0.560f)] [SerializeField]
     private Image characterImageV;
@@ -155,27 +156,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     [TabGroup("Sliders")] [GUIColor(1f, 0.886f, 0.780f)] [SerializeField]
     private Slider[] xpS, manaS, healthS, attackS, defenceS, intelligenceS, perceptionS;
 
-    [TabGroup("Sliders")] [GUIColor(1f, 0.886f, 0.780f)] [SerializeField]
-    private Slider xpVS, manaVS, healthVS, attackVS, defenceVS, intelligenceVS, perceptionVS;
-
 
     [TabGroup("New Group", "Thulgren")] [GUIColor(1f, 0.780f, 0.984f)] [SerializeField]
     private TextMeshProUGUI thulSpells, thulPotions, levelMain, xpMain, hpMain, manaMain;
 
     [TabGroup("New Group", "Thulgren")] [GUIColor(1f, 0.780f, 0.984f)] [SerializeField]
     private Slider xpMainS;
-
-    [TabGroup("Skills")] [GUIColor(1, 0.819f, 0.760f)] [SerializeField]
-    private TextMeshProUGUI characterNameV,
-        descriptionV,
-        levelV,
-        xpV,
-        manaV,
-        healthV,
-        attackV,
-        defenceV,
-        intelligenceV,
-        perceptionV;
 
     [TabGroup("New Group", "Items")] [GUIColor(0.447f, 0.654f, 0.996f)]
     public TextMeshProUGUI itemName, goldMain, itemDescription, itemDamage, itemArmour, itemPotion, itemFood, itemValue;
@@ -212,12 +198,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public Image[] characterMugEquip;
 
     [TabGroup("New Group", "Equip")] [GUIColor(0.447f, 0.654f, 0.996f)]
-    public TextMeshProUGUI
-        manaEquipTopBar, hpEquipTopBar, goldEquipTopBar; // doesn't look like I used these. Done in CoinsManager.
-
-    [TabGroup("New Group", "Equip")] [GUIColor(0.447f, 0.654f, 0.996f)]
     public Button[] weaponPanelButtons, potionPanelButtons; // doesn't look like I used these. Done in CoinsManager.
-
 
     [TabGroup("New Group", "Weaponry")] [GUIColor(0.447f, 0.454f, 0.496f)]
     public TextMeshProUGUI[] equippedWeaponName, equippedArmourName, equippedHelmetName, equippedShieldName;
@@ -226,13 +207,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     public Image[] equippedWeaponImage, equippedArmourImage, equippedHelmetImage, equippedShieldImage;
 
     [TabGroup("New Group", "Weaponry")] [GUIColor(0.447f, 0.454f, 0.496f)]
-    public Image[] characterMugWeaponry;
+    public Image[] imageFrontWeaponry;
 
     [TabGroup("New Group", "Weaponry")] [GUIColor(0.447f, 0.454f, 0.496f)]
     public TextMeshProUGUI[] equippedWeaponBonus, equippedArmourBonus, equippedHelmetBonus, equippedShieldBonus;
-
-    [TabGroup("New Group", "Weaponry")] [GUIColor(0.147f, 0.154f, 0.496f)]
-    public TextMeshProUGUI itemPotionPower;
 
     [TabGroup("New Group", "Weaponry")] [GUIColor(0.147f, 0.154f, 0.496f)]
     public Sprite basicAxe, basicArmour, basicHelmet, basicShield;
@@ -265,13 +243,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     [TabGroup("Weapon Group", "Team Popup")] [GUIColor(0.207f, 0.121f, 0.027f)]
     public TextMeshProUGUI teamPopWeaponryBonus;
-
-    [TabGroup("Weapon Group", "Inventory Tabs")] [GUIColor(0.207f, 0.921f, 0.027f)]
-    public Button inventTabsAllHolder,
-        inventTabsWeaponsHolder,
-        inventTabsArmourHolder,
-        inventTabsItemsHolder,
-        inventTabsPotionsHolder;
 
     [TabGroup("Weapon Group", "Inventory Tabs")] [GUIColor(0.207f, 0.921f, 0.027f)]
     public TextMeshProUGUI inventTabsAllText;
@@ -338,10 +309,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     [TabGroup("Quests Group", "Quest Complete")] [GUIColor(0.5f, 1f, 0f)] [SerializeField]
     private TextMeshProUGUI[] questRewardText;
-
-    [TabGroup("Quests Group", "Quest Complete")] [GUIColor(0.5f, 1f, 0f)] [SerializeField]
-    private Sprite questRewardTest;
-
 
     [Header("Quest UI Sprites")]
     [Space]
@@ -637,6 +604,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     private void PanelController()
     {
+        double TOLERANCE = 0.001f;
         if (isInventoryOn)
         {
             Debug.Log($"Inventory is open and 'back' has been called");
@@ -691,7 +659,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             Debug.Log($"Quest UI back triggered");
         }
 
-        else if (menuPanels[2].alpha == 1) // keys
+        else if (Math.Abs(menuPanels[2].alpha - 1) < TOLERANCE) // keys
         {
             mainMenu.GetComponent<CanvasGroup>().alpha = 1;
             mainMenu.GetComponent<CanvasGroup>().interactable = true;
@@ -701,7 +669,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
             menuPanels[2].blocksRaycasts = false;
         }
 
-        else if (menuPanels[3].alpha == 1) // magic
+        else if (Math.Abs(menuPanels[3].alpha - 1) < TOLERANCE) // magic
         {
             mainMenu.GetComponent<CanvasGroup>().alpha = 1;
             mainMenu.GetComponent<CanvasGroup>().interactable = true;
@@ -900,7 +868,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         for (int i = 0; i < playerStats.Length; i++)
         {
-            if (playerStats[i].isTeamMember == true)
+            if (playerStats[i].isTeamMember)
             {
                 if (i != 0)
                 {
@@ -926,12 +894,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 defenceEquipToString[i].text = playerStats[i].characterBaseDefence.ToString();
                 //stat sliders
                 defenceEquipSlider[i].value = playerStats[i].characterBaseDefence;
-                characterMugEquip[i].sprite = playerStats[i].characterMug;
+                characterMugEquip[i].sprite = playerStats[i].imageFront;
 
                 // Inventory weaponry
 
                 characterWeaponry[i].SetActive(true);
-                characterMugWeaponry[i].sprite = playerStats[i].characterMug;
+                imageFrontWeaponry[i].sprite = playerStats[i].imageFront;
 
                 equippedWeaponName[i].text = playerStats[i].characterWeaponName;
                 equippedWeaponImage[i].sprite = playerStats[i].characterWeaponImage;
@@ -991,11 +959,11 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
         for (int i = 0; i < playerStats.Length; i++)
         {
-            if (playerStats[i].isAvailable == true) // on 'add to party screen'
+            if (playerStats[i].isAvailable) // on 'add to party screen'
             {
                 characterParty[i].SetActive(true);
 
-                if (playerStats[i].isTeamMember == true)
+                if (playerStats[i].isTeamMember)
                 {
                     // on screens where isTeamMember is necessary
 
@@ -1006,7 +974,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         characterName[i].text = playerStats[i].playerName;
                         description[i].text = playerStats[i].playerDesc;
                         health[i].text = playerStats[i].characterHp.ToString();
-                        characterImage[i].sprite = playerStats[i].characterImage;
+                        imageFront[i].sprite = playerStats[i].imageFront;
                         level[i].text = playerStats[i].characterLevel.ToString();
                         xp[i].text = playerStats[i].characterXp.ToString();
                         mana[i].text = playerStats[i].characterMana.ToString();
@@ -1032,7 +1000,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         manaS[i].value = Thulgran.ThulgranMana;
                         characterName[i].text = playerStats[i].playerName;
                         description[i].text = playerStats[i].playerDesc;
-                        characterImage[i].sprite = playerStats[i].characterImage;
+                        imageFront[i].sprite = playerStats[i].imageFront;
                         level[i].text = playerStats[i].characterLevel.ToString();
                         xp[i].text = playerStats[i].characterXp.ToString();
                         attack[i].text = playerStats[i].characterBaseAttack.ToString();
@@ -1052,7 +1020,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                     teamCharacterWeaponry[i].SetActive(true);
 
-                    teamCharacterMugWeaponry[i].sprite = playerStats[i].characterMug;
+                    teamCharacterMugWeaponry[i].sprite = playerStats[i].imageFront;
 
                     teamCharacterName[i].text = playerStats[i].playerName;
 
@@ -1077,7 +1045,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 characterNameP[i].text = playerStats[i].playerName + "\n<size=26><color=#BEB5B6>" +
                                          playerStats[i].playerMoniker + "</color></size>";
                 levelP[i].text = playerStats[i].characterLevel.ToString();
-                characterMug[i].sprite = playerStats[i].characterMug;
+                teamOverview[i].sprite = playerStats[i].imageRight;
             }
         }
     }

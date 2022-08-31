@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Assets.HeroEditor4D.FantasyInventory.Scripts.Data;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
@@ -13,7 +14,7 @@ public class Item : MonoBehaviour, ISaveable
     [Space] [ItemCodeDescription] [SerializeField]
     private int itemCode = 1000;
 
-    private static int test;
+    [SerializeField] private HeroEditorItem heroItem;
 
     [Space]
     [Required]
@@ -109,6 +110,8 @@ public class Item : MonoBehaviour, ISaveable
         itemGuid = GetComponent<GenerateGUID>().GUID;
         GetItemDetailsFromScriptObject(this);
         audio = FindObjectOfType<AudioManager>();
+        heroItem = GetComponent<HeroEditorItem>();
+        //heroItem.Id = itemGuid;
     }
 
     public Item GetItemDetailsFromScriptObject(Item item)
@@ -224,7 +227,7 @@ public class Item : MonoBehaviour, ISaveable
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
-            selectedCharacter.EquipArmour(this);
+            selectedCharacter.EquipArmour(this, GetComponent<HeroEditorItem>());
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
@@ -245,7 +248,7 @@ public class Item : MonoBehaviour, ISaveable
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
-            selectedCharacter.EquipShield(this);
+            selectedCharacter.EquipShield(this, GetComponent<HeroEditorItem>());
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
@@ -265,7 +268,7 @@ public class Item : MonoBehaviour, ISaveable
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
-            selectedCharacter.EquipHelmet(this);
+            selectedCharacter.EquipHelmet(this, GetComponent<HeroEditorItem>());
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
@@ -287,7 +290,7 @@ public class Item : MonoBehaviour, ISaveable
             }
 
             selectedCharacter.AddWeaponPower(itemAttack);
-            selectedCharacter.EquipWeapon(this);
+            selectedCharacter.EquipWeapon(this, GetComponent<HeroEditorItem>());
 
             Debug.Log(selectedCharacter.playerName + " equipped with " + itemName);
         }

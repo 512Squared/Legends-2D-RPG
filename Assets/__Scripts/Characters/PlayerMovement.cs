@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
     [Title("Components")]
     [SerializeField] private Rigidbody2D rb;
+
     [SerializeField] private Character4D character;
     [SerializeField] private AudioSource audioSrc;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -264,7 +265,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         NotificationFader.instance.CallFadeInOut(
             collision.gameObject.GetComponent<PlayerStats>().playerName +
             " is now available to add to your character party!",
-            collision.gameObject.GetComponent<PlayerStats>().characterPlain,
+            collision.gameObject.GetComponent<PlayerStats>().imageRight,
             3.4f,
             1000, 30);
     }
@@ -299,7 +300,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         capsuleCollider.enabled = false;
     }
 
-   #region Implementation of ISaveable
+    #region Implementation of ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {

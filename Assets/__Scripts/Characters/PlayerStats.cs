@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using Assets.HeroEditor4D.Common.CharacterScripts;
+using Assets.HeroEditor4D.FantasyInventory.Scripts.Data;
 using Sirenix.OdinInspector;
 
 
@@ -24,7 +25,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
     [SerializeField] public TeamMemberBase teamMemberBase;
 
     [TabGroup("Images")] [GUIColor(0.670f, 1, 0.560f)] [PreviewField] [Required]
-    public Sprite characterImage, characterMug, characterPlain;
+    public Sprite imageFront, imageRight;
 
     [TabGroup("Stats")] [GUIColor(0.970f, 1, 0.260f)]
     public int maxLevel, baseLevelXp, characterXp, maxMana, maxHp;
@@ -73,7 +74,6 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
     private string _npcGuid;
     private Vector3 position;
-    private bool firstSave = true;
     public float uiDamageOffset;
     public bool isAttacking;
     [SerializeField] private bool debugOn;
@@ -185,33 +185,41 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         characterAttackTotal += amountOfWeaponPowerToAdd;
     }
 
-    public void EquipWeapon(Item weaponToEquip)
+    public void EquipWeapon(Item weaponToEquip, HeroEditorItem heroWeapon)
     {
         characterWeapon = weaponToEquip;
+        character.EquipMeleeWeapon1H(heroWeapon);
+        StartCoroutine(RefreshPlayerImages());
         characterWeaponName = characterWeapon.itemName;
         characterWeaponImage = characterWeapon.itemsImage;
         characterWeaponDescription = characterWeapon.itemDescription;
     }
 
-    public void EquipArmour(Item armourToEquip)
+    public void EquipArmour(Item armourToEquip, HeroEditorItem heroArmor)
     {
         characterArmour = armourToEquip;
+        character.EquipArmor(heroArmor);
+        StartCoroutine(RefreshPlayerImages());
         characterArmourName = characterArmour.itemName;
         characterArmourImage = characterArmour.itemsImage;
         characterArmourDescription = characterArmour.itemDescription;
     }
 
-    public void EquipHelmet(Item helmetToEquip)
+    public void EquipHelmet(Item helmetToEquip, HeroEditorItem heroHelmet)
     {
         characterHelmet = helmetToEquip;
         characterHelmetName = characterHelmet.itemName;
+        character.EquipHelmet(heroHelmet);
+        StartCoroutine(RefreshPlayerImages());
         characterHelmetImage = characterHelmet.itemsImage;
         characterHelmetDescription = characterHelmet.itemDescription;
     }
 
-    public void EquipShield(Item shieldToEquip)
+    public void EquipShield(Item shieldToEquip, HeroEditorItem heroShield)
     {
         characterShield = shieldToEquip;
+        character.EquipShield(heroShield);
+        StartCoroutine(RefreshPlayerImages());
         characterShieldName = characterShield.itemName;
         characterShieldImage = characterShield.itemsImage;
         characterShieldDescription = characterShield.itemDescription;
@@ -232,6 +240,12 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
             isAttacking = false;
         }
+    }
+
+    private IEnumerator RefreshPlayerImages()
+    {
+        yield return null;
+        CreateUISprites.Instance.RefreshImages(this);
     }
 
 

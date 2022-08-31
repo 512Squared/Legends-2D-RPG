@@ -5,6 +5,7 @@ using HeroEditor4D.Common.Enums;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using DG.Tweening;
+using Character = UnityEngine.TextCore.Text.Character;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -27,7 +28,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     [SerializeField] private Character4D character;
     [SerializeField] private AudioSource audioSrc;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private GameObject activeBase;
+    public GameObject activeBase;
     [SerializeField] private CapsuleCollider2D capsuleCollider;
 
 
@@ -51,8 +52,8 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     private int accelerate;
 
 
-    private Vector3 bottomLeftEdge;
-    private Vector3 topRightEdge;
+    public Vector3 bottomLeftEdge;
+    public Vector3 topRightEdge;
 
     [Space]
     [Title("Bools")]
@@ -78,6 +79,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     private static readonly int moveX = Animator.StringToHash("moveX");
     private static readonly int moveY = Animator.StringToHash("moveY");
     private bool isJumping;
+    public bool isPaused;
 
     private void Start()
     {
@@ -102,7 +104,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 
     private void Update()
     {
-        if (deactivedMovement && !isAlive) { return; }
+        if (isPaused || deactivedMovement || !isAlive) { return; }
 
         AndroidController();
 
@@ -172,17 +174,14 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
 
     private void FixedUpdate()
     {
-        if (!isAlive)
-        {
-            deactivedMovement = true;
-            return;
-        }
+        if (isPaused || deactivedMovement || !isAlive) { return; }
 
         if (deactivedMovement)
         {
             rb.velocity = Vector2.zero;
             if (isAlive) { character.AnimationManager.SetState(CharacterState.Idle); }
         }
+
         else
         {
             moveSpeed = Input.GetKey(KeyCode.LeftShift) ? 8 : 4;
@@ -240,6 +239,12 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         isLoaded = true;
     }
 
+    public void SetPhotoBoothLimit()
+    {
+        bottomLeftEdge = Vector3.positiveInfinity;
+        topRightEdge = Vector3.positiveInfinity;
+    }
+
     private void SetLimitBool(string arg1, string arg4, int arg2, int arg3)
     {
         isLoaded = true;
@@ -270,7 +275,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         NotificationFader.instance.CallFadeInOut(
             collision.gameObject.GetComponent<PlayerStats>().playerName +
             " is now available to add to your character party!",
-            collision.gameObject.GetComponent<PlayerStats>().characterPlain,
+            collision.gameObject.GetComponent<PlayerStats>().imageFront,
             3.4f,
             1000, 30);
     }

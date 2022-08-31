@@ -30,6 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.05, y: -5.97, z: -5.99}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8736766935223152331}
   m_Father: {fileID: 0}
@@ -81,11 +82,46 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 1}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.5877852, y: -0.80901706}
-      - {x: 0.58778536, y: -0.80901694}
-      - {x: 0.9510565, y: 0.30901712}
+    - - {x: 0.85999995, y: -0.37}
+      - {x: 1.03, y: -0.22}
+      - {x: 1.03, y: -0.19}
+      - {x: 1.06, y: -0.049999997}
+      - {x: 1.09, y: 0.07}
+      - {x: 1.17, y: 0.22999999}
+      - {x: 1.17, y: 0.32999998}
+      - {x: 1.16, y: 0.37}
+      - {x: 0.98999995, y: 0.44}
+      - {x: 0.96999997, y: 0.48999998}
+      - {x: 0.90999997, y: 0.59}
+      - {x: 0.83, y: 0.66999996}
+      - {x: 0.75, y: 0.72999996}
+      - {x: 0.62, y: 0.78}
+      - {x: 0.5, y: 0.79999995}
+      - {x: 0.29, y: 0.79999995}
+      - {x: -0.099999994, y: 0.68}
+      - {x: -0.25, y: 0.66999996}
+      - {x: -0.35, y: 0.65}
+      - {x: -0.42999998, y: 0.62}
+      - {x: -0.51, y: 0.55}
+      - {x: -0.74, y: 0.47}
+      - {x: -0.96, y: 0.35}
+      - {x: -1.04, y: 0.28}
+      - {x: -1.0699999, y: 0.12}
+      - {x: -1.0699999, y: -0.04}
+      - {x: -1.06, y: -0.16}
+      - {x: -1.04, y: -0.29999998}
+      - {x: -0.95, y: -0.38}
+      - {x: -0.74, y: -0.42}
+      - {x: -0.56, y: -0.48999998}
+      - {x: -0.47, y: -0.52}
+      - {x: 0.04, y: -0.64}
+      - {x: 0.13, y: -0.65}
+      - {x: 0.26999998, y: -0.71999997}
+      - {x: 0.35, y: -0.75}
+      - {x: 0.44, y: -0.75}
+      - {x: 0.55, y: -0.71}
+      - {x: 0.59999996, y: -0.63}
+      - {x: 0.64, y: -0.58}
 --- !u!114 &7200773682273178915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,27 +149,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1049
+  heroItem: {fileID: 0}
   spriteRenderer: {fileID: 8406793936993171016}
   polyCollider: {fileID: 7692597938736727357}
-  _so:
-    itemType: 0
-    affectType: 0
-    shop: 0
-    itemCode: 1000
-    valueInCoins: 0
-    amountOfEffect: 0
-    itemAttack: 0
-    itemDefence: 0
-    itemName: 
-    itemDescription: 
-    itemSelected: 0
-    isNewItem: 1
-    isShopItem: 0
-    isQuestObject: 0
-    pickUpNotice: 1
-    isRelic: 0
-    isStackable: 0
-    itemsImage: {fileID: 0}
+  itemGuid: 
+  itemType: 0
+  affectType: 0
+  shop: 0
+  itemHome: 0
+  itemCodeSo: 1000
+  valueInCoins: 0
+  amountOfEffect: 0
+  itemAttack: 0
+  itemDefence: 0
+  itemName: 
+  itemDescription: 
+  itemSelected: 0
+  isNewItem: 1
+  isShopItem: 0
+  isQuestObject: 0
+  pickUpNotice: 1
+  isRelic: 0
+  isStackable: 0
+  isPickedUp: 0
+  isDeletedStack: 0
+  hasBeenDropped: 0
+  boughtFromShop: 0
+  isPrefab: 0
+  audio: {fileID: 0}
+  itemsImage: {fileID: 0}
+  pickup: 0
+  itemDefenceModifier: 0
+  itemAttackModifier: 0
+  amountOfEffectModifier: 0
+  itemPickupPlace: 0
+  itemPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &8412574620264181974
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,6 +211,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7200773682273178912}
   m_RootOrder: 0

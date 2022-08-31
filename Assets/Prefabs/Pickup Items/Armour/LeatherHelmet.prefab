@@ -219,6 +219,7 @@ MonoBehaviour:
   itemType: 0
   affectType: 0
   shop: 0
+  itemHome: 0
   itemCodeSo: 1000
   valueInCoins: 0
   amountOfEffect: 0
@@ -234,8 +235,15 @@ MonoBehaviour:
   isRelic: 0
   isStackable: 0
   isPickedUp: 0
+  isDeletedStack: 0
+  hasBeenDropped: 0
+  boughtFromShop: 0
+  isPrefab: 0
+  audio: {fileID: 0}
   itemsImage: {fileID: 0}
   pickup: 0
   itemDefenceModifier: 0
   itemAttackModifier: 0
   amountOfEffectModifier: 0
+  itemPickupPlace: 0
+  itemPosition: {x: 0, y: 0, z: 0}
