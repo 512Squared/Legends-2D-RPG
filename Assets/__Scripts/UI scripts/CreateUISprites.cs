@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using Assets.HeroEditor4D.Common.CharacterScripts;
-using UnityEditor;
+#if UNITY_EDITOR
+ using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -37,19 +39,22 @@ public class CreateUISprites : SingletonMonobehaviour<CreateUISprites>
         movement.SetDirection(Vector2.right);
         TakePicture(player, "right");
         LoadTempData(data);
-        AssetDatabase.Refresh();        
+#if UNITY_EDITOR
+        AssetDatabase.Refresh();
+#endif
     }
 
     private void TakePicture(PlayerStats player, string direction)
     {
         globalLight.intensity = global;
-        RenderTexture renderTexture = new (512, 512, 24);
+        RenderTexture renderTexture = new(512, 512, 24);
         offscreenCamera.targetTexture = renderTexture;
         offscreenCamera.clearFlags = CameraClearFlags.Depth;
         Texture2D offscreenTexture = new(offscreenCamera.targetTexture.width, offscreenCamera.targetTexture.height);
         RenderTexture.active = offscreenCamera.targetTexture;
         offscreenCamera.Render();
-        offscreenTexture.ReadPixels(new Rect(0, 0, offscreenCamera.targetTexture.width, offscreenCamera.targetTexture.height), 0, 0);
+        offscreenTexture.ReadPixels(
+            new Rect(0, 0, offscreenCamera.targetTexture.width, offscreenCamera.targetTexture.height), 0, 0);
         offscreenCamera.targetTexture = null;
         RenderTexture.active = null;
         offscreenTexture.Apply(false, false);
@@ -59,7 +64,7 @@ public class CreateUISprites : SingletonMonobehaviour<CreateUISprites>
         File.WriteAllBytes(path, bytes);
         Destroy(offscreenTexture);
     }
-    
+
     private void SaveTempData(PlayerGlobalData playerData)
     {
         lightIntensity = globalLight.intensity;
@@ -73,10 +78,10 @@ public class CreateUISprites : SingletonMonobehaviour<CreateUISprites>
         playerData.transform.position = playerSeat.transform.position;
         playerData.transform.localScale = Vector3.one;
     }
-    
+
     private void LoadTempData(PlayerGlobalData playerData)
     {
-        globalLight.intensity =  lightIntensity;
+        globalLight.intensity = lightIntensity;
         playerData.transform.SetParent(characters);
         playerData.transform.position = tempPosition;
         playerData.transform.localScale = Vector3.one;

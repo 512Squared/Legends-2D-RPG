@@ -22,13 +22,6 @@ public class ItemDetails
     [HorizontalGroup("Data")]
     [TableColumnWidth(160)]
     [VerticalGroup("Data/a")]
-    [HideLabel]
-    [GUIColor(0.058f, 0.380f, 1f)]
-    public Shop shop; // pickUpItem, shop1, shop2, shop3
-
-    [HorizontalGroup("Data")]
-    [TableColumnWidth(160)]
-    [VerticalGroup("Data/a")]
     [LabelWidth(100)]
     [GUIColor(0.8f, 0.286f, 0.780f)]
     public int itemCode = 1000;
@@ -77,28 +70,6 @@ public class ItemDetails
     [TextArea(7, 7)]
     [GUIColor(0.4f, 0.986f, 0.380f)]
     public string itemDescription;
-
-    [Space]
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [VerticalGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool itemSelected;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [VerticalGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isNewItem = true;
-
-    [HorizontalGroup("Bools")]
-    [TableColumnWidth(120)]
-    [VerticalGroup("Bools/a")]
-    [LabelWidth(90)]
-    [GUIColor(0.4f, 0.886f, 0.780f)]
-    public bool isShopItem;
 
     [HorizontalGroup("Bools")]
     [TableColumnWidth(120)]

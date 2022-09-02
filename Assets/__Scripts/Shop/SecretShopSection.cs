@@ -16,6 +16,7 @@ public class SecretShopSection : MonoBehaviour
 
     [GUIColor(1f, 1f, 0.215f)] public bool isSecretPanelOpen;
     [GUIColor(1f, 1f, 0.215f)] public GameObject definedButton;
+    [GUIColor(1f, 1f, 0.215f)] public Camera mainCamera;
     [GUIColor(1f, 1f, 0.215f)] public UnityEvent OnClick = new();
     private int hitNumber = 0;
     private bool isImageSpriteOn = false;
@@ -40,8 +41,8 @@ public class SecretShopSection : MonoBehaviour
     {
         //put your point to ray function here
 
-        Vector2 rayPos = new(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
-            Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        Vector2 rayPos = new(mainCamera.ScreenToWorldPoint(Input.mousePosition).x,
+            mainCamera.ScreenToWorldPoint(Input.mousePosition).y);
         RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
 
         if (hit.collider != null && hit.collider.gameObject.CompareTag("brass_bell"))

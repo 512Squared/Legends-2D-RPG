@@ -185,7 +185,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         characterAttackTotal += amountOfWeaponPowerToAdd;
     }
 
-    public void EquipWeapon(Item weaponToEquip, HeroEditorItem heroWeapon)
+    public void EquipWeapon(Item weaponToEquip, Wearables heroWeapon)
     {
         characterWeapon = weaponToEquip;
         character.EquipMeleeWeapon1H(heroWeapon);
@@ -195,7 +195,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         characterWeaponDescription = characterWeapon.itemDescription;
     }
 
-    public void EquipArmour(Item armourToEquip, HeroEditorItem heroArmor)
+    public void EquipArmour(Item armourToEquip, Wearables heroArmor)
     {
         characterArmour = armourToEquip;
         character.EquipArmor(heroArmor);
@@ -205,7 +205,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         characterArmourDescription = characterArmour.itemDescription;
     }
 
-    public void EquipHelmet(Item helmetToEquip, HeroEditorItem heroHelmet)
+    public void EquipHelmet(Item helmetToEquip, Wearables heroHelmet)
     {
         characterHelmet = helmetToEquip;
         characterHelmetName = characterHelmet.itemName;
@@ -215,7 +215,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         characterHelmetDescription = characterHelmet.itemDescription;
     }
 
-    public void EquipShield(Item shieldToEquip, HeroEditorItem heroShield)
+    public void EquipShield(Item shieldToEquip, Wearables heroShield)
     {
         characterShield = shieldToEquip;
         character.EquipShield(heroShield);
@@ -232,6 +232,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         if (guid == colGuid && isAttacking)
         {
             col.GetComponent<IDamageable>().Damage(characterAttackTotal);
+
             if (debugOn)
             {
                 Debug.Log(
@@ -335,6 +336,8 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
                 transform.position = position;
             }
         }
+
+        if (gameObject.activeInHierarchy) { StartCoroutine(RefreshPlayerImages()); }
     }
 
     #endregion
@@ -343,7 +346,10 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
     public void Damage(int damage)
     {
-        if (playerName != "Thulgran") { characterHp -= damage; }
+        if (playerName != "Thulgran")
+        {
+            characterHp -= damage; // defence bonuses and total damage calculated in 'attack' method on enemies
+        }
         else { GetComponent<Thulgran>().Damage(damage); }
 
         character.AnimationManager.Hit();

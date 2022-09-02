@@ -393,7 +393,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     public void AttackTarget()
     {
         Collider2D[] objs = Physics2D.OverlapCircleAll(transform.position, attackDamageRadius, enemyLayer);
-
+        int totalDamage;
         foreach (Collider2D obj in objs)
         {
             if (obj.TryGetComponent(out PlayerStats player) && isAlive && player.characterHp > 1 &&
@@ -401,8 +401,19 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
             {
                 int critical = Random.Range(0, hitBonus);
                 bool criticalHit = critical > hitBonus / 2;
-                DamagePopup.Create(hit.GetPositionOfHead(), damageAmount + critical, criticalHit);
-                hit.Damage(damageAmount + critical);
+
+                if (criticalHit)
+                {
+                    totalDamage = damageAmount + critical - player.characterDefenceTotal;
+                }
+                else { totalDamage = damageAmount - player.characterDefenceTotal; }
+
+                if (totalDamage > 0)
+                {
+                    DamagePopup.Create(hit.GetPositionOfHead(), totalDamage, criticalHit);
+                    hit.Damage(totalDamage);
+                }
+
                 isAttacking = false;
                 if (debugOn) { Debug.Log($"Target has been hit: {hit.Combatant}"); }
             }
@@ -430,6 +441,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
                 potion.transform.position = transform.position;
                 Debug.Log($"Potion home: {potion.name}");
             }
+
 
             healthBar.SetHealth(hitPoints);
         }

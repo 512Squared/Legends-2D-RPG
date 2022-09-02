@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 6343201945600682458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.11, y: -2.0799994, z: 2}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1769844304892601426}
@@ -465,14 +465,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 1
   itemCode: 1043
-  heroItem: {fileID: 0}
+  itemHome: 0
+  shop: 0
+  wearableItems: {fileID: 0}
   spriteRenderer: {fileID: 6810707137108723851}
   polyCollider: {fileID: 3608846696803364229}
   itemGuid: 
   itemType: 0
   affectType: 0
-  shop: 0
-  itemHome: 0
   itemCodeSo: 1000
   valueInCoins: 0
   amountOfEffect: 0
@@ -484,6 +484,8 @@ MonoBehaviour:
   isNewItem: 1
   isShopItem: 0
   isQuestObject: 0
+  isWearable: 0
+  isPrefab: 0
   pickUpNotice: 1
   isRelic: 0
   isStackable: 0
@@ -491,12 +493,11 @@ MonoBehaviour:
   isDeletedStack: 0
   hasBeenDropped: 0
   boughtFromShop: 0
-  isPrefab: 0
   audio: {fileID: 0}
   itemsImage: {fileID: 0}
   pickup: 0
-  itemDefenceModifier: 0
-  itemAttackModifier: 0
-  amountOfEffectModifier: 0
+  DefenceModifier: 0
+  AttackModifier: 0
+  EffectModifier: 0
   itemPickupPlace: 0
   itemPosition: {x: 0, y: 0, z: 0}

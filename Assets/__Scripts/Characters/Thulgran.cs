@@ -235,7 +235,7 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
 
     public void Damage(int damage)
     {
-        ThulgranHp -= damage;
+        ThulgranHp -= damage; // defence and attack bonuses calculated in enemies attack method  
     }
 
 

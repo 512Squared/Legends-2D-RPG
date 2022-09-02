@@ -9,76 +9,116 @@ public class Item : MonoBehaviour, ISaveable
 {
     #region SERIALIZATION
 
+    [TitleGroup("SO details")]
     [Space] public int quantity = 1;
 
     [Space] [ItemCodeDescription] [SerializeField]
     private int itemCode = 1000;
 
-    [SerializeField] private HeroEditorItem heroItem;
+    public SceneObjectsUnload itemHome;
 
-    [Space]
+    [ShowIf("isShopItem")]
+    public Shop shop; // pickUpItem, shop1, shop2, shop3
+
+    [TitleGroup("Item Configuration")]
+    [Space] [ShowIf("isWearable")]
+    [SerializeField] private Wearables wearableItems;
+
     [Required]
     public SpriteRenderer spriteRenderer;
 
     [Required]
     public PolygonCollider2D polyCollider;
 
+
+    [HideInInspector]
     public string itemGuid;
 
+    [HideInInspector]
     public ItemType itemType;
 
+    [HideInInspector]
     public AffectType affectType;
 
-    public Shop shop; // pickUpItem, shop1, shop2, shop3
 
-    public SceneObjectsUnload itemHome;
-
+    [HideInInspector]
     public int itemCodeSo = 1000;
 
+    [HideInInspector]
     public int valueInCoins;
 
+    [HideInInspector]
     public int amountOfEffect;
 
+    [HideInInspector]
     public int itemAttack;
 
+    [HideInInspector]
     public int itemDefence;
 
+    [HideInInspector]
     public string itemName;
 
+    [HideInInspector]
     public string itemDescription;
 
-
+    [HideInInspector]
     public bool itemSelected;
 
+    [HideInInspector]
     public bool isNewItem = true;
+
+    [Space]
     public bool isShopItem;
+
     public bool isQuestObject;
-    public bool pickUpNotice = true;
-    public bool isRelic;
-    public bool isStackable;
-    public bool isPickedUp;
-    public bool isDeletedStack;
-    public bool hasBeenDropped;
-    public bool boughtFromShop;
+
+    public bool isWearable;
+
     public bool isPrefab;
+
+    public bool pickUpNotice = true;
+
+    [HideInInspector]
+    public bool isRelic;
+
+    [HideInInspector]
+    public bool isStackable;
+
+    [TitleGroup("Info Bools")]
+    public bool isPickedUp;
+
+    public bool isDeletedStack;
+
+    public bool hasBeenDropped;
+
+    public bool boughtFromShop;
+
+    [HideInInspector]
     public AudioManager audio;
 
+    [HideInInspector]
     [PreviewField(120, ObjectFieldAlignment.Center)]
     [GUIColor(0.2f, 0.286f, 0.680f)]
     public Sprite itemsImage;
 
     [HideInInspector]
-    public int pickup;
+    public int pickup; // not sure if this was implemented outside of save
 
-    [SerializeField] private int itemDefenceModifier;
-    [SerializeField] private int itemAttackModifier;
-    [SerializeField] private int amountOfEffectModifier;
+    [TitleGroup("Modifiers")]
+    [SerializeField] private int DefenceModifier;
+
+    [SerializeField] private int AttackModifier;
+    [SerializeField] private int EffectModifier;
 
     public ItemDetails So { get; set; }
 
     public int ItemCode { get => itemCode; set => itemCode = value; }
 
+    [TitleGroup("Misc")]
+    [HideInInspector]
     public int itemPickupPlace;
+
     public Vector3 itemPosition;
 
     #endregion
@@ -89,6 +129,8 @@ public class Item : MonoBehaviour, ISaveable
         {
             Init(ItemCode);
         }
+
+        if (itemType is ItemType.Armour or ItemType.Shield or ItemType.Weapon or ItemType.Helmet) { isWearable = true; }
 
         spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>(0);
     }
@@ -110,7 +152,7 @@ public class Item : MonoBehaviour, ISaveable
         itemGuid = GetComponent<GenerateGUID>().GUID;
         GetItemDetailsFromScriptObject(this);
         audio = FindObjectOfType<AudioManager>();
-        heroItem = GetComponent<HeroEditorItem>();
+        wearableItems = GetComponent<Wearables>();
         //heroItem.Id = itemGuid;
     }
 
@@ -124,9 +166,9 @@ public class Item : MonoBehaviour, ISaveable
         item.affectType = So.affectType;
 
         // variables
-        item.itemDefence = So.itemDefence + itemDefenceModifier;
-        item.itemAttack = So.itemAttack + itemAttackModifier;
-        item.amountOfEffect = So.amountOfEffect + amountOfEffectModifier;
+        item.itemDefence = So.itemDefence + DefenceModifier;
+        item.itemAttack = So.itemAttack + AttackModifier;
+        item.amountOfEffect = So.amountOfEffect + EffectModifier;
         item.valueInCoins = So.valueInCoins;
         item.itemCodeSo = So.itemCode;
         item.itemName = So.itemName;
@@ -227,7 +269,7 @@ public class Item : MonoBehaviour, ISaveable
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
-            selectedCharacter.EquipArmour(this, GetComponent<HeroEditorItem>());
+            selectedCharacter.EquipArmour(this, GetComponent<Wearables>());
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
@@ -248,7 +290,7 @@ public class Item : MonoBehaviour, ISaveable
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
-            selectedCharacter.EquipShield(this, GetComponent<HeroEditorItem>());
+            selectedCharacter.EquipShield(this, GetComponent<Wearables>());
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
@@ -268,7 +310,7 @@ public class Item : MonoBehaviour, ISaveable
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
-            selectedCharacter.EquipHelmet(this, GetComponent<HeroEditorItem>());
+            selectedCharacter.EquipHelmet(this, GetComponent<Wearables>());
             Debug.Log(selectedCharacter.playerName + " equipped with " + this);
         }
 
@@ -290,7 +332,7 @@ public class Item : MonoBehaviour, ISaveable
             }
 
             selectedCharacter.AddWeaponPower(itemAttack);
-            selectedCharacter.EquipWeapon(this, GetComponent<HeroEditorItem>());
+            selectedCharacter.EquipWeapon(this, GetComponent<Wearables>());
 
             Debug.Log(selectedCharacter.playerName + " equipped with " + itemName);
         }
