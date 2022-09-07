@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -63,8 +64,13 @@ public static class SaveDataManager
         _initialData.thulgranData.position = new Vector3(-8.25f, -3.25f, 0.75f);
         PlayerGlobalData.Instance.playerTrans = _initialData.thulgranData.position;
         PlayerGlobalData.Instance.transform.position = PlayerGlobalData.Instance.playerTrans;
+        GameManager.Instance.SendPlayersToPhotobooth();
         InitialData = _initialData.ToJson();
-        Debug.Log($"Shoplist check: {_initialData.inventoryDatas.shopsItemsList.Count}");
+        if (GameManager.Instance.initialization)
+        {
+            Debug.Log($"Shoplist check: {_initialData.inventoryDatas.shopsItemsList.Count}");
+        }
+
         return InitialData;
     }
 

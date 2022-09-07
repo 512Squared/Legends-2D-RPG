@@ -90,7 +90,6 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerExit(PointerEventData eventData)
     {
         isMouseOver = false;
-        Debug.Log($"Mouse over on exit: {isMouseOver}");
     }
 
     private void ScrollToSelected()

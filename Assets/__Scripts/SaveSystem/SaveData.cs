@@ -297,10 +297,10 @@ public class SaveData
     {
         public CharacterData(string playerName, string npcGuid, int characterLevel, int characterMana, int characterHp,
             int characterIntelligence, int characterPerception, int characterBaseAttack, int characterBaseDefence,
-            bool isTeamMember, bool isAvailable, bool isNew, Item characterWeapon, Item characterArmour,
-            Item characterHelmet, Item characterShield, int characterAttackTotal, int characterDefenceTotal,
-            Sprite characterWeaponImage, Sprite characterArmourImage, Sprite characterHelmetImage,
-            Sprite characterShieldImage, Sprite[] skills, Vector3 position)
+            bool isTeamMember, bool isAvailable, bool isNew, int characterAttackTotal, int characterDefenceTotal,
+            Sprite[] skills, Vector3 position, Item
+                itemWeapon, Item itemArmour, Item itemHelmet, Item itemShield, Sprite weaponSprite, Sprite
+                armourSprite, Sprite helmetSprite, Sprite shieldSprite)
         {
             this.playerName = playerName;
             this.npcGuid = npcGuid;
@@ -314,18 +314,18 @@ public class SaveData
             this.isTeamMember = isTeamMember;
             this.isAvailable = isAvailable;
             this.isNew = isNew;
-            this.characterWeapon = characterWeapon;
-            this.characterArmour = characterArmour;
-            this.characterHelmet = characterHelmet;
-            this.characterShield = characterShield;
             this.characterAttackTotal = characterAttackTotal;
             this.characterDefenceTotal = characterDefenceTotal;
-            this.characterWeaponImage = characterWeaponImage;
-            this.characterArmourImage = characterArmourImage;
-            this.characterHelmetImage = characterHelmetImage;
-            this.characterShieldImage = characterShieldImage;
             this.skills = skills;
             this.position = position;
+            this.itemShield = itemShield;
+            this.itemArmour = itemArmour;
+            this.itemWeapon = itemWeapon;
+            this.itemHelmet = itemHelmet;
+            this.weaponSprite = weaponSprite;
+            this.armourSprite = armourSprite;
+            this.helmetSprite = helmetSprite;
+            this.shieldSprite = shieldSprite;
         }
 
         public string npcGuid;
@@ -334,12 +334,12 @@ public class SaveData
         public int characterIntelligence, characterPerception;
         public int characterBaseAttack, characterBaseDefence;
         public bool isTeamMember, isAvailable, isNew;
-        public Item characterWeapon, characterArmour, characterHelmet, characterShield;
         public int characterAttackTotal, characterDefenceTotal;
-        public Sprite characterWeaponImage, characterArmourImage, characterHelmetImage, characterShieldImage;
         public Sprite[] skills;
         public Vector3 position;
         public string playerName;
+        public Item itemShield, itemHelmet, itemWeapon, itemArmour;
+        public Sprite weaponSprite, armourSprite, helmetSprite, shieldSprite;
     }
 
     public List<CharacterData> characterDataList = new();

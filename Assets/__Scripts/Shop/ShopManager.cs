@@ -289,25 +289,40 @@ public class ShopManager : MonoBehaviour
                     case 0:
                         _shop1NormalItems = shopItemsCount;
                         _shop1SecretItems = secretShopItemsCount;
-                        Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + shopItemsCount + " | Secret items: " +
-                                  secretShopItemsCount);
+                        if (GameManager.Instance.initialization)
+                        {
+                            Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + shopItemsCount +
+                                      " | Secret items: " +
+                                      secretShopItemsCount);
+                        }
+
                         break;
                     case 1:
-                        Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + (shopItemsCount - _shop1NormalItems) +
-                                  " | Secret items: " + (secretShopItemsCount - _shop1SecretItems));
+                        if (GameManager.Instance.initialization)
+                        {
+                            Debug.Log("Shop no: " + (i + 1) + " | Normal items: " +
+                                      (shopItemsCount - _shop1NormalItems) +
+                                      " | Secret items: " + (secretShopItemsCount - _shop1SecretItems));
+                        }
+
                         _shop2NormalItems = shopItemsCount;
                         _shop2SecretItems = secretShopItemsCount;
                         break;
                     case 2:
-                        Debug.Log("Shop no: " + (i + 1) + " | Normal items: " + (shopItemsCount - _shop2NormalItems) +
-                                  " | Secret items: " + (secretShopItemsCount - _shop2SecretItems));
+                        if (GameManager.Instance.initialization)
+                        {
+                            Debug.Log("Shop no: " + (i + 1) + " | Normal items: " +
+                                      (shopItemsCount - _shop2NormalItems) +
+                                      " | Secret items: " + (secretShopItemsCount - _shop2SecretItems));
+                        }
+
                         break;
                 }
             }
         }
 
         isShopInstantiated = true; // armoury is instantiated on first shop onload
-        Debug.Log("Shops fully Instantiated");
+        if (GameManager.Instance.initialization) { Debug.Log("Shops fully Instantiated"); }
     }
 
     public void ShopArmouryBool()

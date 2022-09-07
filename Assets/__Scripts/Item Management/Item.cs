@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using Assets.HeroEditor4D.FantasyInventory.Scripts.Data;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class Item : MonoBehaviour, ISaveable
 
     [TitleGroup("Item Configuration")]
     [Space] [ShowIf("isWearable")]
-    [SerializeField] private Wearables wearableItems;
+    public Wearables wearableItems;
 
     [Required]
     public SpriteRenderer spriteRenderer;
@@ -150,10 +151,15 @@ public class Item : MonoBehaviour, ISaveable
     private void Start()
     {
         itemGuid = GetComponent<GenerateGUID>().GUID;
-        GetItemDetailsFromScriptObject(this);
         audio = FindObjectOfType<AudioManager>();
         wearableItems = GetComponent<Wearables>();
-        //heroItem.Id = itemGuid;
+        StartCoroutine(InitializeSo());
+    }
+
+    private IEnumerator InitializeSo()
+    {
+        yield return null;
+        GetItemDetailsFromScriptObject(this);
     }
 
     public Item GetItemDetailsFromScriptObject(Item item)
@@ -235,98 +241,121 @@ public class Item : MonoBehaviour, ISaveable
         PlayerStats selectedCharacter = GameManager.Instance.GetPlayerStats()[characterToUseOn];
 
 
-        Debug.Log("UseItem called from Item");
+        if (GameManager.Instance.inventory) { Debug.Log("UseItem called from Item"); }
+
         if (affectType == AffectType.Hp)
         {
             selectedCharacter.AddHp(amountOfEffect);
             if (characterToUseOn != 0)
             {
-                Debug.Log(amountOfEffect + " HP given to " + selectedCharacter.playerName);
+                if (GameManager.Instance.items)
+                {
+                    Debug.Log(amountOfEffect + " HP given to " + selectedCharacter.playerName);
+                }
             }
         }
 
         else if (affectType == AffectType.Mana)
         {
             selectedCharacter.AddMana(amountOfEffect);
-            Debug.Log(amountOfEffect + $"Mana given to{selectedCharacter.playerName}");
+            if (GameManager.Instance.items)
+            {
+                Debug.Log(amountOfEffect + $"Mana given to{selectedCharacter.playerName}");
+            }
         }
 
 
         else if (itemType == ItemType.Armour)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterArmour.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.itemArmour.itemDefence;
 
             if (selectedCharacter.characterArmourName != "")
             {
-                selectedCharacter.characterArmour.GetItemDetailsFromScriptObject(selectedCharacter
-                    .characterArmour);
-                Debug.Log(selectedCharacter.playerName + "'s equipped " +
-                          selectedCharacter.characterArmour.itemName +
-                          " has been added back into the Inventory");
-                Inventory.Instance.AddItems(selectedCharacter.characterArmour);
+                selectedCharacter.itemArmour.GetItemDetailsFromScriptObject(selectedCharacter
+                    .itemArmour);
+                if (GameManager.Instance.items)
+                {
+                    Debug.Log(selectedCharacter.playerName + "'s equipped " +
+                              selectedCharacter.itemArmour.itemName +
+                              " has been added back into the Inventory");
+                }
+
+                Inventory.Instance.AddItems(selectedCharacter.itemArmour);
 
                 MenuManager.Instance.UpdateItemsInventory();
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
             selectedCharacter.EquipArmour(this, GetComponent<Wearables>());
-            Debug.Log(selectedCharacter.playerName + " equipped with " + this);
+            if (GameManager.Instance.items) { Debug.Log(selectedCharacter.playerName + " equipped with " + this); }
         }
 
         else if (itemType == ItemType.Shield)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterShield.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.itemShield.itemDefence;
 
             if (selectedCharacter.characterShieldName != "")
             {
-                selectedCharacter.characterShield.GetItemDetailsFromScriptObject(selectedCharacter
-                    .characterShield);
-                Debug.Log(selectedCharacter.playerName + "'s equipped " +
-                          selectedCharacter.characterShield.itemName +
-                          " has been added back into the Inventory");
-                Inventory.Instance.AddItems(selectedCharacter.characterShield);
+                selectedCharacter.itemShield.GetItemDetailsFromScriptObject(selectedCharacter
+                    .itemShield);
+                if (GameManager.Instance.items)
+                {
+                    Debug.Log(selectedCharacter.playerName + "'s equipped " +
+                              selectedCharacter.itemShield.itemName +
+                              " has been added back into the Inventory");
+                }
+
+                Inventory.Instance.AddItems(selectedCharacter.itemShield);
 
                 MenuManager.Instance.UpdateItemsInventory();
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
             selectedCharacter.EquipShield(this, GetComponent<Wearables>());
-            Debug.Log(selectedCharacter.playerName + " equipped with " + this);
+            if (GameManager.Instance.items) { Debug.Log(selectedCharacter.playerName + " equipped with " + this); }
         }
 
         else if (itemType == ItemType.Helmet)
         {
-            selectedCharacter.characterDefenceTotal -= selectedCharacter.characterHelmet.itemDefence;
+            selectedCharacter.characterDefenceTotal -= selectedCharacter.itemHelmet.itemDefence;
 
             if (selectedCharacter.characterHelmetName != "")
             {
-                selectedCharacter.characterHelmet.GetItemDetailsFromScriptObject(selectedCharacter.characterHelmet);
-                Debug.Log(selectedCharacter.playerName + "'s equipped " +
-                          selectedCharacter.characterHelmet.itemName +
-                          " has been added back into the Inventory");
-                Inventory.Instance.AddItems(selectedCharacter.characterHelmet);
+                selectedCharacter.itemHelmet.GetItemDetailsFromScriptObject(selectedCharacter.itemHelmet);
+                if (GameManager.Instance.items)
+                {
+                    Debug.Log(selectedCharacter.playerName + "'s equipped " +
+                              selectedCharacter.itemHelmet.itemName +
+                              " has been added back into the Inventory");
+                }
+
+                Inventory.Instance.AddItems(selectedCharacter.itemHelmet);
 
                 MenuManager.Instance.UpdateItemsInventory();
             }
 
             selectedCharacter.AddArmourDefence(itemDefence);
             selectedCharacter.EquipHelmet(this, GetComponent<Wearables>());
-            Debug.Log(selectedCharacter.playerName + " equipped with " + this);
+            if (GameManager.Instance.items) { Debug.Log(selectedCharacter.playerName + " equipped with " + this); }
         }
 
 
         else if (itemType == ItemType.Weapon)
         {
-            selectedCharacter.characterAttackTotal -= selectedCharacter.characterWeapon.itemAttack;
+            selectedCharacter.characterAttackTotal -= selectedCharacter.itemWeapon.itemAttack;
 
             if (selectedCharacter.characterWeaponName != "")
             {
-                selectedCharacter.characterWeapon.GetItemDetailsFromScriptObject(selectedCharacter
-                    .characterWeapon);
-                Debug.Log(selectedCharacter.playerName + "'s equipped " +
-                          selectedCharacter.characterWeapon.itemName +
-                          " has been added back into the Inventory");
-                Inventory.Instance.AddItems(selectedCharacter.characterWeapon);
+                selectedCharacter.itemWeapon.GetItemDetailsFromScriptObject(selectedCharacter
+                    .itemWeapon);
+                if (GameManager.Instance.items)
+                {
+                    Debug.Log(selectedCharacter.playerName + "'s equipped " +
+                              selectedCharacter.itemWeapon.itemName +
+                              " has been added back into the Inventory");
+                }
+
+                Inventory.Instance.AddItems(selectedCharacter.itemWeapon);
 
                 MenuManager.Instance.UpdateItemsInventory();
             }
@@ -334,7 +363,10 @@ public class Item : MonoBehaviour, ISaveable
             selectedCharacter.AddWeaponPower(itemAttack);
             selectedCharacter.EquipWeapon(this, GetComponent<Wearables>());
 
-            Debug.Log(selectedCharacter.playerName + " equipped with " + itemName);
+            if (GameManager.Instance.items)
+            {
+                Debug.Log(selectedCharacter.playerName + " equipped with " + itemName);
+            }
         }
     }
 
@@ -343,7 +375,7 @@ public class Item : MonoBehaviour, ISaveable
         if (polyCollider)
         {
             polyCollider.enabled = false;
-            Debug.Log($"polyCollider enabled: {polyCollider.enabled}");
+            if (GameManager.Instance.items) { Debug.Log($"polyCollider enabled: {polyCollider.enabled}"); }
         }
 
         if (spriteRenderer) { spriteRenderer.enabled = false; }
@@ -385,7 +417,8 @@ public class Item : MonoBehaviour, ISaveable
     private void DropItemPosition(Item itemToDrop)
     {
         itemPickupPlace = PlayerGlobalData.Instance.currentSceneIndex;
-        Debug.Log($"itemPickupPlace after drop: {itemPickupPlace}");
+        if (GameManager.Instance.items) { Debug.Log($"itemPickupPlace after drop: {itemPickupPlace}"); }
+
         if (!itemToDrop.isQuestObject) { SetItemParent(GameManager.Instance.pickupParents[itemPickupPlace], true); }
 
         Transform playerTransform = PlayerGlobalData.Instance.gameObject.GetComponent<Transform>();
@@ -400,8 +433,11 @@ public class Item : MonoBehaviour, ISaveable
         spriteRenderer.enabled = true;
         polyCollider.enabled = true;
         string guid = itemGuid[..8];
-        Debug.Log(
-            $"Dropped {itemName} | Visible: {spriteRenderer.enabled} | Position: {transform.position} | GUID: {guid}");
+        if (GameManager.Instance.items)
+        {
+            Debug.Log(
+                $"Dropped {itemName} | Visible: {spriteRenderer.enabled} | Position: {transform.position} | GUID: {guid}");
+        }
     }
 
     public void SetItemParent(Transform newParent, bool worldSpace)
@@ -467,7 +503,12 @@ public class Item : MonoBehaviour, ISaveable
                 polyCollider.enabled = false;
                 spriteRenderer.enabled = false;
                 SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
-                Debug.Log($"Poly: LoadFromSave {id.itemName} | poly status: {id.polyCollider.enabled}");
+                string shortGuid = itemGuid[..8];
+                if (GameManager.Instance.items || GameManager.Instance.saveLoad)
+                {
+                    Debug.Log(
+                        $"Poly: LoadFromSave {id.itemName} | poly status: {id.polyCollider.enabled} | GUID: {shortGuid}");
+                }
             }
 
             string guid = id.itemGuid[..8];
@@ -476,7 +517,10 @@ public class Item : MonoBehaviour, ISaveable
             {
                 SetItemParent(GameManager.Instance.pickupParents[id.itemPickupPlace]
                     .transform, true); // pickupParent is where dropped item is stored ready for pickup
-                Debug.Log($"Dropped item put into correct box: {id.itemName} | GUID: {guid}");
+                if (GameManager.Instance.items || GameManager.Instance.saveLoad)
+                {
+                    Debug.Log($"Dropped item put into correct box: {id.itemName} | GUID: {guid}");
+                }
             }
 
             if (!id.isPickedUp && id.hasBeenDropped)
@@ -485,14 +529,20 @@ public class Item : MonoBehaviour, ISaveable
                 spriteRenderer.enabled = true;
                 spriteRenderer.sortingOrder = 3;
                 spriteRenderer.sortingLayerName = "Objects";
-                Debug.Log($"Quantity calculation: {quantity}");
+                if (GameManager.Instance.items || GameManager.Instance.saveLoad)
+                {
+                    Debug.Log($"Quantity calculation: {quantity}");
+                }
             }
 
             if (id.isPickedUp && id.boughtFromShop)
             {
                 SetItemParent(GameManager.Instance.pickedUpItems.transform, true);
                 isShopItem = false;
-                Debug.Log($"Bought Item put into Pickup box: {id.itemName}");
+                if (GameManager.Instance.items || GameManager.Instance.saveLoad)
+                {
+                    Debug.Log($"Bought Item put into Pickup box: {id.itemName}");
+                }
             }
 
             if (isDeletedStack)
@@ -505,7 +555,10 @@ public class Item : MonoBehaviour, ISaveable
 
                 if (spriteRenderer) { spriteRenderer.enabled = false; }
 
-                Debug.Log($"Deleted item put into correct box: {id.itemName} | GUID: {guid}");
+                if (GameManager.Instance.items || GameManager.Instance.saveLoad)
+                {
+                    Debug.Log($"Deleted item put into correct box: {id.itemName} | GUID: {guid}");
+                }
             }
 
             break;

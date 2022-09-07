@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
@@ -12,7 +13,6 @@ public class LevelManager : MonoBehaviour
 
     public SceneObjectsLoad scene;
 
-
     [SerializeField] private Tilemap tilemap;
 
 
@@ -22,13 +22,8 @@ public class LevelManager : MonoBehaviour
         Bounds localBounds = tilemap.localBounds;
         topRightEdge = localBounds.max + new Vector3(-0.4f, 0f, 0f);
         bottomLeftEdge = localBounds.min + new Vector3(0.7f, 0.1f, 0f);
-        PlayerGlobalData.Instance.SetLimit(bottomLeftEdge, topRightEdge);
-        npcCharacters = FindObjectsOfType<NpcPhysics>(true).ToArray();
-
-        foreach (NpcPhysics npc in npcCharacters)
-        {
-            npc.SetLimit(bottomLeftEdge, topRightEdge);
-        }
+        IEnumerable<ISetLimits> sl = FindObjectsOfType<MonoBehaviour>().OfType<ISetLimits>();
+        foreach (ISetLimits s in sl) { s.SetLimits(bottomLeftEdge, topRightEdge); }
     }
 
     public void GetTilemapSize(out Vector3 origin, out int x, out int y, out float cellSize, string scene)
@@ -39,4 +34,8 @@ public class LevelManager : MonoBehaviour
         cellSize = 2.56f;
         Debug.Log($"GetTilemapSize: {scene} | {x} | {y}");
     }
+}
+
+public partial interface ISetLimits
+{
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -22,7 +23,7 @@ public class Inventory : MonoBehaviour, ISaveable
 
     private void Start()
     {
-        Instance = this;
+        CreateItemDetailsDictionary();
         _inventoryList = new List<Item>();
         _initializeShop = new List<Item>();
         shopList = new List<Item>();
@@ -31,7 +32,6 @@ public class Inventory : MonoBehaviour, ISaveable
     private void Awake()
     {
         Instance = this;
-        CreateItemDetailsDictionary();
     }
 
 
@@ -183,7 +183,7 @@ public class Inventory : MonoBehaviour, ISaveable
 
     public void UseAndRemoveItem(Item item, int selectedCharacterUse, Vector2 target)
     {
-        Debug.Log("Use & Remove initiated");
+        if (GameManager.Instance.inventory) { Debug.Log("Use & Remove initiated"); }
 
         if (item.isStackable)
         {
@@ -206,7 +206,7 @@ public class Inventory : MonoBehaviour, ISaveable
         else // same code as above but for non-stackable items
         {
             _inventoryList.Remove(item);
-            Debug.Log("Item removed");
+            if (GameManager.Instance.inventory) { Debug.Log("Item removed"); }
         }
 
         Actions.OnUseItem?.Invoke(item, selectedCharacterUse, target);
@@ -279,7 +279,10 @@ public class Inventory : MonoBehaviour, ISaveable
             _itemDetailsDictionary.Add(createItemDetails.itemCode, createItemDetails);
         }
 
-        Debug.Log($"Item dictionary: {_itemDetailsDictionary.Count} items");
+        if (GameManager.Instance.initialization)
+        {
+            Debug.Log($"Item dictionary: {_itemDetailsDictionary.Count} items");
+        }
     }
 
     #region Implementation of ISaveable
@@ -296,9 +299,19 @@ public class Inventory : MonoBehaviour, ISaveable
         foreach (Item item in _inventoryList)
         {
             item.GetItemDetailsFromScriptObject(item);
+            //StartCoroutine(LoadFromScriptableObject(_inventoryList));
         }
 
         shopList = a_SaveData.inventoryDatas.shopsItemsList;
+    }
+
+    private static IEnumerator LoadFromScriptableObject(List<Item> itemList)
+    {
+        yield return new WaitForFixedUpdate();
+        foreach (Item item in itemList)
+        {
+            item.GetItemDetailsFromScriptObject(item);
+        }
     }
 
     #endregion

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using Assets.HeroEditor4D.Common.CharacterScripts;
 using Assets.HeroEditor4D.FantasyInventory.Scripts.Data;
+using Assets.HeroEditor4D.FantasyInventory.Scripts.Enums;
 using Sirenix.OdinInspector;
 
 
@@ -15,6 +16,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
     public Character4D character;
     public Transform damagePoint;
+    public GameObject activeBase;
 
     public SceneObjectsLoad homeScene;
 
@@ -48,7 +50,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
 
     [TabGroup("New Group", "Weaponry")] [GUIColor(0.447f, 0.654f, 0.996f)]
-    public Item characterWeapon, characterArmour, characterHelmet, characterShield;
+    public Item itemWeapon, itemArmour, itemHelmet, itemShield;
 
     [TabGroup("New Group", "Weaponry")] [GUIColor(0.447f, 0.654f, 0.996f)]
     public string characterWeaponName, characterArmourName, characterHelmetName, characterShieldName;
@@ -64,7 +66,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
 
     [TabGroup("New Group", "Weaponry Images")] [GUIColor(0.447f, 0.654f, 0.996f)] [PreviewField] [Required]
-    public Sprite characterWeaponImage, characterArmourImage, characterHelmetImage, characterShieldImage;
+    public Sprite weaponSprite, armourSprite, helmetSprite, shieldSprite;
 
 
     public Sprite[] skills;
@@ -77,12 +79,16 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
     public float uiDamageOffset;
     public bool isAttacking;
     [SerializeField] private bool debugOn;
+    private string savedPath;
+    private string tempPath;
 
     #endregion
 
     private void Awake()
     {
         position = transform.position;
+        savedPath = Application.persistentDataPath + "/Resources/PNGs/" + playerName;
+        tempPath = Application.persistentDataPath + "/Resources/PNGs/" + "_unsaved_" + playerName;
     }
 
     // Start is called before the first frame update
@@ -147,9 +153,11 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
             {
                 characterHp = maxHp;
                 NotificationFader.instance.CallFadeInOut(
-                    $"{playerName}'s HP is <color=#E0A515>full</color> - well done!", Sprites.instance.hpSprite,
+                    $"{playerName}'s HP is <color=#E0A515>full</color> - well done!",
+                    Sprites.instance.hpSprite,
                     3f,
-                    1400, 30);
+                    1400,
+                    30);
                 Debug.Log($"Yo");
             }
 
@@ -168,8 +176,11 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
             {
                 characterMana = maxMana;
                 NotificationFader.instance.CallFadeInOut(
-                    $"{playerName}'s Mana is <color=#E0A515>full</color> - well done!", Sprites.instance.manaSprite, 3f,
-                    1400, 30);
+                    $"{playerName}'s Mana is <color=#E0A515>full</color> - well done!",
+                    Sprites.instance.manaSprite,
+                    3f,
+                    1400,
+                    30);
                 Debug.Log($"Yo");
             }
         }
@@ -187,42 +198,42 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
     public void EquipWeapon(Item weaponToEquip, Wearables heroWeapon)
     {
-        characterWeapon = weaponToEquip;
+        itemWeapon = weaponToEquip;
         character.EquipMeleeWeapon1H(heroWeapon);
-        StartCoroutine(RefreshPlayerImages());
-        characterWeaponName = characterWeapon.itemName;
-        characterWeaponImage = characterWeapon.itemsImage;
-        characterWeaponDescription = characterWeapon.itemDescription;
+        SendPlayerToPhotobooth();
+        characterWeaponName = itemWeapon.itemName;
+        weaponSprite = itemWeapon.itemsImage;
+        characterWeaponDescription = itemWeapon.itemDescription;
     }
 
     public void EquipArmour(Item armourToEquip, Wearables heroArmor)
     {
-        characterArmour = armourToEquip;
+        itemArmour = armourToEquip;
         character.EquipArmor(heroArmor);
-        StartCoroutine(RefreshPlayerImages());
-        characterArmourName = characterArmour.itemName;
-        characterArmourImage = characterArmour.itemsImage;
-        characterArmourDescription = characterArmour.itemDescription;
+        SendPlayerToPhotobooth();
+        characterArmourName = itemArmour.itemName;
+        armourSprite = itemArmour.itemsImage;
+        characterArmourDescription = itemArmour.itemDescription;
     }
 
     public void EquipHelmet(Item helmetToEquip, Wearables heroHelmet)
     {
-        characterHelmet = helmetToEquip;
-        characterHelmetName = characterHelmet.itemName;
+        itemHelmet = helmetToEquip;
+        characterHelmetName = itemHelmet.itemName;
         character.EquipHelmet(heroHelmet);
-        StartCoroutine(RefreshPlayerImages());
-        characterHelmetImage = characterHelmet.itemsImage;
-        characterHelmetDescription = characterHelmet.itemDescription;
+        SendPlayerToPhotobooth();
+        helmetSprite = itemHelmet.itemsImage;
+        characterHelmetDescription = itemHelmet.itemDescription;
     }
 
     public void EquipShield(Item shieldToEquip, Wearables heroShield)
     {
-        characterShield = shieldToEquip;
+        itemShield = shieldToEquip;
         character.EquipShield(heroShield);
-        StartCoroutine(RefreshPlayerImages());
-        characterShieldName = characterShield.itemName;
-        characterShieldImage = characterShield.itemsImage;
-        characterShieldDescription = characterShield.itemDescription;
+        SendPlayerToPhotobooth();
+        characterShieldName = itemShield.itemName;
+        shieldSprite = itemShield.itemsImage;
+        characterShieldDescription = itemShield.itemDescription;
     }
 
     public void HitEnemy(Collider2D col, string colGuid, Character apex)
@@ -243,19 +254,12 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         }
     }
 
-    private IEnumerator RefreshPlayerImages()
-    {
-        yield return null;
-        CreateUISprites.Instance.RefreshImages(this);
-    }
-
-
     private IEnumerator Initialize()
     {
         yield return new WaitForSeconds(0.5f);
-        characterDefenceTotal = characterBaseDefence + characterArmour.itemDefence + characterShield.itemDefence +
-                                characterHelmet.itemDefence;
-        characterAttackTotal = characterBaseAttack + characterWeapon.itemAttack;
+        characterDefenceTotal = characterBaseDefence + itemArmour.itemDefence + itemShield.itemDefence +
+                                itemHelmet.itemDefence;
+        characterAttackTotal = characterBaseAttack + itemWeapon.itemAttack;
         if (playerName == "Thulgran")
         {
             transform.position = PlayerGlobalData.Instance.playerTrans;
@@ -263,18 +267,88 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         }
     }
 
+    private void SendPlayerToPhotobooth()
+    {
+        CreatePlayerPNGs.Instance.Photobooth(this, tempPath); // creates PNGs
+        LoadTempUISprites(); // converts to temp sprites
+    }
+
+    public void SayCheese() // this is just for game initialization
+    {
+        CreatePlayerPNGs.Instance.Photobooth(this, savedPath);
+        imageFront = CreateSpriteFromPNG(savedPath + "_front" + ".png"); // creates PNGs
+        imageRight = CreateSpriteFromPNG(savedPath + "_right" + ".png");
+    }
+
+    private void LoadTempUISprites()
+    {
+        imageFront = CreateSpriteFromPNG(tempPath + "_front" + ".png");
+        imageRight = CreateSpriteFromPNG(tempPath + "_right" + ".png");
+    }
+
+    private static Sprite CreateSpriteFromPNG(string path)
+    {
+        // this fetches the png texture and builds a sprite
+
+        if (string.IsNullOrEmpty(path)) { return null; }
+
+        if (System.IO.File.Exists(path))
+        {
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+            Texture2D texture = new(512, 512);
+            texture.LoadImage(bytes);
+            Sprite sprite = Sprite.Create(texture,
+                new Rect(0, 0, texture.width, texture.height),
+                new Vector2(0.5f, 0.5f));
+            return sprite;
+        }
+
+        return null;
+    }
+
+    private void SaveUISprites()
+    {
+        CreatePlayerPNGs.Instance.Photobooth(this, savedPath); // creates saved PNGs
+    }
+
+    private void LoadSavedUISprites()
+    {
+        imageRight = CreateSpriteFromPNG(savedPath + "_right" + ".png"); // re-creates sprites from saved PNGs
+        imageFront = CreateSpriteFromPNG(savedPath + "_front" + ".png");
+    }
+
+
     #region Implementation of ISaveable
 
     public void PopulateSaveData(SaveData a_SaveData)
     {
         position = transform.position;
+        SaveUISprites();
 
-        SaveData.CharacterData cd = new(playerName, _npcGuid, characterLevel, characterMana, characterHp,
+        SaveData.CharacterData cd = new(playerName,
+            _npcGuid,
+            characterLevel,
+            characterMana,
+            characterHp,
             characterIntelligence,
-            characterPerception, characterBaseAttack, characterBaseDefence, isTeamMember, isAvailable, isNew,
-            characterWeapon, characterArmour, characterHelmet, characterShield, characterAttackTotal,
-            characterDefenceTotal, characterWeaponImage, characterArmourImage, characterHelmetImage,
-            characterShieldImage, skills, position);
+            characterPerception,
+            characterBaseAttack,
+            characterBaseDefence,
+            isTeamMember,
+            isAvailable,
+            isNew,
+            characterAttackTotal,
+            characterDefenceTotal,
+            skills,
+            position,
+            itemWeapon,
+            itemArmour,
+            itemHelmet,
+            itemShield,
+            weaponSprite,
+            armourSprite,
+            helmetSprite,
+            shieldSprite);
 
         a_SaveData.characterDataList.Add(cd);
     }
@@ -314,16 +388,24 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
             characterBaseDefence = cd.characterBaseDefence;
             isAvailable = cd.isAvailable;
             isNew = cd.isNew;
-            characterWeapon = cd.characterWeapon;
-            characterArmour = cd.characterArmour;
-            characterHelmet = cd.characterHelmet;
-            characterShield = cd.characterShield;
+
+            weaponSprite = cd.weaponSprite;
+            itemWeapon = cd.itemWeapon;
+
+            armourSprite = cd.armourSprite;
+            itemArmour = cd.itemArmour;
+
+            helmetSprite = cd.helmetSprite;
+            itemHelmet = cd.itemHelmet;
+
+            shieldSprite = cd.shieldSprite;
+            itemShield = cd.itemShield;
+
+            StartCoroutine(ReequipPlayer());
+
             characterAttackTotal = cd.characterAttackTotal;
             characterDefenceTotal = cd.characterDefenceTotal;
-            characterWeaponImage = cd.characterWeaponImage;
-            characterArmourImage = cd.characterArmourImage;
-            characterHelmetImage = cd.characterHelmetImage;
-            characterShieldImage = cd.characterShieldImage;
+
             skills = cd.skills;
             if (playerName != "Thulgran")
             {
@@ -337,7 +419,31 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
             }
         }
 
-        if (gameObject.activeInHierarchy) { StartCoroutine(RefreshPlayerImages()); }
+        if (gameObject.activeInHierarchy)
+        {
+            LoadSavedUISprites();
+            if (GameManager.Instance.saveLoad) { Debug.Log($"Player Images updated: {playerName}"); }
+        }
+    }
+
+    private IEnumerator ReequipPlayer()
+    {
+        yield return null;
+        Wearables helmet = itemHelmet.GetComponent<Wearables>();
+        Debug.Log($"Helmet id: {helmet.Id}");
+        character.EquipHelmet(helmet);
+
+        Wearables weapon = itemWeapon.GetComponent<Wearables>();
+        Debug.Log($"Weapon id: {weapon.Id}");
+        character.EquipMeleeWeapon1H(weapon);
+
+        Wearables armour = itemArmour.GetComponent<Wearables>();
+        Debug.Log($"Armour id: {armour.Id}");
+        character.EquipArmor(armour);
+
+        Wearables shield = itemShield.GetComponent<Wearables>();
+        Debug.Log($"Shield id: {shield.Id}");
+        character.EquipShield(shield);
     }
 
     #endregion
@@ -346,6 +452,8 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
     public void Damage(int damage)
     {
+        damage = SpecialAbilities(damage);
+
         if (playerName != "Thulgran")
         {
             characterHp -= damage; // defence bonuses and total damage calculated in 'attack' method on enemies
@@ -358,6 +466,49 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
             IsAlive = false;
             GetComponent<PlayerGlobalData>().isAlive = false;
         }
+    }
+
+    private int SpecialAbilities(int firstDamage)
+    {
+        Wearables wearable = itemArmour.GetComponent<Wearables>();
+
+        switch (wearable.Modifier.Id)
+        {
+            case ItemModifier.Onslaught:
+                firstDamage += 10;
+                return firstDamage;
+            case ItemModifier.Fire:
+                firstDamage += 10;
+                return firstDamage;
+            case ItemModifier.None:
+                firstDamage += 1;
+                break;
+            case ItemModifier.Reinforced: break;
+            case ItemModifier.Refined: break;
+            case ItemModifier.Sharpened: break;
+            case ItemModifier.Lightweight: break;
+            case ItemModifier.Poison: break;
+            case ItemModifier.Bleeding: break;
+            case ItemModifier.Spread: break;
+            case ItemModifier.Shieldbreaker: break;
+            case ItemModifier.Ice: break;
+            case ItemModifier.Lightning: break;
+            case ItemModifier.Light: break;
+            case ItemModifier.Darkness: break;
+            case ItemModifier.Vampiric: break;
+            case ItemModifier.LevelDown: break;
+            case ItemModifier.LevelUp: break;
+            case ItemModifier.HealthUp: break;
+            case ItemModifier.HealthRecovery: break;
+            case ItemModifier.StaminaUp: break;
+            case ItemModifier.StaminaRecovery: break;
+            case ItemModifier.Speed: break;
+            case ItemModifier.Accuracy: break;
+            case ItemModifier.Reloading: break;
+            default: return firstDamage;
+        }
+
+        return firstDamage;
     }
 
     public Vector3 GetPositionOfHead()

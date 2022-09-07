@@ -1,17 +1,15 @@
 using Assets.HeroEditor4D.Common.CharacterScripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using HeroEditor4D.Common.Enums;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using DG.Tweening;
-using Character = UnityEngine.TextCore.Text.Character;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 // ReSharper disable InconsistentNaming
 
-public class PlayerGlobalData : MonoBehaviour, ISaveable
+public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
 {
     #region Fields
 
@@ -152,8 +150,6 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
             );
         }
 
-        if (Input.GetMouseButtonDown(0)) { AttackAnimation(); }
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             isJumping = true;
@@ -163,7 +159,8 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
             {
                 Sequence sequence = DOTween.Sequence();
                 sequence.Append(rb.DOJump(new Vector3(transform.position.x - jumpDistance, transform.position.y, 0),
-                        jumpPower, 1,
+                        jumpPower,
+                        1,
                         jumpTime))
                     .SetEase(Ease.Linear);
                 sequence.Insert(0,
@@ -215,6 +212,13 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
     private void AttackAnimation()
     {
         character.AnimationManager.Slash1H();
+        character.AnimationManager.Spring();
+    }
+
+    public void SetPhotoBoothLimit()
+    {
+        bottomLeftEdge = Vector3.positiveInfinity;
+        topRightEdge = Vector3.positiveInfinity;
     }
 
     private void AndroidController()
@@ -224,26 +228,25 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
             case false:
                 xMove = Input.GetAxisRaw("Horizontal");
                 yMove = Input.GetAxisRaw("Vertical");
+                if (Input.GetMouseButtonDown(0)) { AttackAnimation(); }
+
                 break;
             case true:
                 xMove = UltimateJoystick.GetHorizontalAxis("Joy");
                 yMove = UltimateJoystick.GetVerticalAxis("Joy");
+                if (UltimateButton.GetButtonDown("UltimateButton")) { AttackAnimation(); }
+
                 break;
         }
     }
 
-    public void SetLimit(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
+    public void SetLimits(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
     {
         bottomLeftEdge = bottomEdgeToSet;
         topRightEdge = topEdgeToSet;
         isLoaded = true;
     }
 
-    public void SetPhotoBoothLimit()
-    {
-        bottomLeftEdge = Vector3.positiveInfinity;
-        topRightEdge = Vector3.positiveInfinity;
-    }
 
     private void SetLimitBool(string arg1, string arg4, int arg2, int arg3)
     {
@@ -277,7 +280,8 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
             " is now available to add to your character party!",
             collision.gameObject.GetComponent<PlayerStats>().imageFront,
             3.4f,
-            1000, 30);
+            1000,
+            30);
     }
 
     private void AddTwoToPartyQuest()
@@ -322,7 +326,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable
         a_SaveData.thulgranData.controllerSwitch = controllerSwitch;
         //a_SaveData.thulgranData.moveSpeed = moveSpeed;
         a_SaveData.thulgranData.position = playerTrans;
-        Debug.Log($"Thulgran's save position: {playerTrans}");
+        if (GameManager.Instance.saveLoad) { Debug.Log($"Thulgran's save position: {playerTrans}"); }
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)

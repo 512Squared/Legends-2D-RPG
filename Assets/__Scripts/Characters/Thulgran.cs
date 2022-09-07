@@ -137,7 +137,11 @@ public class Thulgran : Rewardable<QuestRewards>, ISaveable
     {
         if (character != 0) { return; }
 
-        Debug.Log($"Use item called | Item: {item.itemName} | CharacterSlot: {character}");
+        if (GameManager.Instance.inventory)
+        {
+            Debug.Log($"Use item called | Item: {item.itemName} | CharacterSlot: {character}");
+        }
+
         switch (item.affectType)
         {
             case AffectType.Hp:

@@ -13,7 +13,8 @@ public class AiManager : SingletonMonobehaviour<AiManager>
     {
         path = AstarPath.active;
         path.Scan();
-        Debug.Log($"Active scan completed");
+        if (GameManager.Instance.artificialIntelligence) { Debug.Log($"Active scan completed"); }
+
         foreach (NavGraph t in path.data.graphs)
         {
             if (deBugging) { Debug.Log($"Graph name: {t.name} | Index: {path.data.GetGraphIndex(t)}"); }

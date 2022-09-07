@@ -92,7 +92,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>, ISaveable
     private void Start()
     {
         dynamicAudios = FindObjectsOfType<DynamicAudio>(true);
-        Debug.Log($"DynamicAudios: {dynamicAudios.Length}");
+        if (GameManager.Instance.initialization) { Debug.Log($"DynamicAudios: {dynamicAudios.Length}"); }
     }
 
     public void SetSceneDynamicAudio(string currentScene, string arrivingFrom)

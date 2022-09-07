@@ -169,13 +169,20 @@ public class Quest : MonoBehaviour, ISaveable
         {
             questID -= 500;
             MenuManager.Instance.notifyActiveQuest--;
-            Debug.Log($"MarkQuest: Notify ActiveQuest-- {MenuManager.Instance.notifyActiveQuest} | {questName}");
+            if (GameManager.Instance.quests)
+            {
+                Debug.Log($"MarkQuest: Notify ActiveQuest-- {MenuManager.Instance.notifyActiveQuest} | {questName}");
+            }
         }
 
         if (questElement && questElement.questItem && questElement.isItem)
         {
             Inventory.Instance.AddItems(questElement.questItem);
-            Debug.Log($"Item deactivated: {questElement.questItem.spriteRenderer.enabled}");
+            if (GameManager.Instance.quests)
+            {
+                Debug.Log($"Item deactivated: {questElement.questItem.spriteRenderer.enabled}");
+            }
+
             // notification for subquest completion - enable or disable with 'pickUpNotice' bool
             if (questElement.questItem.pickUpNotice)
             {
@@ -233,7 +240,11 @@ public class Quest : MonoBehaviour, ISaveable
         if (!isSubQuest)
         {
             MenuManager.Instance.notifyActiveQuest++;
-            Debug.Log($"ActivateQuest: Notify ActiveQuest++ {MenuManager.Instance.notifyActiveQuest} | {questName}");
+            if (GameManager.Instance.quests)
+            {
+                Debug.Log(
+                    $"ActivateQuest: Notify ActiveQuest++ {MenuManager.Instance.notifyActiveQuest} | {questName}");
+            }
         }
     }
 
@@ -246,7 +257,7 @@ public class Quest : MonoBehaviour, ISaveable
         foreach (Quest q in subQuests)
         {
             q.isActive = true;
-            Debug.Log($"Quest now active: {q.questName}");
+            if (GameManager.Instance.quests) { Debug.Log($"Quest now active: {q.questName}"); }
         }
     }
 
@@ -287,20 +298,36 @@ public class Quest : MonoBehaviour, ISaveable
     {
         if (quest.questName != questName || quest.questRewardClaimed) { return; }
 
-        Debug.Log($"Quest Reward called: {quest.questName} | questID: {quest.questID}");
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log($"Quest Reward called: {quest.questName} | questID: {quest.questID}");
+        }
+
         questRewardClaimed = true;
         MenuManager.Instance.notifyQuestReward--;
-        Debug.Log($"ClaimReward: Notify Quest Reward-- {MenuManager.Instance.notifyQuestReward} | {quest.questName}");
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log(
+                $"ClaimReward: Notify Quest Reward-- {MenuManager.Instance.notifyQuestReward} | {quest.questName}");
+        }
 
         QuestManager.Instance.HandOutReward(rewards);
         MenuManager.Instance.UpdateQuestNotifications();
 
         if (questElement == null || questElement.questItem == null || !questElement.questItem.isRelic) { return; }
 
-        Debug.Log($"Item: {questElement.questItem.itemName} | isRelic: {questElement.questItem.isRelic}");
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log($"Item: {questElement.questItem.itemName} | isRelic: {questElement.questItem.isRelic}");
+        }
 
         MenuManager.Instance.notifyRelicActive++;
-        Debug.Log($"ClaimReward: Notify relic active++ {MenuManager.Instance.notifyRelicActive} | {quest.questName}");
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log(
+                $"ClaimReward: Notify relic active++ {MenuManager.Instance.notifyRelicActive} | {quest.questName}");
+        }
+
         DisableGreyScale();
     }
 

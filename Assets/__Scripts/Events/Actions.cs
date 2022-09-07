@@ -15,6 +15,7 @@ public static class Actions
     #region Player
 
     public static Action<Thulgran, Item> OnThulgran;
+    public static Action OnCrosshairsChanged;
 
     #endregion
 

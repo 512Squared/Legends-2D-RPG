@@ -96,8 +96,11 @@ public class TimeManager : MonoBehaviour, ISaveable
         dateTime.Year = a_SaveData.timeData.year;
         dateTime.Date = a_SaveData.timeData.date;
 
-        Debug.Log(
-            $"Time settings - Year: {dateTime.Year} | Season: {dateTime.Season} | Day: {dateTime.Date} | Time:{dateTime.Hour}:{dateTime.Minutes}");
+        if (GameManager.Instance.initialization)
+        {
+            Debug.Log(
+                $"Time settings - Year: {dateTime.Year} | Season: {dateTime.Season} | Day: {dateTime.Date} | Time:{dateTime.Hour}:{dateTime.Minutes}");
+        }
     }
 
     #endregion

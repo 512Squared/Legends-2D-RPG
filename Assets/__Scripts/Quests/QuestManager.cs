@@ -58,7 +58,7 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
         GetAllQuests();
         StartCoroutine(InitializeQuestManager());
         rewardables = FindObjectsOfType<Rewardable<QuestRewards>>(true);
-        Debug.Log($"IRewardable Array: {rewardables.Length}");
+        if (GameManager.Instance.initialization) { Debug.Log($"IRewardable Array: {rewardables.Length}"); }
     }
 
     private void Update()
@@ -178,9 +178,20 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
         MenuManager.Instance.notifyRelicActive = 0;
         MenuManager.Instance.notifyQuestReward = 0;
 
-        Debug.Log($"Reset: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
-        Debug.Log($"Reset: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
-        Debug.Log($"Reset: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log($"Reset: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
+        }
+
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log($"Reset: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
+        }
+
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log($"Reset: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
+        }
 
         for (int i = 0; i < questArray.Length; i++)
         {
@@ -192,14 +203,20 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
                     !questArray[i].isSubQuest)
                 {
                     MenuManager.Instance.notifyActiveQuest++;
-                    Debug.Log(
-                        $"Initialize: Notify ActiveQuest++ {MenuManager.Instance.notifyActiveQuest} | {questArray[i].questName}");
+                    if (GameManager.Instance.quests)
+                    {
+                        Debug.Log(
+                            $"Initialize: Notify ActiveQuest++ {MenuManager.Instance.notifyActiveQuest} | {questArray[i].questName}");
+                    }
                 }
 
                 if (questArray[i].isDone && !questArray[i].questRewardClaimed)
                 {
                     MenuManager.Instance.notifyQuestReward++;
-                    Debug.Log($"Initialize: Notify QuestReward++ {MenuManager.Instance.notifyQuestReward}");
+                    if (GameManager.Instance.quests)
+                    {
+                        Debug.Log($"Initialize: Notify QuestReward++ {MenuManager.Instance.notifyQuestReward}");
+                    }
                 }
             }
 
@@ -227,13 +244,25 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
             MenuManager.Instance.notifyActiveQuest = _nofifyActiveQuest;
             MenuManager.Instance.notifyQuestReward = _nofifyQuestReward;
             MenuManager.Instance.notifyRelicActive = _notifyRelicActive;
-            Debug.Log($"Replace: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
-            Debug.Log($"Replace: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
-            Debug.Log($"Replace: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
+            if (GameManager.Instance.quests)
+            {
+                Debug.Log($"Replace: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
+            }
+
+            if (GameManager.Instance.quests)
+            {
+                Debug.Log($"Replace: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
+            }
+
+            if (GameManager.Instance.quests)
+            {
+                Debug.Log($"Replace: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
+            }
         }
 
-        Debug.Log($"Quest List: {questList.Count}");
-        Debug.Log($"Relic List: {_relicList.Count} items");
+        if (GameManager.Instance.initialization) { Debug.Log($"Quest List: {questList.Count}"); }
+
+        if (GameManager.Instance.initialization) { Debug.Log($"Relic List: {_relicList.Count} items"); }
     }
 
     public void HandOutReward(QuestRewards rewardType) // invoked by a specific quest only
@@ -264,9 +293,20 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
 
         SaveData.QuestManager sd = new(_nofifyQuestReward, _nofifyActiveQuest, _notifyRelicActive, _firstPopulate);
         a_SaveData.QuestManagerData = sd;
-        Debug.Log($"Save: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
-        Debug.Log($"Save: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
-        Debug.Log($"Save: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log($"Save: Notify ActiveQuest: {MenuManager.Instance.notifyActiveQuest}");
+        }
+
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log($"Save: Notify QuestReward: {MenuManager.Instance.notifyQuestReward}");
+        }
+
+        if (GameManager.Instance.quests)
+        {
+            Debug.Log($"Save: Notify RelicActive: {MenuManager.Instance.notifyRelicActive}");
+        }
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
@@ -276,9 +316,11 @@ public class QuestManager : SerializedMonoBehaviour, ISaveable
         _notifyRelicActive = a_SaveData.QuestManagerData.nofifyRelicActive;
         _firstPopulate = a_SaveData.QuestManagerData.firstPopulate;
 
-        Debug.Log($"Load: Notify ActiveQuest: {_nofifyActiveQuest}");
-        Debug.Log($"Load: Notify QuestReward: {_nofifyQuestReward}");
-        Debug.Log($"Load: Notify RelicActive: {_notifyRelicActive}");
+        if (GameManager.Instance.quests) { Debug.Log($"Load: Notify ActiveQuest: {_nofifyActiveQuest}"); }
+
+        if (GameManager.Instance.quests) { Debug.Log($"Load: Notify QuestReward: {_nofifyQuestReward}"); }
+
+        if (GameManager.Instance.quests) { Debug.Log($"Load: Notify RelicActive: {_notifyRelicActive}"); }
     }
 
     #endregion

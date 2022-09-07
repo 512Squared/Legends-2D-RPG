@@ -5,8 +5,10 @@ using System.Linq;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening.Core;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using UnityEngine.Rendering.UI;
 
 
 public class GameManager : MonoBehaviour, ISaveable
@@ -16,9 +18,41 @@ public class GameManager : MonoBehaviour, ISaveable
 
     #region Serialized Fields
 
-    private AstarPath path;
+    [DetailedInfoBox("Game elements that exist but are not fully implemented...",
+        "THERE ARE FIVE GAME ELEMENTS THAT EXIST BUT AREN'T FULLY IMPLEMENTED \n \n 1. ATTACKS: Additional character attacks (two handed, bow,gun, dodge, etc) \n \n 2. SPELL SYSTEM: 16 types of spells and also VFX animations \n \n 3. ABILITIES - this includes the spell system, but also stuff like cooldown \n \n 4. MODIFIERS: for the wearable items. E.g. Reinforced, Refined, Sharpened, Lightweight, Bleeding \n \n 5. ITEM PARAMETERS: some elements are currently hidden, e.g item type, class, rarity, weight, properties \n ",
+        VisibleIf = "showInfo")]
+    [Space] public bool showInfo;
+
+    [Title("Debug Options")]
+    [FoldoutGroup("Debugging")]
+    public bool initialization;
+
+    [FoldoutGroup("Debugging")]
+    public bool items;
+
+    [FoldoutGroup("Debugging")]
+    public bool inventory;
+
+    [FoldoutGroup("Debugging")]
+    public bool saveLoad;
+
+    [FoldoutGroup("Debugging")]
+    public bool artificialIntelligence;
+
+    [FoldoutGroup("Debugging")]
+    public bool gameAudio;
+
+    [FoldoutGroup("Debugging")]
+    public bool collections;
+
+    [FoldoutGroup("Debugging")]
+    public bool quests;
+
+    [FoldoutGroup("Debugging")]
+    public bool battle;
 
 
+    [Title("Game Settings")]
     [Space] [GUIColor(0.447f, 0.654f, 0.996f)]
     public Item activeItem; // this is just for tracking activeItems in UI
 
@@ -98,16 +132,25 @@ public class GameManager : MonoBehaviour, ISaveable
     private void Update()
     {
         if (isInterfaceOn || dialogueBoxOpened)
-        { PlayerGlobalData.Instance.deactivedMovement = true;
-          isPaused = true; }
+        {
+            PlayerGlobalData.Instance.deactivedMovement = true;
+            isPaused = true;
+        }
         else
-        { PlayerGlobalData.Instance.deactivedMovement = false;
-          isPaused = false; }
+        {
+            PlayerGlobalData.Instance.deactivedMovement = false;
+            isPaused = false;
+        }
+    }
+
+
+    private void Awake()
+    {
+        Instance = this;
     }
 
     private void Start()
     {
-        Instance = this;
         sceneHandler = GetComponent<SceneHandling>();
         sceneIndex = 0;
         playerStats = FindObjectsOfType<PlayerStats>().OrderBy(m => m.transform.position.z).ToArray();
@@ -146,6 +189,7 @@ public class GameManager : MonoBehaviour, ISaveable
     public void ToggleCrosshairs()
     {
         crosshairsOn = !crosshairsOn;
+        Actions.OnCrosshairsChanged?.Invoke();
     }
 
 
@@ -165,18 +209,38 @@ public class GameManager : MonoBehaviour, ISaveable
         return playerStats;
     }
 
+
+    public void SendPlayersToPhotobooth()
+    {
+        foreach (PlayerStats player in GetPlayerStats())
+        {
+            if (player.gameObject.activeInHierarchy)
+            {
+                player.SayCheese();
+            }
+        }
+    }
+
     public void ActivateCharacters(string sceneToLoad)
     {
-        var playersActivated = 0;
-        foreach (var t in playerStats)
-        { if (t.playerName != "Thulgran")
-          { if (sceneToLoad == t.homeScene.ToString())
-            { t.gameObject.SetActive(true);
-              playersActivated++; }
-            else if (sceneToLoad != t.homeScene.ToString())
-            { t.gameObject.SetActive(false); } } }
+        int playersActivated = 0;
+        foreach (PlayerStats t in playerStats)
+        {
+            if (t.playerName != "Thulgran")
+            {
+                if (sceneToLoad == t.homeScene.ToString())
+                {
+                    t.gameObject.SetActive(true);
+                    playersActivated++;
+                }
+                else if (sceneToLoad != t.homeScene.ToString())
+                {
+                    t.gameObject.SetActive(false);
+                }
+            }
+        }
 
-        Debug.Log($"Players activated in {sceneToLoad}: {playersActivated}");
+        if (initialization) { Debug.Log($"Players activated in {sceneToLoad}: {playersActivated}"); }
     }
 
     private void IsInterfaceOn()
@@ -188,18 +252,24 @@ public class GameManager : MonoBehaviour, ISaveable
     private void Shop(string scene, SceneObjectsLoad sceneObjectsLoad)
     {
         if (sceneObjectsLoad is SceneObjectsLoad.Shop1 or SceneObjectsLoad.Shop2 or SceneObjectsLoad.Shop3)
-        { ShopManager.Instance.isPlayerInsideShop = true;
-          ShopManager.Instance.ShopType(scene);
-          ShopManager.Instance.UpdateShopItemsInventory();
-          StartCoroutine(SecretShopSetup(scene)); }
+        {
+            ShopManager.Instance.isPlayerInsideShop = true;
+            ShopManager.Instance.ShopType(scene);
+            ShopManager.Instance.UpdateShopItemsInventory();
+            StartCoroutine(SecretShopSetup(scene));
+        }
 
         else if (scene == "Dungeon")
-        { GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size =
-              new Vector2(1.12f, 1.8f); }
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size =
+                new Vector2(1.12f, 1.8f);
+        }
 
         else if (scene != "Dungeon")
-        { GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size =
-              new Vector2(1.12f, 1.31f); }
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<CapsuleCollider2D>().size =
+                new Vector2(1.12f, 1.31f);
+        }
     }
 
     private static IEnumerator SecretShopSetup(string scene)
@@ -211,11 +281,13 @@ public class GameManager : MonoBehaviour, ISaveable
 
     private IEnumerator ActivateFirstScene()
     {
-        var asyncLoadLevel = SceneManager.LoadSceneAsync(firstScene, LoadSceneMode.Additive);
+        AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(firstScene, LoadSceneMode.Additive);
 
         while (asyncLoadLevel is {isDone: false})
-        { yield return new WaitForEndOfFrame();
-          AstarPath.active.data.LoadFromCache(); }
+        {
+            yield return new WaitForEndOfFrame();
+            AstarPath.active.data.LoadFromCache();
+        }
     }
 
     #endregion
@@ -241,8 +313,10 @@ public class GameManager : MonoBehaviour, ISaveable
 
         // Initialise shop
         if (firstScene is "Shop1" or "Shop2" or "Shop3")
-        { Shop(firstScene, sceneHandler.sceneObjectsLoad);
-          clockManager.SceneChange(firstScene, "", 0, 0); }
+        {
+            Shop(firstScene, sceneHandler.sceneObjectsLoad);
+            clockManager.SceneChange(firstScene, "", 0, 0);
+        }
 
         StartCoroutine(ActivateFirstScene());
 

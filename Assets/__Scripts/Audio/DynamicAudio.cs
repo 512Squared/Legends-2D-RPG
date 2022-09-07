@@ -50,8 +50,12 @@ public class DynamicAudio : MonoBehaviour
         if (sceneHome.ToString() == scene)
         {
             audioSource.enabled = true;
-            Debug.Log(
-                $"Audio source: {audioSource.name} | SFXHome Enum: {sceneHome.ToString()} | Scene: {scene} | Arriving from: {arrivingFrom} | status: {audioSource.enabled}");
+            if (GameManager.Instance.gameAudio)
+            {
+                Debug.Log(
+                    $"Audio source: {audioSource.name} | SFXHome Enum: {sceneHome.ToString()} | Scene: {scene} | Arriving from: {arrivingFrom} | status: {audioSource.enabled}");
+            }
+
             return;
         }
 

@@ -18,7 +18,7 @@ public class SaveLoadManager : SingletonMonobehaviour<SaveLoadManager>
         // currentScene = GameManager.Instance.firstScene;
         StartCoroutine(Initialize());
         Saveables = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveable>().ToList();
-        Debug.Log($"Save items count: {Saveables.Count}");
+        if (GameManager.Instance.initialization) { Debug.Log($"Save items count: {Saveables.Count}"); }
     }
 
 

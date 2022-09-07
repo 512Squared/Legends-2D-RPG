@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.HeroEditor4D.Common.CommonScripts;
+using DG.Tweening;
 using UnityEngine;
 using Pathfinding;
 using Sirenix.OdinInspector;
@@ -131,7 +132,16 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     private void Update()
     {
         Foregrounding();
-        crosshairsOn = GameManager.Instance.crosshairsOn;
+    }
+
+    private void OnEnable()
+    {
+        Actions.OnCrosshairsChanged += UpdateCrosshairs;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnCrosshairsChanged -= UpdateCrosshairs;
     }
 
     private void FixedUpdate()
@@ -191,6 +201,11 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
         }
     }
 
+    private void UpdateCrosshairs()
+    {
+        crosshairsOn = GameManager.Instance.crosshairsOn;
+    }
+
     private void Wandering()
     {
         if (updateCount == randomRange) // find random path
@@ -205,8 +220,11 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
                 {
                     aiPath.destination = PickRandomPoint();
                     aiPath.SearchPath();
-                    Debug.Log(
-                        $"Random Path called. PathPending: {aiPath.pathPending} | Reached end of path: {aiPath.reachedEndOfPath}| Reached destination: {aiPath.reachedDestination} | Has path:{aiPath.hasPath}");
+                    if (GameManager.Instance.artificialIntelligence)
+                    {
+                        Debug.Log(
+                            $"Random Path called. PathPending: {aiPath.pathPending} | Reached end of path: {aiPath.reachedEndOfPath}| Reached destination: {aiPath.reachedDestination} | Has path:{aiPath.hasPath}");
+                    }
                 }
             }
         }
@@ -379,13 +397,17 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
             if (node.Walkable)
             {
                 Vector3 pos = (Vector3)node.position;
-                Debug.Log($"New random point found: {pos} | Scene: {GameManager.Instance.sceneIndex}");
+                if (GameManager.Instance.artificialIntelligence)
+                {
+                    Debug.Log($"New random point found: {pos} | Scene: {GameManager.Instance.sceneIndex}");
+                }
+
                 return pos;
             }
         }
 
         // Could not find a point after 1000 tries, is the whole graph unwalkable perhaps?
-        Debug.Log($"Random points not found");
+        if (GameManager.Instance.artificialIntelligence) { Debug.Log($"Random points not found"); }
 
         return Vector2.zero;
     }
@@ -437,9 +459,15 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
                 isPaused = true;
                 DeathDissolve();
                 GameObject potion = Instantiate(Fetch.healingPotion,
-                    GameManager.Instance.itemsForPickup[GameManager.Instance.sceneIndex], true);
-                potion.transform.position = transform.position;
-                Debug.Log($"Potion home: {potion.name}");
+                    GameManager.Instance.itemsForPickup[GameManager.Instance.sceneIndex],
+                    true);
+                potion.transform.position = new Vector3(transform.position.x + Random.Range(1, 3),
+                    transform.position.y + Random.Range(1, 3),
+                    0);
+                Sequence sequence = DOTween.Sequence()
+                    .Append(potion.transform.DOShakePosition(2f, new Vector3(1, 1, 1), 6, 50, true, true))
+                    .Join(potion.transform.DOShakeScale(2f, new Vector3(1, 1, 1), 7, 50, true));
+                sequence.SetLoops(1, LoopType.Yoyo);
             }
 
 

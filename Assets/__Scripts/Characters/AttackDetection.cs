@@ -21,7 +21,8 @@ public class AttackDetection : MonoBehaviour
         {
             if (!hitPossible && col.gameObject.GetComponent<ZombieController>().isInAttackRange)
             {
-                Debug.Log($"Trigger detected, but hit not possible");
+                if (GameManager.Instance.battle) { Debug.Log($"Trigger detected, but hit not possible"); }
+
                 return;
             }
 
@@ -30,11 +31,13 @@ public class AttackDetection : MonoBehaviour
             {
                 Character apex = character.GetComponentInChildren<Character>();
                 player.HitEnemy(col, GetComponent<GenerateGUID>().GUID, apex);
-                Debug.Log($"Hit possible and initiated: ");
+                if (GameManager.Instance.battle) { Debug.Log($"Hit possible and initiated: "); }
+
                 hitPossible = false;
-                if (PlayerGlobalData.Instance.debugOn)
+                if (GameManager.Instance.battle) { Debug.Log($"Apex: {apex.AnchorSword.name}"); }
+
+                if (GameManager.Instance.battle)
                 {
-                    Debug.Log($"Apex: {apex.AnchorSword.name}");
                     Debug.Log($"HitBox: {transform.name} | Activate on: {player.playerName} | Enemy: {col.name}");
                 }
             }

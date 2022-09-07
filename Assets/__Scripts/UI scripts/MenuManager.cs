@@ -590,7 +590,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         joystick.EnableJoystick();
         actionButton.EnableButton();
-        quickBar.EnableQuickbar();
+        //quickBar.EnableQuickbar();
         joystick.GetComponent<CanvasGroup>().alpha = 1;
         joystick.GetComponent<CanvasGroup>().interactable = true;
         joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -607,7 +607,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         double TOLERANCE = 0.001f;
         if (isInventoryOn)
         {
-            Debug.Log($"Inventory is open and 'back' has been called");
+            if (GameManager.Instance.inventory) { Debug.Log($"Inventory is open and 'back' has been called"); }
 
             ButtonHandler.Instance.SetAllButtonsInteractable();
             ButtonHandler.Instance.InventoryButtonsDisabled();
@@ -733,7 +733,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     private IEnumerator DelayPanelReturn() // also USE item tweens
     {
-        Debug.Log("InventoryLeft panel animations engaged");
+        if (GameManager.Instance.inventory) { Debug.Log("InventoryLeft panel animations engaged"); }
 
         if (activeItem.affectType == AffectType.Hp)
         {
@@ -902,20 +902,20 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                 imageFrontWeaponry[i].sprite = playerStats[i].imageFront;
 
                 equippedWeaponName[i].text = playerStats[i].characterWeaponName;
-                equippedWeaponImage[i].sprite = playerStats[i].characterWeaponImage;
-                equippedWeaponBonus[i].text = "+" + playerStats[i].characterWeapon.itemAttack.ToString();
+                equippedWeaponImage[i].sprite = playerStats[i].weaponSprite;
+                equippedWeaponBonus[i].text = "+" + playerStats[i].itemWeapon.itemAttack.ToString();
 
                 equippedArmourName[i].text = playerStats[i].characterArmourName;
-                equippedArmourImage[i].sprite = playerStats[i].characterArmourImage;
-                equippedArmourBonus[i].text = "+" + playerStats[i].characterArmour.itemDefence.ToString();
+                equippedArmourImage[i].sprite = playerStats[i].armourSprite;
+                equippedArmourBonus[i].text = "+" + playerStats[i].itemArmour.itemDefence.ToString();
 
                 equippedHelmetName[i].text = playerStats[i].characterHelmetName;
-                equippedHelmetImage[i].sprite = playerStats[i].characterHelmetImage;
-                equippedHelmetBonus[i].text = "+" + playerStats[i].characterHelmet.itemDefence.ToString();
+                equippedHelmetImage[i].sprite = playerStats[i].helmetSprite;
+                equippedHelmetBonus[i].text = "+" + playerStats[i].itemHelmet.itemDefence.ToString();
 
                 equippedShieldName[i].text = playerStats[i].characterShieldName;
-                equippedShieldImage[i].sprite = playerStats[i].characterShieldImage;
-                equippedShieldBonus[i].text = "+" + playerStats[i].characterShield.itemDefence.ToString();
+                equippedShieldImage[i].sprite = playerStats[i].shieldSprite;
+                equippedShieldBonus[i].text = "+" + playerStats[i].itemShield.itemDefence.ToString();
 
 
                 // this assigns a basic weapon and armour if none are set so that UI doesn't return blanks
@@ -1024,20 +1024,20 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                     teamCharacterName[i].text = playerStats[i].playerName;
 
-                    teamEquippedArmourImage[i].sprite = playerStats[i].characterArmourImage;
-                    teamEquippedHelmetImage[i].sprite = playerStats[i].characterHelmetImage;
-                    teamEquippedShieldImage[i].sprite = playerStats[i].characterShieldImage;
-                    teamEquippedWeaponImage[i].sprite = playerStats[i].characterWeaponImage;
+                    teamEquippedArmourImage[i].sprite = playerStats[i].armourSprite;
+                    teamEquippedHelmetImage[i].sprite = playerStats[i].helmetSprite;
+                    teamEquippedShieldImage[i].sprite = playerStats[i].shieldSprite;
+                    teamEquippedWeaponImage[i].sprite = playerStats[i].weaponSprite;
 
                     teamInventoryDefenceTotal[i].text =
                         $"<color=#CFCFCF>{playerStats[i].characterBaseDefence}</color> +{(playerStats[i].characterDefenceTotal - playerStats[i].characterBaseDefence).ToString()}";
                     teamInventoryAttackTotal[i].text =
                         $"<color=#CFCFCF>{playerStats[i].characterBaseAttack}</color> +{(playerStats[i].characterAttackTotal - playerStats[i].characterBaseAttack).ToString()}";
 
-                    teamItemArmourBonus[i].text = "+" + playerStats[i].characterArmour.itemDefence.ToString();
-                    teamItemHelmetBonus[i].text = "+" + playerStats[i].characterHelmet.itemDefence.ToString();
-                    teamItemShieldBonus[i].text = "+" + playerStats[i].characterShield.itemDefence.ToString();
-                    teamItemWeaponBonus[i].text = "+" + playerStats[i].characterWeapon.itemAttack.ToString();
+                    teamItemArmourBonus[i].text = "+" + playerStats[i].itemArmour.itemDefence.ToString();
+                    teamItemHelmetBonus[i].text = "+" + playerStats[i].itemHelmet.itemDefence.ToString();
+                    teamItemShieldBonus[i].text = "+" + playerStats[i].itemShield.itemDefence.ToString();
+                    teamItemWeaponBonus[i].text = "+" + playerStats[i].itemWeapon.itemAttack.ToString();
                 }
 
                 // these are the references for the Team Overview (add to party)
@@ -1101,8 +1101,11 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void CallToUseItem(int selectedCharacter)
     {
-        Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " +
-                  "Item: " + activeItem.itemName);
+        if (GameManager.Instance.inventory)
+        {
+            Debug.Log("Use item initiated | Selected character: " + playerStats[selectedCharacter].playerName + " | " +
+                      "Item: " + activeItem.itemName);
+        }
 
         panelStuff = selectedCharacter;
 
@@ -1115,7 +1118,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     {
                         NotificationFader.instance.CallFadeInOut(
                             $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
-                            Sprites.instance.hpSprite, 1.5f, 1400, 30);
+                            Sprites.instance.hpSprite,
+                            1.5f,
+                            1400,
+                            30);
                         Debug.Log($"Yo");
                     }
 
@@ -1125,14 +1131,17 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         dropButton.SetActive(true);
                         dropButton.GetComponent<Button>().interactable = false;
                         useButton.GetComponent<Button>().interactable = false;
-                        sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
-                            (byte)sellGold.color.g, 100);
+                        sellGold.color = new Color32((byte)sellGold.color.r,
+                            (byte)sellGold.color.b,
+                            (byte)sellGold.color.g,
+                            100);
                         //useButton.GetComponent<Image>().sprite = buttonGreen;
 
                         FadeOutText(1);
                         SetAllButtonsUninteractable();
                         activeItem.UseItem(selectedCharacter);
-                        Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                        Inventory.Instance.UseAndRemoveItem(activeItem,
+                            selectedCharacter,
                             characterMugEquip[selectedCharacter].transform.position);
                         UpdateItemsInventory();
                         OnPlayerButton();
@@ -1154,14 +1163,17 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                             dropButton.SetActive(true);
                             dropButton.GetComponent<Button>().interactable = false;
                             useButton.GetComponent<Button>().interactable = false;
-                            sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
-                                (byte)sellGold.color.g, 100);
+                            sellGold.color = new Color32((byte)sellGold.color.r,
+                                (byte)sellGold.color.b,
+                                (byte)sellGold.color.g,
+                                100);
                             //useButton.GetComponent<Image>().sprite = buttonGreen;
 
                             FadeOutText(1);
                             SetAllButtonsUninteractable();
                             activeItem.UseItem(selectedCharacter);
-                            Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                            Inventory.Instance.UseAndRemoveItem(activeItem,
+                                selectedCharacter,
                                 characterMugEquip[selectedCharacter].transform.position);
                             UpdateItemsInventory();
                             OnPlayerButton();
@@ -1174,7 +1186,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         {
                             NotificationFader.instance.CallFadeInOut(
                                 $"{playerStats[selectedCharacter].playerName}'s HP is at <color=#C60B0B>max!</color>\n Try someone else?",
-                                Sprites.instance.hpSprite, 1.5f, 1400, 30);
+                                Sprites.instance.hpSprite,
+                                1.5f,
+                                1400,
+                                30);
                             Debug.Log($"Yo");
                         }
                     }
@@ -1187,7 +1202,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                     {
                         NotificationFader.instance.CallFadeInOut(
                             $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color> \n Try someone else?",
-                            Sprites.instance.manaSprite, 1.5f, 1400, 30);
+                            Sprites.instance.manaSprite,
+                            1.5f,
+                            1400,
+                            30);
                     }
 
                     else if (playerStats[selectedCharacter].characterMana < playerStats[selectedCharacter].maxMana)
@@ -1196,14 +1214,17 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         dropButton.SetActive(true);
                         dropButton.GetComponent<Button>().interactable = false;
                         useButton.GetComponent<Button>().interactable = false;
-                        sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
-                            (byte)sellGold.color.g, 100);
+                        sellGold.color = new Color32((byte)sellGold.color.r,
+                            (byte)sellGold.color.b,
+                            (byte)sellGold.color.g,
+                            100);
                         //useButton.GetComponent<Image>().sprite = buttonGreen;
 
                         FadeOutText(1);
                         SetAllButtonsUninteractable();
                         activeItem.UseItem(selectedCharacter);
-                        Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                        Inventory.Instance.UseAndRemoveItem(activeItem,
+                            selectedCharacter,
                             characterMugEquip[selectedCharacter].transform.position);
                         UpdateItemsInventory();
                         OnPlayerButton();
@@ -1222,7 +1243,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         {
                             NotificationFader.instance.CallFadeInOut(
                                 $"{playerStats[selectedCharacter].playerName}'s mana is at <color=#C60B0B>max!</color>\n Try someone else?",
-                                Sprites.instance.manaSprite, 1.5f, 1400, 30);
+                                Sprites.instance.manaSprite,
+                                1.5f,
+                                1400,
+                                30);
                         }
 
                         else if (Thulgran.ThulgranMana < Thulgran.MaxThulgranMana)
@@ -1231,14 +1255,17 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                             dropButton.SetActive(true);
                             dropButton.GetComponent<Button>().interactable = false;
                             useButton.GetComponent<Button>().interactable = false;
-                            sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
-                                (byte)sellGold.color.g, 100);
+                            sellGold.color = new Color32((byte)sellGold.color.r,
+                                (byte)sellGold.color.b,
+                                (byte)sellGold.color.g,
+                                100);
                             //useButton.GetComponent<Image>().sprite = buttonGreen;
 
                             FadeOutText(1);
                             SetAllButtonsUninteractable();
                             activeItem.UseItem(selectedCharacter);
-                            Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                            Inventory.Instance.UseAndRemoveItem(activeItem,
+                                selectedCharacter,
                                 characterMugEquip[selectedCharacter].transform.position);
                             UpdateItemsInventory();
                             OnPlayerButton();
@@ -1259,14 +1286,17 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         dropButton.SetActive(true);
                         dropButton.GetComponent<Button>().interactable = false;
                         useButton.GetComponent<Button>().interactable = false;
-                        sellGold.color = new Color32((byte)sellGold.color.r, (byte)sellGold.color.b,
-                            (byte)sellGold.color.g, 100);
+                        sellGold.color = new Color32((byte)sellGold.color.r,
+                            (byte)sellGold.color.b,
+                            (byte)sellGold.color.g,
+                            100);
                         //useButton.GetComponent<Image>().sprite = buttonGreen;
 
                         FadeOutText(1);
                         SetAllButtonsUninteractable();
                         activeItem.UseItem(selectedCharacter);
-                        Inventory.Instance.UseAndRemoveItem(activeItem, selectedCharacter,
+                        Inventory.Instance.UseAndRemoveItem(activeItem,
+                            selectedCharacter,
                             characterMugEquip[selectedCharacter].transform.position);
                         UpdateItemsInventory();
                         OnPlayerButton();
@@ -1285,20 +1315,24 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void FadeInText(float duration)
     {
-        Fade(1f, duration, () =>
-        {
-            chooseText.interactable = true;
-            chooseText.blocksRaycasts = true;
-        });
+        Fade(1f,
+            duration,
+            () =>
+            {
+                chooseText.interactable = true;
+                chooseText.blocksRaycasts = true;
+            });
     }
 
     public void FadeOutText(float duration)
     {
-        Fade(0f, duration, () =>
-        {
-            chooseText.interactable = false;
-            chooseText.blocksRaycasts = false;
-        });
+        Fade(0f,
+            duration,
+            () =>
+            {
+                chooseText.interactable = false;
+                chooseText.blocksRaycasts = false;
+            });
     }
 
     public void MainMenuPanel(int panel) // switch a panel on
@@ -1709,37 +1743,37 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     {
         if (itemType == "weapon")
         {
-            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterWeaponImage;
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].weaponSprite;
             teamPopWeaponryName.text = playerStats[selectedCharacter].characterWeaponName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterWeaponDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterWeapon.itemAttack.ToString();
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].itemWeapon.itemAttack.ToString();
             teamPopWeaponryBonusText.text = "Weapon Power:";
         }
         else if (itemType == "armour")
         {
-            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterArmourImage;
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].armourSprite;
             teamPopWeaponryName.text = playerStats[selectedCharacter].characterArmourName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterArmourDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterArmour.itemDefence.ToString();
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].itemArmour.itemDefence.ToString();
             teamPopWeaponryBonusText.text = "Armour Defence:";
         }
 
 
         else if (itemType == "helmet")
         {
-            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterHelmetImage;
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].helmetSprite;
             teamPopWeaponryName.text = playerStats[selectedCharacter].characterHelmetName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterHelmetDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterHelmet.itemDefence.ToString();
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].itemHelmet.itemDefence.ToString();
             teamPopWeaponryBonusText.text = "Helmet Defence:";
         }
 
         else if (itemType == "shield")
         {
-            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].characterShieldImage;
+            teamPopWeaponryImage.sprite = playerStats[selectedCharacter].shieldSprite;
             teamPopWeaponryName.text = playerStats[selectedCharacter].characterShieldName;
             teamPopWeaponryDescription.text = playerStats[selectedCharacter].characterShieldDescription;
-            teamPopWeaponryBonus.text = playerStats[selectedCharacter].characterShield.itemDefence.ToString();
+            teamPopWeaponryBonus.text = playerStats[selectedCharacter].itemShield.itemDefence.ToString();
             teamPopWeaponryBonusText.text = "Shield Defence:";
         }
     }

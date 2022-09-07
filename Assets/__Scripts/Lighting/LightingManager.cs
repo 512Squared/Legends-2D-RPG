@@ -68,8 +68,6 @@ public class LightingManager : MonoBehaviour
             s.GetComponentInChildren<Flicker>().enabled = true;
             s.GetComponentInChildren<Light2D>().enabled = true;
         }
-
-        Debug.Log($"Lights switched on");
     }
 
     private void LightsOff()
@@ -83,7 +81,5 @@ public class LightingManager : MonoBehaviour
             s.GetComponentInChildren<Flicker>().enabled = false;
             s.GetComponentInChildren<Light2D>().enabled = false;
         }
-
-        Debug.Log($"Lights switched off");
     }
 }

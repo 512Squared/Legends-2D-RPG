@@ -80,7 +80,7 @@ public class NewObjects : SingletonMonobehaviour<NewObjects>, ISaveable
             Debug.Log($"Dropped Item Saved: {did.itemName} | GUID: {guid}");
         }
 
-        Debug.Log($"Dropped NewObjects List: {Objects.Count}");
+        if (GameManager.Instance.saveLoad) { Debug.Log($"Dropped NewObjects List: {Objects.Count}"); }
     }
 
     public void LoadFromSaveData(SaveData a_SaveData)
