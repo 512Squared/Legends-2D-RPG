@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     private Vector3 bottomLeftEdge;
     private Vector3 topRightEdge;
 
-    public NpcPhysics[] npcCharacters;
+    public NpcController[] npcCharacters;
 
     public SceneObjectsLoad scene;
 

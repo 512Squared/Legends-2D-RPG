@@ -7081,6 +7081,7 @@ GameObject:
   - component: {fileID: 7422328402237737123}
   - component: {fileID: 3768755126043207156}
   - component: {fileID: 2995754360674562681}
+  - component: {fileID: 9141632113633521683}
   m_Layer: 0
   m_Name: pfGoblinSmash
   m_TagString: Untagged
@@ -7481,6 +7482,19 @@ MonoBehaviour:
   positions: []
   playerList: []
   positionList: []
+--- !u!114 &9141632113633521683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2959554295789042252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 006e94eec34f4cf4b7dc525db84c0b20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBeingAttacked: 0
 --- !u!1 &2960262307237861550
 GameObject:
   m_ObjectHideFlags: 0

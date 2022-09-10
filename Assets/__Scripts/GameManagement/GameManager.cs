@@ -223,19 +223,25 @@ public class GameManager : MonoBehaviour, ISaveable
 
     public void ActivateCharacters(string sceneToLoad)
     {
+        // this takes care of characters in the their home scenes. Once added to team, this is handled where? .... TODO: place scene of isTeamMember characters
         int playersActivated = 0;
         foreach (PlayerStats t in playerStats)
         {
             if (t.playerName != "Thulgran")
             {
-                if (sceneToLoad == t.homeScene.ToString())
+                if (!t.isTeamMember && sceneToLoad == t.homeScene.ToString())
                 {
                     t.gameObject.SetActive(true);
                     playersActivated++;
                 }
-                else if (sceneToLoad != t.homeScene.ToString())
+                else if (!t.isTeamMember && sceneToLoad != t.homeScene.ToString())
                 {
                     t.gameObject.SetActive(false);
+                }
+                else if (t.isTeamMember)
+                {
+                    t.gameObject.SetActive(true);
+                    // saved position will be loaded in PlayerTrans
                 }
             }
         }
@@ -303,6 +309,8 @@ public class GameManager : MonoBehaviour, ISaveable
     // ReSharper disable Unity.PerformanceAnalysis
     public void LoadFromSaveData(SaveData a_SaveData)
     {
+        // saved scene setup
+
         firstScene = a_SaveData.sceneData.currentScene;
 
         // Assign saved object data
@@ -328,4 +336,13 @@ public class GameManager : MonoBehaviour, ISaveable
     }
 
     #endregion
+
+    public void LocateCharactersInNewScene(Vector3 moveTo)
+    {
+        foreach (PlayerStats character in GetPlayerStats())
+        {
+            if (character.isTeamMember) { character.transform.position = moveTo; }
+            // or RTS formation.
+        }
+    }
 }

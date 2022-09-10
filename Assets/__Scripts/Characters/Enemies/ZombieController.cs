@@ -27,6 +27,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     public float chaseRange;
 
     public int hitPoints;
+    public int defenceTotal;
 
     public string guid;
 
@@ -68,6 +69,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] private Transform target;
     [SerializeField] private HealthBar healthBar;
     [SerializeField] private DissolveEffect dissolveEffect;
+    [SerializeField] private EnemyStats es;
 
 
     [Space]
@@ -103,6 +105,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     private List<Vector3> positionList;
 
     private bool isAttacking;
+    private Vector2 start;
 
 
     private GameObject crosshairs;
@@ -110,6 +113,7 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] private bool isPaused;
     private static readonly int IsDead = Animator.StringToHash("isDead");
     [SerializeField] private float dissolveSpeed;
+    private bool firstWalk;
 
     #endregion
 
@@ -118,15 +122,18 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     {
         guid = GetComponent<GenerateGUID>().GUID;
         speed = 2.0f;
+        firstWalk = true;
+        start = transform.position;
         IsAlive = true;
+        anim.SetBool(IsWalking, true);
         aiPath = GetComponent<IAstarAI>();
         aiPath.maxSpeed = speed;
         playerList = GameManager.Instance.GetPlayerStats().ToList();
         positions = new List<Transform>();
-        healthBar.SetMaxHealth(hitPoints);
+        es = GetComponent<EnemyStats>();
+        healthBar.SetMaxHealth(es.HitPoints);
         crosshairs = Instantiate(Fetch.crosshairs, transform.position, Quaternion.identity);
         crosshairs.transform.SetParent(transform, true);
-        Wandering();
     }
 
     private void Update()
@@ -161,28 +168,38 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
 
         aiPath.canMove = true;
 
+        if (firstWalk)
+        {
+            anim.SetBool(IsWalking, true);
+            aiPath.destination = new Vector2(start.x, start.y - 2);
+
+            if (aiPath.reachedDestination)
+            {
+                firstWalk = false;
+                Wandering();
+            }
+        }
+
         isInChaseRange = Physics2D.OverlapCircle(transform.position, chaseRange, playerLayer);
         isInAttackRange = Physics2D.OverlapCircle(transform.position, attackAnimationsRange, playerLayer);
 
         anim.SetBool(InChaseRange, isInChaseRange);
         anim.SetBool(InAttackRange, isInAttackRange);
 
-        if (!isInAttackRange && !isInChaseRange && isAlive)
+        switch (firstWalk)
         {
-            Wandering();
+            case false when !isInAttackRange && !isInChaseRange && isAlive:
+                Wandering();
+                break;
+            case false when isInChaseRange && !isInAttackRange && isAlive:
+                Chasing();
+                break;
+            case false when isInAttackRange && isAlive:
+                Attacking();
+                break;
         }
 
-        else if (isInChaseRange && !isInAttackRange && isAlive)
-        {
-            Chasing();
-        }
-
-        else if (isInAttackRange && isAlive)
-        {
-            Attacking();
-        }
-
-        capsuleCollider.enabled = isInAttackRange;
+        capsuleCollider.enabled = isInChaseRange;
         crosshairs.GetComponent<SpriteRenderer>().enabled = crosshairsOn;
     }
 
@@ -190,14 +207,17 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
     {
         aiPath.maxSpeed = speed;
         dir = target.transform.position - transform.position;
-        anim.SetBool(IsWalking, false);
-        anim.SetBool(IsAttacking, true);
         anim.SetFloat(AttackX, dir.x);
         anim.SetFloat(AttackY, dir.y);
         IncreaseAttackRadius();
         if (!IsAlive)
         {
             aiPath.canMove = false;
+        }
+
+        if (target.GetComponent<PlayerStats>().characterHp <= 1)
+        {
+            Wandering();
         }
     }
 
@@ -234,8 +254,6 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
         dir = aiPath.desiredVelocity;
         dir.Normalize();
         aiPath.maxSpeed = 2f;
-        anim.SetBool(IsWalking, true);
-        anim.SetBool(IsAttacking, false);
         anim.SetFloat(MoveX, dir.x);
         anim.SetFloat(MoveY, dir.y);
 
@@ -250,8 +268,6 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
         aiPath.maxSpeed = speed;
         dir = aiPath.desiredVelocity;
         dir.Normalize();
-        anim.SetBool(IsWalking, true);
-        anim.SetBool(IsAttacking, false);
         anim.SetFloat(MoveX, dir.x);
         anim.SetFloat(MoveY, dir.y);
         aiPath.maxSpeed = 1f;
@@ -262,8 +278,6 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
 
     private void IncreaseAttackRadius()
     {
-        anim.SetBool(IsWalking, false);
-
         if (!increasedChaseRadius)
         {
             chaseRange += 10;
@@ -447,31 +461,20 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
 
     public void Damage(int damage)
     {
-        if (hitPoints > 0 && IsAlive)
+        if (es.HitPoints > 1 && IsAlive)
         {
-            hitPoints -= damage;
-            if (hitPoints <= 0)
+            es.HitPoints -= damage;
+            healthBar.SetHealth(es.HitPoints);
+            if (es.HitPoints <= 0)
             {
-                hitPoints = 0;
+                StartCoroutine(InstantiatePotion(transform.position));
+                es.HitPoints = 0;
                 anim.SetBool(IsDead, true);
                 SpawnEnemies.Instance.SpawnZombie(25.5f, 100);
                 IsAlive = false;
                 isPaused = true;
                 DeathDissolve();
-                GameObject potion = Instantiate(Fetch.healingPotion,
-                    GameManager.Instance.itemsForPickup[GameManager.Instance.sceneIndex],
-                    true);
-                potion.transform.position = new Vector3(transform.position.x + Random.Range(1, 3),
-                    transform.position.y + Random.Range(1, 3),
-                    0);
-                Sequence sequence = DOTween.Sequence()
-                    .Append(potion.transform.DOShakePosition(2f, new Vector3(1, 1, 1), 6, 50, true, true))
-                    .Join(potion.transform.DOShakeScale(2f, new Vector3(1, 1, 1), 7, 50, true));
-                sequence.SetLoops(1, LoopType.Yoyo);
             }
-
-
-            healthBar.SetHealth(hitPoints);
         }
     }
 
@@ -480,13 +483,29 @@ public class ZombieController : MonoBehaviour, IDamageable, ISaveable
         StartCoroutine(DissolveBody());
     }
 
-    private IEnumerator DissolveBody()
+    private IEnumerator InstantiatePotion(Vector3 position)
     {
         yield return null;
+        GameObject potion = Instantiate(Fetch.healingPotion,
+            GameManager.Instance.itemsForPickup[GameManager.Instance.sceneIndex],
+            true);
+        Vector3 adjustedPosition = new(position.x, position.y + 2, 0);
+        potion.transform.position = adjustedPosition;
+        Sequence sequence = DOTween.Sequence()
+            .Append(potion.transform.DOMoveY(3f, 0.5f))
+            .Join(potion.transform.DOScale(new Vector3(0.7f, 0.7f, 0f), 0.5f));
+        // .Append(potion.transform.DOScale(new Vector3(0.3f, 0.3f, 0f), 0.5f))
+        // .Join(potion.transform.DOMoveY(-2f, 0.5f));
+        sequence.SetLoops(2, LoopType.Yoyo);
+        Debug.Log($"Potion falls to: {position} | Actual position: {transform.position}");
+    }
+
+    private IEnumerator DissolveBody()
+    {
+        yield return new WaitForFixedUpdate();
         dissolveEffect.StartDissolve(dissolveSpeed);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         this.SetActive(false);
-        Destroy(this);
     }
 
     public Vector3 GetPositionOfHead()

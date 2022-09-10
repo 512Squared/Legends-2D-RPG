@@ -10,13 +10,13 @@ using Sirenix.OdinInspector;
 
 public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 {
+    [DetailedInfoBox("Click for INFO about PlayerStats...",
+        "Player Stats handles many different data related aspects of the characters. First thing to say is that the UI is a bit hard-engineered, because I wasn't yet able to use prefabs when I first started working on using multiple characters in the UI, that is the character party, so I added UI character slots and applied a numbering system. When that character was active or added to the party, then that character slot would be active. I don't remember an easy way to do the sorting and getting the order to work consistently, so I used an extension that sorts by hierarchy order and used the z-axis, which isn't used in 2D games to store the order.\n\n")]
     public static PlayerStats Instance;
 
     #region Serialized Fields
 
     public Character4D character;
-    public Transform damagePoint;
-    public GameObject activeBase;
 
     public SceneObjectsLoad homeScene;
 
@@ -247,7 +247,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
             if (debugOn)
             {
                 Debug.Log(
-                    $"Enemy found: {col.name}  | Hit by: {playerName} | Damage: {characterAttackTotal} | Enemy HP: {col.GetComponent<ZombieController>().hitPoints}");
+                    $"Enemy found: {col.name}  | Hit by: {playerName} | Damage: {characterAttackTotal} | Enemy HP: {col.GetComponent<EnemyStats>().HitPoints}");
             }
 
             isAttacking = false;
@@ -257,9 +257,21 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
     private IEnumerator Initialize()
     {
         yield return new WaitForSeconds(0.5f);
-        characterDefenceTotal = characterBaseDefence + itemArmour.itemDefence + itemShield.itemDefence +
-                                itemHelmet.itemDefence;
-        characterAttackTotal = characterBaseAttack + itemWeapon.itemAttack;
+
+        int armour = 0; // simple fix for nulls if armour or weapon slots are empty
+        int helmet = 0;
+        int shield = 0;
+        int weapon = 0;
+        if (itemArmour != null) { armour = itemArmour.itemDefence; }
+
+        if (itemHelmet != null) { helmet = itemHelmet.itemDefence; }
+
+        if (itemShield != null) { shield = itemShield.itemDefence; }
+
+        if (itemWeapon != null) { weapon = itemWeapon.itemAttack; }
+
+        characterDefenceTotal = characterBaseDefence + armour + shield + helmet;
+        characterAttackTotal = characterBaseAttack + weapon;
         if (playerName == "Thulgran")
         {
             transform.position = PlayerGlobalData.Instance.playerTrans;
@@ -450,7 +462,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
 
     #region Implementation of IDamageable
 
-    public void Damage(int damage)
+    public void Damage(int damage) // receive a hit
     {
         damage = SpecialAbilities(damage);
 
@@ -465,6 +477,7 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         {
             IsAlive = false;
             GetComponent<PlayerGlobalData>().isAlive = false;
+            GetComponent<NPCMovement>().Death();
         }
     }
 

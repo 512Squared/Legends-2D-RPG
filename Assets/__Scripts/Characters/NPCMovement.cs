@@ -1,4 +1,8 @@
-﻿using Assets.HeroEditor4D.Common.CharacterScripts;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Assets.HeroEditor4D.Common.CharacterScripts;
+using Pathfinding;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -8,7 +12,7 @@ using Vector3 = UnityEngine.Vector3;
 
 // ReSharper disable InconsistentNaming
 
-public class NPCMovement : MonoBehaviour, ISaveable, ISetLimits
+public class NPCMovement : MonoBehaviour, ISetLimits
 {
     #region Fields
 
@@ -24,56 +28,82 @@ public class NPCMovement : MonoBehaviour, ISaveable, ISetLimits
     public GameObject activeBase;
     [SerializeField] private CapsuleCollider2D capsuleCollider;
     [SerializeField] private Transform player;
+    [SerializeField] private Transform home;
+
     [SerializeField] private SortingGroup sortingGroup;
     [SerializeField] private PlayerStats stats;
 
+    [SerializeField] private LayerMask enemyLayer;
+    private IAstarAI aiPath;
+
+    [SerializeField] private AIPath pathfinder;
+
+
+    [SerializeField] private List<Transform> positions;
+
+    [SerializeField] private List<Collider2D> enemyList;
+
+    [SerializeField] private List<Vector3> positionList;
 
     [Space]
     [Title("Fields")]
-    public Vector3 playerTrans;
-
     [SerializeField] private int moveSpeed;
-    [SerializeField] private float uiDamageOffset;
-    [SerializeField] private float jumpPower;
-    [SerializeField] private float jumpTime;
-    [SerializeField] private float jumpDistance;
 
-
-    public int currentSceneIndex;
-
-    public string arrivingAt;
-
-    public Vector3 bottomLeftEdge;
-    public Vector3 topRightEdge;
-
-    [Space]
-    [Title("Bools")]
-    public bool deactivedMovement;
-
-    public bool isAlive;
-
-    [SerializeField] private bool isMoving;
-    public bool isWalking;
-    public bool isRunning;
-    public bool isAttacking;
-    public bool isLoaded;
-    public bool isPaused;
-
-    public bool isJumping;
-
-    private static readonly int moveX = Animator.StringToHash("moveX");
-    private static readonly int moveY = Animator.StringToHash("moveY");
+    [SerializeField] private int coolDown;
     [SerializeField] private float distanceToPlayer;
     [SerializeField] private float offsetX;
     [SerializeField] private float offsetY;
-    [SerializeField] private float playerRadiusRange;
+    [SerializeField] private float chaseRange;
+    [SerializeField] private float attackRange;
+    [SerializeField] private Transform target;
+    [SerializeField] private bool isMakingAttack;
+    [SerializeField] private float attackOffset;
+    [SerializeField] private int hitBonus;
+    private float timeStamp;
+
+    [HideInInspector]
+    public Vector3 bottomLeftEdge;
+
+    [HideInInspector]
+    public Vector3 topRightEdge;
+
+    [Space] [Title("Bools")] [FoldoutGroup("Bools")]
+    public bool deactivedMovement;
+
+    [FoldoutGroup("Bools")]
+    public bool isAlive;
+
+    [FoldoutGroup("Bools")]
+    public bool isAttacking;
+
+    [FoldoutGroup("Bools")]
+    public bool isLoaded;
+
+    [FoldoutGroup("Bools")]
+    public bool isPaused;
+
+    [FoldoutGroup("Bools")]
+    public bool hasTarget;
+
+    [FoldoutGroup("Bools")]
+    public bool peaceInOurTime;
+
+    [FoldoutGroup("Bools")]
+    [SerializeField] private bool isChasing;
+
+    private int randomRange;
+    private int updateCount;
+    private Transform possibleTarget;
 
     #endregion
 
     private void Start()
     {
         character.AnimationManager.SetState(CharacterState.Idle);
+        aiPath = GetComponent<IAstarAI>();
+        pathfinder = GetComponent<AIPath>();
         isAlive = true;
+        peaceInOurTime = true;
     }
 
     private void OnEnable()
@@ -86,61 +116,86 @@ public class NPCMovement : MonoBehaviour, ISaveable, ISetLimits
         Actions.OnSceneChange -= SetLimitBool;
     }
 
+    private void FixedUpdate()
+    {
+        if (!isAlive)
+        {
+            deactivedMovement = true;
+        }
+    }
+
+
+    private void RandomDirection()
+    {
+        if (updateCount == randomRange) // find random path
+        {
+            updateCount = 0;
+            randomRange = Random.Range(20, 100);
+            int randomInt = Random.Range(0, 1);
+            if (randomInt != 0) { }
+            else
+            {
+                int random = Random.Range(1, 4);
+                int randomAdjustment = Random.Range(1, 10);
+                int randomAdjustment2 = Random.Range(1, 10);
+                Vector2 newPosition = new(transform.position.x + randomAdjustment, transform.position.y + randomAdjustment2);
+                switch (random)
+                {
+                    case 1:
+                        distanceToPlayer += randomAdjustment;
+                        Vector2.MoveTowards(transform.position, newPosition, moveSpeed * Time.deltaTime);
+                        character.SetDirection(Vector2.up);
+                        distanceToPlayer -= randomAdjustment;
+                        break;
+                    case 2:
+                        distanceToPlayer += randomAdjustment;
+                        Vector2.MoveTowards(transform.position, newPosition, moveSpeed * Time.deltaTime);
+                        character.SetDirection(Vector2.down);
+                        distanceToPlayer -= randomAdjustment;
+                        break;
+                    case 3:
+                        distanceToPlayer += randomAdjustment;
+                        Vector2.MoveTowards(transform.position, newPosition, moveSpeed * Time.deltaTime);
+                        character.SetDirection(Vector2.right);
+                        distanceToPlayer -= randomAdjustment;
+                        break;
+                    case 4:
+                        distanceToPlayer += randomAdjustment;
+                        Vector2.MoveTowards(transform.position, newPosition, moveSpeed * Time.deltaTime);
+                        character.SetDirection(Vector2.left);
+                        distanceToPlayer -= randomAdjustment;
+                        break;
+                }
+            }
+        }
+
+        updateCount++;
+    }
+
     private void Update()
     {
+        if (isPaused) { return; }
+
         Foregrounding();
 
-        if (deactivedMovement && !isAlive) { return; }
+        isAttacking = Physics2D.OverlapCircle(transform.position, attackRange, enemyLayer);
+        isChasing = Physics2D.OverlapCircle(transform.position, chaseRange, enemyLayer);
 
+        if (deactivedMovement || !isAlive) { return; }
+
+        // Follow team
         if (stats.isTeamMember && Vector2.Distance(transform.position, player.position) > distanceToPlayer)
         {
+            pathfinder.enabled = false;
             transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
             Vector2 v = player.position - transform.position;
-            SetDirection(v);
-        }
-
-
-        void SetDirection(Vector2 v)
-        {
-            float a = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-            int index = (int)((Mathf.Round(a / 90f) + 4) % 4);
-
             character.AnimationManager.SetState(CharacterState.Walk);
-
-            switch (index)
-            {
-                case 1:
-                    character.SetDirection(Vector2.up);
-                    break;
-                case 3:
-                    character.SetDirection(Vector2.down);
-                    break;
-                case 0:
-                    character.SetDirection(Vector2.right);
-                    break;
-                case 2:
-                    character.SetDirection(Vector2.left);
-                    break;
-            }
+            if (!hasTarget) { SetDirection(v); }
         }
 
-        Collider nearestCollider = GetNearestEnemy();
+        else { character.AnimationManager.SetState(CharacterState.Idle); }
 
-        if (nearestCollider != null && nearestCollider.CompareTag("Enemy"))
-        {
-            AttackEnemy();
-        }
-
-        if (isMoving)
-        {
-            if (!audioSrc.isPlaying)
-            {
-                audioSrc.Play();
-                if (isWalking) { AudioManager.Instance.mixerWalking.audioMixer.SetFloat("SFXWalking", 1.56f); }
-                else if (isRunning) { AudioManager.Instance.mixerWalking.audioMixer.SetFloat("SFXWalking", 2.50f); }
-            }
-        }
-        else { audioSrc.Stop(); }
+        CheckForEnemies();
 
         if (isLoaded)
         {
@@ -152,61 +207,161 @@ public class NPCMovement : MonoBehaviour, ISaveable, ISetLimits
         }
     }
 
-    private Collider GetNearestEnemy()
+    private void CheckForEnemies()
     {
-        Collider[] colliders = Physics.OverlapSphere(player.position, playerRadiusRange);
-        Collider nearestCollider = null;
-        float minSqrDistance = Mathf.Infinity;
-        for (int i = 0; i < colliders.Length; i++)
+        possibleTarget = GetClosestEnemy(isChasing);
+
+        switch (hasTarget)
         {
-            float sqrDistanceToCenter = (player.position - colliders[i].transform.position).sqrMagnitude;
-            if (sqrDistanceToCenter < minSqrDistance)
+            case true when isChasing && !isAttacking:
+                pathfinder.enabled = true;
+                ChaseTarget(possibleTarget.position, false);
+                break;
+            case true when isAttacking:
+                StartAttack();
+                break;
+        }
+    }
+
+
+    private Transform GetClosestEnemy(bool peace)
+    {
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(transform.position, chaseRange, enemyLayer);
+
+        enemyList = enemy.ToList();
+
+        foreach (Collider2D position in enemyList)
+        {
+            // gets only targets that are not being attacked
+            if (!position.GetComponent<EnemyStats>().isBeingAttacked)
             {
-                minSqrDistance = sqrDistanceToCenter;
-                nearestCollider = colliders[i];
+                positions.Add(position.transform);
             }
         }
 
-        return nearestCollider;
-    }
-
-    private void AttackEnemy()
-    {
-    }
-
-    private void FixedUpdate()
-    {
-        if (!isAlive)
+        if (positions.Count == 0)
         {
-            deactivedMovement = true;
-            return;
+            hasTarget = false;
+            peaceInOurTime = true;
+            return null;
         }
 
-        if (rb.velocity.x != 0 || rb.velocity.y != 0)
-        {
-            isMoving = isWalking = true;
-            if (isAlive) { character.AnimationManager.SetState(CharacterState.Walk); }
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector2 currentPosition = transform.position;
 
-            if (Input.GetKey(KeyCode.LeftShift))
+        if (debugOn) { Debug.Log($":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"); }
+
+        int count = 0;
+        foreach (Transform potentialTarget in positions)
+        {
+            if (debugOn) { Debug.Log($"Player: {potentialTarget.transform.name}"); }
+
+            Vector2 directionToTarget = (Vector2)potentialTarget.position - currentPosition;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+
+            if (debugOn) { Debug.Log($"Distance: {dSqrToTarget} -- Previous Best: {closestDistanceSqr}"); }
+
+            positionList.Add(directionToTarget);
+            if (dSqrToTarget < closestDistanceSqr)
             {
-                if (isAlive)
-                {
-                    character.AnimationManager.SetState(CharacterState.Run);
-                    isRunning = true;
-                    isWalking = false;
-                }
+                closestDistanceSqr = dSqrToTarget;
+                bestTarget = potentialTarget;
+            }
+
+            if (bestTarget) { Debug.Log($"Best target: {bestTarget.name}"); }
+
+            if (count <= positions.Count - 1)
+            {
+                if (debugOn) { Debug.Log($"·········································"); }
+
+                count++;
             }
         }
-        else
+
+        if (bestTarget != null)
         {
-            isMoving = isRunning = isWalking = false;
-            if (isAlive) { character.AnimationManager.SetState(CharacterState.Idle); }
+            bestTarget.GetComponent<EnemyStats>().isBeingAttacked = true;
+            target = bestTarget;
         }
+
+        hasTarget = true;
+        peaceInOurTime = false;
+        return target;
     }
 
-    private void AttackAnimation()
+    private void ChaseTarget(Vector3 enemyPosition, bool home)
     {
-        character.AnimationManager.Slash1H();
+        Vector3 adjustedPosition = !home ? new Vector3(enemyPosition.x, enemyPosition.y + attackOffset, 0) : enemyPosition;
+        aiPath.destination = adjustedPosition;
+        aiPath.SearchPath();
+        aiPath.maxSpeed = moveSpeed;
+        Vector2 v = adjustedPosition - transform.position;
+        SetDirection(v);
+        if ((hasTarget && !isAttacking) || !aiPath.reachedDestination)
+        {
+            character.AnimationManager.SetState(CharacterState.Run);
+        }
+        else { character.AnimationManager.SetState(CharacterState.Idle); }
+    }
+
+    private void StartAttack()
+    {
+        character.AnimationManager.SetState(CharacterState.Idle);
+        if (peaceInOurTime) { return; }
+
+        if (timeStamp <= Time.time) { AttackAnimation(); }
+    }
+
+    public void AttackAnimation()
+    {
+        Collider2D enemy = Physics2D.OverlapCircle(transform.position, attackRange, enemyLayer);
+        if (enemy != null && enemy.GetComponent<EnemyStats>().HitPoints < 1) { return; }
+
+        // has a cool down so that number of attacks can be controlled
+        if (!isMakingAttack)
+        {
+            timeStamp = Time.time + coolDown;
+            character.AnimationManager.Slash1H();
+            AttackTarget(enemy);
+        }
+
+        if (GameManager.Instance.battle) { Debug.Log($"Attack animation called"); }
+    }
+
+    public void IsMakingAnAttack()
+    {
+        // this looks like it isn't being called anywhere, but it's activated by an animation event
+        isMakingAttack = !isMakingAttack;
+    }
+
+    public void AttackTarget(Collider2D enemy)
+    {
+        if (enemy == null) { return; }
+
+        if (enemy.GetComponent<EnemyStats>().HitPoints < 1) { return; }
+
+        int totalDamage;
+
+        enemy.TryGetComponent(out IDamageable hit);
+        int critical = Random.Range(0, hitBonus);
+        bool criticalHit = critical > hitBonus / 2;
+        if (criticalHit) { totalDamage = stats.characterAttackTotal + critical; }
+        else { totalDamage = stats.characterAttackTotal; }
+
+        if (totalDamage > 0) { hit.Damage(totalDamage); }
+
+        if (enemy.GetComponent<EnemyStats>().HitPoints < 1)
+        {
+            hasTarget = false;
+            peaceInOurTime = true;
+            enemyList.Clear();
+            positions.Clear();
+            positionList.Clear();
+            Debug.Log($"::::::::::::::::::::::Zombie has died::::::::::::::::::::::::::::");
+        }
+
+        if (debugOn) { Debug.Log($"Target has been hit: {hit.Combatant}"); }
     }
 
     private void Foregrounding()
@@ -225,6 +380,28 @@ public class NPCMovement : MonoBehaviour, ISaveable, ISetLimits
         }
     }
 
+    private void SetDirection(Vector2 v)
+    {
+        float a = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        int index = (int)((Mathf.Round(a / 90f) + 4) % 4);
+
+        switch (index)
+        {
+            case 0:
+                character.SetDirection(Vector2.right);
+                break;
+            case 1:
+                character.SetDirection(Vector2.up);
+                break;
+            case 2:
+                character.SetDirection(Vector2.left);
+                break;
+            case 3:
+                character.SetDirection(Vector2.down);
+                break;
+        }
+    }
+
     public void SetLimits(Vector3 bottomEdgeToSet, Vector3 topEdgeToSet)
     {
         bottomLeftEdge = bottomEdgeToSet;
@@ -238,21 +415,11 @@ public class NPCMovement : MonoBehaviour, ISaveable, ISetLimits
         topRightEdge = Vector3.positiveInfinity;
     }
 
-
     private void SetLimitBool(string arg1, string arg4, int arg2, int arg3)
     {
         isLoaded = true;
         if (debugOn) { Debug.Log($"isLoaded set to true: {isLoaded}"); }
     }
-
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log($"NPC attack started");
-        }
-    }
-
 
     public void Death()
     {
@@ -261,33 +428,12 @@ public class NPCMovement : MonoBehaviour, ISaveable, ISetLimits
         character.AnimationManager.SetState(CharacterState.Death);
         Debug.Log($"Death animation called");
         MenuManager.Instance.DeathScene();
-        PlayerStats player = GetComponent<PlayerStats>();
-        player.isTeamMember = false;
-        player.isAvailable = false;
+        PlayerStats playerStats = GetComponent<PlayerStats>();
+        playerStats.isTeamMember = false;
+        playerStats.isAvailable = false;
         deactivedMovement = true;
         GetComponent<ShadowCaster2D>().enabled = false;
         activeBase.SetActive(false);
         capsuleCollider.enabled = false;
     }
-
-    #region Implementation of ISaveable
-
-    public void PopulateSaveData(SaveData a_SaveData)
-    {
-        // playerTrans = transform.position;
-        // a_SaveData.thulgranData.controllerSwitch = controllerSwitch;
-        // //a_SaveData.thulgranData.moveSpeed = moveSpeed;
-        // a_SaveData.thulgranData.position = playerTrans;
-        // Debug.Log($"Thulgran's save position: {playerTrans}");
-    }
-
-    public void LoadFromSaveData(SaveData a_SaveData)
-    {
-        // toggle.isOn = a_SaveData.thulgranData.controllerSwitch;
-        // //moveSpeed = a_SaveData.thulgranData.moveSpeed;
-        // playerTrans = a_SaveData.thulgranData.position;
-        // transform.position = playerTrans;
-    }
-
-    #endregion
 }

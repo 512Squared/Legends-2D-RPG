@@ -40,15 +40,11 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
     [SerializeField] private float jumpTime;
     [SerializeField] private float jumpDistance;
 
-
     public int currentSceneIndex;
 
     public string arrivingAt;
 
     private Toggle toggle;
-
-    private int accelerate;
-
 
     public Vector3 bottomLeftEdge;
     public Vector3 topRightEdge;
@@ -78,6 +74,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
     private static readonly int moveY = Animator.StringToHash("moveY");
     private bool isJumping;
     public bool isPaused;
+    [SerializeField] private bool isMakingAttack;
 
     private void Start()
     {
@@ -102,7 +99,11 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
 
     private void Update()
     {
-        if (isPaused || deactivedMovement || !isAlive) { return; }
+        if (isPaused || deactivedMovement || !isAlive)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
 
         AndroidController();
 
@@ -211,8 +212,10 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
 
     private void AttackAnimation()
     {
-        character.AnimationManager.Slash1H();
-        character.AnimationManager.Spring();
+        if (!isMakingAttack)
+        {
+            character.AnimationManager.Slash1H();
+        }
     }
 
     public void SetPhotoBoothLimit()
@@ -247,6 +250,10 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
         isLoaded = true;
     }
 
+    public void IsMakingAnAttack()
+    {
+        isMakingAttack = !isMakingAttack;
+    }
 
     private void SetLimitBool(string arg1, string arg4, int arg2, int arg3)
     {
@@ -263,11 +270,6 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
         if (collision.gameObject.GetComponent<PlayerStats>().isAvailable) { return; }
 
         AddToParty(collision);
-
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log($"Player attack started");
-        }
     }
 
     private static void AddToParty(Collision2D collision)

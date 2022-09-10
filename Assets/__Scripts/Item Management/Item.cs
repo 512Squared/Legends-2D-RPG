@@ -221,10 +221,19 @@ public class Item : MonoBehaviour, ISaveable
 
         if (pickUpNotice)
         {
-            NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}", itemsImage,
-                3f, 1000f,
+            StartCoroutine(Notification());
+        }
+
+        IEnumerator Notification()
+        {
+            yield return null;
+            NotificationFader.instance.CallFadeInOut($"You picked up a {itemName}",
+                itemsImage,
+                3f,
+                1000f,
                 30);
         }
+
 
         if (isPrefab)
         {
@@ -235,6 +244,7 @@ public class Item : MonoBehaviour, ISaveable
         hasBeenDropped = false;
         Inventory.Instance.AddItems(this);
     }
+
 
     public void UseItem(int characterToUseOn)
     {
@@ -409,8 +419,10 @@ public class Item : MonoBehaviour, ISaveable
 
         DropItemPosition(this);
         AudioManager.Instance.PlaySfxClip(5);
-        NotificationFader.instance.CallFadeInOut($"You dropped the {droppedItem.itemName}", droppedItem.itemsImage,
-            3f, 1400f,
+        NotificationFader.instance.CallFadeInOut($"You dropped the {droppedItem.itemName}",
+            droppedItem.itemsImage,
+            3f,
+            1400f,
             30);
     }
 
@@ -423,8 +435,10 @@ public class Item : MonoBehaviour, ISaveable
 
         Transform playerTransform = PlayerGlobalData.Instance.gameObject.GetComponent<Transform>();
         transform.position = playerTransform.position;
-        transform.position = new Vector3(transform.position.x, transform.position.y - 1.34f, transform
-            .position.z);
+        transform.position = new Vector3(transform.position.x,
+            transform.position.y - 1.34f,
+            transform
+                .position.z);
         itemPosition = transform.position;
     }
 
@@ -463,9 +477,24 @@ public class Item : MonoBehaviour, ISaveable
     public void PopulateSaveData(SaveData a_SaveData)
     {
         itemPosition = transform.position;
-        SaveData.ItemsData id = new(itemGuid, itemName, quantity, pickup, isPickedUp, isNewItem, isShopItem,
-            spriteRenderer, polyCollider, itemPosition, itemPickupPlace, isDeletedStack, hasBeenDropped, isPrefab,
-            isQuestObject, pickUpNotice, shop, boughtFromShop);
+        SaveData.ItemsData id = new(itemGuid,
+            itemName,
+            quantity,
+            pickup,
+            isPickedUp,
+            isNewItem,
+            isShopItem,
+            spriteRenderer,
+            polyCollider,
+            itemPosition,
+            itemPickupPlace,
+            isDeletedStack,
+            hasBeenDropped,
+            isPrefab,
+            isQuestObject,
+            pickUpNotice,
+            shop,
+            boughtFromShop);
 
         a_SaveData.itemsData.Add(id);
     }
@@ -516,7 +545,8 @@ public class Item : MonoBehaviour, ISaveable
             if (!id.isPickedUp && id.hasBeenDropped && !id.isQuestObject)
             {
                 SetItemParent(GameManager.Instance.pickupParents[id.itemPickupPlace]
-                    .transform, true); // pickupParent is where dropped item is stored ready for pickup
+                        .transform,
+                    true); // pickupParent is where dropped item is stored ready for pickup
                 if (GameManager.Instance.items || GameManager.Instance.saveLoad)
                 {
                     Debug.Log($"Dropped item put into correct box: {id.itemName} | GUID: {guid}");

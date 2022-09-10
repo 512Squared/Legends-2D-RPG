@@ -24,6 +24,8 @@ public class SpawnEnemies : SingletonMonobehaviour<SpawnEnemies>, ISaveable
     private List<GameObject> spawnedSkellies;
     private List<GameObject> spawnedGoblins;
 
+    public int numberOfZombies;
+
     public List<Transform[]> sceneSpawnArrays;
 
     private int index;
@@ -60,11 +62,13 @@ public class SpawnEnemies : SingletonMonobehaviour<SpawnEnemies>, ISaveable
         newZombie.transform.position = zombieRandomSpawnPoint.position;
         newZombie.transform.SetParent(SpawnPoints()[index]);
         spawnedZombies.Add(newZombie);
+        numberOfZombies++;
+        newZombie.name += "_" + numberOfZombies;
         newZombie.GetComponent<ZombieController>().homeScene = FindObjectOfType<LevelManager>().scene;
         newZombie.GetComponent<GenerateGUID>().CreateNewGUID();
         Debug.Log($"Zombie spawned at {SpawnPoints()[index].name} | ");
         newZombie.GetComponent<ZombieController>().chaseRange = chaseRange;
-        newZombie.GetComponent<ZombieController>().hitPoints = hitPoints;
+        newZombie.GetComponent<EnemyStats>().HitPoints = hitPoints;
     }
 
     public void SpawnSkelly()

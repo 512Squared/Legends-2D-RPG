@@ -19,27 +19,30 @@ public class AttackDetection : MonoBehaviour
     {
         if (col.CompareTag("Enemy"))
         {
-            if (!hitPossible && col.gameObject.GetComponent<ZombieController>().isInAttackRange)
+            switch (hitPossible)
             {
-                if (GameManager.Instance.battle) { Debug.Log($"Trigger detected, but hit not possible"); }
+                case false:
+                    {
+                        if (GameManager.Instance.battle) { Debug.Log($"Trigger detected, but hit not possible"); }
 
-                return;
-            }
+                        return;
+                    }
+                case true when col.gameObject.GetComponent<ZombieController>().isInAttackRange && col.GetComponent<IDamageable>().IsAlive:
+                    {
+                        Character apex = character.GetComponentInChildren<Character>();
+                        player.HitEnemy(col, GetComponent<GenerateGUID>().GUID, apex);
+                        if (GameManager.Instance.battle) { Debug.Log($"Hit possible and initiated: "); }
 
-            if (col.gameObject.GetComponent<ZombieController>().isInAttackRange &&
-                col.GetComponent<IDamageable>().IsAlive)
-            {
-                Character apex = character.GetComponentInChildren<Character>();
-                player.HitEnemy(col, GetComponent<GenerateGUID>().GUID, apex);
-                if (GameManager.Instance.battle) { Debug.Log($"Hit possible and initiated: "); }
+                        hitPossible = false;
+                        if (GameManager.Instance.battle) { Debug.Log($"Apex: {apex.AnchorSword.name}"); }
 
-                hitPossible = false;
-                if (GameManager.Instance.battle) { Debug.Log($"Apex: {apex.AnchorSword.name}"); }
+                        if (GameManager.Instance.battle)
+                        {
+                            Debug.Log($"HitBox: {transform.name} | Activate on: {player.playerName} | Enemy: {col.name}");
+                        }
 
-                if (GameManager.Instance.battle)
-                {
-                    Debug.Log($"HitBox: {transform.name} | Activate on: {player.playerName} | Enemy: {col.name}");
-                }
+                        break;
+                    }
             }
         }
     }

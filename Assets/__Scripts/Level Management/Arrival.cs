@@ -12,6 +12,7 @@ public class Arrival : MonoBehaviour
         if (arrivalStation == PlayerGlobalData.Instance.arrivingAt)
         {
             PlayerGlobalData.Instance.transform.position = transform.position;
+            GameManager.Instance.LocateCharactersInNewScene(transform.position);
         }
     }
 }

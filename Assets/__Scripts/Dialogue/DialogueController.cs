@@ -51,6 +51,13 @@ public class DialogueController : MonoBehaviour
             {
                 dialogueBox.SetActive(false);
                 GameManager.Instance.dialogueBoxOpened = false;
+                PlayerStats[] players = GameManager.Instance.GetPlayerStats();
+                foreach (PlayerStats player in players)
+                {
+                    if (player != null) { player.GetComponent<NPCMovement>().isPaused = false; }
+                }
+
+                PlayerGlobalData.Instance.isPaused = false;
 
                 if (!_isTrigger) { return; }
 
@@ -65,14 +72,16 @@ public class DialogueController : MonoBehaviour
                 if (completesAQuest && !activatesAQuest)
                 {
                     // questToComplete is passed twice to avoid null
-                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete", questToComplete,
+                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("complete",
+                        questToComplete,
                         questToComplete);
                     _isTrigger = false;
                 }
 
                 if (completesAQuest && activatesAQuest)
                 {
-                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("both", questToActivate,
+                    Actions.OnDoQuestStuffAfterDialogue?.Invoke("both",
+                        questToActivate,
                         questToComplete);
                     _isTrigger = false;
                 }
@@ -100,6 +109,15 @@ public class DialogueController : MonoBehaviour
         CheckForName();
         dialogueText.text = dialogueSentences[currentSentence];
         dialogueBox.SetActive(true);
+        PlayerStats[] players = GameManager.Instance.GetPlayerStats();
+        foreach (PlayerStats player in players)
+        {
+            if (player == null) { continue; }
+
+            if (player.gameObject.activeInHierarchy && player.isTeamMember && player.name != "Thulgran") { player.GetComponent<NPCMovement>().isPaused = true; }
+        }
+
+        PlayerGlobalData.Instance.isPaused = true;
 
         dialogueJustStarted = true;
         GameManager.Instance.dialogueBoxOpened = true;

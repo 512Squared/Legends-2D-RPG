@@ -9790,6 +9790,7 @@ GameObject:
   - component: {fileID: 5656775258243376829}
   - component: {fileID: 946850300297123607}
   - component: {fileID: 1575928117478783757}
+  - component: {fileID: 2396474211580832178}
   m_Layer: 0
   m_Name: pfSkellyTopHat
   m_TagString: Untagged
@@ -10351,6 +10352,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gUID: 940ff1b2-0b4f-420a-a807-fe7b7aecf68b
+--- !u!114 &2396474211580832178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623758804344980712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 006e94eec34f4cf4b7dc525db84c0b20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBeingAttacked: 0
 --- !u!1 &4624422346793799074
 GameObject:
   m_ObjectHideFlags: 0

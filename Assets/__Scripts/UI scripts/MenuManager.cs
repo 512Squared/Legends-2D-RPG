@@ -1832,7 +1832,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
                 // new items - needs to run here to count how many new items
 
-                if (item.isNewItem == true)
+                if (item.isNewItem)
                 {
                     GameObject.FindGameObjectWithTag("NewItemsNofify").GetComponent<CanvasGroup>().alpha = 1;
                     currentNewItems++;
@@ -2025,6 +2025,8 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
                         itemSlot.gameObject.SetActive(false);
                     }
                 }
+
+                if (item.itemName == "Empty Slot") { itemSlot.gameObject.SetActive(false); }
 
                 // new items - nofify on Main Menu. Items picked up are all set to 'new'. This code doesn't have to run until inventory has been built (above)
 
