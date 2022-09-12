@@ -5427,8 +5427,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0161376, y: 0.23041773}
-  m_Size: {x: 0.6873312, y: 0.6873312}
+  m_Offset: {x: -0.0161376, y: 0.3246243}
+  m_Size: {x: 0.6873312, y: 0.87574434}
   m_Direction: 0
 --- !u!114 &1044792243917400814
 MonoBehaviour:
@@ -5472,7 +5472,7 @@ MonoBehaviour:
   - {x: 0.34497547, y: 0.25506258, z: 0}
   m_ShapePathHash: 1072939061
   m_Mesh: {fileID: 0}
-  m_InstanceId: 44064
+  m_InstanceId: -9718
 --- !u!114 &1044792243917400812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5594,8 +5594,8 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
-  pathfinder: {fileID: 0}
-  positions: []
+  pathfinder: {fileID: 1044792243917400817}
+  enemies: []
   enemyList: []
   positionList: []
   moveSpeed: 4
@@ -5609,6 +5609,7 @@ MonoBehaviour:
   isMakingAttack: 0
   attackOffset: -0.3
   hitBonus: 10
+  playerSlot: 1
   bottomLeftEdge: {x: 0, y: 0, z: 0}
   topRightEdge: {x: 0, y: 0, z: 0}
   deactivedMovement: 0
@@ -5727,7 +5728,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20
+  m_Mass: 10
   m_LinearDrag: 20
   m_AngularDrag: 20
   m_GravityScale: 0
@@ -5833,7 +5834,7 @@ MonoBehaviour:
   radius: 0.5
   height: 2
   canMove: 1
-  maxSpeed: 1
+  maxSpeed: 3
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2

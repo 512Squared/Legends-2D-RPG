@@ -1,14 +1,9 @@
-using System;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
 using TMPro;
 using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening.Core;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-using UnityEngine.Rendering.UI;
 
 
 public class GameManager : MonoBehaviour, ISaveable
@@ -91,20 +86,10 @@ public class GameManager : MonoBehaviour, ISaveable
     [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
     public bool isItemSelected;
 
-    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
-    public bool keyboardKeyI;
-
-    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
-    public bool pathfindingObstacleDebug;
-
-    [BoxGroup("UI Bools")] [GUIColor(1f, 1f, 0.215f)]
-    public bool gridDebug;
-
 
     [Title("Messaging")] [Space] public TextMeshProUGUI playerMessages;
 
 
-    public Transform gridParent;
     [SerializeField] public bool isPaused;
     [SerializeField] public bool crosshairsOn;
 

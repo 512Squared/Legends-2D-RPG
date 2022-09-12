@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Assets.HeroEditor4D.Common.CommonScripts;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 
@@ -89,6 +90,12 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     private CanvasGroup[] menuPanels;
 
     [FoldoutGroup("Miscellaneous", false)] [GUIColor(1f, 0.8f, 0.315f)] [SerializeField]
+    public AndroidToggleSwitch androidToggle;
+
+    [FoldoutGroup("Miscellaneous", false)] [GUIColor(1f, 0.8f, 0.315f)] [SerializeField]
+    public CrosshairsToggleSwitch crosshairsToggle;
+
+    [FoldoutGroup("Miscellaneous", false)] [GUIColor(1f, 0.8f, 0.315f)] [SerializeField]
     private RectTransform clockPanel, clockFrame;
 
     [FoldoutGroup("Miscellaneous", false)] [Range(0.5f, 2f)] [SerializeField]
@@ -96,7 +103,6 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     [FoldoutGroup("Miscellaneous", false)] [Range(0.5f, 2f)] [SerializeField]
     private float maxButtonSize = 1f;
-
 
     [FoldoutGroup("Miscellaneous", false)] [GUIColor(1f, 0.8f, 0.315f)] [SerializeField]
     private GameObject equipment;
@@ -108,10 +114,10 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
     private TMP_Dropdown droppy; // dropbox for the dropdown object (hence, TMP_Dropdown)
 
     [FoldoutGroup("Miscellaneous", false)] [GUIColor(1f, 0.8f, 0.315f)] [SerializeField]
-    private UltimateButton actionButton;
+    public UltimateButton actionButton;
 
     [FoldoutGroup("Miscellaneous", false)] [GUIColor(1f, 0.8f, 0.315f)] [SerializeField]
-    private UltimateJoystick joystick;
+    public UltimateJoystick joystick;
 
     [FoldoutGroup("Miscellaneous", false)] [GUIColor(1f, 0.8f, 0.315f)] [SerializeField]
     private UltimateMobileQuickbar quickBar;
@@ -569,37 +575,46 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
         fadeResume.alpha = 1;
     }
 
-    private void ControllersFadeOut(float fadeTime)
+    public void ControllersFadeOut(float fadeTime)
     {
-        StartCoroutine(DisableJoystickDelay());
-        StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 0f, fadeTime));
-        StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, fadeTime));
-        StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, fadeTime));
+        if (joystick.isActiveAndEnabled)
+        {
+            StartCoroutine(DisableJoystickDelay());
+            StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 0f, fadeTime));
+            StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 0f, fadeTime));
+            StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 0f, fadeTime));
+        }
     }
 
-    private void ControllersFadeIn(float fadeTime)
+    public void ControllersFadeIn(float fadeTime)
     {
-        joystick.EnableJoystick();
-        actionButton.EnableButton();
-        StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 1f, fadeTime));
-        StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, fadeTime));
-        StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, fadeTime));
+        if (joystick.isActiveAndEnabled)
+        {
+            joystick.EnableJoystick();
+            actionButton.EnableButton();
+            StartCoroutine(FadeToAlpha(joystick.GetComponent<CanvasGroup>(), 1f, fadeTime));
+            StartCoroutine(FadeToAlpha(quickBar.GetComponent<CanvasGroup>(), 1f, fadeTime));
+            StartCoroutine(FadeToAlpha(actionButton.GetComponent<CanvasGroup>(), 1f, fadeTime));
+        }
     }
 
-    private void ControllersOn()
+    public void ControllersOn()
     {
-        joystick.EnableJoystick();
-        actionButton.EnableButton();
-        //quickBar.EnableQuickbar();
-        joystick.GetComponent<CanvasGroup>().alpha = 1;
-        joystick.GetComponent<CanvasGroup>().interactable = true;
-        joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
-        actionButton.GetComponent<CanvasGroup>().alpha = 1;
-        actionButton.GetComponent<CanvasGroup>().interactable = true;
-        actionButton.GetComponent<CanvasGroup>().blocksRaycasts = true;
-        quickBar.GetComponent<CanvasGroup>().alpha = 1;
-        quickBar.GetComponent<CanvasGroup>().interactable = true;
-        quickBar.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        if (joystick.isActiveAndEnabled)
+        {
+            joystick.EnableJoystick();
+            actionButton.EnableButton();
+            //quickBar.EnableQuickbar();
+            joystick.GetComponent<CanvasGroup>().alpha = 1;
+            joystick.GetComponent<CanvasGroup>().interactable = true;
+            joystick.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            actionButton.GetComponent<CanvasGroup>().alpha = 1;
+            actionButton.GetComponent<CanvasGroup>().interactable = true;
+            actionButton.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            quickBar.GetComponent<CanvasGroup>().alpha = 1;
+            quickBar.GetComponent<CanvasGroup>().interactable = true;
+            quickBar.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        }
     }
 
     private void PanelController()
@@ -1082,7 +1097,7 @@ public partial class MenuManager : MonoBehaviour, INotifyPropertyChanged
 
     public void AndroidControls()
     {
-        PlayerGlobalData.Instance.controllerSwitch = !PlayerGlobalData.Instance.controllerSwitch;
+        PlayerGlobalData.Instance.AndroidOn = !PlayerGlobalData.Instance.AndroidOn;
     }
 
     public void CallToSellItem()

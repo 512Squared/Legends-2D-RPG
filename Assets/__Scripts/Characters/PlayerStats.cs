@@ -122,6 +122,11 @@ public class PlayerStats : Rewardable<QuestRewards>, ISaveable, IDamageable
         }
     }
 
+    public void MoveTo(Vector3 position)
+    {
+        transform.position = position;
+    }
+
     public void AddXp(int amountOfXp)
     {
         characterXp += amountOfXp;

@@ -9763,6 +9763,7 @@ GameObject:
   - component: {fileID: 7893389285687797689}
   - component: {fileID: 4192153713300277768}
   - component: {fileID: 6582678520066736910}
+  - component: {fileID: 8799905810199958365}
   m_Layer: 3
   m_Name: Thulgran
   m_TagString: Player
@@ -9777,7 +9778,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3962459403053906412}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.72, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10230,7 +10231,7 @@ MonoBehaviour:
   bottomLeftEdge: {x: 0, y: 0, z: 0}
   topRightEdge: {x: 0, y: 0, z: 0}
   deactivedMovement: 0
-  controllerSwitch: 0
+  AndroidOn: 0
   isAlive: 0
   isWalking: 0
   isRunning: 0
@@ -10238,6 +10239,7 @@ MonoBehaviour:
   isLoaded: 0
   isPaused: 0
   isMakingAttack: 0
+  distances: []
 --- !u!114 &4192153713300277810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10409,7 +10411,7 @@ MonoBehaviour:
   - {x: -0.1803503, y: 0.07722092, z: 0}
   m_ShapePathHash: -1991058034
   m_Mesh: {fileID: 0}
-  m_InstanceId: 37834
+  m_InstanceId: -7086
 --- !u!114 &7893389285687797689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10453,6 +10455,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.39649737}
   serializedVersion: 2
   m_Radius: 0.44938326
+--- !u!114 &8799905810199958365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3962459403053906412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f49db4965bb4934b51a6146ae6d2e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3963846987440599889
 GameObject:
   m_ObjectHideFlags: 0

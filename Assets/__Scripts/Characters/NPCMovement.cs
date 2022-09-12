@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.HeroEditor4D.Common.CharacterScripts;
 using Pathfinding;
@@ -36,10 +35,10 @@ public class NPCMovement : MonoBehaviour, ISetLimits
     [SerializeField] private LayerMask enemyLayer;
     private IAstarAI aiPath;
 
-    [SerializeField] private AIPath pathfinder;
+    [SerializeField] public AIPath pathfinder;
 
 
-    [SerializeField] private List<Transform> positions;
+    [SerializeField] private List<Transform> enemies;
 
     [SerializeField] private List<Collider2D> enemyList;
 
@@ -59,7 +58,9 @@ public class NPCMovement : MonoBehaviour, ISetLimits
     [SerializeField] private bool isMakingAttack;
     [SerializeField] private float attackOffset;
     [SerializeField] private int hitBonus;
+    [SerializeField] private int playerSlot;
     private float timeStamp;
+    private string guid;
 
     [HideInInspector]
     public Vector3 bottomLeftEdge;
@@ -104,6 +105,7 @@ public class NPCMovement : MonoBehaviour, ISetLimits
         pathfinder = GetComponent<AIPath>();
         isAlive = true;
         peaceInOurTime = true;
+        guid = GetComponent<GenerateGUID>().GUID;
     }
 
     private void OnEnable()
@@ -122,6 +124,28 @@ public class NPCMovement : MonoBehaviour, ISetLimits
         {
             deactivedMovement = true;
         }
+
+        //Foregrounding();
+
+        isAttacking = Physics2D.OverlapCircle(transform.position, attackRange, enemyLayer);
+        isChasing = Physics2D.OverlapCircle(transform.position, chaseRange, enemyLayer);
+
+        if (deactivedMovement || !isAlive) { return; }
+
+        // Follow team
+        if (stats.isTeamMember && Vector2.Distance(transform.position, player.position) > distanceToPlayer)
+        {
+            aiPath.destination = NpcController.Instance.GetFormationPosition(player.position, guid, transform.position);
+            aiPath.SearchPath();
+            // alternatively, pass formation position to pathfinder to avoid objects in scene
+            Vector2 v = player.position - transform.position;
+            character.AnimationManager.SetState(CharacterState.Run);
+            if (!hasTarget) { SetDirection(v); }
+        }
+
+        else { character.AnimationManager.SetState(CharacterState.Idle); }
+
+        CheckForEnemies();
     }
 
 
@@ -176,26 +200,6 @@ public class NPCMovement : MonoBehaviour, ISetLimits
     {
         if (isPaused) { return; }
 
-        Foregrounding();
-
-        isAttacking = Physics2D.OverlapCircle(transform.position, attackRange, enemyLayer);
-        isChasing = Physics2D.OverlapCircle(transform.position, chaseRange, enemyLayer);
-
-        if (deactivedMovement || !isAlive) { return; }
-
-        // Follow team
-        if (stats.isTeamMember && Vector2.Distance(transform.position, player.position) > distanceToPlayer)
-        {
-            pathfinder.enabled = false;
-            transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
-            Vector2 v = player.position - transform.position;
-            character.AnimationManager.SetState(CharacterState.Walk);
-            if (!hasTarget) { SetDirection(v); }
-        }
-
-        else { character.AnimationManager.SetState(CharacterState.Idle); }
-
-        CheckForEnemies();
 
         if (isLoaded)
         {
@@ -214,7 +218,6 @@ public class NPCMovement : MonoBehaviour, ISetLimits
         switch (hasTarget)
         {
             case true when isChasing && !isAttacking:
-                pathfinder.enabled = true;
                 ChaseTarget(possibleTarget.position, false);
                 break;
             case true when isAttacking:
@@ -227,7 +230,7 @@ public class NPCMovement : MonoBehaviour, ISetLimits
     private Transform GetClosestEnemy(bool peace)
     {
         Collider2D[] enemy = Physics2D.OverlapCircleAll(transform.position, chaseRange, enemyLayer);
-
+        positionList.Clear();
         enemyList = enemy.ToList();
 
         foreach (Collider2D position in enemyList)
@@ -235,11 +238,11 @@ public class NPCMovement : MonoBehaviour, ISetLimits
             // gets only targets that are not being attacked
             if (!position.GetComponent<EnemyStats>().isBeingAttacked)
             {
-                positions.Add(position.transform);
+                enemies.Add(position.transform);
             }
         }
 
-        if (positions.Count == 0)
+        if (enemies.Count == 0)
         {
             hasTarget = false;
             peaceInOurTime = true;
@@ -253,7 +256,7 @@ public class NPCMovement : MonoBehaviour, ISetLimits
         if (debugOn) { Debug.Log($":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"); }
 
         int count = 0;
-        foreach (Transform potentialTarget in positions)
+        foreach (Transform potentialTarget in enemies)
         {
             if (debugOn) { Debug.Log($"Player: {potentialTarget.transform.name}"); }
 
@@ -269,9 +272,12 @@ public class NPCMovement : MonoBehaviour, ISetLimits
                 bestTarget = potentialTarget;
             }
 
-            if (bestTarget) { Debug.Log($"Best target: {bestTarget.name}"); }
+            if (bestTarget)
+            {
+                //Debug.Log($"Best target: {bestTarget.name}");
+            }
 
-            if (count <= positions.Count - 1)
+            if (count <= enemies.Count - 1)
             {
                 if (debugOn) { Debug.Log($"·········································"); }
 
@@ -356,7 +362,7 @@ public class NPCMovement : MonoBehaviour, ISetLimits
             hasTarget = false;
             peaceInOurTime = true;
             enemyList.Clear();
-            positions.Clear();
+            enemies.Clear();
             positionList.Clear();
             Debug.Log($"::::::::::::::::::::::Zombie has died::::::::::::::::::::::::::::");
         }

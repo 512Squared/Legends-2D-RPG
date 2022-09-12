@@ -1,38 +1,54 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Assets.HeroEditor4D.Common.CharacterScripts;
+using Pathfinding;
 using UnityEngine;
 
-public class NpcController : MonoBehaviour
+public class NpcController : SingletonMonobehaviour<NpcController>
 {
-    private List<Vector3> npcList = new();
-    private List<UnitRTS> unitList = new();
     private PlayerStats[] playerList;
+    private List<PlayerStats> players;
+
+
+    [SerializeField]
+    private float distance;
 
     private void Start()
     {
         playerList = GameManager.Instance.GetPlayerStats();
-        foreach (PlayerStats player in playerList)
-        {
-            npcList.Add(player.transform.position);
-            unitList.Add(player.GetComponent<UnitRTS>());
-        }
+        players = new List<PlayerStats>();
     }
 
-    private void MoveIntoFormation()
+    public Vector3 GetFormationPosition(Vector3 startPosition, string guid, Vector3 currentPosition)
     {
-        Vector3 moveToPosition = PlayerGlobalData.Instance.transform.position;
-        List<Vector3> targetPositionList = new()
+        players.Clear();
+        for (int j = 0; j < playerList.Length; j++)
         {
-            moveToPosition + new Vector3(0, 0),
-            moveToPosition + new Vector3(10, 0),
-            moveToPosition + new Vector3(20, 0),
-            moveToPosition + new Vector3(30, 0),
-            moveToPosition + new Vector3(40, 0)
-        };
-
-        foreach (UnitRTS unit in unitList.Where(unit => unit.GetComponent<PlayerStats>().isTeamMember))
-        {
-            unit.MoveTo(moveToPosition);
+            if (playerList[j].isTeamMember && playerList[j].playerName != "Thulgran")
+            {
+                players.Add(playerList[j]);
+            }
         }
+
+        PlayerStats[] playersInTeam = players.ToArray();
+
+        for (int i = 0; i < playersInTeam.Length; i++)
+        {
+            float angle = i * (360f / players.Count);
+            Vector3 dir = ApplyRotationToVector(new Vector3(1, 0), angle);
+            Vector3 position = startPosition + (dir * distance);
+            if (players[i].GetComponent<GenerateGUID>().GUID == guid)
+            {
+                return position;
+            }
+        }
+
+        return currentPosition;
+    }
+
+    private static Vector3 ApplyRotationToVector(Vector3 vec, float angle)
+    {
+        return Quaternion.Euler(0, 0, angle) * vec;
     }
 }

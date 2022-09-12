@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Assets.HeroEditor4D.Common.CharacterScripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -44,8 +46,6 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
 
     public string arrivingAt;
 
-    private Toggle toggle;
-
     public Vector3 bottomLeftEdge;
     public Vector3 topRightEdge;
 
@@ -53,7 +53,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
     [Title("Bools")]
     public bool deactivedMovement;
 
-    public bool controllerSwitch;
+    public bool AndroidOn;
 
     public bool isAlive;
     private bool isMoving;
@@ -76,15 +76,23 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
     public bool isPaused;
     [SerializeField] private bool isMakingAttack;
 
+
+    private List<PlayerStats> players;
+    private PlayerStats[] playerList;
+
+    [SerializeField] private float[] distances;
+
+
     private void Start()
     {
         Instance = this;
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        toggle = GameObject.FindGameObjectWithTag("controllerToggle").GetComponent<Toggle>();
         currentSceneIndex = 1;
         character.SetDirection(Vector2.down);
         character.AnimationManager.SetState(CharacterState.Idle);
         isAlive = true;
+        playerList = GameManager.Instance.GetPlayerStats();
+        players = playerList.ToList();
     }
 
     private void OnEnable()
@@ -224,9 +232,9 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
         topRightEdge = Vector3.positiveInfinity;
     }
 
-    private void AndroidController()
+    public void AndroidController()
     {
-        switch (controllerSwitch)
+        switch (AndroidOn)
         {
             case false:
                 xMove = Input.GetAxisRaw("Horizontal");
@@ -325,7 +333,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
     public void PopulateSaveData(SaveData a_SaveData)
     {
         playerTrans = transform.position;
-        a_SaveData.thulgranData.controllerSwitch = controllerSwitch;
+        a_SaveData.thulgranData.controllerSwitch = AndroidOn;
         //a_SaveData.thulgranData.moveSpeed = moveSpeed;
         a_SaveData.thulgranData.position = playerTrans;
         if (GameManager.Instance.saveLoad) { Debug.Log($"Thulgran's save position: {playerTrans}"); }
@@ -333,7 +341,7 @@ public class PlayerGlobalData : MonoBehaviour, ISaveable, ISetLimits
 
     public void LoadFromSaveData(SaveData a_SaveData)
     {
-        toggle.isOn = a_SaveData.thulgranData.controllerSwitch;
+        AndroidOn = a_SaveData.thulgranData.controllerSwitch;
         //moveSpeed = a_SaveData.thulgranData.moveSpeed;
         playerTrans = a_SaveData.thulgranData.position;
         transform.position = playerTrans;
